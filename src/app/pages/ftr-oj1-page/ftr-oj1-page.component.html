@@ -1,0 +1,69 @@
+<div class="bg-transparent">
+    <p class="p-2 text-2xl font-medium rounded-md select-none text-font-header dark:text-[#e4e6eb]">
+        FTR-OJ1 : บันทึกการอบรม On-the-job training
+    </p>
+    <div class="text-[#566a7f] rounded-md shadow p-6 w-full bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#242526]">
+        <form action="" [formGroup]="searchForm">
+            <div class="flex flex-row justify-center">
+                <div>
+                    <label for="">ชื่อ-นามสกุล</label>
+                    <input type="text" formControlName="fname" 
+                        class="grow appearance-none mx-3 rounded-md border border-gray-400 outline-none  py-2.5 px-2 xl:px-3 xl:mx-1 xl:w-44 dark:border-[#3a3b3c] dark:bg-[#3a3b3c] focus:ring-1 focus:ring-[#696cff] focus:placeholder:pl-2 placeholder:transition-all placeholder:duration-200 placeholder:ease-linear placeholder:text-[#b4b4b4] dark:placeholder:text-[#b4b4b4]">
+                </div>
+                <div>
+                    <label for="">ตำแหน่งงาน</label>
+                    <input type="text" formControlName="position" 
+                        class="grow appearance-none mx-3 rounded-md border border-gray-400 outline-none  py-2.5 px-2 xl:px-3 xl:mx-1 xl:w-44 dark:border-[#3a3b3c] dark:bg-[#3a3b3c] focus:ring-1 focus:ring-[#696cff] focus:placeholder:pl-2 placeholder:transition-all placeholder:duration-200 placeholder:ease-linear placeholder:text-[#b4b4b4] dark:placeholder:text-[#b4b4b4]">
+                </div>
+                <div>
+                    <label for="">ฝ่าย/แผนก</label>
+                    <input type="text" formControlName="department" 
+                        class="grow appearance-none mx-3 rounded-md border border-gray-400 outline-none  py-2.5 px-2 xl:px-3 xl:mx-1 xl:w-44 dark:border-[#3a3b3c] dark:bg-[#3a3b3c] focus:ring-1 focus:ring-[#696cff] focus:placeholder:pl-2 placeholder:transition-all placeholder:duration-200 placeholder:ease-linear placeholder:text-[#b4b4b4] dark:placeholder:text-[#b4b4b4]">
+                </div>
+                <div class="ml-3 self-center">
+                    <button type="submit" (click)="searchBtn()" [disabled]="!searchForm.valid"
+                        class="flex items-center justify-center text-white p-2 w-24 rounded shadow-md {{ (!searchForm.valid) ? 'cursor-not-allowed bg-gray-400' : 'cursor-pointer bg-green-700 hover:bg-green-600' }} "><i class="bx bx-search mr-1"></i>Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <p class="my-3 p-2 underline text-xl font-medium rounded-md select-none text-font-header dark:text-[#e4e6eb]">
+        ผลการค้นหา 
+    </p>
+    <p class="text-end text-sm text-font-header dark:text-[#e4e6eb]" *ngIf="name && position && department">
+        ชื่อ-สกุล : {{ name }}, ตำแหน่งงาน : {{ position }}, ฝ่าย/แผนก : {{ department }}
+    </p>
+    <div class="w-full overflow-x-auto shadow rounded-b-md">
+        <table class="table-auto text-[#566a7f] text-base w-[75rem] lg:w-full dark:text-white">
+            <colgroup>
+                <col style="width: 15%;" />
+                <col style="width: 20%;" />
+                <col style="width: 15%;" />
+                <col style="width: 10%;" />
+                <col style="width: 15%;" />
+                <col style="width: 25%;" />
+                
+            </colgroup>
+            <thead class="text-sm border border-[#ababab] bg-[#c6e7f3] dark:bg-[#242526] dark:border-[#3a3b3c]">
+                <tr class="text-center h-12 uppercase">
+                    <th scope="col">วันที่อบรม</th>
+                    <th scope="col">เรื่อง</th>
+                    <th scope="col">ผู้ให้การอบรม</th>
+                    <th scope="col">ระยะเวลา (วัน)</th>
+                    <th scope="col">ประเมินผลการอบรม</th>
+                    <th scope="col">หมายเหตุ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="odd:bg-white dark:odd:bg-[#3a3b3c] dark:even:bg-black even:bg-slate-100 text-center h-20 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700">
+                    <td>09/02/65 - 11/02/65</td>
+                    <td>Introduction to Spring Framework รุ่น 9</td>
+                    <td>คุณนิทัศน์ หวังวิบูลย์กิจ</td>
+                    <td>3</td>
+                    <td>ผ่าน</td>
+                    <td>-</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

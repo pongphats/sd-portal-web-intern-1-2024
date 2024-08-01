@@ -1,0 +1,173 @@
+<div class="bg-transparent">
+    <p class="p-2 text-2xl font-medium rounded-md select-none text-font-header dark:text-[#e4e6eb]">
+        FTR-SV1 : รายงานความต้องการฝึกอบรม (Training Need for Year)
+    </p>
+
+    <form action="" [formGroup]="trainingForm">
+    <div class="text-[#566a7f] rounded-md my-3 shadow p-6 w-full bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#242526]">
+            <div class="flex flex-row justify-center">
+                <div class="grow flex">
+                    <label for="" class="self-center">Training Needs for Year</label>
+                    <input type="text" placeholder="YYYY" formControlName="year"
+                        class="grow text-slate-400 appearance-none mx-3 rounded-md border border-gray-400 outline-none  py-2.5 px-2 xl:px-3 xl:mx-1 xl:w-44 dark:border-[#3a3b3c] dark:bg-[#3a3b3c] focus:ring-1 focus:ring-[#696cff] focus:placeholder:pl-2 placeholder:transition-all placeholder:duration-200 placeholder:ease-linear placeholder:text-[#b4b4b4] dark:placeholder:text-[#b4b4b4]">
+                </div>
+                <div class="grow flex">
+                    <label for="" class="self-center">ฝ่าย/แผนก</label>
+                    <input type="text" formControlName="department"
+                        class="grow appearance-none mx-3 rounded-md border border-gray-400 outline-none  py-2.5 px-2 xl:px-3 xl:mx-1 xl:w-44 dark:border-[#3a3b3c] dark:bg-[#3a3b3c] focus:ring-1 focus:ring-[#696cff] focus:placeholder:pl-2 placeholder:transition-all placeholder:duration-200 placeholder:ease-linear placeholder:text-[#b4b4b4] dark:placeholder:text-[#b4b4b4]">
+                </div>
+            </div>
+    </div>
+
+    <div
+        class="text-[#566a7f] rounded-md mt-5 mb-3 shadow p-6 w-full bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#242526]">
+        <div class="grid grid-cols-3 gap-3">
+            <div class="flex">
+                <label for="" class="flex-initial self-center w-28">Position</label>
+                <input type="text" formControlName="position"
+                    class="grow appearance-none mx-3 rounded-md border border-gray-400 outline-none  py-2.5 px-2 xl:px-3 xl:mx-1 xl:w-44 dark:border-[#3a3b3c] dark:bg-[#3a3b3c] focus:ring-1 focus:ring-[#696cff] focus:placeholder:pl-2 placeholder:transition-all placeholder:duration-200 placeholder:ease-linear placeholder:text-[#b4b4b4] dark:placeholder:text-[#b4b4b4]">
+            </div>
+            <div class="flex items-center space-x-4">
+                <label for="" class="w-28">Class Name</label>
+                <input type="text" formControlName="className"
+                    class="grow appearance-none mx-3 rounded-md border border-gray-400 outline-none  py-2.5 px-2 xl:px-3 xl:mx-1 xl:w-44 dark:border-[#3a3b3c] dark:bg-[#3a3b3c] focus:ring-1 focus:ring-[#696cff] focus:placeholder:pl-2 placeholder:transition-all placeholder:duration-200 placeholder:ease-linear placeholder:text-[#b4b4b4] dark:placeholder:text-[#b4b4b4]">
+            </div>
+            <div class="flex">
+                <label for="" class="flex-initial self-center w-28">No. of Person</label>
+                <input type="text" formControlName="no"
+                    class="grow appearance-none mx-3 rounded-md border border-gray-400 outline-none  py-2.5 px-2 xl:px-3 xl:mx-1 xl:w-44 dark:border-[#3a3b3c] dark:bg-[#3a3b3c] focus:ring-1 focus:ring-[#696cff] focus:placeholder:pl-2 placeholder:transition-all placeholder:duration-200 placeholder:ease-linear placeholder:text-[#b4b4b4] dark:placeholder:text-[#b4b4b4]">
+            </div>
+            <div class="flex">
+                <label for="" class="flex-initial self-center w-28">Class Fee</label>
+                <input type="text" formControlName="fee"
+                    class="grow appearance-none mx-3 rounded-md border border-gray-400 outline-none  py-2.5 px-2 xl:px-3 xl:mx-1 xl:w-44 dark:border-[#3a3b3c] dark:bg-[#3a3b3c] focus:ring-1 focus:ring-[#696cff] focus:placeholder:pl-2 placeholder:transition-all placeholder:duration-200 placeholder:ease-linear placeholder:text-[#b4b4b4] dark:placeholder:text-[#b4b4b4]">
+            </div>
+            <!-- <div class="flex">
+                <label for="" class="flex-initial self-center w-28">Accommodation & Air Fare</label>
+                <input type="text" formControlName="accommodation"
+                    class="grow appearance-none mx-3 rounded-md border border-gray-400 outline-none  py-2.5 px-2 xl:px-3 xl:mx-1 xl:w-44 dark:border-[#3a3b3c] dark:bg-[#3a3b3c] focus:ring-1 focus:ring-[#696cff] focus:placeholder:pl-2 placeholder:transition-all placeholder:duration-200 placeholder:ease-linear placeholder:text-[#b4b4b4] dark:placeholder:text-[#b4b4b4]">
+            </div> -->
+            <div class="flex items-center space-x-4">
+                <label for="" class="w-28">Accommodation & Air Fare</label>
+                <input type="text" formControlName="accommodation"
+                  class="flex-grow border rounded-md border-gray-400 outline-none py-2.5 px-2 xl:px-3 xl:w-44 dark:border-[#3a3b3c] dark:bg-[#3a3b3c] focus:ring-1 focus:ring-[#696cff] focus:placeholder:pl-2 placeholder:transition-all placeholder:duration-200 placeholder:ease-linear placeholder:text-[#b4b4b4] dark:placeholder:text-[#b4b4b4]">
+              </div>
+              
+            <div class="flex">
+                <label for="" class="flex-initial self-center w-28">Total Exp.</label>
+                <input type="text" formControlName="totalExp"
+                    class="grow appearance-none mx-3 rounded-md border border-gray-400 outline-none  py-2.5 px-2 xl:px-3 xl:mx-1 xl:w-44 dark:border-[#3a3b3c] dark:bg-[#3a3b3c] focus:ring-1 focus:ring-[#696cff] focus:placeholder:pl-2 placeholder:transition-all placeholder:duration-200 placeholder:ease-linear placeholder:text-[#b4b4b4] dark:placeholder:text-[#b4b4b4]">
+            </div>
+        </div>
+        <div class="flex justify-center my-3">
+            <div class="grow flex">
+                <label for="" class="self-start w-28">Remark :</label>
+                <textarea type="text" rows="3" formControlName="remark" [maxlength]="20"
+                    class="grow appearance-none mx-3 rounded-md border border-gray-400 outline-none py-2.5 px-2 xl:px-3 xl:mx-1 xl:w-44 dark:border-[#3a3b3c] dark:bg-[#3a3b3c] focus:ring-1 focus:ring-[#696cff] focus:placeholder:pl-2 placeholder:transition-all placeholder:duration-200 placeholder:ease-linear placeholder:text-[#b4b4b4] dark:placeholder:text-[#b4b4b4]"></textarea>
+           
+            </div>
+            
+        </div>
+        <!-- <p class="mx-3 text-end text-xs text-font-header dark:text-[#e4e6eb]">
+            {{ 20-trainingForm.remark.length }}
+        </p> -->
+    </div>
+</form>
+
+
+
+    <div class="flex justify-center my-6">
+        <div>
+            <button type="submit" (click)="addBtn()" [disabled]="trainingForm.invalid"
+                class="text-white p-2 w-24 rounded shadow-md {{ (trainingForm.invalid) ? 'cursor-not-allowed bg-gray-400' : 'cursor-pointer bg-green-700 hover:bg-green-600' }}"><i class="fa-solid fa-plus mr-1"></i> Add</button>
+        </div>
+    </div>
+    <hr>
+    <div class="flex justify-center">
+        <p class="p-2 m-3 text-xl text-center font-medium rounded-md select-none text-font-header dark:text-[#e4e6eb]">
+            Training Need for year {{ year ? year : '...' }}<br> ฝ่าย/แผนก {{ department ? department : '...' }}
+        </p>
+    </div>
+    
+    <div class="w-full overflow-x-auto rounded-b-md shadow">
+        <table id="data-table" class="table-auto text-[#566a7f] text-base w-[75rem] lg:w-full dark:text-white">
+            <colgroup>
+                <col style="width: 15%;" />
+                <col style="width: 15%;" />
+                <col style="width: 15%;" />
+                <col style="width: 10%;" />
+                <col style="width: 15%;" />
+                <col style="width: 15%;" />
+                <col style="width: 15%;" />
+            </colgroup>
+            <thead class="text-sm border border-[#ababab] border-1 bg-[#c6e7f3] dark:bg-[#242526] dark:border-[#3a3b3c]">
+                <tr class="text-center h-12">
+                    <th scope="col">Position</th>
+                    <th scope="col">Class Name</th>
+                    <th scope="col">No. of Person</th>
+                    <th scope="col">Class Fee</th>
+                    <th scope="col">Accommodation & Air Fare</th>
+                    <th scope="col">Total Exp.</th>
+                    <th scope="col">Remark</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="text-center h-20 cursor-pointer odd:bg-white dark:odd:bg-[#3a3b3c] dark:even:bg-black even:bg-slate-100 hover:bg-slate-200 dark:hover:bg-slate-700">
+                    <td>Software Developer</td>
+                    <td>Introduction to Spring Framework รุ่น 9</td>
+                    <td>1336</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+                <tr class="text-center h-20 cursor-pointer odd:bg-white dark:odd:bg-[#3a3b3c] dark:even:bg-black even:bg-slate-100 hover:bg-slate-200 dark:hover:bg-slate-700">
+                    <td>OSS Div.</td>
+                    <td>Introduction to Spring Framework รุ่น 9</td>
+                    <td>1279</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+                <tr class="text-center h-20 cursor-pointer odd:bg-white dark:odd:bg-[#3a3b3c] dark:even:bg-black even:bg-slate-100 hover:bg-slate-200 dark:hover:bg-slate-700">
+                    <td>Head Quarter</td>
+                    <td>Introduction to Spring Framework รุ่น 9</td>
+                    <td>1337</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+                <tr *ngFor="let row of rows" class="odd:bg-white dark:odd:bg-[#3a3b3c] dark:even:bg-black even:bg-slate-100 text-center truncate h-20 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700">
+                    <td>{{ row.position }}</td>
+                    <td>{{ row.className }}</td>
+                    <td>{{ row.no }}</td>
+                    <td>{{ row.fee }}</td>
+                    <td>{{ row.accommodation }}</td>
+                    <td>{{ row.totalExp }}</td>
+                    <td>{{ row.remark }}</td>
+                </tr>
+            </tbody>
+            <tfoot class="border-b-2 dark:border-[#3a3b3c]">
+                <tr class=" h-12">
+                    <td colspan="7">Total</td>
+                </tr>
+            </tfoot>
+        </table>
+       
+    
+    </div>
+    <div class="flex justify-center my-6">
+        <div>
+            <button type="submit"
+                class="text-white mx-5 py-2 px-4 w-auto rounded shadow-md cursor-pointer bg-green-700 hover:bg-green-600">
+                <i class="fa-regular fa-file-pdf fa-lg mr-1"></i> Export PDF</button>
+        </div>
+        <div>
+            <button type="submit" (click)="exportexcel()"
+                class="text-white py-2 px-4 w-auto rounded shadow-md cursor-pointer bg-green-700 hover:bg-green-600">
+                <i class="fa-regular fa-file-excel fa-lg mr-1"></i> Export Excel</button>
+        </div>
+    </div>
+</div>
