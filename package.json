@@ -28,6 +28,7 @@
     "apexcharts": "^3.37.1",
     "date-fns": "^2.29.3",
     "ng-apexcharts": "^1.7.4",
+    "pcc-sd-portal-web": "file:",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "xlsx": "^0.18.5",
