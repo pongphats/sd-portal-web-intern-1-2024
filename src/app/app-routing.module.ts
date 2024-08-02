@@ -15,9 +15,15 @@ import { ManagementNewsPageComponent } from './pages/management-news-page/manage
 import { ManagementRolePageComponent } from './pages/management-role-page/management-role-page.component';
 import { NewsDetailPageComponent } from './pages/news-detail-page/news-detail-page.component';
 import { NewsPageComponent } from './pages/news-page/news-page.component';
+import { AuthGuard } from './auth/guard/auth.guard';
+import { LoginPageComponent } from './pages/login-page/login-page.component';
 const routes: Routes = new Array<Route>(
   {
-    path: '',
+    path: 'sign-in',
+    component: LoginPageComponent,
+  },
+  {
+    path: 'pccth',
     component: SystemLayoutComponent,
     children: new Array<Route>(
       {
@@ -70,11 +76,18 @@ const routes: Routes = new Array<Route>(
         component: NewsDetailPageComponent,
       }
     ),
+  },
+  {
+    // Redirects all paths that are not matching to the 'sign-in' route/path
+    path: '**',
+    redirectTo: 'sign-in',
+    pathMatch: 'full',
   }
 );
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
+  providers: [AuthGuard]
 })
 export class AppRoutingModule {}
