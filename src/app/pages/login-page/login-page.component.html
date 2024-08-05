@@ -28,6 +28,7 @@
             [type]="hide ? 'password' : 'text'"
           />
           <button
+            type="button"
             mat-icon-button
             matSuffix
             (click)="hide = !hide"
@@ -48,7 +49,7 @@
         <button
           class="!scale-125"
           [ngClass]="{
-            '!cursor-not-allowed' : authForm.invalid
+            '!cursor-not-allowed': authForm.invalid
           }"
           [disabled]="authForm.invalid"
           type="submit"

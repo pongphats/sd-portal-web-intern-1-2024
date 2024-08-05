@@ -42,4 +42,7 @@ export class AuthService {
       .post<LoginResponse>(`${this.authUrl}/auth/login`, loginReq)
       .pipe(map((res) => res));
   }
+  logout() {
+    localStorage.removeItem('token');
+  }
 }
