@@ -83,4 +83,9 @@ export class HeaderSystemComponent implements OnInit {
     }
     return '';
   }
+
+  signOut(){
+    localStorage.removeItem('access_token');
+    this.router.navigate(['/sign-in']);
+  }
 }
