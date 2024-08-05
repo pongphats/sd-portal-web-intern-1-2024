@@ -1,0 +1,63 @@
+<app-header-system></app-header-system>
+<section class="max-w-4xl container mx-auto mt-8">
+  <div
+    class="bg-content drop-shadow-md dark:bg-content-dark dark:text-white p-8"
+  >
+    <form [formGroup]="authForm" (submit)="loginSubmit()" class="space-y-4">
+      <p class="text-4xl text-center">เข้าสู่ระบบ</p>
+      <div class="text-center w-full">
+        <mat-form-field appearance="fill" class="w-1/2">
+          <mat-label>อีเมล</mat-label>
+          <input
+            matInput
+            placeholder="pat@example.com"
+            formControlName="email"
+            required
+          />
+          <mat-error *ngIf="this.authForm.controls.email.invalid">{{
+            getErrorMessage()
+          }}</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="text-center w-full">
+        <mat-form-field appearance="fill" class="w-1/2">
+          <mat-label>รหัสผ่าน</mat-label>
+          <input
+            formControlName="password"
+            matInput
+            [type]="hide ? 'password' : 'text'"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="hide = !hide"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide"
+          >
+            <i
+              class="bx scale-150"
+              [ngClass]="{
+                'bxs-show': hide,
+                'bxs-hide': !hide
+              }"
+            ></i>
+          </button>
+        </mat-form-field>
+      </div>
+      <div class="text-center">
+        <button
+          class="!scale-125"
+          [ngClass]="{
+            '!cursor-not-allowed' : authForm.invalid
+          }"
+          [disabled]="authForm.invalid"
+          type="submit"
+          mat-raised-button
+          color="primary"
+        >
+          เข้าสู่ระบบ
+        </button>
+      </div>
+    </form>
+  </div>
+</section>

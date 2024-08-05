@@ -29,6 +29,9 @@ import { SharedModule } from '../shared/shared.module';
 import { FtrOf1PageComponent } from './ftr-of1-page/ftr-of1-page.component';
 import { FtrOj1PageComponent } from './ftr-oj1-page/ftr-oj1-page.component';
 import { FtrSv1PageComponent } from './ftr-sv1-page/ftr-sv1-page.component';
+import { LoginPageComponent } from './login-page/login-page.component';
+import { PccSdPortalComponentModule } from "../components/pcc-sd-portal-component.module";
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -59,14 +62,17 @@ import { FtrSv1PageComponent } from './ftr-sv1-page/ftr-sv1-page.component';
     FtrOf1PageComponent,
     FtrOj1PageComponent,
     FtrSv1PageComponent,
+    LoginPageComponent,
   ],
   imports: [
+    MatIconModule,
     SharedModule,
     JobDayAddPageModule,
     CalendarModule.forRoot({
-      provide: DateAdapter,
-      useFactory: adapterFactory,
+        provide: DateAdapter,
+        useFactory: adapterFactory,
     }),
-  ],
+    PccSdPortalComponentModule
+]
 })
 export class PageModule {}
