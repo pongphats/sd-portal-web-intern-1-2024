@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { CommonService } from 'src/app/services/common.service';
 import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-ftr-sv1-page',
@@ -7,15 +8,14 @@ import * as XLSX from 'xlsx';
   styleUrls: ['./ftr-sv1-page.component.scss']
 })
 export class FtrSv1PageComponent implements OnInit {
+  selectedTimes : any
   trainingForm: any;
   rows: Array<any> = [];
   year: any;
   department: any;
   // remark: string = '';
   
-  constructor(private fb:FormBuilder) { }
-
-  ngOnInit(): void {
+  constructor(private fb:FormBuilder, private commonService : CommonService) {
     this.trainingForm = this.fb.group({
       year: ['2023', Validators.required],
       department: ['SD1', Validators.required],
@@ -27,6 +27,12 @@ export class FtrSv1PageComponent implements OnInit {
       totalExp: ['-', Validators.required],
       remark: ['-', Validators.required]
     });
+   }
+
+  async ngOnInit() {
+    // const deptCode = await this.commonService.getOnlyDeptCodeByCompany('PCCTH').toPromise()
+    // console.log(deptCode);
+    
   }
 
   addBtn(){
@@ -51,5 +57,10 @@ export class FtrSv1PageComponent implements OnInit {
     /* save to file */  
     XLSX.writeFile(wb, 'ExcelSheet.xlsx');
  
+  }
+
+  check(){
+    console.log(this.selectedTimes);
+    
   }
 }
