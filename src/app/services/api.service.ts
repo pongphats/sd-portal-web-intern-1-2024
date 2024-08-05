@@ -1,14 +1,39 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import {
+  CreateSectorRequest,
+  saveBudgetByYearRequest,
+} from '../interface/request';
+import { map, Observable } from 'rxjs';
+import { ApiResponse, saveBudgetResponse } from '../interface/response';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
+  trainingUrl: string = environment.trainingService;
+  welfareUrl: string = environment.welfareService;
 
-  trainingUrl : string = environment.trainingService
-  welfareUrl : string = environment.welfareService
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
+  saveBudgetByYear(
+    req: saveBudgetByYearRequest
+  ): Observable<ApiResponse<saveBudgetResponse>> {
+    const body: saveBudgetByYearRequest = {
+      ...req,
+    };
+    return this.http
+      .post<ApiResponse<saveBudgetResponse>>(`${this.trainingUrl}`, body)
+      .pipe(map((res) => res));
+  }
+
+  createSectorAndDept(req: CreateSectorRequest): Observable<any> {
+    const url = `${this.trainingUrl}/create/sectorAndDept`;
+    return this.http
+      .post<any>(url, req, {
+        responseType: 'text' as 'json',
+      })
+      .pipe(map((res) => res));
+  }
 }
