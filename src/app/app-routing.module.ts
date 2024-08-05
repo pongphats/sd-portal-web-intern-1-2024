@@ -17,6 +17,7 @@ import { NewsDetailPageComponent } from './pages/news-detail-page/news-detail-pa
 import { NewsPageComponent } from './pages/news-page/news-page.component';
 import { AuthGuard } from './auth/guard/auth.guard';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
+import { ManageCoursePageComponent } from './pages/manage-course-page/manage-course-page.component';
 const routes: Routes = new Array<Route>(
   {
     path: 'sign-in',
@@ -54,6 +55,10 @@ const routes: Routes = new Array<Route>(
       {
         path: 'ftr-sv1',
         component: FtrSv1PageComponent,
+      },
+      {
+        path: 'manage-course-page',
+        component: ManageCoursePageComponent,
       },
       {
         path: 'job-day-view',

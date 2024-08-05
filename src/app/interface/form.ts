@@ -26,3 +26,20 @@ export interface budgetForm {
   budgetCer: FormControl<string | null>;
   budgetTotal: FormControl<string | null>;
 }
+
+export interface CourseForm {
+  id: FormControl<string | null>;
+  courseName: FormControl<string | null>;
+  startDate: FormControl<string | null>;
+  endDate: FormControl<string | null>;
+  timeStart: FormControl<string | null>;
+  timeEnd: FormControl<string | null>;
+  hours: FormControl<string | null>;
+  note: FormControl<string | null>;
+  price: FormControl<number | null>;
+  priceProject: FormControl<string | null>;
+  institute: FormControl<string | null>;
+  place: FormControl<string | null>;
+  // type: FormControl<string | null>;
+
+}
