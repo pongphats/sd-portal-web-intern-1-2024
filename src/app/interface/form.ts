@@ -26,3 +26,29 @@ export interface budgetForm {
   budgetCer: FormControl<string | null>;
   budgetTotal: FormControl<string | null>;
 }
+
+export interface trainingForm {
+  company: FormControl<string | null>;
+  deptCode: FormControl<string | null>;
+  deptId: FormControl<string | null>;
+  addMissionDate: FormControl<string | null>;
+  formsType: FormControl<string | null>;
+  courseName : FormControl<string | null>;
+  courseObjective : FormControl<string | null>;
+  courseDuration: FormControl<string | null>;
+  courseDescription: FormControl<string | null>;
+  courseProject: FormControl<string | null>;
+  coursePrice: FormControl<string | null>;
+  courseTeacher: FormControl<string | null>;
+  courseLocation: FormControl<string | null>;
+  budgetType: FormControl<string | null>;
+  budgetDescription : FormControl<string | null>;
+  employeeId: FormControl<string | null>;
+  employeeName: FormControl<string | null>;
+  employeePosition: FormControl<string | null>;
+  approverName: FormControl<string | null>;
+  managerName: FormControl<string | null>;
+  vicePresName: FormControl<string | null>;
+  vicePresName2: FormControl<string | null>;
+  presidentName: FormControl<string | null>;
+}

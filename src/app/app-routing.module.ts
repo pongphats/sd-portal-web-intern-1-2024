@@ -18,6 +18,7 @@ import { NewsPageComponent } from './pages/news-page/news-page.component';
 import { AuthGuard } from './auth/guard/auth.guard';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { ManageCompanyComponent } from './pages/manage-company/manage-company.component';
+import { TrainingFormPageComponent } from './pages/training-form-page/training-form-page.component';
 const routes: Routes = new Array<Route>(
   {
     path: 'sign-in',
@@ -79,6 +80,9 @@ const routes: Routes = new Array<Route>(
       {
         path: 'news-detail',
         component: NewsDetailPageComponent,
+      } , {
+        path : 'training-forms',
+        component: TrainingFormPageComponent,
       }
     ),
   },

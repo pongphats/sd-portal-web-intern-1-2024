@@ -7,10 +7,19 @@ import {NgxMatTimepickerModule} from 'ngx-mat-timepicker';
 import {MatRadioModule} from '@angular/material/radio'; 
 import {MatTableModule} from '@angular/material/table';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatSelectModule } from '@angular/material/select';
+
+
 
 
 @NgModule({
-  exports: [MatDatepickerModule, MatInputModule , MatButtonModule , NgxMatTimepickerModule,MatRadioModule,
+  exports: [
+    MatDatepickerModule,
+    MatInputModule,
+    MatButtonModule,
+    NgxMatTimepickerModule,
+    MatRadioModule,
+    MatSelectModule,
     MatTableModule,
     MatAutocompleteModule
   ],

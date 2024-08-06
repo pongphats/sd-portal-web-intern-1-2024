@@ -102,6 +102,10 @@ body {
   height: 100%;
 }
 
+h1, p, label ,span {
+  @apply dark:text-font-description-dark text-font-description
+}
+
 body {
   // margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
   margin: 0;
