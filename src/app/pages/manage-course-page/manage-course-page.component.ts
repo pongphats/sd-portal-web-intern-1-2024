@@ -26,8 +26,8 @@ export class ManageCoursePageComponent implements OnInit {
       timeEnd: ['', Validators.required],
       hours: ['', Validators.required],
       note: [''],
-      price: [0, Validators.required],
-      priceProject: [''],
+      price: ['', Validators.required],
+      // priceProject: [''],
       institute: ['', Validators.required],
       place: ['', Validators.required],
       // type: [''],
@@ -40,7 +40,9 @@ export class ManageCoursePageComponent implements OnInit {
 
   createTraining() {
 
-    console.log("addSv1Btn")
+    console.log("createTraining")
+    console.log(this.courseForm)
+
     // this.courseForm.patchValue({
     //   startDate: this.formatDateToYYYYMMDD(this.CourseForm.value.startDate),
     //   endDate: this.formatDateToYYYYMMDD(this.CourseForm.value.endDate),
