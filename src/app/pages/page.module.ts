@@ -33,6 +33,7 @@ import { LoginPageComponent } from './login-page/login-page.component';
 import { PccSdPortalComponentModule } from "../components/pcc-sd-portal-component.module";
 import { MatIconModule } from '@angular/material/icon';
 import { ManageCoursePageComponent } from './manage-course-page/manage-course-page.component';
+import { TrainingFormPageComponent } from './training-form-page/training-form-page.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { ManageCoursePageComponent } from './manage-course-page/manage-course-pa
     FtrSv1PageComponent,
     LoginPageComponent,
     ManageCoursePageComponent,
+    TrainingFormPageComponent,
   ],
   imports: [
     MatIconModule,
