@@ -1,0 +1,137 @@
+<div class="bg-transparent">
+    <div class="flex flex-col bg-content rounded-xl px-5 py-5 my-8 shadow-card dark:bg-content-dark dark:shadow-none">
+
+
+
+        <div class="py-2 inline-block min-w-full sm:px-0">
+            <div class="overflow-hidden">
+                <p class="text-xl text-slate-500 dark:text-white font-semibold"> จัดการ ฝ่าย/แผนก</p>
+            </div>
+        </div>
+
+
+        <form [formGroup]="sectorManageForm">
+            <div
+                class="text-[#566a7f] rounded-md mt-5 mb-3 shadow p-6 w-full bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#242526]">
+
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="flex justify-center items-center  mb-6">
+                        <label class="flex-initial self-center w-28">บริษัท :</label>
+                        <mat-radio-group  aria-label="Select an option" formControlName="company">
+                            <mat-radio-button class="mr-4"  value="PCCTH">PCCTH</mat-radio-button>
+                            <mat-radio-button class="mr-4"  value="WiseSoft">WiseSoft</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-4">
+                    <!-- เนื้อหาภายในกริดจะถูกวางใน 3 คอลัมน์ โดยมีระยะห่าง 3 หน่วยระหว่างคอลัมน์และแถว -->
+
+                    <div class="flex justify-center items-center"> <!-- ใช้ space-x-4 เพิ่มระยะห่างระหว่างองค์ประกอบ -->
+                        <label for="" class="flex-initial self-center w-28">ฝ่าย (ภาษาไทย):</label>
+                        <!-- w-28 เลขน้อยขยับชิดซ้าย -->
+                        <mat-form-field appearance="fill">
+                            <mat-label>ระบุชื่อฝ่ายเป็นภาษาไทย</mat-label>
+                            <input matInput placeholder="กรุณากรอกข้อมูล" formControlName="sectorTname" [formControl]="departmentControl">
+                            <mat-error *ngIf="departmentControl.hasError('required')">
+                                กรุณากรอกข้อมูล
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+
+                    <div class="flex items-center">
+                        <label for="" class="w-40 flex-shrink-0">ฝ่าย (ภาษาอังกฤษ):</label>
+                        <mat-form-field appearance="fill" class="flex-grow">
+                            <mat-label>ระบุชื่อฝ่ายเป็นภาษาอังกฤษ</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="flex items-center space-x-4 justify-end">
+                        <label for="" class="flex-initial self-center w-18">รหัสฝ่าย:</label>
+                        <mat-form-field appearance="fill">
+                            <mat-label>รหัสฝ่าย</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+
+                </div>
+
+                <div class="grid grid-cols-3 gap-4">
+
+                    <div class="flex justify-start">
+                        <label for="" class="flex-initial self-center">แผนก (ภาษาไทย):</label>
+                        <mat-form-field appearance="fill" style="margin-left: 16px;">
+                            <mat-label>ระบุชื่อแผนกเป็นภาษาไทย</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="flex items-center">
+                        <!--items-center ใช้เพื่อจัดแนวแนวตั้งของเนื้อหาภายใน flex container ให้ตรงกลาง-->
+                        <label for="" class="w-40 flex-shrink-0">แผนก (ภาษาอังกฤษ):</label>
+                        <!--w-40 ตั้งค่าความกว้างของlabel flex-shrink-0 ป้องกันไม่ให้ <label> หดตัว - flex-grow ทำให้ <mat-form-field> ขยายเพื่อเติมพื้นที่ที่เหลือ-->
+                        <mat-form-field appearance="fill" class="flex-grow">
+                            <mat-label>ระบุชื่อแผนกเป็นภาษาอังกฤษ</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="flex items-center space-x-4 justify-end">
+                        <label for="" class="flex-initial self-center w-18">รหัสและไอดี:</label>
+                        <mat-form-field appearance="fill" class="small-form-field">
+                            <!--css - class="small-form-field"-->
+                            <mat-label>รหัสแผนก</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill" class="small-form-field">
+                            <mat-label>ไอดีแผนก</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+
+                </div>
+
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="flex justify-center items-center">
+                        <label for="" class="flex-initial self-center w-28">ผู้ดูแลแผนก:</label>
+                        <mat-form-field appearance="fill">
+                            <mat-label>ระบุชื่อผู้ดูแลแผนก</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="flex justify-center my-2 gap-4"> <!--gap ระยะห่างเท่ากัน-->
+                    <div>
+                        <button mat-raised-button style="background-color: #8d918d; color: white;">เพิ่มข้อมูล</button>
+                    </div>
+                    <div>
+                        <button mat-raised-button
+                            style="background-color: #dfa006; color: white;">
+                            <i class='bx bx-revision'></i>
+                            เคลียร์ข้อมูล</button>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+        </form>
+
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+</div>
