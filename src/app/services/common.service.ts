@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { sector } from '../interface/common';
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +11,7 @@ import { environment } from 'src/environments/environment';
 export class CommonService {
   trainingUrl: string = environment.trainingService;
   welfareUrl: string = environment.welfareService;
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private apiService: ApiService) {}
 
   getCompanyIdByName(name: string): Observable<number> {
     return this.http
@@ -64,5 +66,22 @@ export class CommonService {
       hour12: false,
     });
     return timeString;
+  }
+
+  async getSectorAndDeptsListByCompanyName(companyName = 'PCCTH'): Promise<sector[]> {
+    let sectors: sector[] = [];
+    try {
+      const res = await this.apiService
+        .getSectorsDeptsCompanysList()
+        .toPromise();
+      if (res === undefined) {
+        throw new Error('Sectors list is undefined');
+      } else {
+        sectors = res.filter((item: sector) => item.company == companyName);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    return sectors;
   }
 }

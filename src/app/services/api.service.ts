@@ -8,6 +8,7 @@ import {
 } from '../interface/request';
 import { map, Observable } from 'rxjs';
 import { ApiResponse, saveBudgetResponse } from '../interface/response';
+import { sector } from '../interface/common';
 
 @Injectable({
   providedIn: 'root',
@@ -41,6 +42,12 @@ export class ApiService {
   createTraining(req: CreateTrainingRequest): Observable<any> {
     return this.http
       .post<any>(`${this.trainingUrl}/createCourse`, req)
+      .pipe(map((res) => res));
+  }
+
+  getSectorsDeptsCompanysList(): Observable<sector[]> {
+    return this.http
+      .get<sector[]>(`${this.trainingUrl}/findAllJoinDepartmentssector`)
       .pipe(map((res) => res));
   }
 }
