@@ -20,7 +20,6 @@ export interface SectorManageForm {
 export interface budgetForm {
   company: FormControl<string | null>;
   budgetYear: FormControl<string | null>;
-  deptYear: FormControl<string | null>;
   dept: FormControl<string | null>;
   budgetTrain: FormControl<string | null>;
   budgetCer: FormControl<string | null>;
