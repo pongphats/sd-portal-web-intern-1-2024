@@ -47,7 +47,7 @@ export class ApiService {
 
   getSectorsDeptsCompanysList(): Observable<sector[]> {
     return this.http
-      .get<sector[]>(`${this.trainingUrl}/findAllJoinDepartmentssector`)
+      .get<sector[]>(`${this.trainingUrl}/findAllJoinDepartmentsSector`)
       .pipe(map((res) => res));
   }
 }

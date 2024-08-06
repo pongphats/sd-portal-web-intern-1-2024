@@ -23,7 +23,7 @@ export class CommonService {
 
   getOnlyDeptCodeByCompany(company: string): Observable<any> {
     return this.http
-      .get<any>(`${this.trainingUrl}/findAllJoinDepartmentssector`)
+      .get<any>(`${this.trainingUrl}/findAllJoinDepartmentsSector`)
       .pipe(
         map((res: any[]) => {
           const filteByCompany = res.filter(
