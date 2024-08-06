@@ -1,1 +1,265 @@
-<p>training-form-page works!</p>
+<div
+  class="bg-transparent dark:text-font-description-dark text-font-description"
+>
+  <h1 class="text-2xl">บันทึกการส่งพนักงานเข้ารับการฝึกอบรม</h1>
+  <form
+    [formGroup]="trainingForm"
+    class="bg-content dark:bg-content-dark rounded-md drop-shadow-md p-4 space-y-4"
+  >
+    <h1 class="text-xl">ส่วนที่ 1 : การส่งพนักงานเข้ารับการฝึกอบรม</h1>
+    <!-- Company select layout -->
+    <div class="flex justify-start items-center gap-4">
+      <p>บริษัท</p>
+      <mat-radio-group
+        formControlName="company"
+        class="!text-font-description dark:!text-font-description-dark"
+        aria-label="Select an option"
+      >
+        <mat-radio-button class="mr-4" value="PCCTH">PCCTH</mat-radio-button>
+        <mat-radio-button value="WiseSoft">WiseSoft</mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <!-- Date and time select layout -->
+
+    <!-- department , sector slector and Date of Addmission -->
+    <div class="flex justify-center items-center gap-4">
+      <p>ฝ่าย/แผนก</p>
+      <mat-form-field appearance="fill">
+        <mat-label>เลือกแผนก</mat-label>
+        <mat-select formControlName="deptCode">
+          <mat-option> A </mat-option>
+          <mat-option> B </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <p>รหัสฝ่าย/แผนก</p>
+      <mat-form-field class="" appearance="fill">
+        <mat-label>รหัสฝ่าย/แผนก</mat-label>
+        <input formControlName="deptId" matInput readonly />
+      </mat-form-field>
+      <p>วัน/เดือน/ปี</p>
+      <mat-form-field appearance="fill">
+        <mat-label>เลือกวันที่</mat-label>
+        <input
+          formControlName="addMissionDate"
+          matInput
+          [matDatepicker]="picker"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <!-- Type forms select -->
+    <div class="flex justify-center">
+      <mat-radio-group
+        formControlName="formsType"
+        class="!text-font-description dark:!text-font-description-dark"
+        aria-label="Select an option"
+      >
+        <mat-radio-button class="mr-4" value="training"
+          >ฝึกอบรม/สัมมนา</mat-radio-button
+        >
+        <mat-radio-button value="getCer">สอบ Certificate</mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+    <!-- Course Forms -->
+    <div class="flex justify-center">
+      <div class="grid grid-cols-2 gap-4 gap-x-8">
+        <!-- left -->
+        <div class="col-span-1 gap-2 flex items-center justify-end">
+          <p>หัวข้อในการอบรม/สัมมนา</p>
+          <mat-form-field appearance="fill">
+            <mat-label>หัวข้อในการอบรม/สัมมนา</mat-label>
+            <mat-select formControlName="courseName">
+              <mat-option> A </mat-option>
+              <mat-option> B </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- right -->
+        <div class="col-span-1 gap-2 flex items-center justify-end">
+          <p>วัตถุประสงค์ในการอบรม/สัมมนา</p>
+          <mat-form-field appearance="fill">
+            <mat-label>วัตถุประสงค์ในการอบรม/สัมมนา</mat-label>
+            <input formControlName="courseObjective" matInput />
+          </mat-form-field>
+        </div>
+
+        <!-- left -->
+        <div class="col-span-1 gap-2 flex items-center justify-end">
+          <p>วันเวลาฝึกอบรม</p>
+          <mat-form-field appearance="fill">
+            <mat-label>วันเวลาฝึกอบรม</mat-label>
+            <input formControlName="courseDuration" matInput readonly />
+          </mat-form-field>
+        </div>
+
+        <!-- right -->
+        <div class="col-span-1 gap-2 flex items-center justify-end">
+          <p>เพิ่มเติม</p>
+          <mat-form-field appearance="fill">
+            <mat-label>เพิ่มเติม</mat-label>
+            <input formControlName="courseDescription" matInput readonly />
+          </mat-form-field>
+        </div>
+
+        <!-- left -->
+        <div class="col-span-1 gap-2 flex items-center justify-end">
+          <p>โครงการ</p>
+          <mat-form-field appearance="fill">
+            <mat-label>โครงการ</mat-label>
+            <input formControlName="courseProject" matInput />
+          </mat-form-field>
+        </div>
+
+        <div class="col-span-1 gap-2 flex items-center justify-end">
+          <p>ค่าใช้จ่าย/คน</p>
+          <mat-form-field appearance="fill">
+            <mat-label>ค่าใช้จ่าย/คน (ก่อน Vat7%)</mat-label>
+            <input formControlName="coursePrice" matInput readonly />
+          </mat-form-field>
+        </div>
+
+        <div class="col-span-1 gap-2 flex items-center justify-end">
+          <p>สถาบันที่จัดอบรม</p>
+          <mat-form-field appearance="fill">
+            <mat-label>สถาบันที่จัดอบรม</mat-label>
+            <input formControlName="courseTeacher" matInput readonly />
+          </mat-form-field>
+        </div>
+
+        <div class="col-span-1 gap-2 flex items-center justify-end">
+          <p>สถานที่ฝึกอบรม</p>
+          <mat-form-field appearance="fill">
+            <mat-label>สถานที่ฝึกอบรม</mat-label>
+            <input formControlName="courseLocation" matInput readonly />
+          </mat-form-field>
+        </div>
+
+        <!-- center input -->
+        <div class="col-span-2">
+          <mat-radio-group
+            formControlName="budgetType"
+            class="!grid !grid-cols-2 !gap-8"
+            aria-label="Select an option"
+          >
+            <div class="!col-span-1 !flex !justify-end !items-center">
+              <mat-radio-button value="1">อยู่ในงบประมาณ</mat-radio-button>
+            </div>
+
+            <mat-radio-button
+              class="!col-span-1 !gap-2 !flex !items-center !justify-end"
+              value="2"
+              >อื่นๆ (กรุณาระบุรายละเอียด)
+              <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>รายละเอียด</mat-label>
+                <textarea
+                  formControlName="budgetDescription"
+                  matInput
+                ></textarea></mat-form-field
+            ></mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </div>
+    </div>
+
+    <!-- employee Detail -->
+    <h1 class="underline text-xl">รายละเอียดเกี่ยวกับผู้เข้ารับการอบรม</h1>
+    <div class="flex justify-center items-center gap-4">
+      <p>รหัสพนักงาน</p>
+      <mat-form-field class="" appearance="fill">
+        <mat-label>รหัสพนักงาน</mat-label>
+        <input formControlName="employeeId" matInput readonly />
+      </mat-form-field>
+      <p>ชื่อ-สกุลผู้เข้ารับการอบรม/สัมมนา</p>
+      <mat-form-field class="" appearance="fill">
+        <mat-label>ชื่อ-สกุลผู้เข้ารับการอบรม/สัมมนา </mat-label>
+        <input formControlName="employeeName" matInput />
+      </mat-form-field>
+      <p>ตำแหน่งผู้เข้ารับการอบรม</p>
+      <mat-form-field class="" appearance="fill">
+        <mat-label>ตำแหน่งผู้เข้ารับการอบรม</mat-label>
+        <input formControlName="employeePosition" matInput readonly />
+      </mat-form-field>
+    </div>
+
+    <!-- Approver field -->
+    <h1 class="underline text-xl">ผู้อนุมัติการอบรม</h1>
+    <div class="flex justify-center">
+      <div class="grid grid-cols-2 gap-4 gap-x-8">
+        <!-- left -->
+        <div class="col-span-1 gap-2 flex items-center justify-end">
+          <p>หัวหน้างาน</p>
+          <mat-form-field appearance="fill">
+            <mat-label>หัวหน้างาน</mat-label>
+            <mat-select formControlName="approverName">
+              <mat-option> A </mat-option>
+              <mat-option> B </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- right -->
+        <div class="col-span-1 gap-2 flex items-center justify-end">
+          <p>ผู้บังคับบัญชา</p>
+          <mat-form-field appearance="fill">
+            <mat-label>ผู้บังคับบัญชา</mat-label>
+            <mat-select formControlName="managerName">
+              <mat-option> A </mat-option>
+              <mat-option> B </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- left -->
+        <div class="col-span-1 gap-2 flex items-center justify-end">
+          <p>ผู้บริหาร</p>
+          <mat-form-field appearance="fill">
+            <mat-label>ผู้บริหาร</mat-label>
+            <mat-select formControlName="vicePresName">
+              <mat-option> A </mat-option>
+              <mat-option> B </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- right -->
+        <div class="col-span-1 gap-2 flex items-center justify-end">
+          <p>ผู้บริหารคนที่ 2 (ถ้ามี)</p>
+          <mat-form-field appearance="fill">
+            <mat-label>ผู้บริหารคนที่ 2</mat-label>
+            <mat-select formControlName="vicePresName2">
+              <mat-option> A </mat-option>
+              <mat-option> B </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- left -->
+        <div class="col-span-1 gap-2 flex items-center justify-end">
+          <p>กรรมการผู้จัดการ</p>
+          <mat-form-field appearance="fill">
+            <mat-label>กรรมการผู้จัดการ</mat-label>
+            <mat-select formControlName="presidentName">
+              <mat-option> A </mat-option>
+              <mat-option> B </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <!-- remark layout -->
+    <div class="flex gap-2 items-start">
+      <div>
+        <p class=""><span class="underline">หมายเหตุ</span><span> :</span></p>
+      </div>
+      <div>
+        <p>1. กรุณาแนบรายละเอียดเกี่ยวกับหลักสูตรการฝึกอบรม/สัมมนา</p>
+        <p>2. กรุณาส่งแบบฟอร์มนี้ ก่อนเข้ารับการอบรมอย่างน้อย 5 วันทำการ</p>
+      </div>
+    </div>
+  </form>
+</div>
