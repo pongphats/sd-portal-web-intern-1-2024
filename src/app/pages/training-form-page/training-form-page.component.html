@@ -11,6 +11,7 @@
     <div class="flex justify-start items-center gap-4">
       <p>บริษัท</p>
       <mat-radio-group
+        (change)="filterDeptByCompanyName($event.value)"
         formControlName="company"
         class="!text-font-description dark:!text-font-description-dark"
         aria-label="Select an option"
@@ -26,9 +27,16 @@
       <p>ฝ่าย/แผนก</p>
       <mat-form-field appearance="fill">
         <mat-label>เลือกแผนก</mat-label>
-        <mat-select formControlName="deptCode">
-          <mat-option> A </mat-option>
-          <mat-option> B </mat-option>
+        <mat-select
+          (selectionChange)="generateDeptCode($event.value)"
+          formControlName="deptCode"
+        >
+          <mat-option
+            *ngFor="let deptCode of mngDeptListShow"
+            [value]="deptCode.deptName"
+          >
+            {{ deptCode.deptName }}
+          </mat-option>
         </mat-select>
       </mat-form-field>
       <p>รหัสฝ่าย/แผนก</p>
@@ -71,9 +79,10 @@
           <p>หัวข้อในการอบรม/สัมมนา</p>
           <mat-form-field appearance="fill">
             <mat-label>หัวข้อในการอบรม/สัมมนา</mat-label>
-            <mat-select formControlName="courseName">
-              <mat-option> A </mat-option>
-              <mat-option> B </mat-option>
+            <mat-select (selectionChange)="generateCourseForms($event.value)" formControlName="courseName">
+              <mat-option *ngFor="let course of courseList" [value]="course.courseName">
+                {{course.courseName}}
+              </mat-option>
             </mat-select>
           </mat-form-field>
         </div>

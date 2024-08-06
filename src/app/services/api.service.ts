@@ -7,8 +7,12 @@ import {
   saveBudgetByYearRequest,
 } from '../interface/request';
 import { map, Observable } from 'rxjs';
-import { ApiResponse, saveBudgetResponse } from '../interface/response';
-import { sector } from '../interface/common';
+import {
+  ApiResponse,
+  MngDeptListRes,
+  saveBudgetResponse,
+} from '../interface/response';
+import { Course, sector } from '../interface/common';
 
 @Injectable({
   providedIn: 'root',
@@ -48,6 +52,25 @@ export class ApiService {
   getSectorsDeptsCompanysList(): Observable<sector[]> {
     return this.http
       .get<sector[]>(`${this.trainingUrl}/findAllJoinDepartmentsSector`)
+      .pipe(map((res) => res));
+  }
+
+  getManageDeptsListByUserId(
+    uid: number
+  ): Observable<ApiResponse<MngDeptListRes[]>> {
+    return this.http
+      .get<ApiResponse<MngDeptListRes[]>>(
+        `${this.trainingUrl}/getManageDeptList`,
+        {
+          params: { uid },
+        }
+      )
+      .pipe(map((res) => res));
+  }
+
+  getAllCoursesList(): Observable<Course[]> {
+    return this.http
+      .get<Course[]>(`${this.trainingUrl}/findAllCourses`)
       .pipe(map((res) => res));
   }
 }

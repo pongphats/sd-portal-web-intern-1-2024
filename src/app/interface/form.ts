@@ -31,7 +31,7 @@ export interface trainingForm {
   company: FormControl<string | null>;
   deptCode: FormControl<string | null>;
   deptId: FormControl<string | null>;
-  addMissionDate: FormControl<string | null>;
+  addMissionDate: FormControl<Date | null>;
   formsType: FormControl<string | null>;
   courseName : FormControl<string | null>;
   courseObjective : FormControl<string | null>;
