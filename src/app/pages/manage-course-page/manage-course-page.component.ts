@@ -38,7 +38,7 @@ export class ManageCoursePageComponent implements OnInit {
   }
 
 
-  addSv1Btn() {
+  createTraining() {
 
     console.log("addSv1Btn")
     // this.courseForm.patchValue({
