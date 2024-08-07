@@ -2,7 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CourseForm } from 'src/app/interface/form';
+import { CreateTrainingRequest } from 'src/app/interface/request';
+import { ApiService } from 'src/app/services/api.service';
+import { CommonService } from 'src/app/services/common.service';
 import { SwalService } from 'src/app/services/swal.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-manage-course-page',
@@ -15,7 +19,9 @@ export class ManageCoursePageComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private swalService: SwalService,
-    private router: Router
+    private router: Router,
+    private commonService: CommonService,
+    private apiService: ApiService,
   ) {
     this.courseForm = this.fb.group({
       id: [''],
@@ -26,8 +32,8 @@ export class ManageCoursePageComponent implements OnInit {
       timeEnd: ['', Validators.required],
       hours: ['', Validators.required],
       note: [''],
-      price: ['', Validators.required],
-      // priceProject: [''],
+      price: [0, Validators.required],
+      priceProject: [''],
       institute: ['', Validators.required],
       place: ['', Validators.required],
       // type: [''],
@@ -38,67 +44,61 @@ export class ManageCoursePageComponent implements OnInit {
   }
 
 
-  createTraining() {
+  async createTraining() {
 
     console.log("createTraining")
     console.log(this.courseForm)
+    try {
+      // show loading
+      this.swalService.showLoading();
 
-    // this.courseForm.patchValue({
-    //   startDate: this.formatDateToYYYYMMDD(this.CourseForm.value.startDate),
-    //   endDate: this.formatDateToYYYYMMDD(this.CourseForm.value.endDate),
-    // });
+      this.courseForm.patchValue({
+        startDate: this.commonService.formatDateToYYYYMMDDString(this.courseForm.value.startDate ? new Date(this.courseForm.value.startDate) : new Date()),
+        endDate: this.commonService.formatDateToYYYYMMDDString(this.courseForm.value.endDate ? new Date(this.courseForm.value.endDate) : new Date()),
+      });
 
-    //   if (this.CourseForm.valid) {
-    //     // Get the values of timestart and timeend
-    //     const timestartValue = this.toTimeString(this.CourseForm.get('timestart').value);
-    //     const timeendValue = this.toTimeString(this.CourseForm.get('timeend').value);
+      if (this.courseForm.valid) {
+        // Merge timestart and timeend into a single time field
+        const mergedTime = `${this.courseForm.value.timeStart}-${this.courseForm.value.timeEnd}`;
 
-    //     console.log(timestartValue, typeof timestartValue);
+        // body validation
+        const req: CreateTrainingRequest = {
+          courseName: this.courseForm.value.courseName || '',
+          startDate: this.courseForm.value.startDate || '',
+          endDate: this.courseForm.value.endDate || '',
+          time: mergedTime,
+          hours: this.courseForm.value.hours || '',
+          note: this.courseForm.value.note || '',
+          price: this.courseForm.value.price ? this.courseForm.value.price : 0,
+          priceProject: this.courseForm.value.priceProject || '',
+          institute: this.courseForm.value.institute || '',
+          place: this.courseForm.value.place || '',
+          type: 'อบรม',
+        };
 
-    //     // Merge timestart and timeend into a single time field
-    //     const mergedTime = `${timestartValue}-${timeendValue}`;
+        // call login API
+        const res = await this.apiService.createTraining(req).toPromise();
+        console.log(res)
 
-    //     // Update the CourseForm with the merged time
-    //     this.CourseForm.patchValue({ time: mergedTime });
+        if (res?.msg == 'ทำรายการเรียบร้อย') {
+          this.courseForm.reset();
+        } else {
+          throw new Error(res?.msg);
+        }
 
-    //     // Send the form data as JSON to the backend
-    //     const formData = {
-    //       courseName: this.CourseForm.get('courseName').value,
-    //       startDate: this.CourseForm.get('startDate').value,
-    //       endDate: this.CourseForm.get('endDate').value,
-    //       time: mergedTime,
-    //       hours: this.CourseForm.get('hours').value,
-    //       note: this.CourseForm.get('note').value,
-    //       price: parseFloat(this.CourseForm.get('price').value.replace(/,/g, '')),
-    //       priceProject: this.CourseForm.get('priceProject').value,
-    //       institute: this.CourseForm.get('institute').value,
-    //       place: this.CourseForm.get('place').value,
-    //       type: 'อบรม',
-    //     };
 
-    //     this._service.addCourse(formData).subscribe({
-    //       next: (response) => {
-    //         this.CourseForm.reset();
-    //         Swal.fire({
-    //           title: 'สำเร็จ',
-    //           text: 'บันทึกข้อมูลเสร็จสิ้น',
-    //           icon: 'success',
-    //           allowEscapeKey: false,
-    //           allowOutsideClick: false,
-    //           confirmButtonText: 'ตกลง',
-    //         }).then((result) => {
-    //           if (result.isConfirmed) {
-    //             this.getFindAll();
-    //           }
-    //         });
-    //       },
-    //       error: (error) => {
-    //         console.error('Error:', error);
-    //       },
-    //     });
-    //   }
-    //   // location.reload();
+      }
+    } catch (error) {
+      // show error
+      console.error(error);
+      this.swalService.showError('ลองใหม่อีกครั้ง');
+    }
+
+    // hide loading
+    Swal.close();
+    // location.reload();
   }
+
 
 
 
