@@ -15,7 +15,7 @@ export class CommonService {
 
   getCompanyIdByName(name: string): Observable<number> {
     return this.http
-      .get<number>(`${this.trainingUrl}findIdByName`, {
+      .get<number>(`${this.trainingUrl}/findIdByName`, {
         params: { param: name },
       })
       .pipe(map((res) => res));
@@ -68,7 +68,9 @@ export class CommonService {
     return timeString;
   }
 
-  async getSectorAndDeptsListByCompanyName(companyName = 'PCCTH'): Promise<sector[]> {
+  async getSectorAndDeptsListByCompanyName(
+    companyName = 'PCCTH'
+  ): Promise<sector[]> {
     let sectors: sector[] = [];
     try {
       const res = await this.apiService

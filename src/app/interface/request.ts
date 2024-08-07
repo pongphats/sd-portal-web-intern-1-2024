@@ -6,9 +6,9 @@ export interface LoginRequest {
 export interface saveBudgetByYearRequest {
   year: string;
   deptCode: string;
-  company_id: number;
-  budgetTraining: string;
-  budgetCer: string;
+  company_Id: number;
+  budgetTraining: number;
+  budgetCer: number;
 }
 
 export interface CreateSectorRequest {
@@ -26,8 +26,8 @@ export interface CreateSectorRequest {
 }
 
 export interface CreateTrainingRequest {
-   // Date string format: YYYY-MM-DD (2024-12-01) , (2024-01-30)
-   // Time string format: HH:MM (22:30) (08:00)
+  // Date string format: YYYY-MM-DD (2024-12-01) , (2024-01-30)
+  // Time string format: HH:MM (22:30) (08:00)
   courseName: string;
   startDate: string;
   endDate: string;

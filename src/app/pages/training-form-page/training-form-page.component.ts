@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BuddhistDatePipe } from '@shared/pipes/budhist-date.pipe';
+import { map, Observable, startWith } from 'rxjs';
 import { Course } from 'src/app/interface/common';
+import { Employee } from 'src/app/interface/employee';
 import { trainingForm } from 'src/app/interface/form';
 import { MngDeptListRes } from 'src/app/interface/response';
 import { ApiService } from 'src/app/services/api.service';
@@ -23,6 +25,12 @@ export class TrainingFormPageComponent implements OnInit {
   // for show in selector
   mngDeptListShow!: MngDeptListRes[];
 
+  // for keep data in memory
+  empList: Employee[] = [];
+  empNameList: string[] = [];
+  // for show in autocomplete
+  empNameListFiltered!: Observable<string[]>;
+
   courseList!: Course[];
 
   constructor(
@@ -30,7 +38,7 @@ export class TrainingFormPageComponent implements OnInit {
     private apiService: ApiService,
     private authService: AuthService,
     private commonService: CommonService,
-    private buddhistDatePipe : BuddhistDatePipe
+    private buddhistDatePipe: BuddhistDatePipe
   ) {
     this.trainingForm = this.fb.group({
       company: ['', Validators.required],
@@ -63,6 +71,7 @@ export class TrainingFormPageComponent implements OnInit {
     this.uId = this.authService.getUID();
     await this.generateDeptListByUser();
     await this.generateCoursesList();
+    this.displayAutocomplete();
   }
 
   checkValue(value: any) {
@@ -92,14 +101,12 @@ export class TrainingFormPageComponent implements OnInit {
 
   // event action methods
   filterDeptByCompanyName(companyName: string): void {
-    console.log(companyName);
-
     this.mngDeptListShow = this.mngDeptListRes.filter(
       (item) => item.companyName === companyName
     );
   }
 
-  generateDeptCode(deptName: string) {
+  async generateDeptCode(deptName: string) {
     const filterMngDeptList = this.mngDeptListShow.find(
       (item) => item.deptName === deptName
     );
@@ -109,6 +116,8 @@ export class TrainingFormPageComponent implements OnInit {
       console.warn('No matching department found');
       this.trainingForm.controls.deptId.setValue(null);
     }
+    // when change dept name then generate active emp by dey
+    await this.generateEmployeeAutoCompleteByDept(deptName);
   }
 
   generateCourseForms(courseName: string) {
@@ -116,14 +125,20 @@ export class TrainingFormPageComponent implements OnInit {
       (item) => item.courseName == courseName
     );
     if (filterCourseList) {
-      const startDate = this.buddhistDatePipe.transform(new Date(filterCourseList.startDate))
-      const endDate = this.buddhistDatePipe.transform(new Date(filterCourseList.endDate))
+      const startDate = this.buddhistDatePipe.transform(
+        new Date(filterCourseList.startDate)
+      );
+      const endDate = this.buddhistDatePipe.transform(
+        new Date(filterCourseList.endDate)
+      );
       this.trainingForm.patchValue({
         courseObjective: filterCourseList.objective,
         courseDuration: `${startDate} - ${endDate} ${filterCourseList.time}`,
         courseDescription: filterCourseList.note,
         courseProject: filterCourseList.priceProject,
-        coursePrice: this.commonService.convertNumberToStringFormatted(filterCourseList.price),
+        coursePrice: this.commonService.convertNumberToStringFormatted(
+          filterCourseList.price
+        ),
         courseTeacher: filterCourseList.institute,
         courseLocation: filterCourseList.place,
       });
@@ -138,5 +153,55 @@ export class TrainingFormPageComponent implements OnInit {
         courseLocation: '',
       });
     }
+  }
+
+  async generateEmployeeAutoCompleteByDept(deptName: string) {
+    const filterMngDeptList = this.mngDeptListShow.find(
+      (item) => item.deptName === deptName
+    );
+    const deptDataID = filterMngDeptList ? filterMngDeptList.deptId : 0;
+    try {
+      const res = await this.apiService
+        .getAllActiveEmpsByDeptId(deptDataID)
+        .toPromise();
+
+      // for filter and get emp id
+      this.empList = res ? res : [];
+
+      // for show in autocomplete
+      this.empNameList = this.empList.map(
+        (item) => item.title + ' ' + item.firstname + ' ' + item.lastname
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  generateEmpDetails(empFullName: string) {
+    const filterEmpList = this.empList.find(
+      (item) =>
+        item.title + ' ' + item.firstname + ' ' + item.lastname === empFullName
+    );
+    if (filterEmpList) {
+      this.trainingForm.patchValue({
+        employeeId: filterEmpList.empCode,
+        employeeName: empFullName,
+        employeePosition: filterEmpList.position.positionName,
+      });
+    }
+  }
+
+  // auto complete services
+  private _filter(value: string): string[] {
+    const filterValue = value;
+    return this.empNameList.filter((option) => option.includes(filterValue));
+  }
+
+  displayAutocomplete() {
+    this.empNameListFiltered =
+      this.trainingForm.controls.employeeName.valueChanges.pipe(
+        startWith(''),
+        map((value) => this._filter(value || ''))
+      );
   }
 }
