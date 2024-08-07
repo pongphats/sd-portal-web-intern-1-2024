@@ -10,10 +10,10 @@
 ::ng-deep input.mat-input-element {
   margin-bottom: 0.25em;
 }
-::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
-  background-color: white;
-  border-radius: 0.4rem;
-}
+// ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+//   background-color: white;
+//   border-radius: 0.4rem;
+// }
 
 ::ng-deep .self-center-cm {
   position: relative;
@@ -36,4 +36,8 @@
 
 ::ng-deep .clear-button:hover i {
   color: #2196f3 !important;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-label {
+  top: 1.4em !important;
 }
