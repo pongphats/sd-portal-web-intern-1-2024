@@ -36,7 +36,7 @@ export interface CourseForm {
   timeEnd: FormControl<string | null>;
   hours: FormControl<string | null>;
   note: FormControl<string | null>;
-  price: FormControl<number | null>;
+  price: FormControl<string | null>;
   priceProject: FormControl<string | null>;
   institute: FormControl<string | null>;
   place: FormControl<string | null>;

@@ -32,7 +32,7 @@ export class ManageCoursePageComponent implements OnInit {
       timeEnd: ['', Validators.required],
       hours: ['', Validators.required],
       note: [''],
-      price: [0, Validators.required],
+      price: ['', Validators.required],
       priceProject: [''],
       institute: ['', Validators.required],
       place: ['', Validators.required],
@@ -45,10 +45,10 @@ export class ManageCoursePageComponent implements OnInit {
 
 
   async createTraining() {
-
-    console.log("createTraining")
-    console.log(this.courseForm)
     try {
+
+      console.log(this.courseForm.value.price)
+      console.log(parseFloat((this.courseForm.value.price || '').replace(/,/g, '')))
       // show loading
       this.swalService.showLoading();
 
@@ -69,7 +69,8 @@ export class ManageCoursePageComponent implements OnInit {
           time: mergedTime,
           hours: this.courseForm.value.hours || '',
           note: this.courseForm.value.note || '',
-          price: this.courseForm.value.price ? this.courseForm.value.price : 0,
+          // price: Number(this.courseForm.value.price),
+          price: parseFloat((this.courseForm.value.price || '').replace(/,/g, '')),
           priceProject: this.courseForm.value.priceProject || '',
           institute: this.courseForm.value.institute || '',
           place: this.courseForm.value.place || '',
@@ -80,7 +81,7 @@ export class ManageCoursePageComponent implements OnInit {
         const res = await this.apiService.createTraining(req).toPromise();
         console.log(res)
 
-        if (res?.msg == 'ทำรายการเรียบร้อย') {
+        if (res?.responseMessage == 'ทำรายการเรียบร้อย') {
           this.courseForm.reset();
         } else {
           throw new Error(res?.msg);
@@ -99,6 +100,68 @@ export class ManageCoursePageComponent implements OnInit {
     // location.reload();
   }
 
+  invalidhoursInput: boolean = false;
+  onInputKeyPresshours(event: KeyboardEvent) {
+    const inputChar = event.key;
+
+    // ตรวจสอบว่าถ้าไม่ใช่ตัวเลขหรือจุด
+    if (!/^\d$/.test(inputChar)) {
+      event.preventDefault();
+      this.invalidhoursInput = true;
+    } else {
+      this.invalidhoursInput = false;
+    }
+  }
+
+  invalidPriceInput: boolean = false;
+  onInputKeyPressPrice(event: KeyboardEvent) {
+    const inputChar = event.key;
+    const inputValue = (event.target as HTMLInputElement).value;
+
+    // ตรวจสอบว่าถ้ามีจุดอยู่แล้ว และผู้ใช้กดจุดอีกครั้ง
+    if (inputValue.includes('.') && inputChar === '.') {
+      event.preventDefault();
+      this.invalidPriceInput = true;
+    }
+    // ตรวจสอบว่าถ้าไม่ใช่ตัวเลขหรือจุด
+    else if (!/^\d$/.test(inputChar) && inputChar !== '.') {
+      event.preventDefault();
+      this.invalidPriceInput = true;
+    } else {
+      this.invalidPriceInput = false;
+    }
+  }
+
+  onBlurPrice(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    let inputValue = inputElement.value.trim();
+
+    if (inputValue !== '') {
+      // Convert string to number
+      let numericValue = parseFloat(inputValue.replace(/,/g, ''));
+
+      if (!isNaN(numericValue)) {
+        // Check if the number has decimal places
+        if (numericValue % 1 !== 0) {
+          // Format number with comma as thousand separator and 2 decimal places
+          inputValue = numericValue.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          });
+        } else {
+          // Format number with comma as thousand separator and add .00
+          inputValue = numericValue.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+          });
+        }
+
+        inputElement.value = inputValue;
+
+        // this.courseForm.get('price').setValue(inputValue);
+        this.courseForm.patchValue({ price: inputValue });
+      }
+    }
+  }
 
 
 

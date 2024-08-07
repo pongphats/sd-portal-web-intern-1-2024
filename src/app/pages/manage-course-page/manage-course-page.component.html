@@ -70,7 +70,7 @@
                         <div class="w-1/2 flex gap-2">
                             <label for="hours" class="mr-6">รวม:</label>
                             <mat-form-field appearance="fill" class="w-3/4">
-                                <input id="hours" matInput formControlName="hours" required>
+                                <input id="hours" matInput formControlName="hours" (keypress)="onInputKeyPresshours($event)" required>
                                 <span matSuffix>ชั่วโมง</span>
                                 <span *ngIf="courseForm.controls.hours.invalid"
                                 class="absolute text-red-700 -right-12 -top-3 dark:text-red-500">*</span>
@@ -92,7 +92,8 @@
                     <div class="w-1/2 flex gap-2">
                         <label for="price" class="w-1/4">ค่าใช้จ่าย/คน:</label>
                         <mat-form-field appearance="fill" class="w-3/4">
-                            <input id="price" matInput formControlName="price" required>
+                            <input id="price" matInput formControlName="price" (blur)="onBlurPrice($event)"
+                            (keypress)="onInputKeyPressPrice($event)" required>
                             <span matPrefix class="pr-2">฿ </span>
                             <span matSuffix>บาท/คน (ก่อน Vat7%)</span>
                             <span *ngIf="courseForm.controls.price.invalid"
@@ -133,13 +134,13 @@
             </div>
             <!-- part  2 -->
             <div class="flex justify-center">
-                <button mat-raised-button [disabled]="courseForm.invalid" class="flex items-center text-center text-white {{
+                <button mat-raised-button [disabled]="courseForm.invalid" class="flex items-center text-center {{
                     courseForm.invalid
                       ? 'cursor-not-allowed bg-gray-400 border-2 border-gray-400'
-                      : 'cursor-pointer bg-[#696cf8] hover:bg-[#696cf8] hover:text-white border-2 border-[#696cf8]'
+                      : 'cursor-pointer bg-[#696cf8] hover:bg-[#696cf8] !text-white hover:!text-white border-2 border-[#696cf8]'
                   }}">
-                    <i class='bx bx-plus pr-2'></i>
-                    บันทึกข้อมูล
+                    <i class="bx bx-plus pr-2 {{courseForm.invalid ? '' : 'text-white'}}"></i>
+                    <span class="{{courseForm.invalid ? '' : 'text-white'}}">บันทึกข้อมูล</span>
                 </button>
             </div>
         </div>
