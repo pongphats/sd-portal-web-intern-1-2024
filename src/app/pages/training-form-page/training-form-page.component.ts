@@ -31,6 +31,14 @@ export class TrainingFormPageComponent implements OnInit {
   // for show in autocomplete
   empNameListFiltered!: Observable<string[]>;
 
+  // for keep data in memory
+  allPrivilegesApproversList: Employee[] = [];
+  // for show in selector
+  approversList: Employee[] = [];
+  managersList: Employee[] = [];
+  vicePresList: Employee[] = [];
+  presidentsList: Employee[] = [];
+
   courseList!: Course[];
 
   constructor(
@@ -118,6 +126,7 @@ export class TrainingFormPageComponent implements OnInit {
     }
     // when change dept name then generate active emp by dey
     await this.generateEmployeeAutoCompleteByDept(deptName);
+    await this.generateApproversListByDept(deptName);
   }
 
   generateCourseForms(courseName: string) {
@@ -188,6 +197,34 @@ export class TrainingFormPageComponent implements OnInit {
         employeeName: empFullName,
         employeePosition: filterEmpList.position.positionName,
       });
+    }
+  }
+
+  async generateApproversListByDept(deptName: string) {
+    const filterMngDeptList = this.mngDeptListShow.find(
+      (item) => item.deptName === deptName
+    );
+    try {
+      const res = await this.apiService
+        .getAllPrivilegeApproversByDpetId(
+          filterMngDeptList ? filterMngDeptList.deptId : 0
+        )
+        .toPromise();
+      this.allPrivilegesApproversList = res ? res.responseData.result : [];
+      this.approversList = this.allPrivilegesApproversList.filter((item) =>
+        item.roles.find((role) => role.role == 'Approver')
+      );
+      this.managersList = this.allPrivilegesApproversList.filter((item) =>
+        item.roles.find((role) => role.role == 'Manager')
+      );
+      this.vicePresList = this.allPrivilegesApproversList.filter((item) =>
+        item.roles.find((role) => role.role == 'VicePresident')
+      );
+      this.presidentsList = this.allPrivilegesApproversList.filter((item) =>
+        item.roles.find((role) => role.role == 'President')
+      );
+    } catch (error) {
+      console.error(error);
     }
   }
 
