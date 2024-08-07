@@ -32,6 +32,7 @@ import { FtrSv1PageComponent } from './ftr-sv1-page/ftr-sv1-page.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { PccSdPortalComponentModule } from "../components/pcc-sd-portal-component.module";
 import { MatIconModule } from '@angular/material/icon';
+import { ManageCoursePageComponent } from './manage-course-page/manage-course-page.component';
 import { TrainingFormPageComponent } from './training-form-page/training-form-page.component';
 
 @NgModule({
@@ -64,6 +65,7 @@ import { TrainingFormPageComponent } from './training-form-page/training-form-pa
     FtrOj1PageComponent,
     FtrSv1PageComponent,
     LoginPageComponent,
+    ManageCoursePageComponent,
     TrainingFormPageComponent,
   ],
   imports: [
