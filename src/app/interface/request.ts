@@ -13,15 +13,15 @@ export interface saveBudgetByYearRequest {
 
 export interface CreateSectorRequest {
   companyId: number;
-  sectorName: string;
-  sectorFullName: string;
+  sectorName: string; //sectorcode-รหัสฝ่าย sectorName-
+  sectorFullName: string; //Ename
   sectorTname: string;
-  sectorCode: string;
-  deptFullName: string;
+  sectorCode: string; //
+  deptFullName: string; //แผนกอังกฤษ
   deptTname: string;
-  deptCode: string;
-  deptName: string;
-  firstName: string;
+  deptCode: string; //ไอดี form
+  deptName: string; //deptcode form
+  firstName: string; //gen
   lastName: string;
 }
 

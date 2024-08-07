@@ -15,7 +15,7 @@ export class CommonService {
 
   getCompanyIdByName(name: string): Observable<number> {
     return this.http
-      .get<number>(`${this.trainingUrl}findIdByName`, {
+      .get<number>(`${this.trainingUrl}/findIdByName`, {
         params: { param: name },
       })
       .pipe(map((res) => res));
