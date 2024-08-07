@@ -31,6 +31,7 @@
             type="button"
             mat-icon-button
             matSuffix
+            type="button"
             (click)="hide = !hide"
             [attr.aria-label]="'Hide password'"
             [attr.aria-pressed]="hide"
@@ -38,8 +39,8 @@
             <i
               class="bx scale-150"
               [ngClass]="{
-                'bxs-show': hide,
-                'bxs-hide': !hide
+                'bxs-show': !hide,
+                'bxs-hide': hide
               }"
             ></i>
           </button>

@@ -38,5 +38,5 @@ export interface CreateTrainingRequest {
   priceProject: string;
   place: string;
   institute: string;
-  type: '';
+  type: string;
 }
