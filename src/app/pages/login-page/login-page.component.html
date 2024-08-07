@@ -49,14 +49,14 @@
         <button
           class="!scale-125"
           [ngClass]="{
-            '!cursor-not-allowed' : authForm.invalid
+            '!cursor-not-allowed': authForm.invalid
           }"
           [disabled]="authForm.invalid"
           type="submit"
           mat-raised-button
           color="primary"
         >
-          เข้าสู่ระบบ
+          <span class="!text-slate-100">เข้าสู่ระบบ</span>
         </button>
       </div>
     </form>
