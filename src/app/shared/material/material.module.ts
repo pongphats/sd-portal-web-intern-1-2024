@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import {MatTableModule} from '@angular/material/table';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
@@ -16,6 +17,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     NgxMatTimepickerModule,
     MatRadioModule,
     MatSelectModule,
+    MatTableModule,
     MatAutocompleteModule,
   ],
   providers: [DatePipe],

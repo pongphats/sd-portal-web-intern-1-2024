@@ -41,6 +41,7 @@ export class ManageCoursePageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getAllCourses()
   }
 
 
@@ -69,7 +70,6 @@ export class ManageCoursePageComponent implements OnInit {
           time: mergedTime,
           hours: this.courseForm.value.hours || '',
           note: this.courseForm.value.note || '',
-          // price: Number(this.courseForm.value.price),
           price: parseFloat((this.courseForm.value.price || '').replace(/,/g, '')),
           priceProject: this.courseForm.value.priceProject || '',
           institute: this.courseForm.value.institute || '',
@@ -98,6 +98,19 @@ export class ManageCoursePageComponent implements OnInit {
     // hide loading
     Swal.close();
     // location.reload();
+  }
+
+  allCourses: any[] = [];
+  // displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+  displayedColumns: string[] = ['courseName', 'startDate', 'endDate', 'time', 'note', 'price', 'institute', 'place', 'editOrDelete'];
+  async getAllCourses() {
+    const res = await this.apiService.getAllCoursesList().toPromise();
+    console.log(res)
+    if (res) {
+      this.allCourses = res;
+    } else {
+      this.allCourses = [];
+    }
   }
 
   invalidhoursInput: boolean = false;
