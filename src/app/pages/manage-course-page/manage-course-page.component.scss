@@ -38,8 +38,8 @@
     display: none;  
 }
 
-// // >>> mat-error > * (transform)
-// ::ng-deep .mat-form-field-appearance-fill.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label{
-//     transform: translateY(-.15em) scale(.85) translateX(10px);
-//     // .mat-form-field-appearance-fill.mat-form-field-can-float .mat-input-server:focus+.mat-form-field-label-wrapper .mat-form-field-label 
-// }
+table {
+    width: 100%;
+    margin-top: 2vh;
+    box-shadow: 0;
+}
