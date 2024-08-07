@@ -23,3 +23,15 @@ export interface saveBudgetResponse {
   departmentCode: string;
 }
 
+export interface MngDeptListRes {
+  companyName: string;
+  companyId: number;
+  sectorCode: string;
+  sectorId: number;
+  sectorName: number;
+  deptCode: string;
+  deptId: number;
+  deptName: string;
+  deptTname: string;
+  deptFullName: string;
+}
