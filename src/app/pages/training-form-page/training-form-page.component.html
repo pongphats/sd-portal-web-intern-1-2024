@@ -79,9 +79,15 @@
           <p>หัวข้อในการอบรม/สัมมนา</p>
           <mat-form-field appearance="fill">
             <mat-label>หัวข้อในการอบรม/สัมมนา</mat-label>
-            <mat-select (selectionChange)="generateCourseForms($event.value)" formControlName="courseName">
-              <mat-option *ngFor="let course of courseList" [value]="course.courseName">
-                {{course.courseName}}
+            <mat-select
+              (selectionChange)="generateCourseForms($event.value)"
+              formControlName="courseName"
+            >
+              <mat-option
+                *ngFor="let course of courseList"
+                [value]="course.courseName"
+              >
+                {{ course.courseName }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -185,7 +191,20 @@
       <p>ชื่อ-สกุลผู้เข้ารับการอบรม/สัมมนา</p>
       <mat-form-field class="" appearance="fill">
         <mat-label>ชื่อ-สกุลผู้เข้ารับการอบรม/สัมมนา </mat-label>
-        <input formControlName="employeeName" matInput />
+        <input
+          type="text"
+          formControlName="employeeName"
+          matInput
+          [matAutocomplete]="auto"
+        />
+        <mat-autocomplete (optionSelected)="generateEmpDetails($event.option.value)" autoActiveFirstOption #auto="matAutocomplete">
+          <mat-option
+            *ngFor="let option of empNameListFiltered | async"
+            [value]="option"
+          >
+            {{ option }}
+          </mat-option>
+        </mat-autocomplete>
       </mat-form-field>
       <p>ตำแหน่งผู้เข้ารับการอบรม</p>
       <mat-form-field class="" appearance="fill">

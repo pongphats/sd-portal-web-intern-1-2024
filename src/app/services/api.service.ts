@@ -13,6 +13,7 @@ import {
   saveBudgetResponse,
 } from '../interface/response';
 import { Course, sector } from '../interface/common';
+import { Employee } from '../interface/employee';
 
 @Injectable({
   providedIn: 'root',
@@ -84,6 +85,14 @@ export class ApiService {
     return this.http
       .delete<ApiResponse<any>>(`${this.trainingUrl}/deleteCourseById`, {
         params: { courseID: id },
+      })
+      .pipe(map((res) => res));
+  }
+
+  getAllActiveEmpsByDeptId(deptId: number): Observable<Employee[]> {
+    return this.http
+      .get<Employee[]>(`${this.trainingUrl}/findActiveEmployeesByDeptId`, {
+        params: { deptId: deptId },
       })
       .pipe(map((res) => res));
   }
