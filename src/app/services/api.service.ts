@@ -73,4 +73,18 @@ export class ApiService {
       .get<Course[]>(`${this.trainingUrl}/findAllCourses`)
       .pipe(map((res) => res));
   }
+
+  editCourseById(id: number, body: CreateTrainingRequest): Observable<any> {
+    return this.http
+      .put<any>(`${this.trainingUrl}/editCourse?courseID=${id}`, body)
+      .pipe(map((res) => res));
+  }
+
+  deleteCourseById(id: number): Observable<ApiResponse<any>> {
+    return this.http
+      .delete<ApiResponse<any>>(`${this.trainingUrl}/deleteCourseById`, {
+        params: { courseID: id },
+      })
+      .pipe(map((res) => res));
+  }
 }
