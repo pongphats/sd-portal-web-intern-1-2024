@@ -31,7 +31,10 @@ export class ApiService {
       ...req,
     };
     return this.http
-      .post<ApiResponse<saveBudgetResponse>>(`${this.trainingUrl}`, body)
+      .post<ApiResponse<saveBudgetResponse>>(
+        `${this.trainingUrl}/createbudget`,
+        body
+      )
       .pipe(map((res) => res));
   }
 
