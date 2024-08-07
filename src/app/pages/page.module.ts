@@ -34,6 +34,7 @@ import { PccSdPortalComponentModule } from "../components/pcc-sd-portal-componen
 import { MatIconModule } from '@angular/material/icon';
 import { ManageCoursePageComponent } from './manage-course-page/manage-course-page.component';
 import { TrainingFormPageComponent } from './training-form-page/training-form-page.component';
+import { TraingCreateFormsTableComponent } from './training-form-page/components/traing-create-forms-table/traing-create-forms-table.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { TrainingFormPageComponent } from './training-form-page/training-form-pa
     LoginPageComponent,
     ManageCoursePageComponent,
     TrainingFormPageComponent,
+    TraingCreateFormsTableComponent,
   ],
   imports: [
     MatIconModule,
