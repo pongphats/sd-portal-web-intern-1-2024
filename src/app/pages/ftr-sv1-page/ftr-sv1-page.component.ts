@@ -5,12 +5,56 @@ import { saveBudgetByYearRequest } from 'src/app/interface/request';
 import { ApiService } from 'src/app/services/api.service';
 import { CommonService } from 'src/app/services/common.service';
 
+export interface PeriodicElement {
+  budgetYear: string;
+  company: string;
+  dept: string;
+  budgetTrain: string;
+  budgetCer: string;
+  budgetTotal: string;
+}
+
+const ELEMENT_DATA: PeriodicElement[] = [
+  {
+    budgetYear: '2567',
+    company: 'PCCTH',
+    dept: '4100',
+    budgetTrain: '12000',
+    budgetCer: '12000',
+    budgetTotal: '24000',
+  },
+  {
+    budgetYear: '2566',
+    company: 'PCCTH',
+    dept: '4101',
+    budgetTrain: '12000',
+    budgetCer: '12000',
+    budgetTotal: '24000',
+  },
+  {
+    budgetYear: '2565',
+    company: 'PCCTH',
+    dept: '4102',
+    budgetTrain: '12000',
+    budgetCer: '12000',
+    budgetTotal: '24000',
+  },
+];
+
 @Component({
   selector: 'app-ftr-sv1-page',
   templateUrl: './ftr-sv1-page.component.html',
   styleUrls: ['./ftr-sv1-page.component.scss'],
 })
 export class FtrSv1PageComponent implements OnInit {
+  displayedColumns: string[] = [
+    'company',
+    'dept',
+    'budgetTrain',
+    'budgetCer',
+    'budgetTotal',
+  ];
+  dataSource = ELEMENT_DATA;
   budgetForm!: FormGroup<budgetForm>;
   depts: string[] = [];
   invalidtotal_expInput: boolean = false;
@@ -201,4 +245,6 @@ export class FtrSv1PageComponent implements OnInit {
   protected clearForm() {
     location.reload();
   }
+
+  editDocs() {}
 }

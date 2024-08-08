@@ -24,7 +24,7 @@
         <mat-label class="self-center-cm" for="budgetYear"
           >ฝึกอบรมรายปี</mat-label
         >
-        <mat-form-field appearance="outline" class="size-16 grow mx-3">
+        <mat-form-field appearance="fill" class="size-16 grow mx-3">
           <input
             matInput
             id="budgetYear"
@@ -37,8 +37,8 @@
           </mat-error>
         </mat-form-field>
         <mat-label class="self-center-cm" for="dept">ฝ่าย/แผนก</mat-label>
-        <mat-form-field appearance="outline" class="grow mx-3">
-          <mat-label>หัวข้อในการอบรม/สัมมนา</mat-label>
+        <mat-form-field appearance="fill" class="grow mx-3">
+          <mat-label>ฝ่าย/แผนก</mat-label>
           <mat-select formControlName="dept" id="dept">
             <mat-option *ngFor="let dept of depts" [value]="dept">{{
               dept
@@ -57,7 +57,7 @@
         <mat-label class="self-center w-2/12" for=" udgetTrain"
           >งบประมาณการอบรม</mat-label
         >
-        <mat-form-field appearance="outline" class="">
+        <mat-form-field appearance="fill" class="">
           <input
             matInput
             id=" budgetTrain"
@@ -76,7 +76,7 @@
         <mat-label class="self-center w-2/12" for="budgetCer"
           >งบประมาณการสอบ</mat-label
         >
-        <mat-form-field appearance="outline" class="mx-3">
+        <mat-form-field appearance="fill" class="mx-3">
           <input
             matInput
             id="budgetCer"
@@ -95,7 +95,7 @@
         <mat-label class="self-center-cm w-2/12" for="budgetTotal"
           >งบประมาณรวม</mat-label
         >
-        <mat-form-field appearance="outline" class="grow mx-3">
+        <mat-form-field appearance="fill" class="grow mx-3">
           <input
             matInput
             readonly
@@ -147,3 +147,145 @@
     </div>
   </div>
 </form>
+
+<!-- <mat-accordion>
+  <mat-expansion-panel *ngFor="let element of dataSource" hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>{{ element.budgetYear }} </mat-panel-title>
+      <mat-panel-description>
+        ข้อมูลของปี {{ element.budgetYear }}</mat-panel-description
+      >
+    </mat-expansion-panel-header>
+
+    <table
+      mat-table
+      [dataSource]="[element]"
+      class="px-2 py-1 rounded-md lg:py-3 lg:px-6 bg-content shadow-card dark:bg-content-dark dark:shadow-none mt-5"
+    >
+      <ng-container matColumnDef="company">
+        <th mat-header-cell *matHeaderCellDef>Company</th>
+        <td mat-cell *matCellDef="let element">{{ element.company }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="dept">
+        <th mat-header-cell *matHeaderCellDef>Dept</th>
+        <td mat-cell *matCellDef="let element">{{ element.dept }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="budgetTrain">
+        <th mat-header-cell *matHeaderCellDef>Budget Train</th>
+        <td mat-cell *matCellDef="let element">{{ element.budgetTrain }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="budgetCer">
+        <th mat-header-cell *matHeaderCellDef>Budget Cer</th>
+        <td mat-cell *matCellDef="let element">{{ element.budgetCer }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="budgetTotal">
+        <th mat-header-cell *matHeaderCellDef>Budget Total</th>
+        <td mat-cell *matCellDef="let element">{{ element.budgetTotal }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </mat-expansion-panel>
+</mat-accordion> -->
+
+<div class="w-full overflow-x-auto shadow rounded-b-md">
+  <table
+    id="data-table"
+    class="table-auto text-[#566a7f] text-base lg:w-full dark:text-white"
+  >
+    <colgroup>
+      <col style="width: 10%" />
+      <col style="width: 90%" />
+    </colgroup>
+    <thead
+      class="text-sm bg-white border-b dark:bg-neutral-800 dark:shadow-none"
+    >
+      <tr class="h-16 text-center border-b-2 border-b-gray-300">
+        <th scope="col">ปี</th>
+        <th scope="col">ข้อมูล</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let element of dataSource">
+        <tr>
+          <td class="border-b-2 border-b-gray-300 text-center">
+            {{ element.budgetYear }}
+          </td>
+          <td>
+            <mat-accordion>
+              <mat-expansion-panel
+                class="dark:hover:bg-[#2a2a2b] dark:bg-[#3a3b3c]"
+              >
+                <mat-expansion-panel-header
+                  class="border-b-2 border-b-gray-300"
+                >
+                  <mat-panel-title class="dark:text-white"
+                    >ข้อมูลของปี {{ element.budgetYear }}</mat-panel-title
+                  >
+                  <div class="mr-3">
+                    <button
+                      mat-stroked-button
+                      color="primary"
+                      (click)="editDocs()"
+                      class="clear-button"
+                    >
+                      <i class="fas fa-sync-alt mr-1"></i>
+                      <span> แก้ไข</span>
+                    </button>
+                  </div>
+                </mat-expansion-panel-header>
+                <div>
+                  <table
+                    id="data-table2"
+                    class="table-auto text-[#566a7f] text-base lg:w-full dark:text-white"
+                  >
+                    <colgroup>
+                      <col style="width: 20%" />
+                      <col style="width: 20%" />
+                      <col style="width: 20%" />
+                      <col style="width: 20%" />
+                      <col style="width: 20%" />
+                    </colgroup>
+                    <thead
+                      class="text-sm bg-white border-b dark:bg-neutral-800 dark:shadow-none"
+                    >
+                      <tr class="h-16 text-center border-b-2 border-b-gray-300">
+                        <th scope="col" style="width: 15%">บริษัท</th>
+                        <th scope="col" style="width: 15%">ฝ่าย</th>
+                        <th scope="col" style="width: 15%">งบประมาณการอบรม</th>
+                        <th scope="col" style="width: 15%">
+                          งบประมาณการสอบ Certificate
+                        </th>
+                        <th scope="col" style="width: 15%">งบประมาณรวม</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        class="dark:bg-[#3a3b3c] text-center truncate h-12 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700"
+                      >
+                        <td>{{ element.company }}</td>
+                        <td>{{ element.dept }}</td>
+                        <td class="text-right pr-6">
+                          {{ element.budgetTrain }}
+                        </td>
+                        <td class="text-right pr-6">{{ element.budgetCer }}</td>
+                        <td class="text-right pr-6">
+                          {{ element.budgetTotal }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>
