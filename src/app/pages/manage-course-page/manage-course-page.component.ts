@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { BuddhistDatePipe } from '@shared/pipes/budhist-date.pipe';
 import { CourseForm } from 'src/app/interface/form';
 import { CreateTrainingRequest } from 'src/app/interface/request';
+import { CreateTrainingResponse } from 'src/app/interface/response';
 import { ApiService } from 'src/app/services/api.service';
 import { CommonService } from 'src/app/services/common.service';
 import { SwalService } from 'src/app/services/swal.service';
@@ -22,12 +24,13 @@ export class ManageCoursePageComponent implements OnInit {
     private router: Router,
     private commonService: CommonService,
     private apiService: ApiService,
+    private buddhistDatePipe: BuddhistDatePipe
   ) {
     this.courseForm = this.fb.group({
       id: [''],
       courseName: ['', Validators.required],
-      startDate: ['', Validators.required],
-      endDate: ['', Validators.required],
+      startDate: [null, Validators.required],
+      endDate: [null, Validators.required],
       timeStart: ['', Validators.required],
       timeEnd: ['', Validators.required],
       hours: ['', Validators.required],
@@ -37,7 +40,7 @@ export class ManageCoursePageComponent implements OnInit {
       institute: ['', Validators.required],
       place: ['', Validators.required],
       // type: [''],
-    })
+    }) as FormGroup<CourseForm>;
   }
 
   ngOnInit(): void {
@@ -47,16 +50,11 @@ export class ManageCoursePageComponent implements OnInit {
 
   async createTraining() {
     try {
-
-      console.log(this.courseForm.value.price)
-      console.log(parseFloat((this.courseForm.value.price || '').replace(/,/g, '')))
       // show loading
       this.swalService.showLoading();
 
-      this.courseForm.patchValue({
-        startDate: this.commonService.formatDateToYYYYMMDDString(this.courseForm.value.startDate ? new Date(this.courseForm.value.startDate) : new Date()),
-        endDate: this.commonService.formatDateToYYYYMMDDString(this.courseForm.value.endDate ? new Date(this.courseForm.value.endDate) : new Date()),
-      });
+      const startDate = this.commonService.formatDateToYYYYMMDDString(this.courseForm.value.startDate ? new Date(this.courseForm.value.startDate) : new Date())
+      const endDate = this.commonService.formatDateToYYYYMMDDString(this.courseForm.value.endDate ? new Date(this.courseForm.value.endDate) : new Date())
 
       if (this.courseForm.valid) {
         // Merge timestart and timeend into a single time field
@@ -65,8 +63,8 @@ export class ManageCoursePageComponent implements OnInit {
         // body validation
         const req: CreateTrainingRequest = {
           courseName: this.courseForm.value.courseName || '',
-          startDate: this.courseForm.value.startDate || '',
-          endDate: this.courseForm.value.endDate || '',
+          startDate: startDate,
+          endDate: endDate,
           time: mergedTime,
           hours: this.courseForm.value.hours || '',
           note: this.courseForm.value.note || '',
@@ -77,17 +75,31 @@ export class ManageCoursePageComponent implements OnInit {
           type: 'อบรม',
         };
 
-        // call login API
-        const res = await this.apiService.createTraining(req).toPromise();
-        console.log(res)
+        if (this.editMode) {
+          console.log("edit finish : ", req)
+          // call editCourseById API
+          const res = await this.apiService.editCourseById(this.editId,req).toPromise();
+          console.log(res)
 
-        if (res?.responseMessage == 'ทำรายการเรียบร้อย') {
-          this.courseForm.reset();
+          if (res?.responseMessage == 'ทำรายการเรียบร้อย') {
+            this.courseForm.reset();
+            // location.reload();
+            this.editMode = false
+            this.editId = -1
+            this.getAllCourses()
+          } else {
+            throw new Error(res?.msg);
+          }
         } else {
-          throw new Error(res?.msg);
+          // call createTraining API
+          const res = await this.apiService.createTraining(req).toPromise();
+          if (res?.responseMessage == 'ทำรายการเรียบร้อย') {
+            this.courseForm.reset();
+            this.getAllCourses()
+          } else {
+            throw new Error(res?.msg);
+          }
         }
-
-
       }
     } catch (error) {
       // show error
@@ -101,13 +113,16 @@ export class ManageCoursePageComponent implements OnInit {
   }
 
   allCourses: any[] = [];
-  // displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   displayedColumns: string[] = ['courseName', 'startDate', 'endDate', 'time', 'note', 'price', 'institute', 'place', 'editOrDelete'];
   async getAllCourses() {
     const res = await this.apiService.getAllCoursesList().toPromise();
     console.log(res)
     if (res) {
       this.allCourses = res;
+      this.allCourses = res.map(course => ({
+        ...course,
+        price: this.onBlurPriceStartEdit(course.price)
+      }));
     } else {
       this.allCourses = [];
     }
@@ -176,6 +191,50 @@ export class ManageCoursePageComponent implements OnInit {
     }
   }
 
+
+  editMode: boolean = false;
+  editId: number = -1;
+  editBtn(element: CreateTrainingResponse) {
+    console.log("edit", element)
+    this.editMode = true;
+    this.editId = Number(element.id);
+
+    const [timeStartClone, timeEndClone] = element.time.split("-")
+
+    this.courseForm.setValue({
+      id: element.id + '',
+      courseName: element.courseName + '',
+      startDate: new Date(element.startDate),
+      endDate: new Date(element.endDate),
+      timeStart: timeStartClone,
+      timeEnd: timeEndClone,
+      hours: element.hours,
+      note: element.note,
+      price: element.price + '',
+      priceProject: element.priceProject,
+      institute: element.institute,
+      place: element.place
+    })
+  }
+
+  onBlurPriceStartEdit(numericValue: number): string {
+    if (numericValue % 1 !== 0) {
+      // Format number with comma as thousand separator and 2 decimal places
+      return numericValue.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+    } else {
+      // Format number with comma as thousand separator and add .00
+      return numericValue.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+      });
+    }
+  }
+
+  changeDate(dataString: string) {
+    return this.buddhistDatePipe.transform(dataString)
+  }
 
 
 }

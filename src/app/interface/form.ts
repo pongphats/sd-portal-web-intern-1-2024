@@ -12,7 +12,8 @@ export interface SectorManageForm {
   sectorCode: FormControl<string | null>;
   deptTname: FormControl<string | null>;
   deptEname: FormControl<string | null>;
-  deptName: FormControl<string | null>;
+  // deptName: FormControl<string | null>;
+  deptId: FormControl<string | null>;
   deptCode: FormControl<string | null>;
   deptManage: FormControl<string | null>;
 }
@@ -29,8 +30,8 @@ export interface budgetForm {
 export interface CourseForm {
   id: FormControl<string | null>;
   courseName: FormControl<string | null>;
-  startDate: FormControl<string | null>;
-  endDate: FormControl<string | null>;
+  startDate: FormControl<Date | null>;
+  endDate: FormControl<Date | null>;
   timeStart: FormControl<string | null>;
   timeEnd: FormControl<string | null>;
   hours: FormControl<string | null>;
