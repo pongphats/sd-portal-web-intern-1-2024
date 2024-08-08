@@ -1,19 +1,19 @@
 <div class="bg-transparent">
-    <form [formGroup]="courseForm" (submit)="createTraining()">
-        <div class="px-2 py-1 rounded-md lg:py-3 lg:px-6 bg-content shadow-card dark:bg-content-dark dark:shadow-none">
-            <p class="text-2xl text-font-header  mt-5 mb-3" id="course-form">ข้อมูลหัวข้อการอบรม</p>
+
+    <div class="px-2 py-1 rounded-md lg:py-3 lg:px-6 bg-content shadow-card dark:bg-content-dark dark:shadow-none">
+        <p class="text-2xl text-font-header  mt-5 mb-3" id="course-form">ข้อมูลหัวข้อการอบรม</p>
+        <form [formGroup]="courseForm" (submit)="createTraining()">
             <!-- part 1 -->
             <div
                 class="text-[#566a7f] rounded-md shadow p-6 w-full bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#242526] mt-5 mb-3">
 
                 <div class="flex flex-row justify-center gap-4 ">
                     <!-- courseName -->
-                    <div class="w-3/5 flex gap-2">
+                    <div class="w-3/5 flex gap-2 items-center">
                         <label for="courseName" class="w-1/5">หัวข้อในการอบรม:</label>
                         <mat-form-field appearance="fill" class="w-4/5">
+                            <mat-label>หัวข้อในการอบรม</mat-label>
                             <input id="courseName" matInput formControlName="courseName" required>
-                            <span *ngIf="courseForm.controls.courseName.invalid"
-                                class="absolute text-red-700 -right-2 -top-3 dark:text-red-500">*</span>
                             <!-- <mat-error
                                 *ngIf="this.courseForm.controls.courseName.invalid">กรุณากรอกหัวข้อในการอบรม</mat-error> -->
                         </mat-form-field>
@@ -24,13 +24,15 @@
                         <div class="w-9/12 flex gap-3">
                             <!-- startDate -->
                             <mat-form-field appearance="fill" class="w-5/12">
-                                <input id="startDate" matInput placeholder="วันที่เริ่ม" [matDatepicker]="startDate"
-                                    (click)="startDate.open()" formControlName="startDate">
+                                <mat-label>วันที่เริ่ม</mat-label>
+                                <input id="startDate" matInput [matDatepicker]="startDate" (click)="startDate.open()"
+                                    formControlName="startDate">
                                 <mat-datepicker #startDate></mat-datepicker>
                             </mat-form-field>
                             <label for="" class="flex mx-1">ถึง</label>
                             <!-- endDate -->
                             <mat-form-field appearance="fill" class="w-5/12">
+                                <mat-label>วันที่สิ้นสุด </mat-label>
                                 <input id="endDate" matInput placeholder="วันที่สิ้นสุด" [matDatepicker]="endDatePicker"
                                     (click)="endDatePicker.open()" formControlName="endDate"
                                     [min]="this.courseForm.get('startDate')?.value">
@@ -47,7 +49,8 @@
                             <label for="" class="w-3/12">เวลาที่อบรม:</label>
                             <!-- timeStart -->
                             <mat-form-field appearance="fill" class="w-4/12">
-                                <input id="timeStart" matInput placeholder="วันที่เริ่ม" [ngxMatTimepicker]="timeStart"
+                                <mat-label>เวลาที่เริ่ม</mat-label>
+                                <input id="timeStart" matInput [ngxMatTimepicker]="timeStart"
                                     ngxMatTimepickerTrigger="timeStart" [format]="24" formControlName="timeStart"
                                     required readonly>
                                 <ngx-mat-timepicker #timeStart></ngx-mat-timepicker>
@@ -57,12 +60,11 @@
                             <label for="" class="flex mx-1">ถึง</label>
                             <!-- timeEnd -->
                             <mat-form-field appearance="fill" class="w-4/12">
-                                <input id="timeEnd" matInput placeholder="วันที่สิ้นสุด" [ngxMatTimepicker]="timeEnd"
+                                <mat-label>เวลาที่สิ้นสุด</mat-label>
+                                <input id="timeEnd" matInput [ngxMatTimepicker]="timeEnd"
                                     ngxMatTimepickerTrigger="timeEnd" [format]="24" formControlName="timeEnd" required
                                     readonly>
                                 <ngx-mat-timepicker #timeEnd></ngx-mat-timepicker>
-                                <span *ngIf="courseForm.controls.timeStart.invalid || courseForm.controls.timeEnd.invalid "
-                                class="absolute text-red-700 -right-2 -top-3 dark:text-red-500">*</span>
                                 <!-- <mat-error *ngIf="this.courseForm.controls.timeEnd.invalid">กรุณากรอกวันที่</mat-error> -->
                             </mat-form-field>
                         </div>
@@ -70,10 +72,10 @@
                         <div class="w-1/2 flex gap-2">
                             <label for="hours" class="mr-6">รวม:</label>
                             <mat-form-field appearance="fill" class="w-3/4">
-                                <input id="hours" matInput formControlName="hours" (keypress)="onInputKeyPresshours($event)" required>
+                                <mat-label>รวม (ชั่วโมง)</mat-label>
+                                <input id="hours" matInput formControlName="hours"
+                                    (keypress)="onInputKeyPresshours($event)" required>
                                 <span matSuffix>ชั่วโมง</span>
-                                <span *ngIf="courseForm.controls.hours.invalid"
-                                class="absolute text-red-700 -right-12 -top-3 dark:text-red-500">*</span>
                                 <!-- <mat-error *ngIf="this.courseForm.controls.hours.invalid">กรุณากรอกชั่วโมง</mat-error> -->
                             </mat-form-field>
                         </div>
@@ -82,6 +84,7 @@
                     <div class="w-2/5 flex">
                         <label for="note" class="w-1/5">เพิ่มเติม:</label>
                         <mat-form-field appearance="fill" class="w-4/5">
+                            <mat-label>เพิ่มเติม</mat-label>
                             <textarea matInput placeholder="เช่น (20-30/5)(13,27/6)"></textarea>
                         </mat-form-field>
                     </div>
@@ -92,12 +95,11 @@
                     <div class="w-1/2 flex gap-2">
                         <label for="price" class="w-1/4">ค่าใช้จ่าย/คน:</label>
                         <mat-form-field appearance="fill" class="w-3/4">
+                            <mat-label>ค่าใช้จ่าย/คน</mat-label>
                             <input id="price" matInput formControlName="price" (blur)="onBlurPrice($event)"
-                            (keypress)="onInputKeyPressPrice($event)" required>
+                                (keypress)="onInputKeyPressPrice($event)" required>
                             <span matPrefix class="pr-2">฿ </span>
                             <span matSuffix>บาท/คน (ก่อน Vat7%)</span>
-                            <span *ngIf="courseForm.controls.price.invalid"
-                                class="absolute text-red-700 -right-40 -top-3 dark:text-red-500">*</span>
                             <!-- <mat-error
                                 *ngIf="this.courseForm.controls.price.invalid">กรุณากรอกค่าใช้จ่ายในการอบรม</mat-error> -->
                         </mat-form-field>
@@ -111,9 +113,8 @@
                     <div class="w-1/2 flex gap-2">
                         <label for="institute" class="w-1/4">สถาบันที่จัดอบรม:</label>
                         <mat-form-field appearance="fill" class="w-3/4">
+                            <mat-label>สถาบันที่จัดอบรม</mat-label>
                             <input id="institute" matInput formControlName="institute" required>
-                            <span *ngIf="courseForm.controls.institute.invalid"
-                                class="absolute text-red-700 -right-2 -top-3 dark:text-red-500">*</span>
                             <!-- <mat-error
                                 *ngIf="this.courseForm.controls.institute.invalid">กรุณากรอกสถาบันที่จัดอบรม</mat-error> -->
                         </mat-form-field>
@@ -122,9 +123,8 @@
                     <div class="w-1/2 flex gap-2">
                         <label for="place" class="">สถานที่จัดอบรม:</label>
                         <mat-form-field appearance="fill" class="w-3/4">
+                            <mat-label>สถานที่จัดอบรม</mat-label>
                             <textarea d="place" matInput placeholder="" formControlName="place"></textarea>
-                            <span *ngIf="courseForm.controls.place.invalid"
-                                class="absolute text-red-700 -right-2 -top-3 dark:text-red-500">*</span>
                             <!-- <mat-error
                                 *ngIf="this.courseForm.controls.place.invalid">กรุณากรอกสถานที่จัดอบรม</mat-error> -->
                         </mat-form-field>
@@ -134,7 +134,7 @@
             </div>
             <!-- part  2 -->
             <div class="flex justify-center">
-                <button mat-raised-button [disabled]="courseForm.invalid" class="flex items-center text-center {{
+                <button mat-raised-button [disabled]="courseForm.invalid" class="flex items-center text-center  {{
                     courseForm.invalid
                       ? 'cursor-not-allowed bg-gray-400 border-2 border-gray-400'
                       : 'cursor-pointer bg-[#696cf8] hover:bg-[#696cf8] !text-white hover:!text-white border-2 border-[#696cf8]'
@@ -143,6 +143,75 @@
                     <span class="{{courseForm.invalid ? '' : 'text-white'}}">บันทึกข้อมูล</span>
                 </button>
             </div>
-        </div>
-    </form>
+        </form>
+
+        <table mat-table [dataSource]="allCourses" class="mat-elevation-z8">
+
+            <!-- หัวข้อในการอบรม Column -->
+            <ng-container matColumnDef="courseName">
+                <th mat-header-cell *matHeaderCellDef> หัวข้อในการอบรม </th>
+                <td mat-cell *matCellDef="let element"> {{element.courseName}} </td>
+            </ng-container>
+
+            <!-- วันเริ่มอบรม Column -->
+            <ng-container matColumnDef="startDate">
+                <th mat-header-cell *matHeaderCellDef> วันเริ่มอบรม </th>
+                <td mat-cell *matCellDef="let element"> {{element.startDate}} </td>
+            </ng-container>
+
+            <!-- วันสิ้นสุดการอบรม Column -->
+            <ng-container matColumnDef="endDate">
+                <th mat-header-cell *matHeaderCellDef> วันสิ้นสุดการอบรม </th>
+                <td mat-cell *matCellDef="let element"> {{element.endDate}} </td>
+            </ng-container>
+
+            <!-- เวลา Column -->
+            <ng-container matColumnDef="time">
+                <th mat-header-cell *matHeaderCellDef> เวลา </th>
+                <td mat-cell *matCellDef="let element"> {{element.time}} </td>
+            </ng-container>
+
+            <!-- เพิ่มเติม Column -->
+            <ng-container matColumnDef="note">
+                <th mat-header-cell *matHeaderCellDef> เพิ่มเติม </th>
+                <td mat-cell *matCellDef="let element"> {{element.note}} </td>
+            </ng-container>
+
+            <!-- ค่าใช้จ่าย Column -->
+            <ng-container matColumnDef="price">
+                <th mat-header-cell *matHeaderCellDef> ค่าใช้จ่าย </th>
+                <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+            </ng-container>
+
+            <!-- ผู้จัดอบรม Column -->
+            <ng-container matColumnDef="institute">
+                <th mat-header-cell *matHeaderCellDef> ผู้จัดอบรม </th>
+                <td mat-cell *matCellDef="let element"> {{element.institute}} </td>
+            </ng-container>
+
+            <!-- สถานที่ฝึกอบรม Column -->
+            <ng-container matColumnDef="place">
+                <th mat-header-cell *matHeaderCellDef> สถานที่ฝึกอบรม </th>
+                <td mat-cell *matCellDef="let element"> {{element.place}} </td>
+            </ng-container>
+
+            <!-- edit / delete Column -->
+            <ng-container matColumnDef="editOrDelete">
+                <th mat-header-cell *matHeaderCellDef class="w-[20vw]"> สถานที่ฝึกอบรม </th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-raised-button type="button">ปรับปรุงข้อมูล</button>
+                    <button mat-raised-button type="button">ลบข้อมูล</button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+    </div>
+
+
+
+
+
 </div>

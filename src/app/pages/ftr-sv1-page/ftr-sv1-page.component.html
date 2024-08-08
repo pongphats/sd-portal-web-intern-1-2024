@@ -30,6 +30,7 @@
             id="budgetYear"
             formControlName="budgetYear"
             type="text"
+            placeholder="โปรดระบุปี พ.ศ. ที่ต้องการ"
           />
           <mat-error *ngIf="this.budgetForm.controls.budgetYear.invalid"
             >กรุณากรอกข้อมูล
@@ -37,6 +38,7 @@
         </mat-form-field>
         <mat-label class="self-center-cm" for="dept">ฝ่าย/แผนก</mat-label>
         <mat-form-field appearance="outline" class="grow mx-3">
+          <mat-label>หัวข้อในการอบรม/สัมมนา</mat-label>
           <mat-select formControlName="dept" id="dept">
             <mat-option *ngFor="let dept of depts" [value]="dept">{{
               dept
@@ -64,6 +66,7 @@
             (keypress)="onInputKeyPressFee($event)"
             (blur)="onBlurFee($event, 0)"
             class="w-2/12"
+            placeholder="0.00"
           /><span matPrefix class="pr-2">฿ </span>
           <span matSuffix>บาท</span>
           <mat-error *ngIf="this.budgetForm.controls.dept.invalid"
@@ -82,6 +85,7 @@
             (keypress)="onInputKeyPressAccommodation($event)"
             (blur)="onBlurFee($event, 1)"
             class="w-2/12"
+            placeholder="0.00"
           /><span matPrefix class="pr-2">฿ </span>
           <span matSuffix>บาท</span>
           <mat-error *ngIf="this.budgetForm.controls.dept.invalid"
@@ -100,6 +104,7 @@
             type="text"
             (focus)="onTotalBudget()"
             class="w-2/12"
+            placeholder="0.00"
           />
           <span matPrefix class="pr-2">฿ </span>
           <span matSuffix>บาท</span>
