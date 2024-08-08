@@ -52,7 +52,10 @@ export class ManageCompanyComponent implements OnInit {
       map(deptManage => (deptManage ? this._filter(deptManage) : this.adminEmps.slice())),
     );
 
-    this.genAdmin();
+    this.genAdmin();//1
+
+    this.loadSpecificCompanySectors();//2
+
   }
 
 
@@ -98,7 +101,7 @@ export class ManageCompanyComponent implements OnInit {
 
   //add
   async createSectorDept() {
-
+    //companyId ส่งไปหลัง
     console.log("Pass")
     const companyId = this.sectorManageForm.value.company || ''; // แปลงค่าจากฟอร์มเป็นหมายเลข
     console.log(companyId)
@@ -150,6 +153,59 @@ export class ManageCompanyComponent implements OnInit {
 
 
   }
+
+
+  //Table
+  dataManageCompany: any[] = [];
+  
+
+  displayedColumns: string[] = ['sectorTname', 'sectorEname', 'sectorCode', 'deptTname','deptEname', 'deptCode', 'deptId'];
+  // dataSource = this.ELEMENT_DATA;
+
+  // async loadManageCompanyData() {
+  //   try {
+  //     const data = await this.commonService.getSectorAndDeptsListByCompanyName();
+  //     this.dataManageCompany = data;
+  //     console.log('Data loaded successfully:', this.dataManageCompany);
+  //   } catch (error) {
+  //     console.error('Error loading manage company data:', error);
+  //   }
+  // }
+
+
+   async loadSpecificCompanySectors() {
+    // ดึงค่าของ companyId จากฟอร์ม
+     const companyId = this.sectorManageForm.value.company || '';
+     console.log(`Loading sectors for company: ${companyId}`); // Debugging
+     try{
+      // const companySectors = await this.commonService.getSectorAndDeptsListByCompanyName();
+      const companySectors = await this.commonService.getSectorAndDeptsListByCompanyName();
+
+      
+
+     console.log('OtherCompany sector: ', companySectors)
+     this.dataManageCompany = companySectors;
+     console.log('Data for table:', this.dataManageCompany);
+
+
+   
+   
+    console.log('Data for table:', this.dataManageCompany);
+  } catch (error) {
+    console.error('Error loading manage company data:', error);
+  }
+     
+  }
+
+  
+  
+
+
+
+
+
+
+ 
 
 
 

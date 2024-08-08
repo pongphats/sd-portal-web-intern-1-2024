@@ -84,6 +84,7 @@ export class CommonService {
     } catch (error) {
       console.error(error);
     }
+    console.log(sectors)
     return sectors;
   }
 
