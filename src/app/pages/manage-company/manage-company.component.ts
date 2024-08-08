@@ -36,24 +36,27 @@ export class ManageCompanyComponent implements OnInit {
       sectorCode: ['', [Validators.required]],
       deptTname: ['', [Validators.required]],
       deptEname: ['', [Validators.required]],
-      deptId: ['', Validators.required],
-      deptCode: ['', [Validators.required]],
+      deptId: ['', [Validators.required]], //ไอดีแผนก
+      deptCode: ['', [Validators.required]], //รหัสแผนก
       deptManage: ['', [Validators.required]],
-    })
+    });
 
   }
 
 
   ngOnInit(): void {
     //Auto
-    this.filteredOptions = this.deptManage.valueChanges.pipe(
+    this.filteredOptions = this.sectorManageForm.get('deptManage')!.valueChanges.pipe(
       startWith(''),
-      map(value => (typeof value === 'string' ? value : value.deptManage)),
+      map(value => (typeof value === 'string' ? value : '')),
       map(deptManage => (deptManage ? this._filter(deptManage) : this.adminEmps.slice())),
     );
 
     this.genAdmin();
   }
+
+
+  
 
 
 
@@ -66,6 +69,7 @@ export class ManageCompanyComponent implements OnInit {
       if (res) {
         this.adminEmps = res;
         console.log(res)
+        console.log('Admin Options:', this.adminEmps); // ดูว่ามีข้อมูลถูกต้องหรือไม่
       } else {
         this.adminEmps = []; // Or handle the case where `res` is `undefined`
       }
@@ -82,48 +86,54 @@ export class ManageCompanyComponent implements OnInit {
 
 
   //Auto
-  deptManage = new FormControl();
-  // myControl = new FormControl();
-  // options: User[] = [{ deptManage: 'UUU' }, { deptManage: 'RRR' }, { deptManage: 'to' }];
   filteredOptions!: Observable<string[]>;
 
-  displayFn(user: User): string {
-    return user && user.deptManage ? user.deptManage : '';
-  }
-
-  private _filter(deptManage: string): string[] {
-    const filterValue = deptManage.toLowerCase();
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
 
     return this.adminEmps
       .filter((option: string) => option.toLowerCase().includes(filterValue))
       .sort();
   }
 
+  //add
   async createSectorDept() {
 
-    console.log("GO")
+    console.log("Pass")
     const companyId = this.sectorManageForm.value.company || ''; // แปลงค่าจากฟอร์มเป็นหมายเลข
     console.log(companyId)
     const res = await this.commonService.getCompanyIdByName(companyId).toPromise();
     console.log(res)
 
+    console.log(this.sectorManageForm)
+
+
+    // console.log('deptManage value:', this.sectorManageForm.value.deptManage);
+
+    // ตรวจสอบและแยกชื่อเต็ม
+    const deptManageValue = this.sectorManageForm.value.deptManage || ''; // ค่าจากฟอร์ม
+    console.log('deptManage value:', this.sectorManageForm.value.deptManage);
+
+    const manageFullName = typeof deptManageValue === 'string' ? deptManageValue.split(' ') : [];
+    const manageFirstName =
+      manageFullName.length === 3 ? manageFullName[1] : (manageFullName[0] || '');
+    const manageLastName =
+      manageFullName.length === 3 ? manageFullName[2] : (manageFullName[1] || '');
 
     //interface request -> CreateSectorRequest / form -> SectorManageForm
     //หน้า request หลัง form
     const req: CreateSectorRequest = {
       companyId: res || 0,
-      sectorTname: this.sectorManageForm.value.sectorTname || '',
-      sectorFullName: this.sectorManageForm.value.sectorEname || '', 
-      sectorCode: this.sectorManageForm.value.sectorCode || '',
-      deptTname: this.sectorManageForm.value.deptTname || '',
-      deptFullName: this.sectorManageForm.value.deptEname || '',
-      deptCode: this.sectorManageForm.value.deptCode || '',
-      firstName: "",
-      lastName: "",
-      sectorName: this.sectorManageForm.value.sectorCode || '',
-      deptName: this.sectorManageForm.value.deptCode || '',
-
-
+      sectorTname: this.sectorManageForm.value.sectorTname || '',  //ฝ่ายไทย
+      sectorFullName: this.sectorManageForm.value.sectorEname || '',   //ฝ่ายอังกฤษ
+      sectorCode: this.sectorManageForm.value.sectorCode || '',      //รหัสฝ่าย
+      deptTname: this.sectorManageForm.value.deptTname || '',        //แผนกไทย
+      deptFullName: this.sectorManageForm.value.deptEname || '',    //แผนกอังกฤษ
+      deptCode: this.sectorManageForm.value.deptId || '',
+      firstName: manageFirstName,
+      lastName: manageLastName,
+      sectorName: this.sectorManageForm.value.sectorCode || '', //
+      deptName: this.sectorManageForm.value.deptCode || '',  //รหัสแผนก 
     };
 
     console.log(req)
@@ -137,12 +147,12 @@ export class ManageCompanyComponent implements OnInit {
     }
 
 
-    
+
 
   }
 
-  
-  
+
+
 
 
 

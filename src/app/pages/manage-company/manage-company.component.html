@@ -30,9 +30,9 @@
                     <div class="flex justify-center items-center"> <!-- ใช้ space-x-4 เพิ่มระยะห่างระหว่างองค์ประกอบ -->
                         <label for="" class="flex-initial self-center w-28">ฝ่าย (ภาษาไทย):</label>
                         <!-- w-28 เลขน้อยขยับชิดซ้าย -->
-                        <mat-form-field appearance="fill" formControlName="sectorTname">
+                        <mat-form-field appearance="fill">
                             <mat-label>ระบุชื่อฝ่ายเป็นภาษาไทย</mat-label>
-                            <input matInput> 
+                            <input matInput formControlName="sectorTname">
                         </mat-form-field>
                     </div>
 
@@ -41,15 +41,15 @@
                         <label for="" class="w-40 flex-shrink-0">ฝ่าย (ภาษาอังกฤษ):</label>
                         <mat-form-field appearance="fill" class="flex-grow" formControlName="sectorEname">
                             <mat-label>ระบุชื่อฝ่ายเป็นภาษาอังกฤษ</mat-label>
-                            <input matInput>
+                            <input matInput formControlName="sectorEname">
                         </mat-form-field>
                     </div>
 
                     <div class="flex items-center space-x-4 justify-end">
                         <label for="" class="flex-initial self-center w-18">รหัสฝ่าย:</label>
-                        <mat-form-field appearance="fill" formControlName="sectorCode">
+                        <mat-form-field appearance="fill">
                             <mat-label>รหัสฝ่าย</mat-label>
-                            <input matInput>
+                            <input matInput formControlName="sectorCode">
                         </mat-form-field>
                     </div>
 
@@ -59,9 +59,9 @@
 
                     <div class="flex justify-start">
                         <label for="" class="flex-initial self-center">แผนก (ภาษาไทย):</label>
-                        <mat-form-field appearance="fill" style="margin-left: 16px;" formControlName="deptTname">
+                        <mat-form-field appearance="fill" style="margin-left: 16px;">
                             <mat-label>ระบุชื่อแผนกเป็นภาษาไทย</mat-label>
-                            <input matInput>
+                            <input matInput formControlName="deptTname">
                         </mat-form-field>
                     </div>
 
@@ -71,7 +71,7 @@
                         <!--w-40 ตั้งค่าความกว้างของlabel flex-shrink-0 ป้องกันไม่ให้ <label> หดตัว - flex-grow ทำให้ <mat-form-field> ขยายเพื่อเติมพื้นที่ที่เหลือ-->
                         <mat-form-field appearance="fill" class="flex-grow" formControlName="deptEname">
                             <mat-label>ระบุชื่อแผนกเป็นภาษาอังกฤษ</mat-label>
-                            <input matInput>
+                            <input matInput formControlName="deptEname">
                         </mat-form-field>
                     </div>
 
@@ -80,11 +80,11 @@
                         <mat-form-field appearance="fill" class="small-form-field" formControlName="deptCode">
                             <!--css - class="small-form-field"-->
                             <mat-label>รหัสแผนก</mat-label>
-                            <input matInput>
+                            <input matInput formControlName="deptCode">
                         </mat-form-field>
                         <mat-form-field appearance="fill" class="small-form-field">
                             <mat-label>ไอดีแผนก</mat-label>
-                            <input matInput>
+                            <input matInput formControlName="deptId">
                         </mat-form-field>
                     </div>
 
@@ -93,17 +93,17 @@
                 <div class="grid grid-cols-3 gap-4">
                     <div class="flex justify-center items-center">
                         <label for="" class="flex-initial self-center w-28">ผู้ดูแลแผนก:</label>
-                        <form>
-                            <mat-form-field class="example-full-width" appearance="fill">
-                                <mat-label>ระบุชื่อผู้ดูแลแผนก</mat-label>
-                                <input matInput [formControl]="deptManage" [matAutocomplete]="auto">
-                                <mat-autocomplete #auto="matAutocomplete">
-                                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                                        {{option}}
-                                    </mat-option>
-                                </mat-autocomplete>
-                            </mat-form-field>
-                        </form>
+                        <!-- <form [formGroup]="sectorManageForm"> -->
+                        <mat-form-field class="example-full-width" appearance="fill">
+                            <mat-label>ระบุชื่อผู้ดูแลแผนก</mat-label>
+                            <input matInput formControlName="deptManage" [matAutocomplete]="auto">
+                            <mat-autocomplete #auto="matAutocomplete">
+                                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                                    {{option}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                        <!-- </form> -->
                     </div>
                 </div>
 
