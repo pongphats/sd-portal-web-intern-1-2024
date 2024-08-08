@@ -20,21 +20,36 @@ export interface SectorManageForm {
 export interface budgetForm {
   company: FormControl<string | null>;
   budgetYear: FormControl<string | null>;
-  deptYear: FormControl<string | null>;
   dept: FormControl<string | null>;
   budgetTrain: FormControl<string | null>;
   budgetCer: FormControl<string | null>;
   budgetTotal: FormControl<string | null>;
 }
 
+export interface CourseForm {
+  id: FormControl<string | null>;
+  courseName: FormControl<string | null>;
+  startDate: FormControl<string | null>;
+  endDate: FormControl<string | null>;
+  timeStart: FormControl<string | null>;
+  timeEnd: FormControl<string | null>;
+  hours: FormControl<string | null>;
+  note: FormControl<string | null>;
+  price: FormControl<string | null>;
+  priceProject: FormControl<string | null>;
+  institute: FormControl<string | null>;
+  place: FormControl<string | null>;
+  // type: FormControl<string | null>;
+}
+
 export interface trainingForm {
   company: FormControl<string | null>;
   deptCode: FormControl<string | null>;
   deptId: FormControl<string | null>;
-  addMissionDate: FormControl<string | null>;
+  addMissionDate: FormControl<Date | null>;
   formsType: FormControl<string | null>;
-  courseName : FormControl<string | null>;
-  courseObjective : FormControl<string | null>;
+  courseName: FormControl<string | null>;
+  courseObjective: FormControl<string | null>;
   courseDuration: FormControl<string | null>;
   courseDescription: FormControl<string | null>;
   courseProject: FormControl<string | null>;
@@ -42,7 +57,7 @@ export interface trainingForm {
   courseTeacher: FormControl<string | null>;
   courseLocation: FormControl<string | null>;
   budgetType: FormControl<string | null>;
-  budgetDescription : FormControl<string | null>;
+  budgetDescription: FormControl<string | null>;
   employeeId: FormControl<string | null>;
   employeeName: FormControl<string | null>;
   employeePosition: FormControl<string | null>;
