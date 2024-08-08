@@ -20,3 +20,20 @@ export interface sector {
   sectorTname: string;
   department: department;
 }
+
+export interface Course {
+  id: number;
+  courseName: string;
+  startDate: string;
+  endDate: string;
+  hours: string;
+  time: string;
+  note: string;
+  objective: string;
+  price: number;
+  priceProject: string;
+  place: string;
+  institute: string;
+  active: number;
+  type: number;
+}

@@ -83,4 +83,8 @@ export class HeaderSystemComponent implements OnInit {
     }
     return '';
   }
+  protected onLogout(): void {
+    this.authService.logout();
+    this.router.navigate(['/sign-in']);
+  }
 }

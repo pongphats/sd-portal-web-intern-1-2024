@@ -1,0 +1,45 @@
+// // input
+// // >>> radius
+// ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
+//     border-radius: 4px 4px 4px 4px !important;
+//     padding: .5vw !important;
+//     background-color: rgb(255, 255, 255);
+// }
+
+// // >>> mat-form-field
+// // ::ng-deep .mat-form-field {
+// //     margin-left: 0vw !important;
+// // }
+
+// // >>> underline
+// ::ng-deep .mat-form-field-underline {
+//     display: none;
+// }
+
+// // >>> mat-form-field > input
+// ::ng-deep .mat-form-field-appearance-fill .mat-form-field-infix {
+//     padding: 0px !important;
+//     border-top: 0 !important;
+//     border-radius: 4px;
+// }
+
+
+// // >>> mat-error > mat-form-field-wrapper
+// ::ng-deep .mat-form-field-subscript-wrapper {
+//     margin-top: 2px;
+//     text-align: center;
+// }
+
+// // >>> mat-error > *
+// ::ng-deep .mat-form-field-label-wrapper {
+//     // left: 100% !important;
+//     // top: -23px;
+//     // width: 15% !important;
+//     display: none;  
+// }
+
+// table {
+//     width: 100%;
+//     margin-top: 2vh;
+//     box-shadow: 0;
+// }

@@ -27,25 +27,34 @@ export class SwalService {
 
   async showConfirm() {
     const resutl = await Swal.fire({
-        title: 'ยืนยันการดำเนินการ?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'ยืนยัน',
-        cancelButtonText: 'ยกเลิก',
-        allowEscapeKey: false,
-        allowOutsideClick: false,
- 
-     });
-     return resutl.isConfirmed;
+      title: 'ยืนยันการดำเนินการ?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'ยืนยัน',
+      cancelButtonText: 'ยกเลิก',
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+    });
+    return resutl.isConfirmed;
   }
 
   showError(message: string) {
     Swal.fire({
-      title : 'เกิดข้อผิดพลาด',
+      title: 'เกิดข้อผิดพลาด',
       text: message,
       icon: 'error',
       confirmButtonText: 'ตกลง',
-      confirmButtonColor : 'blue',
+      confirmButtonColor: 'blue',
+    });
+  }
+
+  showErrorDepartment(message: string) {
+    Swal.fire({
+      title: 'กรุณาเลือกเเผนก',
+      text: message,
+      icon: 'error',
+      confirmButtonText: 'ตกลง',
+      confirmButtonColor: 'blue',
     });
   }
 }

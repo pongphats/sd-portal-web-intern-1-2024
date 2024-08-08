@@ -68,7 +68,9 @@ export class CommonService {
     return timeString;
   }
 
-  async getSectorAndDeptsListByCompanyName(companyName = 'PCCTH'): Promise<sector[]> {
+  async getSectorAndDeptsListByCompanyName(
+    companyName = 'PCCTH'
+  ): Promise<sector[]> {
     let sectors: sector[] = [];
     try {
       const res = await this.apiService
@@ -83,5 +85,9 @@ export class CommonService {
       console.error(error);
     }
     return sectors;
+  }
+
+  convertNumberToStringFormatted(number: number): string {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 }
