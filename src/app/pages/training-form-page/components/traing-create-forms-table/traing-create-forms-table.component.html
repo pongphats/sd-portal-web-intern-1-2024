@@ -6,15 +6,17 @@
         <th class="text-start p-4">รหัสพนักงาน</th>
         <th class="text-start p-4">ชื่อ - นามสกุล</th>
         <th class="text-start p-4">หัวข้อในการอบรม/สัมมนา</th>
+        <th class="text-start p-4">ประเภทฟอร์ม</th>
         <th></th>
       </tr>
     </thead>
     <tbody class="bg-content dark:bg-content-dark">
-      <tr>
-        <td class="p-4">PCCTH</td>
-        <td class="p-4">123456</td>
-        <td class="p-4">ชื่อ - นามสกุล</td>
-        <td class="p-4">หัวข้อในการอบรม/สัมมนา</td>
+      <tr *ngFor="let item of trainingList">
+        <td class="p-4">{{ item.company }}</td>
+        <td class="p-4">{{ item.employeeId }}</td>
+        <td class="p-4">{{ item.employeeName }}</td>
+        <td class="p-4">{{ item.courseName}}</td>
+        <td class="p-4">{{ item.formsType | formsTypeTranslate }}</td>
         <td class="p-4">
           <button mat-flat-button color="warn">
             <span class="!text-white space-x-2"

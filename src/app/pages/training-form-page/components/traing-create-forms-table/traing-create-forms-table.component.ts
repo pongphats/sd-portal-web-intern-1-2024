@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonService } from 'src/app/services/common.service';
+import { SwalService } from 'src/app/services/swal.service';
 
 @Component({
   selector: 'app-traing-create-forms-table',
@@ -9,7 +10,7 @@ import { CommonService } from 'src/app/services/common.service';
 export class TraingCreateFormsTableComponent implements OnInit {
   trainingList: any[] = [];
 
-  constructor(private commonService: CommonService) {}
+  constructor(private commonService: CommonService, private swalService : SwalService) {}
 
   ngOnInit(): void {
     this.initTrainingList();
@@ -19,7 +20,9 @@ export class TraingCreateFormsTableComponent implements OnInit {
     this.commonService.getTrainingList().subscribe((value: any[]) => {
       if (value) {
         this.trainingList = value;
+        console.log(this.trainingList);
       }
     });
   }
+  
 }

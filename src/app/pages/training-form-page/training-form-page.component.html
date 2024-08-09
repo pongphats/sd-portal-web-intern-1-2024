@@ -72,7 +72,7 @@
           <mat-radio-button class="mr-4" value="training"
             >ฝึกอบรม/สัมมนา</mat-radio-button
           >
-          <mat-radio-button value="getCer">สอบ Certificate</mat-radio-button>
+          <mat-radio-button value="getCertificate">สอบ Certificate</mat-radio-button>
         </mat-radio-group>
       </div>
 
@@ -324,7 +324,15 @@
       </div>
 
       <div class="w-full flex justify-end">
-        <button class="!bg-green-500 dark:bg-green-600" mat-raised-button>
+        <button
+          [disabled]="trainingForm.invalid"
+          (click)="pushToTable()"
+          [ngClass]="{
+            '!bg-green-500 dark:!bg-green-600': trainingForm.valid,
+            '!bg-green-300 !cursor-not-allowed': trainingForm.invalid
+          }"
+          mat-raised-button
+        >
           <span class="!text-white"
             >เพิ่มฟอร์ม <i class="bx bx-vertical-bottom"></i
           ></span>

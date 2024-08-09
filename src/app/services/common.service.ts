@@ -4,6 +4,7 @@ import { BehaviorSubject, map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { sector } from '../interface/common';
 import { ApiService } from './api.service';
+import { SwalService } from './swal.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,7 @@ export class CommonService {
 
   private trainingList = new BehaviorSubject<any[]>([]);
 
-  constructor(private http: HttpClient, private apiService: ApiService) {}
+  constructor(private http: HttpClient, private apiService: ApiService, private swalService : SwalService) {}
 
   setTrainingList(value: any[]) {
     this.trainingList.next(value);
@@ -28,9 +29,20 @@ export class CommonService {
   // Push a new item to the trainingList
   pushTraining(item: any) {
     const currentList = this.trainingList.getValue();
-    currentList.push(item);
-    this.trainingList.next(currentList);
+    
+    // Check if the item already exists in the list
+    const isDuplicate = currentList.some(existingItem => JSON.stringify(existingItem) === JSON.stringify(item));
+    
+    if (isDuplicate) {
+      // Alert the user if the item is already in the list
+      this.swalService.showWarning('ฟอร์มนี้ถูกเพิ่มไปแล้ว');
+    } else {
+      // If the item is not a duplicate, push it to the list
+      currentList.push(item);
+      this.trainingList.next(currentList);
+    }
   }
+  
 
   // Pop the last item from the trainingList
   popTraining() {
