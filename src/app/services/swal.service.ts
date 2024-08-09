@@ -34,6 +34,8 @@ export class SwalService {
       cancelButtonText: 'ยกเลิก',
       allowEscapeKey: false,
       allowOutsideClick: false,
+      confirmButtonColor: 'blue',
+      cancelButtonColor: 'red',
     });
     return resutl.isConfirmed;
   }

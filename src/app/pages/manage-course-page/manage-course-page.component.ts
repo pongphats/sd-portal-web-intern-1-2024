@@ -29,8 +29,8 @@ export class ManageCoursePageComponent implements OnInit {
     this.courseForm = this.fb.group({
       id: [''],
       courseName: ['', Validators.required],
-      startDate: [null, Validators.required],
-      endDate: [null, Validators.required],
+      startDate: [null],
+      endDate: [null],
       timeStart: ['', Validators.required],
       timeEnd: ['', Validators.required],
       hours: ['', Validators.required],
@@ -76,17 +76,13 @@ export class ManageCoursePageComponent implements OnInit {
         };
 
         if (this.editMode) {
-          console.log("edit finish : ", req)
           // call editCourseById API
-          const res = await this.apiService.editCourseById(this.editId,req).toPromise();
-          console.log(res)
+          const res = await this.apiService.editCourseById(this.editId, req).toPromise();
 
           if (res?.responseMessage == 'ทำรายการเรียบร้อย') {
-            this.courseForm.reset();
-            // location.reload();
-            this.editMode = false
-            this.editId = -1
+            this.clearForm()
             this.getAllCourses()
+            // location.reload()
           } else {
             throw new Error(res?.msg);
           }
@@ -94,8 +90,9 @@ export class ManageCoursePageComponent implements OnInit {
           // call createTraining API
           const res = await this.apiService.createTraining(req).toPromise();
           if (res?.responseMessage == 'ทำรายการเรียบร้อย') {
-            this.courseForm.reset();
+            this.clearForm()
             this.getAllCourses()
+            // location.reload()
           } else {
             throw new Error(res?.msg);
           }
@@ -109,7 +106,6 @@ export class ManageCoursePageComponent implements OnInit {
 
     // hide loading
     Swal.close();
-    // location.reload();
   }
 
   allCourses: any[] = [];
@@ -195,7 +191,6 @@ export class ManageCoursePageComponent implements OnInit {
   editMode: boolean = false;
   editId: number = -1;
   editBtn(element: CreateTrainingResponse) {
-    console.log("edit", element)
     this.editMode = true;
     this.editId = Number(element.id);
 
@@ -234,6 +229,64 @@ export class ManageCoursePageComponent implements OnInit {
 
   changeDate(dataString: string) {
     return this.buddhistDatePipe.transform(dataString)
+  }
+
+  deleteId: number = -1;
+  async deleteBtn(element: CreateTrainingResponse) {
+
+    try {
+      this.deleteId = Number(element.id);
+
+      const confirmed = await this.swalService.showConfirm();
+      if (confirmed) {
+        const res = await this.apiService.deleteCourseById(this.deleteId).toPromise();
+        this.getAllCourses()
+      } else {
+        console.log("ยกเลิก")
+      }
+      this.deleteId = -1 // clear
+
+    } catch (error) {
+      // show error
+      console.error(error);
+      this.swalService.showError('หัวข้อนี้ไม่สามารถลบได้');
+    }
+
+  }
+
+  clearForm() {
+    this.courseForm.reset();
+
+    // this.courseForm.reset({
+    //   id: '',
+    //   courseName: '',
+    //   startDate: null,
+    //   endDate: null,
+    //   timeStart: '',
+    //   timeEnd: '',
+    //   hours: '',
+    //   note: '',
+    //   price: '',
+    //   priceProject: '',
+    //   institute: '',
+    //   place: ''
+    // });
+
+    this.editMode = false
+    this.editId = -1
+  }
+
+
+  // test ตัวแปร
+  testVariable() {
+    console.log("editMode : ", this.editMode)
+    console.log("editId : ", this.editId)
+    console.log("deleteBtn : ", this.deleteBtn)
+    console.log("deleteId : ", this.deleteId)
+    console.log("courseForm : ", this.courseForm)
+    console.log("allCourses : ", this.allCourses)
+    console.log("invalidhoursInput : ", this.invalidhoursInput)
+    console.log("invalidhoursInput : ", this.invalidhoursInput)
   }
 
 

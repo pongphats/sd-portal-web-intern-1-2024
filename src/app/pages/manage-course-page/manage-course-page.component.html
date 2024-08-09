@@ -86,7 +86,7 @@
                         <label for="note" class="w-1/5">เพิ่มเติม:</label>
                         <mat-form-field appearance="fill" class="w-4/5">
                             <mat-label>เพิ่มเติม</mat-label>
-                            <textarea matInput placeholder="เช่น (20-30/5)(13,27/6)"></textarea>
+                            <textarea matInput formControlName="note" placeholder="เช่น (20-30/5)(13,27/6)"></textarea>
                         </mat-form-field>
                     </div>
                 </div>
@@ -141,10 +141,12 @@
                       : 'cursor-pointer bg-[#696cf8] hover:bg-[#696cf8] !text-white hover:!text-white border-2 border-[#696cf8]'
                   }}">
                     <i class="bx bx-plus pr-2 {{courseForm.invalid ? '' : 'text-white'}}"></i>
-                    <span class="{{courseForm.invalid ? '' : 'text-white'}}">{{ editMode ? 'ปรับปรุงข้อมูล' :'บันทึกข้อมูล'}}</span>
+                    <span class="{{courseForm.invalid ? '' : 'text-white'}}">{{ editMode ? 'ปรับปรุงข้อมูล'
+                        :'บันทึกข้อมูล'}}</span>
                 </button>
 
-                <button mat-raised-button *ngIf="editMode" type="button" class="flex items-center text-center bg-[#ec7063]">
+                <button mat-raised-button *ngIf="editMode" type="button"
+                    class="flex items-center text-center bg-[#ec7063]" (click)="clearForm()">
                     <i class='bx bx-x pr-2 text-white'></i>
                     <span class="text-white">เคลียร์ข้อมูล</span>
                 </button>
@@ -199,7 +201,8 @@
                 <ng-container matColumnDef="price">
                     <th mat-header-cell *matHeaderCellDef class="!text-center text-sm font-bold text-black w-[8vw]">
                         ค่าใช้จ่าย </th>
-                    <td mat-cell *matCellDef="let element" class="!px-2 !py-2 text-sm text-slate-600"> {{element.price}}
+                    <td mat-cell *matCellDef="let element" class="!px-2 !py-2 text-sm text-slate-600 !text-right">
+                        {{element.price}}
                     </td>
                 </ng-container>
 
@@ -228,7 +231,7 @@
                             <button mat-raised-button type="button" (click)="editBtn(element)">
                                 <p class="text-[#f39c12]"><i class='bx bx-edit'></i>ปรับปรุงข้อมูล</p>
                             </button>
-                            <button mat-raised-button type="button">
+                            <button mat-raised-button type="button" (click)="deleteBtn(element)">
                                 <p class="text-[#cb4335]"><i class='bx bx-trash'></i>ลบข้อมูล</p>
                             </button>
                         </div>
