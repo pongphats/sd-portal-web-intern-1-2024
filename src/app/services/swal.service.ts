@@ -59,4 +59,13 @@ export class SwalService {
       confirmButtonColor: 'blue',
     });
   }
+
+  showWarning(message: string) {
+    Swal.fire({
+      text: message,
+      icon: 'warning',
+      confirmButtonText: 'ตกลง',
+      confirmButtonColor: 'orange',
+    });
+  }
 }

@@ -12,9 +12,8 @@ export interface SectorManageForm {
   sectorCode: FormControl<string | null>;
   deptTname: FormControl<string | null>;
   deptEname: FormControl<string | null>;
-  // deptName: FormControl<string | null>;
-  deptId: FormControl<string | null>;
-  deptCode: FormControl<string | null>;
+  deptId: FormControl<string | null>; //id 4หลัก  //dept code from back
+  deptCode: FormControl<string | null>; //dept name จากหลังบ้าน มาใส่ ใน deptCode
   deptManage: FormControl<string | null>;
 }
 

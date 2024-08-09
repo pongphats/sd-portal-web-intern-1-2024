@@ -99,4 +99,17 @@ export class ApiService {
       })
       .pipe(map((res) => res));
   }
+
+  getAllPrivilegeApproversByDpetId(
+    deptId: number
+  ): Observable<ApiResponse<Employee[]>> {
+    return this.http.get<ApiResponse<Employee[]>>(
+      `${this.trainingUrl}/findAllPrivilegeApproversByDept`,
+      {
+        params: {
+          deptId: deptId,
+        },
+      }
+    ).pipe(map((res) => res));
+  }
 }
