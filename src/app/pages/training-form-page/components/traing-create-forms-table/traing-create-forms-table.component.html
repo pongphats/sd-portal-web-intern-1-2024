@@ -11,14 +11,14 @@
       </tr>
     </thead>
     <tbody class="bg-content dark:bg-content-dark">
-      <tr *ngFor="let item of trainingList">
+      <tr *ngFor="let item of trainingList; let i = index">
         <td class="p-4">{{ item.company }}</td>
         <td class="p-4">{{ item.employeeId }}</td>
         <td class="p-4">{{ item.employeeName }}</td>
         <td class="p-4">{{ item.courseName}}</td>
         <td class="p-4">{{ item.formsType | formsTypeTranslate }}</td>
         <td class="p-4">
-          <button mat-flat-button color="warn">
+          <button (click)="removeTrainning(i)" mat-flat-button color="warn">
             <span class="!text-white space-x-2"
               >ลบ <i class="bx bxs-trash"></i>
             </span>

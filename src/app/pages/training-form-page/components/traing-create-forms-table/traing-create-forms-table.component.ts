@@ -10,7 +10,10 @@ import { SwalService } from 'src/app/services/swal.service';
 export class TraingCreateFormsTableComponent implements OnInit {
   trainingList: any[] = [];
 
-  constructor(private commonService: CommonService, private swalService : SwalService) {}
+  constructor(
+    private commonService: CommonService,
+    private swalService: SwalService
+  ) {}
 
   ngOnInit(): void {
     this.initTrainingList();
@@ -24,5 +27,12 @@ export class TraingCreateFormsTableComponent implements OnInit {
       }
     });
   }
-  
+
+  removeTrainning(index: number) {
+    try {
+      this.commonService.removeTraining(index);
+    } catch (error) {
+      console.error('Error removing training item:', error);
+    }
+  }
 }
