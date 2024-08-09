@@ -155,7 +155,7 @@
         </form>
 
         <div class="w-full overflow-x-auto  my-3">
-            <table mat-table [dataSource]="allCourses" class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
 
                 <!-- หัวข้อในการอบรม Column -->
                 <ng-container matColumnDef="courseName" class="">
@@ -241,6 +241,8 @@
                 <tr mat-header-row *matHeaderRowDef="displayedColumns" class=""></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
+
+            <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10]"></mat-paginator>
         </div>
     </div>
 </div>

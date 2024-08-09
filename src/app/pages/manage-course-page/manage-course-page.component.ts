@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { BuddhistDatePipe } from '@shared/pipes/budhist-date.pipe';
 import { CourseForm } from 'src/app/interface/form';
@@ -43,9 +46,15 @@ export class ManageCoursePageComponent implements OnInit {
     }) as FormGroup<CourseForm>;
   }
 
-  ngOnInit(): void {
-    this.getAllCourses()
+  async ngOnInit() {
+    await this.getAllCourses()
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
+
+  dataSource = new MatTableDataSource<any>([]); // เริ่มต้นด้วยข้อมูลว่าง
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
 
   async createTraining() {
@@ -119,8 +128,15 @@ export class ManageCoursePageComponent implements OnInit {
         ...course,
         price: this.onBlurPriceStartEdit(course.price)
       }));
+      this.dataSource.data = this.allCourses; // กำหนดข้อมูลให้กับ dataSource
+      this.sort.sort({
+        id: 'id', // ชื่อคอลัมน์ที่คุณต้องการให้เรียงลำดับ
+        start: 'asc', // ทิศทางการเรียงลำดับ
+        disableClear: true
+      });
     } else {
-      this.allCourses = [];
+      // this.allCourses = [];
+      this.dataSource.data = [];
     }
   }
 
