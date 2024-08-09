@@ -3,7 +3,7 @@
     <div
         class="w-full px-2 py-1 rounded-md lg:py-3 lg:px-6 bg-content shadow-card dark:bg-content-dark dark:shadow-none">
         <p class="text-2xl text-font-header  mt-5 mb-3" id="course-form">ข้อมูลหัวข้อการอบรม</p>
-        <form [formGroup]="courseForm" (submit)="createTraining()">
+        <form [formGroup]="courseForm" >
             <!-- part 1 -->
             <div
                 class="text-[#566a7f] rounded-md shadow p-6 w-full bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#242526] mt-5 mb-3">
@@ -135,7 +135,7 @@
             </div>
             <!-- part  2 -->
             <div class="flex justify-center gap-2">
-                <button mat-raised-button [disabled]="courseForm.invalid" class="flex items-center text-center  {{
+                <button mat-raised-button type="button" (click)="createTraining()" [disabled]="courseForm.invalid" class="flex items-center text-center  {{
                     courseForm.invalid
                       ? 'cursor-not-allowed bg-gray-400 border-2 border-gray-400'
                       : 'cursor-pointer bg-[#696cf8] hover:bg-[#696cf8] !text-white hover:!text-white border-2 border-[#696cf8]'

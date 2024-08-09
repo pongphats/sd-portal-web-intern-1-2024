@@ -123,19 +123,15 @@ export class ManageCoursePageComponent implements OnInit {
     const res = await this.apiService.getAllCoursesList().toPromise();
     console.log(res)
     if (res) {
-      this.allCourses = res;
+      this.allCourses = res.sort((a: any, b: any) => a.id - b.id);
       this.allCourses = res.map(course => ({
         ...course,
         price: this.onBlurPriceStartEdit(course.price)
       }));
+      
       this.dataSource.data = this.allCourses; // กำหนดข้อมูลให้กับ dataSource
-      this.sort.sort({
-        id: 'id', // ชื่อคอลัมน์ที่คุณต้องการให้เรียงลำดับ
-        start: 'asc', // ทิศทางการเรียงลำดับ
-        disableClear: true
-      });
+
     } else {
-      // this.allCourses = [];
       this.dataSource.data = [];
     }
   }
@@ -304,6 +300,4 @@ export class ManageCoursePageComponent implements OnInit {
     console.log("invalidhoursInput : ", this.invalidhoursInput)
     console.log("invalidhoursInput : ", this.invalidhoursInput)
   }
-
-
 }
