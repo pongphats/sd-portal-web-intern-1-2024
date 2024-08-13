@@ -17,7 +17,8 @@
                 <div class="grid grid-cols-3 gap-4">
                     <div class="flex justify-center items-center  mb-6">
                         <label class="flex-initial self-center w-28">บริษัท :</label>
-                        <mat-radio-group aria-label="Select an option" formControlName="company" (change)="loadSpecificCompanySectors()">
+                        <mat-radio-group aria-label="Select an option" formControlName="company"
+                            (change)="loadSpecificCompanySectors()">
                             <mat-radio-button class="mr-4" value="PCCTH">PCCTH</mat-radio-button>
                             <mat-radio-button class="mr-4" value="WiseSoft">WiseSoft</mat-radio-button>
                         </mat-radio-group>
@@ -39,7 +40,7 @@
 
                     <div class="flex items-center">
                         <label for="" class="w-40 flex-shrink-0">ฝ่าย (ภาษาอังกฤษ):</label>
-                        <mat-form-field appearance="fill" class="flex-grow" >
+                        <mat-form-field appearance="fill" class="flex-grow">
                             <mat-label>ระบุชื่อฝ่ายเป็นภาษาอังกฤษ</mat-label>
                             <input matInput formControlName="sectorEname">
                         </mat-form-field>
@@ -69,7 +70,7 @@
                         <!--items-center ใช้เพื่อจัดแนวแนวตั้งของเนื้อหาภายใน flex container ให้ตรงกลาง-->
                         <label for="" class="w-40 flex-shrink-0">แผนก (ภาษาอังกฤษ):</label>
                         <!--w-40 ตั้งค่าความกว้างของlabel flex-shrink-0 ป้องกันไม่ให้ <label> หดตัว - flex-grow ทำให้ <mat-form-field> ขยายเพื่อเติมพื้นที่ที่เหลือ-->
-                        <mat-form-field appearance="fill" class="flex-grow" >
+                        <mat-form-field appearance="fill" class="flex-grow">
                             <mat-label>ระบุชื่อแผนกเป็นภาษาอังกฤษ</mat-label>
                             <input matInput formControlName="deptEname">
                         </mat-form-field>
@@ -77,7 +78,7 @@
 
                     <div class="flex items-center space-x-4 justify-end">
                         <label for="" class="flex-initial self-center w-18">รหัสและไอดี:</label>
-                        <mat-form-field appearance="fill" class="small-form-field" >
+                        <mat-form-field appearance="fill" class="small-form-field">
                             <!--css - class="small-form-field"-->
                             <mat-label>รหัสแผนก</mat-label>
                             <input matInput formControlName="deptCode">
@@ -110,12 +111,13 @@
                 <div class="flex justify-center my-2 gap-4"> <!--gap ระยะห่างเท่ากัน-->
                     <div>
                         <button mat-raised-button class="bg-[#8d918d] text-white py-2 px-4 rounded flex items-center"
-                            (click)="createSectorDept()">
+                            (click)="createSectorDept()" type="button">
                             <span class="text-white">เพิ่มข้อมูล</span>
                         </button>
                     </div>
                     <div>
-                        <button mat-raised-button class="bg-[#dfa006] text-white py-2 px-4 rounded flex items-center">
+                        <button mat-raised-button class="bg-[#dfa006] text-white py-2 px-4 rounded flex items-center"
+                        (click)="clearForm()" type="button">
                             <i class='bx bx-revision text-white mr-2'></i>
                             <span class="text-white">เคลียร์ข้อมูล</span>
                         </button>
@@ -134,74 +136,68 @@
 
     </div>
 
-   
-     <!-- Table -->
+    <!-- Table -->
 
-     <table mat-table [dataSource]="dataManageCompany" class="mat-elevation-z8 w-full overflow-x-auto">
+    <table mat-table [dataSource]="dataManageCompany" class="mat-elevation-z8 w-full overflow-x-auto">
 
-        <!--- Note that these columns can be defined in any order.
-              The actual rendered columns are set as a property on the row definition" -->
-      
-        <!-- Position Column -->
+        <!--  -->
         <ng-container matColumnDef="sectorTname">
-          <th mat-header-cell *matHeaderCellDef> ฝ่าย (ภาษาไทย)</th>
-          <td mat-cell *matCellDef="let element"> {{element.sectorTname}} </td>
+            <th mat-header-cell *matHeaderCellDef> ฝ่าย (ภาษาไทย)</th>
+            <td mat-cell *matCellDef="let element"> {{element.sectorTname || 'N/A'}} </td>
         </ng-container>
-      
-        <!-- Name Column -->
-        <ng-container matColumnDef="sectorEname">
-          <th mat-header-cell *matHeaderCellDef> ฝ่าย (ภาษาอังกฤษ) </th>
-          <td mat-cell *matCellDef="let element"> {{element.sectorEname}} </td>
+
+        <!-- Column -->
+        <ng-container matColumnDef="sectorFullName">
+            <th mat-header-cell *matHeaderCellDef> ฝ่าย (ภาษาอังกฤษ) </th>
+            <td mat-cell *matCellDef="let element"> {{element.sectorFullName}} </td>
         </ng-container>
-      
-        <!-- Weight Column -->
+
+        <!--  Column -->
         <ng-container matColumnDef="sectorCode">
-          <th mat-header-cell *matHeaderCellDef> รหัสฝ่าย </th>
-          <td mat-cell *matCellDef="let element"> {{element.sectorCode}} </td>
-        </ng-container>
-      
-        <!-- Symbol Column -->
-        <ng-container matColumnDef="deptTname">
-          <th mat-header-cell *matHeaderCellDef> แผนก (ภาษาไทย) </th>
-          <td mat-cell *matCellDef="let element"> {{element.deptTname}} </td>
+            <th mat-header-cell *matHeaderCellDef> รหัสฝ่าย </th>
+            <td mat-cell *matCellDef="let element"> {{element.sectorCode}} </td>
         </ng-container>
 
-         <!-- Symbol Column -->
-         <ng-container matColumnDef="deptEname">
+        <!--  Column -->
+        <ng-container matColumnDef="department.deptTname">
+            <th mat-header-cell *matHeaderCellDef> แผนก (ภาษาไทย) </th>
+            <td mat-cell *matCellDef="let element"> {{element.department.deptTname }} </td>
+        </ng-container>
+
+        <!--  Column -->
+        <ng-container matColumnDef="department.deptFullName">
             <th mat-header-cell *matHeaderCellDef> แผนก (ภาษาอังกฤษ) </th>
-            <td mat-cell *matCellDef="let element"> {{element.deptEname}} </td>
-          </ng-container>
+            <td mat-cell *matCellDef="let element"> {{element.department.deptFullName}} </td>
+        </ng-container>
 
-           <!-- Symbol Column -->
-         <ng-container matColumnDef="deptCode">
+        <!--  Column -->
+        <ng-container matColumnDef="department.deptName">
             <th mat-header-cell *matHeaderCellDef>รหัสแผนก</th>
-            <td mat-cell *matCellDef="let element"> {{element.deptCode}} </td>
-          </ng-container>
+            <td mat-cell *matCellDef="let element"> {{element.department.deptName}} </td>
+        </ng-container>
 
-
-             <!-- Symbol Column -->
-         <ng-container matColumnDef="deptId">
+        <!--  Column -->
+        <ng-container matColumnDef="department.deptCode">
             <th mat-header-cell *matHeaderCellDef>ไอดีแผนก</th>
-            <td mat-cell *matCellDef="let element"> {{element.deptId}} </td>
-          </ng-container>
+            <td mat-cell *matCellDef="let element"> {{element.department.deptCode}} </td>
+        </ng-container>
 
-
-      
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
-      
+
+    </table>
+            
+
+        
+    <mat-paginator class="mat-elevation-z8 "
+      [length]="dataManageCompany.data.length"
+      [pageSize]="10"
+      [pageSizeOptions]="[5, 10, 25, 100]"
+      aria-label="Select page">
+    </mat-paginator>
 
 
-
-
-
-
-
-
-
-
-
+    
 
 
 </div>
