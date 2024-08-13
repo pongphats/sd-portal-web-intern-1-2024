@@ -4,6 +4,7 @@ import { budgetForm } from 'src/app/interface/form';
 import { saveBudgetByYearRequest } from 'src/app/interface/request';
 import { ApiService } from 'src/app/services/api.service';
 import { CommonService } from 'src/app/services/common.service';
+import { SwalService } from 'src/app/services/swal.service';
 
 export interface PeriodicElement {
   budgetYear: string;
@@ -71,7 +72,8 @@ export class FtrSv1PageComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private commonService: CommonService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private swalService: SwalService
   ) {}
 
   async ngOnInit() {
@@ -91,6 +93,16 @@ export class FtrSv1PageComponent implements OnInit {
     this.budgetForm.get('budgetCer')?.valueChanges.subscribe(() => {
       this.onTotalBudget();
     });
+  }
+
+  // แจ้งเตือนว่าต้องเลือกบริษัทก่อน
+  protected checkCompanySelected() {
+    if (!this.budgetForm.get('company')?.value) {
+      this.showErrorCompany('');
+    }
+  }
+  protected showErrorCompany(message: string) {
+    this.swalService.showErrorCompany(message);
   }
 
   // API  ของ depts
@@ -120,7 +132,6 @@ export class FtrSv1PageComponent implements OnInit {
     this.clearForm();
   }
 
-  //ควบคุมการป้อนข้อมูลให้รับเฉพาะตัวเลขเท่านั้น
   protected onInputKeyPressFee(event: KeyboardEvent) {
     const inputChar = event.key;
     const inputValue = (event.target as HTMLInputElement).value;
@@ -227,14 +238,9 @@ export class FtrSv1PageComponent implements OnInit {
     }
   }
 
-  //เคลียร์ฟอร์ม
-  protected clearForm() {
-    location.reload();
-  }
+  protected editDocs() {}
 
-  editDocs() {}
-
-  isEditButtonVisible(): boolean {
+  protected isEditButtonVisible(): boolean {
     return (
       !!this.budgetForm.get('company')?.valid &&
       !!this.budgetForm.get('budgetYear')?.valid &&
@@ -242,7 +248,7 @@ export class FtrSv1PageComponent implements OnInit {
     );
   }
 
-  calculateAmounts(): void {
+  protected calculateAmounts(): void {
     const budgetTrain = parseFloat(
       this.budgetForm.get('budgetTrain')?.value?.replace(/,/g, '') ?? '0'
     );
@@ -254,7 +260,7 @@ export class FtrSv1PageComponent implements OnInit {
     this.remainingAmount = this.totalAmount - 1000; // เปลี่ยนตัวเลขนี้เป็นจำนวนเงินที่ต้องการหัก
   }
 
-  isAmountVisible(): boolean {
+  protected isAmountVisible(): boolean {
     return (
       !!this.budgetForm.get('company')?.valid &&
       !!this.budgetForm.get('budgetYear')?.valid &&
@@ -262,7 +268,12 @@ export class FtrSv1PageComponent implements OnInit {
     );
   }
 
-  onBudgetChange(): void {
+  protected onBudgetChange(): void {
     this.calculateAmounts();
+  }
+
+  //เคลียร์ฟอร์ม
+  protected clearForm() {
+    location.reload();
   }
 }

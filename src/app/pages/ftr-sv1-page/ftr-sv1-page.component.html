@@ -39,7 +39,11 @@
         <mat-label class="self-center-cm" for="dept">ฝ่าย/แผนก</mat-label>
         <mat-form-field appearance="fill" class="grow mx-3">
           <mat-label>ฝ่าย/แผนก</mat-label>
-          <mat-select formControlName="dept" id="dept">
+          <mat-select
+            formControlName="dept"
+            id="dept"
+            (click)="checkCompanySelected()"
+          >
             <mat-option *ngFor="let dept of depts" [value]="dept">{{
               dept
             }}</mat-option>
@@ -147,8 +151,6 @@
     </div>
   </div>
 </form>
-
-<
 <div class="w-full overflow-x-auto shadow rounded-b-md">
   <table
     id="data-table"
