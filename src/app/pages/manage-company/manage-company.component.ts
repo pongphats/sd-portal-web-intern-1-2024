@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { SectorManageForm } from 'src/app/interface/form';
@@ -6,6 +6,8 @@ import { CreateSectorRequest } from 'src/app/interface/request';
 import { map, startWith } from 'rxjs/operators';
 import { CommonService } from 'src/app/services/common.service';
 import { ApiService } from 'src/app/services/api.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 
 // Auto
@@ -19,6 +21,7 @@ export interface User {
   styleUrls: ['./manage-company.component.scss']
 })
 export class ManageCompanyComponent implements OnInit {
+
 
 
   sectorManageForm!: FormGroup<SectorManageForm>;
@@ -52,11 +55,19 @@ export class ManageCompanyComponent implements OnInit {
       map(deptManage => (deptManage ? this._filter(deptManage) : this.adminEmps.slice())),
     );
 
-    this.genAdmin();
+    this.genAdmin();//1
+
+    this.loadSpecificCompanySectors();//2
+
+  }
+
+  //
+  ngAfterViewInit() {
+    this.dataManageCompany.paginator = this.paginator;
   }
 
 
-  
+
 
 
 
@@ -98,7 +109,7 @@ export class ManageCompanyComponent implements OnInit {
 
   //add
   async createSectorDept() {
-
+    //companyId ส่งไปหลัง
     console.log("Pass")
     const companyId = this.sectorManageForm.value.company || ''; // แปลงค่าจากฟอร์มเป็นหมายเลข
     console.log(companyId)
@@ -141,6 +152,16 @@ export class ManageCompanyComponent implements OnInit {
       //call api
       const apiRes = await this.apiService.createSectorAndDept(req).toPromise();
       console.log('Sector and Department created successfully:', apiRes);
+
+      // Update the table data แสดงข้อมูลในตารางเลยหลังเพิ่ม
+      await this.loadSpecificCompanySectors(); // Re-fetch data to include new sector/department
+      // this.sectorManageForm.reset(); // Reset form after successful creation
+      this.clearForm()
+
+
+      // // Update the table data
+      // await this.loadSpecificCompanySectors(); // Re-fetch data to include new sector/department
+
     } catch (error) {
       // การจัดการข้อผิดพลาด
       console.error('Error creating sector and department:', error);
@@ -152,7 +173,63 @@ export class ManageCompanyComponent implements OnInit {
   }
 
 
+  //Table
+  // dataManageCompany: any[] = [];
 
+  dataManageCompany = new MatTableDataSource<any>([]);
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+
+  //แสดงในตารางไม่ครบตรงนี้ จาก swagger
+  displayedColumns: string[] = ['sectorTname', 'sectorFullName', 'sectorCode', 'department.deptTname', 'department.deptFullName', 'department.deptName', 'department.deptCode'];
+
+
+  async loadSpecificCompanySectors() {
+    // ดึงค่าของ companyId จากฟอร์ม
+    const companyId = this.sectorManageForm.value.company || '';
+    console.log(`Loading sectors for company: ${companyId}`); // 
+    try {
+      const companySectors = await this.commonService.getSectorAndDeptsListByCompanyName(companyId);
+
+      console.log('OtherCompany sector: ', companySectors)
+
+      this.dataManageCompany.data = companySectors;
+
+      console.log('Data for table:', this.dataManageCompany.data);
+
+
+
+    } catch (error) {
+      console.error('Error loading manage company data:', error);
+    }
+
+  }
+
+  // async
+  // async clearFormAll() {
+  //   this.sectorManageForm.reset()
+  // }
+  // public clearFormAll(): void{
+  //   this.sectorManageForm.reset()
+  // }
+
+
+  async clearForm() {
+    // Get the current value of the 'company' control
+    const companyValue = this.sectorManageForm.get('company')?.value;
+  
+    // Reset the form values except 'company'
+    this.sectorManageForm.reset({
+      company: companyValue
+    });
+  }
+
+  // this.sectorManageForm.get('deptEname')?.reset();
+
+  
+
+  
 
 
 

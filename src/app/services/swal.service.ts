@@ -68,4 +68,13 @@ export class SwalService {
       confirmButtonColor: 'orange',
     });
   }
+  showErrorCompany(message: string) {
+    Swal.fire({
+      title: 'กรุณาเลือกบริษัท',
+      text: message,
+      icon: 'warning',
+      confirmButtonText: 'ตกลง',
+      confirmButtonColor: 'blue',
+    });
+  }
 }
