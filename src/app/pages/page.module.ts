@@ -32,6 +32,7 @@ import { FtrSv1PageComponent } from './ftr-sv1-page/ftr-sv1-page.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { PccSdPortalComponentModule } from "../components/pcc-sd-portal-component.module";
 import { MatIconModule } from '@angular/material/icon';
+import { ManageCompanyComponent } from './manage-company/manage-company.component';
 import { ManageCoursePageComponent } from './manage-course-page/manage-course-page.component';
 import { TrainingFormPageComponent } from './training-form-page/training-form-page.component';
 import { TraingCreateFormsTableComponent } from './training-form-page/components/traing-create-forms-table/traing-create-forms-table.component';
@@ -66,6 +67,7 @@ import { TraingCreateFormsTableComponent } from './training-form-page/components
     FtrOj1PageComponent,
     FtrSv1PageComponent,
     LoginPageComponent,
+    ManageCompanyComponent,
     ManageCoursePageComponent,
     TrainingFormPageComponent,
     TraingCreateFormsTableComponent,

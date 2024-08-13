@@ -1,18 +1,18 @@
-import { CommonModule } from "@angular/common";
-import { NgModule } from "@angular/core";
-import { RouterModule } from "@angular/router";
-import { HttpClientModule } from "@angular/common/http";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { DragDropModule } from "@angular/cdk/drag-drop";
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
-import { ScrollToModule } from "@nicky-lenaers/ngx-scroll-to";
+import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 
-import { NgApexchartsModule } from "ng-apexcharts";
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 import { SelectorComponent } from './components/selector/selector.component';
-import { BuddhistDatePipe } from "./pipes/budhist-date.pipe";
-import { MaterialModule } from "./material/material.module";
-
+import { BuddhistDatePipe } from './pipes/budhist-date.pipe';
+import { MaterialModule } from './material/material.module';
+import { FormsTypeTranslatePipe } from './pipes/forms-type-translate.pipe';
 
 @NgModule({
   imports: [
@@ -37,7 +37,9 @@ import { MaterialModule } from "./material/material.module";
     DragDropModule,
     SelectorComponent,
     ScrollToModule,
+    FormsTypeTranslatePipe,
+    BuddhistDatePipe,
   ],
-  declarations: [SelectorComponent, BuddhistDatePipe],
+  declarations: [SelectorComponent, BuddhistDatePipe, FormsTypeTranslatePipe],
 })
 export class SharedModule {}
