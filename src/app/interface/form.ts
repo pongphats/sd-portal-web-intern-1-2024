@@ -29,8 +29,8 @@ export interface budgetForm {
 export interface CourseForm {
   id: FormControl<string | null>;
   courseName: FormControl<string | null>;
-  startDate: FormControl<string | null>;
-  endDate: FormControl<string | null>;
+  startDate: FormControl<Date | null>;
+  endDate: FormControl<Date | null>;
   timeStart: FormControl<string | null>;
   timeEnd: FormControl<string | null>;
   hours: FormControl<string | null>;

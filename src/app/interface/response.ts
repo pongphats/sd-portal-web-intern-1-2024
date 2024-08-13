@@ -35,3 +35,20 @@ export interface MngDeptListRes {
   deptTname: string;
   deptFullName: string;
 }
+
+export interface CreateTrainingResponse {
+  // Date string format: YYYY-MM-DD (2024-12-01) , (2024-01-30)
+  // Time string format: HH:MM (22:30) (08:00)
+  id: string
+  courseName: string;
+  startDate: string;
+  endDate: string;
+  hours: string;
+  time: string;
+  note: string;
+  price: number;
+  priceProject: string;
+  place: string;
+  institute: string;
+  type: string;
+}

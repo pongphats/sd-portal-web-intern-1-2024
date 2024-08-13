@@ -241,4 +241,8 @@ export class TrainingFormPageComponent implements OnInit {
         map((value) => this._filter(value || ''))
       );
   }
+
+  pushToTable() {
+    this.commonService.pushTraining(this.trainingForm.value);
+  }
 }
