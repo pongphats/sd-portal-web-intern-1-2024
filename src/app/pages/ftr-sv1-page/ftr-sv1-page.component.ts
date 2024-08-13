@@ -62,7 +62,11 @@ export class FtrSv1PageComponent implements OnInit {
   invalidNoInput: boolean = false;
   invalidFeeInput: boolean = false;
   invalidAccommodationExpInput: boolean = false;
-  totalBudget: any;
+  totalBudget: number = 0;
+  remainingBudget: number = 0; // เพิ่มตัวแปรนี้เพื่อเก็บยอดเงินคงเหลือ
+
+  totalAmount: number = 0;
+  remainingAmount: number = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -79,6 +83,7 @@ export class FtrSv1PageComponent implements OnInit {
       budgetCer: ['', Validators.required],
       budgetTotal: [{ value: '', disabled: true }],
     });
+
     this.budgetForm.get('budgetTrain')?.valueChanges.subscribe(() => {
       this.onTotalBudget();
     });
@@ -98,11 +103,9 @@ export class FtrSv1PageComponent implements OnInit {
 
   // API Save
   async onSave() {
-    console.log(this.budgetForm.value.company);
     const company_id = await this.commonService
       .getCompanyIdByName(this.budgetForm.value.company!)
       .toPromise();
-    console.log(company_id);
     const req: saveBudgetByYearRequest = {
       year: this.budgetForm.value.budgetYear || '',
       deptCode: this.budgetForm.value.dept || '',
@@ -113,9 +116,7 @@ export class FtrSv1PageComponent implements OnInit {
         Number(this.budgetForm.value.budgetCer?.replace(/,/g, '')) || 0,
     };
 
-    console.log(req);
     const res = await this.apiService.saveBudgetByYear(req).toPromise();
-    console.log(res);
     this.clearForm();
   }
 
@@ -137,17 +138,15 @@ export class FtrSv1PageComponent implements OnInit {
       this.invalidFeeInput = false;
     }
   }
+
   protected onInputKeyPressAccommodation(event: KeyboardEvent) {
     const inputChar = event.key;
     const inputValue = (event.target as HTMLInputElement).value;
 
-    // ตรวจสอบว่าถ้ามีจุดอยู่แล้ว และผู้ใช้กดจุดอีกครั้ง
     if (inputValue.includes('.') && inputChar === '.') {
       event.preventDefault();
       this.invalidAccommodationExpInput = true;
-    }
-    // ตรวจสอบว่าถ้าไม่ใช่ตัวเลขหรือจุด
-    else if (!/^\d$/.test(inputChar) && inputChar !== '.') {
+    } else if (!/^\d$/.test(inputChar) && inputChar !== '.') {
       event.preventDefault();
       this.invalidAccommodationExpInput = true;
     } else {
@@ -160,19 +159,15 @@ export class FtrSv1PageComponent implements OnInit {
     let inputValue = inputElement.value.trim();
 
     if (inputValue !== '') {
-      // Convert string to number
       let numericValue = parseFloat(inputValue.replace(/,/g, ''));
 
       if (!isNaN(numericValue)) {
-        // Check if the number has decimal places
         if (numericValue % 1 !== 0) {
-          // Format number with comma as thousand separator and 2 decimal places
           inputValue = numericValue.toLocaleString('en-US', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
           });
         } else {
-          // Format number with comma as thousand separator and add .00
           inputValue = numericValue.toLocaleString('en-US', {
             minimumFractionDigits: 2,
           });
@@ -192,21 +187,16 @@ export class FtrSv1PageComponent implements OnInit {
   //ผลรวม
   protected onBlurTotal() {
     let inputValue = this.totalBudget.toString();
-    console.log(inputValue);
     if (inputValue !== '') {
-      // Convert string to number
       let numericValue = parseFloat(inputValue.replace(/,/g, ''));
 
       if (!isNaN(numericValue)) {
-        // Check if the number has decimal places
         if (numericValue % 1 !== 0) {
-          // Format number with comma as thousand separator and 2 decimal places
           inputValue = numericValue.toLocaleString('en-US', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
           });
         } else {
-          // Format number with comma as thousand separator and add .00
           inputValue = numericValue.toLocaleString('en-US', {
             minimumFractionDigits: 2,
           });
@@ -218,12 +208,10 @@ export class FtrSv1PageComponent implements OnInit {
 
   //ผลรวม budgetTrain + budgetCer
   protected onTotalBudget() {
-    console.log('in onTotalBudget');
     if (
       this.budgetForm.get('budgetTrain')?.value != '' &&
       this.budgetForm.get('budgetCer')?.value != ''
     ) {
-      console.log('in if');
       this.totalBudget =
         parseFloat(
           (this.budgetForm.get('budgetTrain')?.value || '').replace(/,/g, '')
@@ -232,10 +220,8 @@ export class FtrSv1PageComponent implements OnInit {
           (this.budgetForm.get('budgetCer')?.value || '').replace(/,/g, '')
         );
       this.invalidtotal_expInput = false;
-
       this.onBlurTotal();
     } else {
-      console.log('in else');
       this.budgetForm.get('budgetTotal')?.setValue(null);
       this.invalidtotal_expInput = true;
     }
@@ -247,4 +233,36 @@ export class FtrSv1PageComponent implements OnInit {
   }
 
   editDocs() {}
+
+  isEditButtonVisible(): boolean {
+    return (
+      !!this.budgetForm.get('company')?.valid &&
+      !!this.budgetForm.get('budgetYear')?.valid &&
+      !!this.budgetForm.get('dept')?.valid
+    );
+  }
+
+  calculateAmounts(): void {
+    const budgetTrain = parseFloat(
+      this.budgetForm.get('budgetTrain')?.value?.replace(/,/g, '') ?? '0'
+    );
+    const budgetCer = parseFloat(
+      this.budgetForm.get('budgetCer')?.value?.replace(/,/g, '') ?? '0'
+    );
+
+    this.totalAmount = budgetTrain + budgetCer;
+    this.remainingAmount = this.totalAmount - 1000; // เปลี่ยนตัวเลขนี้เป็นจำนวนเงินที่ต้องการหัก
+  }
+
+  isAmountVisible(): boolean {
+    return (
+      !!this.budgetForm.get('company')?.valid &&
+      !!this.budgetForm.get('budgetYear')?.valid &&
+      !!this.budgetForm.get('dept')?.valid
+    );
+  }
+
+  onBudgetChange(): void {
+    this.calculateAmounts();
+  }
 }

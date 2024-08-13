@@ -148,51 +148,7 @@
   </div>
 </form>
 
-<!-- <mat-accordion>
-  <mat-expansion-panel *ngFor="let element of dataSource" hideToggle>
-    <mat-expansion-panel-header>
-      <mat-panel-title>{{ element.budgetYear }} </mat-panel-title>
-      <mat-panel-description>
-        ข้อมูลของปี {{ element.budgetYear }}</mat-panel-description
-      >
-    </mat-expansion-panel-header>
-
-    <table
-      mat-table
-      [dataSource]="[element]"
-      class="px-2 py-1 rounded-md lg:py-3 lg:px-6 bg-content shadow-card dark:bg-content-dark dark:shadow-none mt-5"
-    >
-      <ng-container matColumnDef="company">
-        <th mat-header-cell *matHeaderCellDef>Company</th>
-        <td mat-cell *matCellDef="let element">{{ element.company }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="dept">
-        <th mat-header-cell *matHeaderCellDef>Dept</th>
-        <td mat-cell *matCellDef="let element">{{ element.dept }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="budgetTrain">
-        <th mat-header-cell *matHeaderCellDef>Budget Train</th>
-        <td mat-cell *matCellDef="let element">{{ element.budgetTrain }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="budgetCer">
-        <th mat-header-cell *matHeaderCellDef>Budget Cer</th>
-        <td mat-cell *matCellDef="let element">{{ element.budgetCer }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="budgetTotal">
-        <th mat-header-cell *matHeaderCellDef>Budget Total</th>
-        <td mat-cell *matCellDef="let element">{{ element.budgetTotal }}</td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
-  </mat-expansion-panel>
-</mat-accordion> -->
-
+<
 <div class="w-full overflow-x-auto shadow rounded-b-md">
   <table
     id="data-table"
@@ -232,6 +188,7 @@
                       mat-stroked-button
                       color="primary"
                       (click)="editDocs()"
+                      *ngIf="isEditButtonVisible()"
                       class="clear-button"
                     >
                       <i class="fas fa-sync-alt mr-1"></i>
@@ -271,14 +228,50 @@
                         <td>{{ element.company }}</td>
                         <td>{{ element.dept }}</td>
                         <td class="text-right pr-6">
-                          {{ element.budgetTrain }}
+                          {{ element.budgetTrain | number : "1.2-2" }}
                         </td>
-                        <td class="text-right pr-6">{{ element.budgetCer }}</td>
                         <td class="text-right pr-6">
-                          {{ element.budgetTotal }}
+                          {{ element.budgetCer | number : "1.2-2" }}
+                        </td>
+                        <td class="text-right pr-6">
+                          {{ element.budgetTotal | number : "1.2-2" }}
                         </td>
                       </tr>
                     </tbody>
+                    <tfoot
+                      *ngIf="isAmountVisible()"
+                      class="border-t-2 border-b-2 border-t-gray-300 border-b-gray-300"
+                    >
+                      <tr class="h-12 text-center">
+                        <td colspan="2">ยอดเงินรวม</td>
+                        <td class="text-right pr-6">
+                          {{ element.budgetTrain | number : "1.2-2" }}
+                        </td>
+                        <td class="text-right pr-6">
+                          {{ element.budgetCer | number : "1.2-2" }}
+                        </td>
+                        <td class="text-right pr-6">
+                          {{ element.budgetTotal | number : "1.2-2" }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="6">
+                          <hr style="border: 1px solid #dcdcdc; width: 100%" />
+                        </td>
+                      </tr>
+                      <tr class="h-12 text-center">
+                        <td colspan="2">ยอดเงินคงเหลือ</td>
+                        <td class="text-right pr-6">
+                          {{ element?.budgetTrain | number : "1.2-2" }}
+                        </td>
+                        <td class="text-right pr-6">
+                          {{ element?.budgetCer | number : "1.2-2" }}
+                        </td>
+                        <td class="text-right pr-6">
+                          {{ element?.budgetTotal | number : "1.2-2" }}
+                        </td>
+                      </tr>
+                    </tfoot>
                   </table>
                 </div>
               </mat-expansion-panel>
