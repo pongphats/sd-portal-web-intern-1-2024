@@ -61,13 +61,13 @@ export class ManageCompanyComponent implements OnInit {
 
   }
 
-//
+  //
   ngAfterViewInit() {
     this.dataManageCompany.paginator = this.paginator;
   }
 
 
-  
+
 
 
 
@@ -153,11 +153,14 @@ export class ManageCompanyComponent implements OnInit {
       const apiRes = await this.apiService.createSectorAndDept(req).toPromise();
       console.log('Sector and Department created successfully:', apiRes);
 
-      this.sectorManageForm.reset(); // Reset form after successful creation
+      // Update the table data แสดงข้อมูลในตารางเลยหลังเพิ่ม
+      await this.loadSpecificCompanySectors(); // Re-fetch data to include new sector/department
+      // this.sectorManageForm.reset(); // Reset form after successful creation
+      this.clearForm()
 
 
-    // // Update the table data
-    // await this.loadSpecificCompanySectors(); // Re-fetch data to include new sector/department
+      // // Update the table data
+      // await this.loadSpecificCompanySectors(); // Re-fetch data to include new sector/department
 
     } catch (error) {
       // การจัดการข้อผิดพลาด
@@ -177,39 +180,58 @@ export class ManageCompanyComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  
- //แสดงในตารางไม่ครบตรงนี้ จาก swagger
-  displayedColumns: string[] = ['sectorTname', 'sectorFullName', 'sectorCode', 'department.deptTname','department.deptFullName', 'department.deptName', 'department.deptCode'];
+
+  //แสดงในตารางไม่ครบตรงนี้ จาก swagger
+  displayedColumns: string[] = ['sectorTname', 'sectorFullName', 'sectorCode', 'department.deptTname', 'department.deptFullName', 'department.deptName', 'department.deptCode'];
 
 
-   async loadSpecificCompanySectors() {
+  async loadSpecificCompanySectors() {
     // ดึงค่าของ companyId จากฟอร์ม
-     const companyId = this.sectorManageForm.value.company || '';
-     console.log(`Loading sectors for company: ${companyId}`); // 
-     try{
+    const companyId = this.sectorManageForm.value.company || '';
+    console.log(`Loading sectors for company: ${companyId}`); // 
+    try {
       const companySectors = await this.commonService.getSectorAndDeptsListByCompanyName(companyId);
-    
-     console.log('OtherCompany sector: ', companySectors)
 
-     this.dataManageCompany.data  = companySectors;
+      console.log('OtherCompany sector: ', companySectors)
 
-     console.log('Data for table:', this.dataManageCompany.data);
+      this.dataManageCompany.data = companySectors;
 
-     
+      console.log('Data for table:', this.dataManageCompany.data);
 
-  } catch (error) {
-    console.error('Error loading manage company data:', error);
+
+
+    } catch (error) {
+      console.error('Error loading manage company data:', error);
+    }
+
   }
-     
+
+  // async
+  // async clearFormAll() {
+  //   this.sectorManageForm.reset()
+  // }
+  // public clearFormAll(): void{
+  //   this.sectorManageForm.reset()
+  // }
+
+
+  async clearForm() {
+    // Get the current value of the 'company' control
+    const companyValue = this.sectorManageForm.get('company')?.value;
+  
+    // Reset the form values except 'company'
+    this.sectorManageForm.reset({
+      company: companyValue
+    });
   }
 
-// async
-async clearForm(){
-  this.sectorManageForm.reset()
-}
-// public clearForm(): void{
-//   this.sectorManageForm.reset()
-// }
+  // this.sectorManageForm.get('deptEname')?.reset();
+
+  
+
+  
+
+
 
 
 }
