@@ -52,3 +52,5 @@ export interface CreateTrainingResponse {
   institute: string;
   type: string;
 }
+
+

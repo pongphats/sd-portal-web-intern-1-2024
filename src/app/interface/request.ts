@@ -60,3 +60,11 @@ export interface CreateTrainingRequestForm {
   presidentId: number;
   fileID: number[];
 }
+
+export interface createAndUpdateBudgetRequest {
+  year: string;
+  deptCode: string;
+  company_Id: number;
+  budgetTraining: number;
+  budgetCer: number;
+}

@@ -27,12 +27,15 @@ export class CommonService {
       .get<any>(`${this.trainingUrl}/findAllJoinDepartmentsSector`)
       .pipe(
         map((res: any[]) => {
+          // Filter by company
           const filteByCompany = res.filter(
             (item: any) => item.company === company
           );
-          const mapByDeptCode = filteByCompany.map(
-            (item: any) => item.department.deptCode
+          // Map to department codes and filter duplicates using Set
+          const mapByDeptCode = Array.from(
+            new Set(filteByCompany.map((item: any) => item.department.deptCode))
           );
+          // Sort the department codes numerically
           return mapByDeptCode.sort((a, b) => {
             return parseInt(a) - parseInt(b);
           });
@@ -85,7 +88,7 @@ export class CommonService {
     } catch (error) {
       console.error(error);
     }
-    console.log(sectors)
+    console.log(sectors);
     return sectors;
   }
 

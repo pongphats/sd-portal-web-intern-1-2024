@@ -74,7 +74,7 @@ export class TrainingFormPageComponent implements OnInit {
       vicePresName: [''],
       vicePresName2: [''],
       presidentName: [''],
-    });
+    }) as FormGroup<trainingForm>;
   }
 
   async ngOnInit() {
