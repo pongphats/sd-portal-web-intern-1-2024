@@ -34,6 +34,8 @@ export class SwalService {
       cancelButtonText: 'ยกเลิก',
       allowEscapeKey: false,
       allowOutsideClick: false,
+      confirmButtonColor: 'blue',
+      cancelButtonColor: 'red',
     });
     return resutl.isConfirmed;
   }
@@ -64,6 +66,15 @@ export class SwalService {
       icon: 'warning',
       confirmButtonText: 'ตกลง',
       confirmButtonColor: 'orange',
+    });
+  }
+  showErrorCompany(message: string) {
+    Swal.fire({
+      title: 'กรุณาเลือกบริษัท',
+      text: message,
+      icon: 'warning',
+      confirmButtonText: 'ตกลง',
+      confirmButtonColor: 'blue',
     });
   }
 }
