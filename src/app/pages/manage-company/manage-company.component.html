@@ -107,14 +107,17 @@
 
                 <div class="flex justify-center my-2 gap-4"> <!--gap ระยะห่างเท่ากัน-->
                     <div>
-                        <button mat-raised-button class="bg-[#8d918d] text-white py-2 px-4 rounded flex items-center"
-                            (click)="createSectorDept()" type="button">
-                            <span class="text-white">เพิ่มข้อมูล</span>
+                        <button mat-raised-button
+                        [ngClass]="{'bg-[#8d918d]': !isEditing, 'bg-[#dfa006]': isEditing}"  
+                        class="text-white py-2 px-4 rounded flex items-center"
+                            (click)="createSectorDept()"
+                            type="button">
+                            <span class="text-white">{{ isEditing ? 'แก้ไขข้อมูล' : 'เพิ่มข้อมูล' }}</span>
                         </button>
                     </div>
                     <div>
                         <button mat-raised-button class="bg-[#dfa006] text-white py-2 px-4 rounded flex items-center"
-                        (click)="clearForm()" type="button">
+                            (click)="clearForm()" type="button">
                             <i class='bx bx-revision text-white mr-2'></i>
                             <span class="text-white">เคลียร์ข้อมูล</span>
                         </button>
@@ -139,14 +142,18 @@
 
         <!--  -->
         <ng-container matColumnDef="sectorTname">
-            <th mat-header-cell *matHeaderCellDef class="font-bold text-black  text-[16px] !text-center"> ฝ่าย (ภาษาไทย)</th>
-            <td mat-cell *matCellDef="let element" class="justify-center !text-center"> {{element.sectorTname || '-'}} </td>
+            <th mat-header-cell *matHeaderCellDef class="font-bold text-black  text-[16px] !text-center"> ฝ่าย (ภาษาไทย)
+            </th>
+            <td mat-cell *matCellDef="let element" class="justify-center !text-center"> {{element.sectorTname || '-'}}
+            </td>
         </ng-container>
 
         <!-- Column -->
         <ng-container matColumnDef="sectorFullName">
-            <th mat-header-cell *matHeaderCellDef class="font-bold text-black text-[16px] !text-center"> ฝ่าย (ภาษาอังกฤษ) </th>
-            <td mat-cell *matCellDef="let element" class="justify-center !text-center"> {{element.sectorFullName || '-'}} </td>
+            <th mat-header-cell *matHeaderCellDef class="font-bold text-black text-[16px] !text-center"> ฝ่าย
+                (ภาษาอังกฤษ) </th>
+            <td mat-cell *matCellDef="let element" class="justify-center !text-center"> {{element.sectorFullName ||
+                '-'}} </td>
         </ng-container>
 
         <!--  Column -->
@@ -157,14 +164,17 @@
 
         <!--  Column -->
         <ng-container matColumnDef="department.deptTname">
-            <th mat-header-cell *matHeaderCellDef class="font-bold text-black text-[16px] !text-center"> แผนก (ภาษาไทย) </th>
+            <th mat-header-cell *matHeaderCellDef class="font-bold text-black text-[16px] !text-center"> แผนก (ภาษาไทย)
+            </th>
             <td mat-cell *matCellDef="let element" class=" !text-center"> {{element.department.deptTname || '-' }} </td>
         </ng-container>
 
         <!--  Column -->
         <ng-container matColumnDef="department.deptFullName">
-            <th mat-header-cell *matHeaderCellDef class="font-bold text-black text-[16px] !text-center"> แผนก (ภาษาอังกฤษ) </th>
-            <td mat-cell *matCellDef="let element" class=" !text-center"> {{element.department.deptFullName || '-'}} </td>
+            <th mat-header-cell *matHeaderCellDef class="font-bold text-black text-[16px] !text-center"> แผนก
+                (ภาษาอังกฤษ) </th>
+            <td mat-cell *matCellDef="let element" class=" !text-center"> {{element.department.deptFullName || '-'}}
+            </td>
         </ng-container>
 
         <!--  Column -->
@@ -183,18 +193,13 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
     </table>
-            
 
-        
-    <mat-paginator class="mat-elevation-z8 "
-      [length]="dataManageCompany.data.length"
-      [pageSize]="10"
-      [pageSizeOptions]="[5, 10, 25, 100]"
-      aria-label="Select page">
+
+
+    <mat-paginator class="mat-elevation-z8 " [length]="dataManageCompany.data.length" [pageSize]="10"
+        [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page">
     </mat-paginator>
 
-
     
-
 
 </div>

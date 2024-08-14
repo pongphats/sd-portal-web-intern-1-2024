@@ -59,6 +59,8 @@ export class ManageCompanyComponent implements OnInit {
 
     this.loadSpecificCompanySectors();//2
 
+    //this.dataManageCompany.paginator = this.paginator;
+
   }
 
   //
@@ -109,16 +111,21 @@ export class ManageCompanyComponent implements OnInit {
 
   //add
   async createSectorDept() {
+
+    // ตรวจสอบว่ามีการเลือกข้อมูลหรือไม่
+    if (this.isEditing && this.selectedSector) {
+      // ถ้าอยู่ในโหมดการแก้ไข
+      await this.updateSectorDept(); // เรียกฟังก์ชันการอัปเดต
+      return; // หยุดการทำงานที่นี่
+    }
+    //not Edit Mode
     //companyId ส่งไปหลัง
     console.log("Pass")
     const companyId = this.sectorManageForm.value.company || ''; // แปลงค่าจากฟอร์มเป็นหมายเลข
     console.log(companyId)
     const res = await this.commonService.getCompanyIdByName(companyId).toPromise();
     console.log(res)
-
     console.log(this.sectorManageForm)
-
-
     // console.log('deptManage value:', this.sectorManageForm.value.deptManage);
 
     // ตรวจสอบและแยกชื่อเต็ม
@@ -172,6 +179,39 @@ export class ManageCompanyComponent implements OnInit {
 
   }
 
+  // ฟังก์ชันสำหรับการอัปเดตข้อมูล
+async updateSectorDept() {
+  const deptManageValue = this.sectorManageForm.value.deptManage || '';
+  const manageFullName = typeof deptManageValue === 'string' ? deptManageValue.split(' ') : [];
+  const manageFirstName = manageFullName.length === 3 ? manageFullName[1] : (manageFullName[0] || '');
+  const manageLastName = manageFullName.length === 3 ? manageFullName[2] : (manageFullName[1] || '');
+
+  const req: CreateSectorRequest = {
+    companyId: this.selectedSector.companyId || 0,
+    sectorTname: this.sectorManageForm.value.sectorTname || '',
+    sectorFullName: this.sectorManageForm.value.sectorEname || '',
+    sectorCode: this.sectorManageForm.value.sectorCode || '',
+    deptTname: this.sectorManageForm.value.deptTname || '',
+    deptFullName: this.sectorManageForm.value.deptEname || '',
+    deptCode: this.sectorManageForm.value.deptId || '',
+    firstName: manageFirstName,
+    lastName: manageLastName,
+    sectorName: this.sectorManageForm.value.sectorCode || '',
+    deptName: this.sectorManageForm.value.deptCode || '',
+  };
+
+  try {
+    const apiRes = await this.apiService.updateSectorAndDept(this.selectedSector.id, req).toPromise();
+    console.log('Sector and Department updated successfully:', apiRes);
+    
+    await this.loadSpecificCompanySectors(); // โหลดข้อมูลใหม่เพื่อแสดงการอัปเดต
+    this.clearForm(); // รีเซ็ตฟอร์มหลังจากการอัปเดต
+  } catch (error) {
+    console.error('Error updating sector and department:', error);
+  }
+}
+
+
 
   //Table
   // dataManageCompany: any[] = [];
@@ -218,7 +258,7 @@ export class ManageCompanyComponent implements OnInit {
   async clearForm() {
     // Get the current value of the 'company' control
     const companyValue = this.sectorManageForm.get('company')?.value;
-  
+
     // Reset the form values except 'company'
     this.sectorManageForm.reset({
       company: companyValue
@@ -227,9 +267,32 @@ export class ManageCompanyComponent implements OnInit {
 
   // this.sectorManageForm.get('deptEname')?.reset();
 
-  
+  isEditing: boolean = false;
+  selectedSector: any = null;
 
-  
+  onRowClick(row: any) {
+    this.selectedSector = row;
+    this.sectorManageForm.patchValue({
+      company: row.company,
+      sectorTname: row.sectorTname,
+      sectorEname: row.sectorFullName,
+      sectorCode: row.sectorCode,
+      deptTname: row.department.deptTname,
+      deptEname: row.department.deptFullName,
+      deptCode: row.department.deptName,
+      deptId: row.department.deptCode,
+      deptManage: row.deptManage
+    });
+    this.isEditing = true; // Switch to edit mode
+  }
+
+
+
+
+
+
+
+
 
 
 
