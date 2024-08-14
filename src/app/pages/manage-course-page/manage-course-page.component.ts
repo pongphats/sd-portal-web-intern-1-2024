@@ -5,13 +5,13 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { BuddhistDatePipe } from '@shared/pipes/budhist-date.pipe';
+import { Course } from 'src/app/interface/common';
 import { CourseForm } from 'src/app/interface/form';
 import { CreateTrainingRequest } from 'src/app/interface/request';
 import { CreateTrainingResponse } from 'src/app/interface/response';
 import { ApiService } from 'src/app/services/api.service';
 import { CommonService } from 'src/app/services/common.service';
 import { SwalService } from 'src/app/services/swal.service';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-manage-course-page',
@@ -52,15 +52,13 @@ export class ManageCoursePageComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
-  dataSource = new MatTableDataSource<any>([]); // เริ่มต้นด้วยข้อมูลว่าง
+  dataSource = new MatTableDataSource<Course>([]); // เริ่มต้นด้วยข้อมูลว่าง
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
 
   async createTraining() {
     try {
-      // show loading
-      this.swalService.showLoading();
 
       const startDate = this.commonService.formatDateToYYYYMMDDString(this.courseForm.value.startDate ? new Date(this.courseForm.value.startDate) : new Date())
       const endDate = this.commonService.formatDateToYYYYMMDDString(this.courseForm.value.endDate ? new Date(this.courseForm.value.endDate) : new Date())
@@ -85,22 +83,30 @@ export class ManageCoursePageComponent implements OnInit {
         };
 
         if (this.editMode) {
-          // call editCourseById API
-          const res = await this.apiService.editCourseById(this.editId, req).toPromise();
+          const confirmed = await this.swalService.showConfirm("คุณต้องการแก้ไขหรือไม่");
+          if (confirmed) {
+            // call editCourseById API
+            const res = await this.apiService.editCourseById(this.editId, req).toPromise();
 
-          if (res?.responseMessage == 'ทำรายการเรียบร้อย') {
-            this.clearForm()
-            this.getAllCourses()
-            // location.reload()
+            if (res?.responseMessage == 'ทำรายการเรียบร้อย') {
+              this.clearForm()
+              this.getAllCourses()
+              this.swalService.showSuccess("สำเร็จ")
+              // location.reload()
+            } else {
+              throw new Error(res?.msg);
+            }
           } else {
-            throw new Error(res?.msg);
+            console.log("ยกเลิก")
           }
+
         } else {
           // call createTraining API
           const res = await this.apiService.createTraining(req).toPromise();
           if (res?.responseMessage == 'ทำรายการเรียบร้อย') {
             this.clearForm()
             this.getAllCourses()
+            this.swalService.showSuccess("สำเร็จ")
             // location.reload()
           } else {
             throw new Error(res?.msg);
@@ -112,9 +118,6 @@ export class ManageCoursePageComponent implements OnInit {
       console.error(error);
       this.swalService.showError('ลองใหม่อีกครั้ง');
     }
-
-    // hide loading
-    Swal.close();
   }
 
   allCourses: any[] = [];
@@ -128,7 +131,7 @@ export class ManageCoursePageComponent implements OnInit {
         ...course,
         price: this.onBlurPriceStartEdit(course.price)
       }));
-      
+
       this.dataSource.data = this.allCourses; // กำหนดข้อมูลให้กับ dataSource
 
     } else {
@@ -249,10 +252,11 @@ export class ManageCoursePageComponent implements OnInit {
     try {
       this.deleteId = Number(element.id);
 
-      const confirmed = await this.swalService.showConfirm();
+      const confirmed = await this.swalService.showConfirm("คุณต้องการลบหัวข้อการอบรมนี้หรือไม่");
       if (confirmed) {
         const res = await this.apiService.deleteCourseById(this.deleteId).toPromise();
         this.getAllCourses()
+        this.swalService.showSuccess("สำเร็จ")
       } else {
         console.log("ยกเลิก")
       }
