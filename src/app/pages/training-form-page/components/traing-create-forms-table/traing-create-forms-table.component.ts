@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
 import { CommonService } from 'src/app/services/common.service';
 import { SwalService } from 'src/app/services/swal.service';
+import { TrainingService } from 'src/app/services/training.service';
 
 @Component({
   selector: 'app-traing-create-forms-table',
@@ -10,17 +12,23 @@ import { SwalService } from 'src/app/services/swal.service';
 export class TraingCreateFormsTableComponent implements OnInit {
   trainingList: any[] = [];
 
+  creatorId !: number
+
   constructor(
     private commonService: CommonService,
-    private swalService: SwalService
-  ) {}
+    private swalService: SwalService,
+    private authService: AuthService,
+    private trainingService: TrainingService
+  ) {
+    this.creatorId = this.authService.getUID();
+  }
 
   ngOnInit(): void {
     this.initTrainingList();
   }
 
   initTrainingList(): void {
-    this.commonService.getTrainingList().subscribe((value: any[]) => {
+    this.trainingService.getTrainingList().subscribe((value: any[]) => {
       if (value) {
         this.trainingList = value;
         console.log(this.trainingList);
@@ -30,7 +38,7 @@ export class TraingCreateFormsTableComponent implements OnInit {
 
   removeTrainning(index: number) {
     try {
-      this.commonService.removeTraining(index);
+      this.trainingService.removeTraining(index);
     } catch (error) {
       console.error('Error removing training item:', error);
     }

@@ -9,6 +9,7 @@ import { MngDeptListRes } from 'src/app/interface/response';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { CommonService } from 'src/app/services/common.service';
+import { TrainingService } from 'src/app/services/training.service';
 
 @Component({
   selector: 'app-training-form-page',
@@ -46,7 +47,8 @@ export class TrainingFormPageComponent implements OnInit {
     private apiService: ApiService,
     private authService: AuthService,
     private commonService: CommonService,
-    private buddhistDatePipe: BuddhistDatePipe
+    private buddhistDatePipe: BuddhistDatePipe,
+    private trainingService: TrainingService
   ) {
     this.trainingForm = this.fb.group({
       company: ['', Validators.required],
@@ -243,6 +245,6 @@ export class TrainingFormPageComponent implements OnInit {
   }
 
   pushToTable() {
-    this.commonService.pushTraining(this.trainingForm.value);
+    this.trainingService.pushTraining(this.trainingForm.value);
   }
 }

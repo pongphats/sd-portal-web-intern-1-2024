@@ -1,10 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { sector } from '../interface/common';
 import { ApiService } from './api.service';
-import { SwalService } from './swal.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,65 +12,7 @@ export class CommonService {
   trainingUrl: string = environment.trainingService;
   welfareUrl: string = environment.welfareService;
 
-  private trainingList = new BehaviorSubject<any[]>([]);
-
-  constructor(private http: HttpClient, private apiService: ApiService, private swalService : SwalService) {}
-
-  setTrainingList(value: any[]) {
-    this.trainingList.next(value);
-  }
-
-  // Method to get the trainingList as an observable
-  getTrainingList(): Observable<any[]> {
-    return this.trainingList.asObservable();
-  }
-
-  // Push a new item to the trainingList
-  pushTraining(item: any) {
-    const currentList = this.trainingList.getValue();
-    
-    // Check if the item already exists in the list
-    const isDuplicate = currentList.some(existingItem => JSON.stringify(existingItem) === JSON.stringify(item));
-    
-    if (isDuplicate) {
-      // Alert the user if the item is already in the list
-      this.swalService.showWarning('ฟอร์มนี้ถูกเพิ่มไปแล้ว');
-    } else {
-      // If the item is not a duplicate, push it to the list
-      currentList.push(item);
-      this.trainingList.next(currentList);
-    }
-  }
-  
-
-  // Pop the last item from the trainingList
-  popTraining() {
-    const currentList = this.trainingList.getValue();
-    currentList.pop();
-    this.trainingList.next(currentList);
-  }
-
-  // Update an item at a specific index in the trainingList
-  updateTraining(index: number, item: any) {
-    const currentList = this.trainingList.getValue();
-    if (index >= 0 && index < currentList.length) {
-      currentList[index] = item;
-      this.trainingList.next(currentList);
-    } else {
-      console.error('Index out of bounds');
-    }
-  }
-
-  // Remove an item at a specific index in the trainingList
-  removeTraining(index: number) {
-    const currentList = this.trainingList.getValue();
-    if (index >= 0 && index < currentList.length) {
-      currentList.splice(index, 1);
-      this.trainingList.next(currentList);
-    } else {
-      console.error('Index out of bounds');
-    }
-  }
+  constructor(private http: HttpClient, private apiService: ApiService) {}
 
   getCompanyIdByName(name: string): Observable<number> {
     return this.http
