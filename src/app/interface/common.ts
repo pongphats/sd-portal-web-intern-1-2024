@@ -37,3 +37,16 @@ export interface Course {
   active: number;
   type: number;
 }
+
+export interface Budget {
+  year: string;
+  budgetTraining: number;
+  departmentCode: string;
+  budgetCer: number;
+  company: string;
+  id: number | null;
+  totalExp: number;
+  budgetCerRemain: number;
+  budgetTrainingRemain: number;
+  totalExpRemain: number;
+}

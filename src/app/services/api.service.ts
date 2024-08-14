@@ -103,13 +103,24 @@ export class ApiService {
   getAllPrivilegeApproversByDpetId(
     deptId: number
   ): Observable<ApiResponse<Employee[]>> {
-    return this.http.get<ApiResponse<Employee[]>>(
-      `${this.trainingUrl}/findAllPrivilegeApproversByDept`,
-      {
-        params: {
-          deptId: deptId,
-        },
-      }
-    ).pipe(map((res) => res));
+    return this.http
+      .get<ApiResponse<Employee[]>>(
+        `${this.trainingUrl}/findAllPrivilegeApproversByDept`,
+        {
+          params: {
+            deptId: deptId,
+          },
+        }
+      )
+      .pipe(map((res) => res));
+  }
+
+  editSectorAndDept(
+    req: CreateSectorRequest,
+    sectorId: number,
+    deptId: number
+  ): Observable<ApiResponse<any>> {
+    const url = `${this.trainingUrl}/edit/SectorAndDept/${sectorId}/${deptId}`;
+    return this.http.post<ApiResponse<any>>(url, req).pipe(map((res) => res));
   }
 }

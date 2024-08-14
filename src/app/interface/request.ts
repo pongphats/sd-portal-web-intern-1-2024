@@ -40,3 +40,31 @@ export interface CreateTrainingRequest {
   institute: string;
   type: string;
 }
+
+export interface CreateTrainingRequestForm {
+  userId: number;
+  dateSave: string;
+  action: string;
+  actionDate: string;
+  createBy: number;
+  budgetType: string;
+  projectCourse: string;
+  etcDetails: string;
+  day: number;
+  courseId: number;
+  budget: number;
+  approverId: number;
+  managerId: number;
+  vicepresident1Id: number;
+  vicepresident2Id: number;
+  presidentId: number;
+  fileID: number[];
+}
+
+export interface createAndUpdateBudgetRequest {
+  year: string;
+  deptCode: string;
+  company_Id: number;
+  budgetTraining: number;
+  budgetCer: number;
+}
