@@ -123,4 +123,15 @@ export class ApiService {
     const url = `${this.trainingUrl}/edit/SectorAndDept/${sectorId}/${deptId}`;
     return this.http.post<ApiResponse<any>>(url, req).pipe(map((res) => res));
   }
+
+  getAdminByDeptCodeDeptNameCompanyName(
+    deptCode: string,
+    deptName: string,
+    companyName: string
+  ): Observable<ApiResponse<any>> {
+    const url = `${this.trainingUrl}/find/admin/dept?deptCode=${deptCode}&deptName=${deptName}&companyName=${companyName}`;
+    return this.http
+      .get<any>(url)
+      .pipe(map((res) => res.responseData.result[0]));
+  }
 }

@@ -10,6 +10,7 @@ export class SwalService {
       text: message,
       icon: 'success',
       confirmButtonText: 'ตกลง',
+      confirmButtonColor: '#696cf8',
     });
   }
 
@@ -25,17 +26,18 @@ export class SwalService {
     });
   }
 
-  async showConfirm() {
+  async showConfirm(text: string) {
     const resutl = await Swal.fire({
       title: 'ยืนยันการดำเนินการ?',
+      text: text,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'ยืนยัน',
       cancelButtonText: 'ยกเลิก',
       allowEscapeKey: false,
       allowOutsideClick: false,
-      confirmButtonColor: 'blue',
-      cancelButtonColor: 'red',
+      confirmButtonColor: '#696cf8',
+      cancelButtonColor: '#ec7063',
     });
     return resutl.isConfirmed;
   }
@@ -46,7 +48,7 @@ export class SwalService {
       text: message,
       icon: 'error',
       confirmButtonText: 'ตกลง',
-      confirmButtonColor: 'blue',
+      confirmButtonColor: '#696cf8',
     });
   }
 
@@ -56,7 +58,7 @@ export class SwalService {
       text: message,
       icon: 'error',
       confirmButtonText: 'ตกลง',
-      confirmButtonColor: 'blue',
+      confirmButtonColor: '#696cf8',
     });
   }
 
@@ -74,7 +76,7 @@ export class SwalService {
       text: message,
       icon: 'warning',
       confirmButtonText: 'ตกลง',
-      confirmButtonColor: 'blue',
+      confirmButtonColor: '#696cf8',
     });
   }
 }
