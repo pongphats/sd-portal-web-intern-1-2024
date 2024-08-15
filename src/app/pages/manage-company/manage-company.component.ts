@@ -25,6 +25,7 @@ export class ManageCompanyComponent implements OnInit {
 
 
   sectorManageForm!: FormGroup<SectorManageForm>;
+  showDeleteButton: boolean = false; //ลบ
 
   constructor(
     private fb: FormBuilder,
@@ -112,12 +113,6 @@ export class ManageCompanyComponent implements OnInit {
   //add
   async createSectorDept() {
 
-    // ตรวจสอบว่ามีการเลือกข้อมูลหรือไม่
-    if (this.isEditing && this.selectedSector) {
-      // ถ้าอยู่ในโหมดการแก้ไข
-      await this.updateSectorDept(); // เรียกฟังก์ชันการอัปเดต
-      return; // หยุดการทำงานที่นี่
-    }
     //not Edit Mode
     //companyId ส่งไปหลัง
     console.log("Pass")
@@ -180,36 +175,41 @@ export class ManageCompanyComponent implements OnInit {
   }
 
   // ฟังก์ชันสำหรับการอัปเดตข้อมูล
-async updateSectorDept() {
-  const deptManageValue = this.sectorManageForm.value.deptManage || '';
-  const manageFullName = typeof deptManageValue === 'string' ? deptManageValue.split(' ') : [];
-  const manageFirstName = manageFullName.length === 3 ? manageFullName[1] : (manageFullName[0] || '');
-  const manageLastName = manageFullName.length === 3 ? manageFullName[2] : (manageFullName[1] || '');
+  async editSectorDept() {
 
-  const req: CreateSectorRequest = {
-    companyId: this.selectedSector.companyId || 0,
-    sectorTname: this.sectorManageForm.value.sectorTname || '',
-    sectorFullName: this.sectorManageForm.value.sectorEname || '',
-    sectorCode: this.sectorManageForm.value.sectorCode || '',
-    deptTname: this.sectorManageForm.value.deptTname || '',
-    deptFullName: this.sectorManageForm.value.deptEname || '',
-    deptCode: this.sectorManageForm.value.deptId || '',
-    firstName: manageFirstName,
-    lastName: manageLastName,
-    sectorName: this.sectorManageForm.value.sectorCode || '',
-    deptName: this.sectorManageForm.value.deptCode || '',
-  };
+    const deptManageValue = this.sectorManageForm.value.deptManage || '';
+    const manageFullName = typeof deptManageValue === 'string' ? deptManageValue.split(' ') : [];
+    const manageFirstName = manageFullName.length === 3 ? manageFullName[1] : (manageFullName[0] || '');
+    const manageLastName = manageFullName.length === 3 ? manageFullName[2] : (manageFullName[1] || '');
 
-  try {
-    const apiRes = await this.apiService.updateSectorAndDept(this.selectedSector.id, req).toPromise();
-    console.log('Sector and Department updated successfully:', apiRes);
-    
-    await this.loadSpecificCompanySectors(); // โหลดข้อมูลใหม่เพื่อแสดงการอัปเดต
-    this.clearForm(); // รีเซ็ตฟอร์มหลังจากการอัปเดต
-  } catch (error) {
-    console.error('Error updating sector and department:', error);
+    const req: CreateSectorRequest = {
+      companyId: this.selectedSector.companyId || 0,
+      sectorTname: this.sectorManageForm.value.sectorTname || '',
+      sectorFullName: this.sectorManageForm.value.sectorEname || '',
+      sectorCode: this.sectorManageForm.value.sectorCode || '',
+      deptTname: this.sectorManageForm.value.deptTname || '',
+      deptFullName: this.sectorManageForm.value.deptEname || '',
+      deptCode: this.sectorManageForm.value.deptCode || '',
+      firstName: manageFirstName,
+      lastName: manageLastName,
+      sectorName: this.sectorManageForm.value.sectorCode || '',
+      deptName: this.sectorManageForm.value.deptCode || '',
+    };
+
+    try {
+      // ส่ง `sectorId` และ `deptId` เข้าไปในฟังก์ชันแก้ไข
+      // const apiRes = await this.apiService.editSectorAndDept(req, this.selectedSector.id, this.selectedSector.deptId).toPromise();
+      const apiRes = await this.apiService.editSectorAndDept(req, this.selectedSector.sectorId, this.selectedSector.department.id).toPromise();
+
+      console.log('Sector and Department updated successfully:', apiRes);
+
+      await this.loadSpecificCompanySectors(); // โหลดข้อมูลใหม่เพื่อแสดงการอัปเดต
+      this.clearForm(); // รีเซ็ตฟอร์มหลังจากการอัปเดต
+    } catch (error) {
+      console.error('Error updating sector and department:', error);
+    }
   }
-}
+
 
 
 
@@ -222,7 +222,7 @@ async updateSectorDept() {
 
 
   //แสดงในตารางไม่ครบตรงนี้ จาก swagger
-  displayedColumns: string[] = ['sectorTname', 'sectorFullName', 'sectorCode', 'department.deptTname', 'department.deptFullName', 'department.deptName', 'department.deptCode'];
+  displayedColumns: string[] = ['sectorTname', 'sectorFullName', 'sectorCode', 'department.deptTname', 'department.deptFullName', 'department.deptName', 'department.deptCode','actions'];
 
 
   async loadSpecificCompanySectors() {
@@ -263,6 +263,10 @@ async updateSectorDept() {
     this.sectorManageForm.reset({
       company: companyValue
     });
+   //เปลี่ยนสถานะกลับไปที่โหมดการสร้าง
+    this.isEditing = false;
+    this.showDeleteButton = false; // ซ่อนปุ่มลบข้อมูล
+
   }
 
   // this.sectorManageForm.get('deptEname')?.reset();
@@ -271,6 +275,13 @@ async updateSectorDept() {
   selectedSector: any = null;
 
   onRowClick(row: any) {
+    // รวม firstName และ lastName
+    const deptManageValue = `${row.department.firstName} ${row.department.lastName}`;
+    console.log("deptManageValue", deptManageValue)
+    console.log("Department FirstName:", row.department.firstName);
+    console.log("Department LastName:", row.department.lastName);
+    console.log("Row:", row);
+
     this.selectedSector = row;
     this.sectorManageForm.patchValue({
       company: row.company,
@@ -281,20 +292,32 @@ async updateSectorDept() {
       deptEname: row.department.deptFullName,
       deptCode: row.department.deptName,
       deptId: row.department.deptCode,
-      deptManage: row.deptManage
+      deptManage: deptManageValue // ตั้งค่าที่รวมกัน
+      // deptManage: row.department.firstName // ตั้งค่าที่รวมกัน
     });
     this.isEditing = true; // Switch to edit mode
+    this.showDeleteButton = true; // แสดงปุ่มลบข้อมูล
   }
 
+  deleteDataRow(element: any): void {
+    // Remove element from dataManageCompany.data
+    const data = this.dataManageCompany.data;
+    const index = data.indexOf(element);
+    if (index >= 0) {
+      data.splice(index, 1);
+      this.dataManageCompany.data = [...data]; // Trigger change detection
+    }
+  }
 
-
-
-
-
-
-
-
-
+   // เมธอดสำหรับลบข้อมูล
+   deleteData(): void {
+    if (this.selectedSector) {
+      // ทำการลบข้อมูลที่เลือก
+      this.dataManageCompany.data = this.dataManageCompany.data.filter(data => data !== this.selectedSector);
+      this.clearForm(); // รีเซ็ตฟอร์มหลังจากลบข้อมูล
+    }
+  }
+  
 
 
 }
