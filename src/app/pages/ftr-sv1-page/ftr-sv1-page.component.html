@@ -162,6 +162,7 @@
       [dataSource]="dataSource"
       class="mat-elevation-z8 !shadow-md"
     >
+      <!-- year Column -->
       <ng-container matColumnDef="year">
         <th
           mat-header-cell
@@ -178,6 +179,7 @@
           {{ number(element.year) }}
         </td>
       </ng-container>
+      <!-- company Column -->
       <ng-container matColumnDef="company">
         <th
           mat-header-cell
@@ -194,6 +196,7 @@
           {{ element.company }}
         </td>
       </ng-container>
+      <!-- departmentCode Column -->
       <ng-container matColumnDef="departmentCode">
         <th
           mat-header-cell
@@ -211,7 +214,7 @@
         </td>
       </ng-container>
 
-      <!-- Weight Column -->
+      <!-- budgetTraining Column -->
       <ng-container matColumnDef="budgetTraining">
         <th
           mat-header-cell
@@ -229,7 +232,7 @@
         </td>
       </ng-container>
 
-      <!-- Symbol Column -->
+      <!-- budgetCer Column -->
       <ng-container matColumnDef="budgetCer">
         <th
           mat-header-cell
@@ -246,7 +249,7 @@
           {{ element.budgetCer | number : "1.2-2" }}
         </td>
       </ng-container>
-
+      <!-- totalExp Column -->
       <ng-container matColumnDef="totalExp">
         <th
           mat-header-cell
@@ -263,7 +266,7 @@
           {{ element.totalExp | number : "1.2-2" }}
         </td>
       </ng-container>
-
+      <!-- edit Column -->
       <ng-container matColumnDef="edit">
         <th
           mat-header-cell
