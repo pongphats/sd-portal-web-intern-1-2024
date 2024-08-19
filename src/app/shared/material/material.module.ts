@@ -13,6 +13,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   exports: [
@@ -28,8 +29,8 @@ import { MatSortModule } from '@angular/material/sort';
     MatGridListModule,
     MatTableModule,
     MatPaginatorModule,
-
     MatSortModule,
+    MatDialogModule
   ],
   providers: [DatePipe],
 })

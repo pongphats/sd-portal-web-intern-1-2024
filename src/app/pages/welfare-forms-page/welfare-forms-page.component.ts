@@ -6,6 +6,8 @@ import { CommonService } from 'src/app/services/common.service';
 import { SwalService } from 'src/app/services/swal.service';
 import { catchError, debounceTime, distinctUntilChanged, map, Observable, of, startWith, switchMap } from 'rxjs';
 import { Employee } from 'src/app/interface/employee';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogExpenseComponent } from './components/dialog-expense/dialog-expense.component';
 
 @Component({
   selector: 'app-welfare-forms-page',
@@ -20,10 +22,19 @@ export class WelfareFormsPageComponent implements OnInit {
     private swalService: SwalService,
     private commonService: CommonService,
     private apiService: ApiService,
+    public dialog: MatDialog
   ) {
     this.welfareForm = this.fb.group({
       fullName: [''],
     })
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(DialogExpenseComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
 
   filteredOptions!: Observable<any[]>;
