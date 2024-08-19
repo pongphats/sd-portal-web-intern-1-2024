@@ -134,4 +134,13 @@ export class ApiService {
       .get<any>(url)
       .pipe(map((res) => res.responseData.result[0]));
   }
+
+  deleteDepartmantId(id: number): Observable<ApiResponse<any>> {
+    return this.http
+      .delete<ApiResponse<any>>(`${this.trainingUrl}/department/${id}`)
+      .pipe(map((res) => res));
+  }
+
+  
 }
+

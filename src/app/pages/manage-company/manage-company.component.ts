@@ -8,6 +8,7 @@ import { CommonService } from 'src/app/services/common.service';
 import { ApiService } from 'src/app/services/api.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { SwalService } from 'src/app/services/swal.service';
 
 
 // Auto
@@ -30,8 +31,8 @@ export class ManageCompanyComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private commonService: CommonService,
-    private apiService: ApiService
-
+    private apiService: ApiService,
+    private swalService: SwalService
   ) {
     this.sectorManageForm = this.fb.group({
       company: ['PCCTH', [Validators.required]],
@@ -151,7 +152,7 @@ export class ManageCompanyComponent implements OnInit {
 
     console.log(req)
     try {
-      //call api
+      //call api (save)
       const apiRes = await this.apiService.createSectorAndDept(req).toPromise();
       console.log('Sector and Department created successfully:', apiRes);
 
@@ -176,14 +177,22 @@ export class ManageCompanyComponent implements OnInit {
 
   // ฟังก์ชันสำหรับการอัปเดตข้อมูล
   async editSectorDept() {
+    const companyId = this.sectorManageForm.value.company || ''; // แปลงค่าจากฟอร์มเป็นหมายเลข
+    console.log(companyId)
+    const numberCompany = await this.commonService.getCompanyIdByName(companyId).toPromise();
+    console.log("numberCompany", numberCompany)
+
 
     const deptManageValue = this.sectorManageForm.value.deptManage || '';
     const manageFullName = typeof deptManageValue === 'string' ? deptManageValue.split(' ') : [];
     const manageFirstName = manageFullName.length === 3 ? manageFullName[1] : (manageFullName[0] || '');
     const manageLastName = manageFullName.length === 3 ? manageFullName[2] : (manageFullName[1] || '');
 
+    console.log("selectedSector", this.selectedSector)
+
+
     const req: CreateSectorRequest = {
-      companyId: this.selectedSector.companyId || 0,
+      companyId: numberCompany || 0,
       sectorTname: this.sectorManageForm.value.sectorTname || '',
       sectorFullName: this.sectorManageForm.value.sectorEname || '',
       sectorCode: this.sectorManageForm.value.sectorCode || '',
@@ -222,7 +231,7 @@ export class ManageCompanyComponent implements OnInit {
 
 
   //แสดงในตารางไม่ครบตรงนี้ จาก swagger
-  displayedColumns: string[] = ['sectorTname', 'sectorFullName', 'sectorCode', 'department.deptTname', 'department.deptFullName', 'department.deptName', 'department.deptCode','actions'];
+  displayedColumns: string[] = ['sectorTname', 'sectorFullName', 'sectorCode', 'department.deptTname', 'department.deptFullName', 'department.deptName', 'department.deptCode', 'actions'];
 
 
   async loadSpecificCompanySectors() {
@@ -263,7 +272,7 @@ export class ManageCompanyComponent implements OnInit {
     this.sectorManageForm.reset({
       company: companyValue
     });
-   //เปลี่ยนสถานะกลับไปที่โหมดการสร้าง
+    //เปลี่ยนสถานะกลับไปที่โหมดการสร้าง
     this.isEditing = false;
     this.showDeleteButton = false; // ซ่อนปุ่มลบข้อมูล
 
@@ -274,30 +283,71 @@ export class ManageCompanyComponent implements OnInit {
   isEditing: boolean = false;
   selectedSector: any = null;
 
-  onRowClick(row: any) {
-    // รวม firstName และ lastName
-    const deptManageValue = `${row.department.firstName} ${row.department.lastName}`;
-    console.log("deptManageValue", deptManageValue)
-    console.log("Department FirstName:", row.department.firstName);
-    console.log("Department LastName:", row.department.lastName);
-    console.log("Row:", row);
+  // async onRowClick(row: any) {
+  //   this.selectedSector = row;
+  //   this.sectorManageForm.patchValue({
+  //     company: row.company,
+  //     sectorTname: row.sectorTname,
+  //     sectorEname: row.sectorFullName,
+  //     sectorCode: row.sectorCode,
+  //     deptTname: row.department.deptTname,
+  //     deptEname: row.department.deptFullName,
+  //     deptCode: row.department.deptName,
+  //     deptId: row.department.deptCode,
 
+  //   });
+
+
+  //   this.isEditing = true; // Switch to edit mode
+  //   this.showDeleteButton = true; // แสดงปุ่มลบข้อมูล
+  // }
+
+  deptId!: number;
+  adminRes: any;
+  async onRowClick(row: any) {
     this.selectedSector = row;
-    this.sectorManageForm.patchValue({
-      company: row.company,
-      sectorTname: row.sectorTname,
-      sectorEname: row.sectorFullName,
-      sectorCode: row.sectorCode,
-      deptTname: row.department.deptTname,
-      deptEname: row.department.deptFullName,
-      deptCode: row.department.deptName,
-      deptId: row.department.deptCode,
-      deptManage: deptManageValue // ตั้งค่าที่รวมกัน
-      // deptManage: row.department.firstName // ตั้งค่าที่รวมกัน
-    });
-    this.isEditing = true; // Switch to edit mode
-    this.showDeleteButton = true; // แสดงปุ่มลบข้อมูล
+    console.log(row)
+    this.deptId = row.department.id;
+
+    // Fetch admin details
+    try {
+      const deptCode = row.department.deptCode;
+      const deptName = row.department.deptName;
+      const companyName = row.company;
+
+      this.adminRes = await this.apiService.getAdminByDeptCodeDeptNameCompanyName(deptCode, deptName, companyName).toPromise();
+      console.log("adminRes", this.adminRes)
+
+      if (this.adminRes) {
+        const admin = this.adminRes; // Assuming this is the response from your API
+        const fullName = `${admin.title} ${admin.firstname} ${admin.lastname}`;
+        console.log("fullname", fullName)
+
+        this.sectorManageForm.patchValue({
+          company: row.company,
+          sectorTname: row.sectorTname,
+          sectorEname: row.sectorFullName,
+          sectorCode: row.sectorCode,
+          deptTname: row.department.deptTname,
+          deptEname: row.department.deptFullName,
+          deptCode: row.department.deptName,
+          deptId: row.department.deptCode,
+          deptManage: fullName
+        });
+
+        this.isEditing = true; // Switch to edit mode
+        this.showDeleteButton = true; // Show delete button
+      } else {
+        console.error('Admin details not found');
+      }
+    } catch (error) {
+      console.error('Error fetching admin details:', error);
+    }
   }
+
+
+
+
 
   deleteDataRow(element: any): void {
     // Remove element from dataManageCompany.data
@@ -309,15 +359,26 @@ export class ManageCompanyComponent implements OnInit {
     }
   }
 
-   // เมธอดสำหรับลบข้อมูล
-   deleteData(): void {
-    if (this.selectedSector) {
-      // ทำการลบข้อมูลที่เลือก
-      this.dataManageCompany.data = this.dataManageCompany.data.filter(data => data !== this.selectedSector);
-      this.clearForm(); // รีเซ็ตฟอร์มหลังจากลบข้อมูล
+  // เมธอดสำหรับลบข้อมูล
+  async deleteData() {
+    const confirmed = await this.swalService.showConfirm("ต้องการลบใช่มั้ย")
+    if (confirmed) {
+      const res = await this.apiService.deleteDepartmantId(this.deptId).toPromise();
+      this.swalService.showSuccess("สำเร็จ")
+      this.clearForm()
+      await this.loadSpecificCompanySectors(); //update table หลัง ลบ
+    } else {
+      console.log("cancel")
     }
+    // const res = await this.apiService.deleteDepartmantId(this.deptId).toPromise(); //api delete
+    // this.clearForm()
+    // await this.loadSpecificCompanySectors(); //update table หลัง ลบ
   }
-  
+
+
+
+
+
 
 
 }
