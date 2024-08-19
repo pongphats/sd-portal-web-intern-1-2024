@@ -4,7 +4,8 @@ import { welfareForm } from 'src/app/interface/form';
 import { ApiService } from 'src/app/services/api.service';
 import { CommonService } from 'src/app/services/common.service';
 import { SwalService } from 'src/app/services/swal.service';
-import { map, Observable, startWith } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, map, Observable, of, startWith, switchMap } from 'rxjs';
+import { Employee } from 'src/app/interface/employee';
 
 @Component({
   selector: 'app-welfare-forms-page',
@@ -25,47 +26,72 @@ export class WelfareFormsPageComponent implements OnInit {
     })
   }
 
+  filteredOptions!: Observable<any[]>;
+
   ngOnInit(): void {
 
-    //Auto
-    // this.filteredOptions = this.welfareForm.get('fullName')!.valueChanges.pipe(
-    //   startWith(''),
-    //   map(value => (typeof value === 'string' ? value : '')),
-    //   map(fullName => (fullName ? this._filter(fullName) : this.listEmp.slice())),
-    // );
-
-    // this.genAdmin("")
-
+    // ตั้งต้นว่าผูก Observable
+    this.filteredOptions = this.welfareForm.get('fullName')!.valueChanges.pipe(
+      debounceTime(300),
+      switchMap(value => this.getEmp(value ? value : ""))
+    );
 
   }
 
-  //Auto
-  // listEmp: string[] = [];
-  // async genAdmin(term: string) {
-  //   try {
-  //     //api
-  //     const res = await this.apiService.getEmplistByName(term).toPromise();
-  //     if (res) {
-  //       this.listEmp = res;
-  //       console.log(res)
-  //     } else {
-  //       this.listEmp = [];
-  //     }
+  dataEmp: Employee[] = [];
+  getEmp(term: string): Observable<any[]> {
+    // กรณี ไม่กรอกอะไรเลย
+    if (term == '') {
+      this.dataEmp = []
+      return of([]);
+    }
+    return this.apiService.getEmplistByName(term).pipe(
+      map((res: any) => {
+        if (res == null) {
+          this.dataEmp = []
+          return []
+        }
+        else {
+          const result = res.result;
+          if (result.length == 0) {
+            this.dataEmp = []
+            return []
+          }
+          this.dataEmp = result.map((item: any) => ({
+            ...item,
+            fullName: `${item.firstname} ${item.lastname}`
+          }))
+          return this.dataEmp
+        }
+      }));
+  }
 
-  //   }
+  datafullName: string = '';
+  dataEmpCode: string = '';
+  dataSectorName: string = '';
+  dataPositionName: string = '';
+  dataEmail: string = '';
+  dataLevel: string = '';
+  searchEmp() {
+    if (this.dataEmp.length === 1) {
+      const data = this.dataEmp[0];
+      this.datafullName = `${data.title} ${data.firstname} ${data.lastname}`
+      this.dataEmpCode = data.empCode
+      this.dataSectorName = data.sector.sectorName
+      this.dataPositionName = data.position.positionName
+      this.dataEmail = data.email
+      this.dataLevel = data.level
 
-  //   catch (error) {
-  //     console.error('Error generating admin full names:', error);
-  //   }
-  // }
-  //Auto
-  // filteredOptions!: Observable<string[]>;
+    } else {
+      this.datafullName = ''
+      this.dataEmpCode = ''
+      this.dataSectorName = ''
+      this.dataPositionName = ''
+      this.dataEmail = ''
+      this.dataLevel = ''
+      console.log("กรุณากรอกชื่อให้ครบถ้วน")
 
-  // private _filter(value: string): string[] {
-  //   const filterValue = value.toLowerCase();
-
-  //   return this.listEmp
-  //     .filter((option: string) => option.toLowerCase().includes(filterValue))
-  //     .sort();
-  // }
+    }
+  }
 }
+
