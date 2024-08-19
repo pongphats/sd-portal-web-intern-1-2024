@@ -9,6 +9,7 @@ import {
 import { map, Observable } from 'rxjs';
 import {
   ApiResponse,
+  Budget,
   MngDeptListRes,
   saveBudgetResponse,
 } from '../interface/response';
@@ -103,13 +104,21 @@ export class ApiService {
   getAllPrivilegeApproversByDpetId(
     deptId: number
   ): Observable<ApiResponse<Employee[]>> {
-    return this.http.get<ApiResponse<Employee[]>>(
-      `${this.trainingUrl}/findAllPrivilegeApproversByDept`,
-      {
-        params: {
-          deptId: deptId,
-        },
-      }
-    ).pipe(map((res) => res));
+    return this.http
+      .get<ApiResponse<Employee[]>>(
+        `${this.trainingUrl}/findAllPrivilegeApproversByDept`,
+        {
+          params: {
+            deptId: deptId,
+          },
+        }
+      )
+      .pipe(map((res) => res));
+  }
+
+  getAllBudget(): Observable<Budget[]> {
+    return this.http
+      .get<Budget[]>(`${this.trainingUrl}/findAllBudget`)
+      .pipe(map((res) => res));
   }
 }
