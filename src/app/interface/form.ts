@@ -67,3 +67,8 @@ export interface trainingForm {
   vicePresName2: FormControl<string | null>;
   presidentName: FormControl<string | null>;
 }
+
+export interface welfareForm {
+  fullName: FormControl<string | null>;
+}
+
