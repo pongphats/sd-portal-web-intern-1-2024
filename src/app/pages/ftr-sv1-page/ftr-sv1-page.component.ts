@@ -245,9 +245,10 @@ export class FtrSv1PageComponent implements OnInit, AfterViewInit {
   }
 
   protected clear() {
-    location.reload();
+    setTimeout(() => {
+      location.reload();
+    }, 400);
   }
-
   protected number(year: string) {
     return Number(year) + 543;
   }
