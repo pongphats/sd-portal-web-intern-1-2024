@@ -375,6 +375,11 @@ export class ManageCompanyComponent implements OnInit {
     // await this.loadSpecificCompanySectors(); //update table หลัง ลบ
   }
 
+  //Taable 2
+  positionManagement = new MatTableDataSource<any>([]);
+  displayedColumns2: string[] = ['deptId', 'positionName'];
+
+
 
 
 
