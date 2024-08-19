@@ -30,12 +30,12 @@ export class FtrSv1PageComponent implements OnInit, AfterViewInit {
   filteredData: Budget[] = [];
   displayedColumns: string[] = [
     'year',
-    'position',
-    'name',
-    'weight',
-    'symbol',
-    'test',
-    'test1',
+    'company',
+    'departmentCode',
+    'budgetTraining',
+    'budgetCer',
+    'totalExp',
+    'edit',
   ];
 
   dataSource = new MatTableDataSource<Budget>([]);
@@ -90,6 +90,7 @@ export class FtrSv1PageComponent implements OnInit, AfterViewInit {
     );
   }
 
+  //---------------------------------> swalService
   protected checkCompanySelected() {
     if (!this.budgetForm.get('company')?.value) {
       this.showErrorCompany('');
@@ -99,11 +100,13 @@ export class FtrSv1PageComponent implements OnInit, AfterViewInit {
     this.swalService.showErrorCompany(message);
   }
 
+  //---------------------------------> Api Dept
   protected genDeptsByCompanyName() {
     const res = this.budgetForm.controls.company.value || '';
     return this.commonService.getOnlyDeptCodeByCompany(res).toPromise();
   }
 
+  //---------------------------------> Api Save
   async onSave() {
     const company_id = await this.commonService
       .getCompanyIdByName(this.budgetForm.value.company!)
@@ -123,6 +126,33 @@ export class FtrSv1PageComponent implements OnInit, AfterViewInit {
     this.clear();
   }
 
+  //---------------------------------> Api Edit
+  protected async onEdit(element: Budget) {
+    console.log('Element to edit:', element);
+    this.budgetForm.patchValue({
+      company: element.company.toString(),
+      budgetYear: this.number(element.year).toString(),
+      budgetTrain: element.budgetTraining.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }),
+      budgetCer: element.budgetCer.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }),
+    });
+    const depts = await this.genDeptsByCompanyName();
+    this.depts = depts;
+    if (this.depts.includes(element.departmentCode)) {
+      this.budgetForm.patchValue({ dept: element.departmentCode });
+    } else {
+      console.error('Department code not found in the fetched departments.');
+    }
+    console.log('Form after patching:', this.budgetForm.value);
+    this.onTotalBudget();
+  }
+
+  //---------------------------------> ตัวใส่ comma ให้กับ ตัวเลข
   protected onInputKeyPressFee(event: KeyboardEvent) {
     const inputChar = event.key;
     const inputValue = (event.target as HTMLInputElement).value;
@@ -138,6 +168,7 @@ export class FtrSv1PageComponent implements OnInit, AfterViewInit {
     }
   }
 
+  //---------------------------------> ตัวใส่ comma ให้กับ ตัวเลข
   protected onInputKeyPressAccommodation(event: KeyboardEvent) {
     const inputChar = event.key;
     const inputValue = (event.target as HTMLInputElement).value;
@@ -153,6 +184,7 @@ export class FtrSv1PageComponent implements OnInit, AfterViewInit {
     }
   }
 
+  //---------------------------------> จัดรูปแบบตัวเลขในฟิลด์นั้นให้มีทศนิยม 2 ตำแหน่ง
   protected onBlurFee(event: Event, inputnNumber: number) {
     const inputElement = event.target as HTMLInputElement;
     let inputValue = inputElement.value.trim();
@@ -182,7 +214,7 @@ export class FtrSv1PageComponent implements OnInit, AfterViewInit {
       }
     }
   }
-
+  //---------------------------------> จัดรูปแบบให้มีทศนิยม 2 budgetTotal
   protected onBlurTotal() {
     let inputValue = this.totalBudget.toString();
     if (inputValue !== '') {
@@ -204,6 +236,7 @@ export class FtrSv1PageComponent implements OnInit, AfterViewInit {
     }
   }
 
+  //---------------------------------> total budgetTrain + budgetCer
   protected onTotalBudget() {
     if (
       this.budgetForm.get('budgetTrain')?.value != '' &&
@@ -224,6 +257,7 @@ export class FtrSv1PageComponent implements OnInit, AfterViewInit {
     }
   }
 
+  //---------------------------------> ดึงค่าและแปลงเป็นตัวเลข
   protected calculateAmounts(): void {
     const budgetTrain = parseFloat(
       this.budgetForm.get('budgetTrain')?.value?.replace(/,/g, '') ?? '0'
@@ -240,41 +274,15 @@ export class FtrSv1PageComponent implements OnInit, AfterViewInit {
     this.calculateAmounts();
   }
 
-  protected clearForm() {
-    this.budgetForm.reset();
-  }
-
+  //---------------------------------> รีเฟชหน้าจอ
   protected clear() {
     setTimeout(() => {
       location.reload();
     }, 400);
   }
+
+  //---------------------------------> convert ค.ศ. เป็น พ.ศ.
   protected number(year: string) {
     return Number(year) + 543;
-  }
-
-  protected async onEdit(element: Budget) {
-    console.log('Element to edit:', element);
-    this.budgetForm.patchValue({
-      company: element.company.toString(),
-      budgetYear: this.number(element.year).toString(),
-      budgetTrain: element.budgetTraining.toLocaleString('en-US', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      }),
-      budgetCer: element.budgetCer.toLocaleString('en-US', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      }),
-    });
-    const depts = await this.genDeptsByCompanyName();
-    this.depts = depts;
-    if (this.depts.includes(element.departmentCode)) {
-      this.budgetForm.patchValue({ dept: element.departmentCode });
-    } else {
-      console.error('Department code not found in the fetched departments.');
-    }
-    console.log('Form after patching:', this.budgetForm.value);
-    this.onTotalBudget();
   }
 }
