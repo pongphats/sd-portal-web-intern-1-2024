@@ -135,6 +135,15 @@ export class ApiService {
       .get<any>(url)
       .pipe(map((res) => res.responseData.result[0]));
   }
+
+  getEmplistByName(term: string): Observable<Employee[]> {
+    return this.http
+      .get<ApiResponse<Employee[]>>(
+        `${this.trainingUrl}/seacrhUser/byNames?searchTerm=${term}`
+      )
+      .pipe(map((response) => response.responseData.result));
+  }
+
   getAllBudget(): Observable<Budget[]> {
     return this.http
       .get<Budget[]>(`${this.trainingUrl}/findAllBudget`)
