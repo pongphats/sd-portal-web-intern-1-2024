@@ -9,6 +9,7 @@ import {
 import { map, Observable } from 'rxjs';
 import {
   ApiResponse,
+  Budget,
   MngDeptListRes,
   saveBudgetResponse,
 } from '../interface/response';
@@ -133,5 +134,10 @@ export class ApiService {
     return this.http
       .get<any>(url)
       .pipe(map((res) => res.responseData.result[0]));
+  }
+  getAllBudget(): Observable<Budget[]> {
+    return this.http
+      .get<Budget[]>(`${this.trainingUrl}/findAllBudget`)
+      .pipe(map((res) => res));
   }
 }
