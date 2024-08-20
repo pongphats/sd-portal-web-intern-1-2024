@@ -141,6 +141,25 @@ export class ApiService {
       .pipe(map((res) => res));
   }
 
+  //Table2
+  // getAllPositionDept(deptId: number): Observable<Employee[]> {
+  //   return this.http
+  //     .get<Employee[]>(`${this.trainingUrl}/findall/position/dept`, {
+  //       params: { deptId: deptId },
+  //     })
+  //     .pipe(map((res) => res));
+  // }
+
+  getAllPositionDept(deptId: number): Observable<ApiResponse<any>> {
+    return this.http
+      .get<ApiResponse<any>>(`${this.trainingUrl}/findall/position/dept`, {
+        params: { deptId: deptId },
+      })
+      .pipe(map((res) => res.responseData.result));
+  }
+
+  
+  
   
 }
 

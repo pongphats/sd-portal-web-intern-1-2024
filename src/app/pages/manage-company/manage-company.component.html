@@ -221,74 +221,106 @@
             </div>
         </div>
 
+        <form [formGroup]="sectorManageForm">
+
         <div
             class="text-[#566a7f] rounded-md mt-5 mb-3 shadow p-6 w-full bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#242526]">
 
-            <div class=" grid grid-cols-6 gap-4 flex">
-               
+            <!-- <div class=" grid grid-cols-6 gap-4 flex">
+
                 <div class="col-start-1 col-span-2">
                     <label class="flex-initial self-center w-28">ตำแหน่ง:</label>
-                    <mat-form-field appearance="fill" class="ml-4"> <!-- ml-4 หรือค่าที่เหมาะสม -->
+                    <mat-form-field appearance="fill" class="ml-4">
                         <mat-label>ระบุตำแหน่ง</mat-label>
-                        <input matInput>
+                        <input matInput formControlName="deptName">
                     </mat-form-field>
                 </div>
 
                 <div class="col-start-3 col-end-5">
                     <label class="flex-initial self-center w-28">แผนก:</label>
-                    <mat-form-field appearance="fill" class="ml-4"> <!-- ml-4 หรือค่าที่เหมาะสม -->
+                    <mat-form-field appearance="fill" class="ml-4"> 
                         <mat-label>ระบุแผนก</mat-label>
-                        <input matInput>
+                        <input matInput formControlName="deptCode">
                     </mat-form-field>
                 </div>
 
 
                 <div class="flex justify-center items-center  gap-4">
-                   <div class="col-start-5">
+                    <div class="col-start-5">
                         <button mat-raised-button class="bg-[#8d918d] !text-white flex items-center py-2 px-4 rounded"
                             type="button">
                             <span class="!text-white">เพิ่มตำแหน่ง</span>
                         </button>
                     </div>
 
-                   <div class="col-start-6">
-                    <button mat-raised-button class="bg-[#dfa006] !text-white flex items-center py-2 px-4 rounded" 
-                    type="button">
-                        <i class='bx bx-revision text-white mr-2'></i>
-                        <span class="!text-white">เคลียร์ข้อมูล</span>
-                    </button>
+                    <div class="col-start-6">
+                        <button mat-raised-button class="bg-[#dfa006] !text-white flex items-center py-2 px-4 rounded"
+                            type="button">
+                            <i class='bx bx-revision text-white mr-2'></i>
+                            <span class="!text-white">เคลียร์ข้อมูล</span>
+                        </button>
 
-                   </div>
-                  
+                    </div>
                 </div>
+            </div> -->
 
-                
+            <div class="grid grid-cols-1 md:grid-cols-6 gap-4 p-4">
+                <div class="col-span-1 md:col-span-2">
+                    <label class="block text-sm font-medium">ตำแหน่ง:</label>
+                    <mat-form-field appearance="fill" class="w-full">
+                        <mat-label>ระบุตำแหน่ง</mat-label>
+                        <input matInput formControlName="deptName">
+                    </mat-form-field>
+                </div>
+            
+                <div class="col-span-1 md:col-span-2">
+                    <label class="block text-sm font-medium">แผนก:</label>
+                    <mat-form-field appearance="fill" class="w-full">
+                        <mat-label>ระบุแผนก</mat-label>
+                        <input matInput formControlName="deptCode">
+                    </mat-form-field>
+                </div>
+            
+                <div class="col-span-1 md:col-span-2 flex items-center justify-end gap-4">
+                    <button mat-raised-button class="bg-[#8d918d] !text-white py-2 px-4 rounded" type="button">
+                        <span class="text-white">เพิ่มตำแหน่ง</span>
+                    </button>
+                    <button mat-raised-button class="bg-[#dfa006] !text-white py-2 px-4 rounded" type="button">
+                        <i class='bx bx-revision text-white mr-2'></i>
+                        <span class="text-white">เคลียร์ข้อมูล</span>
+                    </button>
+                </div>
             </div>
+            
 
 
-        
+
 
         </div> <!--END Gray-->
+        </form>
 
 
-       
-        
+
+
 
         <table mat-table [dataSource]="positionManagement" class="mat-elevation-z8 w-full overflow-x-auto">
-      
-            <ng-container matColumnDef="deptId">
-              <th mat-header-cell *matHeaderCellDef class="font-bold text-black  text-[16px] !text-center"> ลำดับ </th>
-              <td mat-cell *matCellDef="let element" class="justify-center !text-center"> {{element.deptId}} </td>
+
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef class="font-bold text-black  text-[16px] !text-center"> ลำดับ
+                </th>
+                <td mat-cell *matCellDef="let element" class="justify-center !text-center"> {{element.id}} </td>
             </ng-container>
-          
+
             <ng-container matColumnDef="positionName">
-              <th mat-header-cell *matHeaderCellDef class="font-bold text-black  text-[16px] !text-center"> ตำแหน่ง </th>
-              <td mat-cell *matCellDef="let element" class="justify-center !text-center"> {{element.positionName}} </td>
+                <th mat-header-cell *matHeaderCellDef class="font-bold text-black  text-[16px] !text-center"> ตำแหน่ง
+                </th>
+                <td mat-cell *matCellDef="let element" class="justify-center !text-center"> {{element.positionName}}
+                </td>
             </ng-container>
-          
+
             <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
-          </table>
+        </table>
 
 
 
@@ -296,12 +328,6 @@
 
 
     </div> <!--END White-->
-
-    
-      
-
-
-
 
 
 </div>

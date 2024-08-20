@@ -61,6 +61,8 @@ export class ManageCompanyComponent implements OnInit {
 
     this.loadSpecificCompanySectors();//2
 
+    this.loadPositionManagement();//3 table2
+
     //this.dataManageCompany.paginator = this.paginator;
 
   }
@@ -283,25 +285,6 @@ export class ManageCompanyComponent implements OnInit {
   isEditing: boolean = false;
   selectedSector: any = null;
 
-  // async onRowClick(row: any) {
-  //   this.selectedSector = row;
-  //   this.sectorManageForm.patchValue({
-  //     company: row.company,
-  //     sectorTname: row.sectorTname,
-  //     sectorEname: row.sectorFullName,
-  //     sectorCode: row.sectorCode,
-  //     deptTname: row.department.deptTname,
-  //     deptEname: row.department.deptFullName,
-  //     deptCode: row.department.deptName,
-  //     deptId: row.department.deptCode,
-
-  //   });
-
-
-  //   this.isEditing = true; // Switch to edit mode
-  //   this.showDeleteButton = true; // แสดงปุ่มลบข้อมูล
-  // }
-
   deptId!: number;
   adminRes: any;
   async onRowClick(row: any) {
@@ -337,6 +320,9 @@ export class ManageCompanyComponent implements OnInit {
 
         this.isEditing = true; // Switch to edit mode
         this.showDeleteButton = true; // Show delete button
+
+        // Fetch and display positions for the selected department *****
+        await this.loadPositionManagement();
       } else {
         console.error('Admin details not found');
       }
@@ -377,7 +363,35 @@ export class ManageCompanyComponent implements OnInit {
 
   //Taable 2
   positionManagement = new MatTableDataSource<any>([]);
-  displayedColumns2: string[] = ['deptId', 'positionName'];
+  displayedColumns2: string[] = ['id', 'positionName'];
+
+
+  async loadPositionManagement() {
+    try {
+      // Call API to get position data for the selected department
+      const positions = await this.apiService.getAllPositionDept(this.deptId).toPromise();
+      console.log('Positions for selected department:', positions);
+
+    } catch (error) {
+      console.error('Error loading position management data:', error);
+    }
+  }
+
+  
+  
+
+
+ 
+
+
+
+ 
+  
+
+
+  
+
+
 
 
 
