@@ -111,6 +111,7 @@ export class FtrSv1PageComponent implements OnInit, AfterViewInit {
     const company_id = await this.commonService
       .getCompanyIdByName(this.budgetForm.value.company!)
       .toPromise();
+
     const req: saveBudgetByYearRequest = {
       year: Number(this.budgetForm.value.budgetYear) - 543 + '' || '',
       deptCode: this.budgetForm.value.dept || '',
@@ -122,8 +123,11 @@ export class FtrSv1PageComponent implements OnInit, AfterViewInit {
     };
 
     const res = await this.apiService.saveBudgetByYear(req).toPromise();
-
-    this.clear();
+    if (res?.responseMessage == 'ทำรายการเรียบร้อย') {
+      this.swalService.showSuccess('ทำรายการเรียบร้อย');
+    } else if (res?.responseMessage == 'ไม่สำเร็จ') {
+      this.swalService.showError('งบประมาณน้อยกว่าที่ใช้ไป');
+    }
   }
 
   //---------------------------------> Api Edit
