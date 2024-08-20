@@ -123,11 +123,16 @@ export class FtrSv1PageComponent implements OnInit, AfterViewInit {
     };
 
     const res = await this.apiService.saveBudgetByYear(req).toPromise();
-    if (res?.responseMessage == 'ทำรายการเรียบร้อย') {
-      this.swalService.showSuccess('ทำรายการเรียบร้อย');
-    } else if (res?.responseMessage == 'ไม่สำเร็จ') {
-      this.swalService.showError('งบประมาณน้อยกว่าที่ใช้ไป');
+    if (res?.responseMessage === 'ทำรายการเรียบร้อย') {
+      this.swalService.showSuccess('ทำรายการเรียบร้อย').then(() => {
+        this.clear();
+      });
+    } else if (
+      res?.responseMessage === 'งบที่อัพเดทมีค่าน้อยกว่าที่ใช้ไปแล้ว'
+    ) {
+      this.swalService.showError('งบที่อัพเดทมีค่าน้อยกว่าที่ใช้ไปแล้ว');
     }
+    console.log(res);
   }
 
   //---------------------------------> Api Edit

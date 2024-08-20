@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 })
 export class SwalService {
   showSuccess(message: string) {
-    Swal.fire({
+    return Swal.fire({
       text: message,
       icon: 'success',
       confirmButtonText: 'ตกลง',
