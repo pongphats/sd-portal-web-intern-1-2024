@@ -1,1 +1,92 @@
-<p>dialog-expense works!</p>
+<mat-dialog-content>
+    <form [formGroup]="expenseForm">
+        <div
+            class="w-full flex flex-col text-[#566a7f] rounded-lg shadow p-6 bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#343434]">
+
+            <div class="flex flex-col gap-y-2">
+                <p>ประเภทการรักษา</p>
+                <mat-radio-group formControlName="treatmentType" class="pb-3">
+                    <mat-radio-button value="OPD" class="mx-1">OPD</mat-radio-button>
+                    <mat-radio-button value="IPD" class="mx-1">IPD</mat-radio-button>
+                </mat-radio-group>
+            </div>
+
+            <div class="flex flex-col gap-y-2">
+                <div class="flex flex-row gap-x-2">
+                    <div class="flex flex-col w-[50%]">
+                        <p>วันที่</p>
+                        <mat-form-field appearance="fill">
+                            <mat-label>วันที่</mat-label>
+                            <mat-date-range-input [rangePicker]="picker">
+                                <input matStartDate placeholder="วันที่เริ่ม" formControlName="startDate">
+                                <input matEndDate placeholder="วันที่สิ้นสุด"  formControlName="endDate">
+                            </mat-date-range-input>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker></mat-date-range-picker>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="flex flex-col w-[50%]">
+                        <p>จำนวนวัน</p>
+                        <mat-form-field appearance="fill" class="w-full">
+                            <mat-label>จำนวนวัน</mat-label>
+                            <input matInput type="text" formControlName="daysCount" readonly>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="flex flex-col">
+                <div class="flex flex-row gap-x-2">
+                    <div class="flex flex-col w-[50%]">
+                        <p>ค่ารักษาพยาบาล</p>
+                        <mat-form-field appearance="fill" class="w-full">
+                            <mat-label>ค่ารักษาพยาบาล</mat-label>
+                            <input matInput type="text"  formControlName="medicalCost" (blur)="formatCurrency($event, 'medicalCost')">
+                        </mat-form-field>
+                    </div>
+                    <div class="flex flex-col w-[50%]">
+                        <p>ค่าห้อง + ค่าอาหาร</p>
+                        <mat-form-field appearance="fill" class="w-full">
+                            <mat-label>ค่าห้อง + ค่าอาหาร</mat-label>
+                            <input matInput type="text" formControlName="roomAndBoardCost" (blur)="formatCurrency($event, 'roomAndBoardCost')">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col">
+                <div class="flex flex-col">
+                    <p>รายละเอียด</p>
+                    <mat-form-field class="example-full-width" appearance="fill">
+                        <mat-label>รายละเอียด</mat-label>
+                        <textarea matInput placeholder="" formControlName="details"></textarea>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="flex flex-col">
+                <div class="flex flex-col">
+                    <p>หมายเหตุ</p>
+                    <mat-form-field class="example-full-width" appearance="fill">
+                        <mat-label>หมายเหตุ</mat-label>
+                        <textarea matInput placeholder="" formControlName="notes"></textarea>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions class="items-center">
+    <button mat-raised-button disabled="false" type="button"
+        class="flex items-center text-center bg-[#696cf8] dark:bg-[#696cf8]" (click)="onSave()">
+        <span class="text-white dark:text-white">บันทึก</span>
+    </button>
+
+    <button mat-raised-button type="button" (click)="onCancel()"
+        class="flex items-center text-center bg-[#ec7063] dark:bg-[#ec7063]">
+        <span class="text-white dark:text-white">ยกเลิก</span>
+    </button>
+
+</mat-dialog-actions>

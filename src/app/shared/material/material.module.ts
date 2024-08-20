@@ -30,7 +30,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatDialogModule
+    MatDialogModule,
   ],
   providers: [DatePipe],
 })

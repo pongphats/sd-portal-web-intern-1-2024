@@ -1,10 +1,10 @@
 <div class="bg-transparent w-full">
 
     <div
-        class="w-full px-2 py-1 rounded-lg lg:py-3 lg:px-6 bg-content shadow-card dark:bg-content-dark dark:shadow-none">
+        class="w-full px-4 py-3 rounded-lg lg:px-6 bg-content shadow-card dark:bg-content-dark dark:shadow-none">
         <p class="text-2xl text-font-header  mt-5 mb-3">ฟอร์มเบิกค่ารักษาพยาบาล</p>
 
-        <div class="mx-6 lg:mx-4">
+        <div class="">
             <div class="flex flex-col lg:flex-row justify-center gap-4 w-full">
                 <div class="w-full lg:w-[50%]">
                     <form [formGroup]="welfareForm">
@@ -68,25 +68,25 @@
             </div>
 
             <div
-                class="text-[#566a7f] rounded-lg shadow px-6 pt-3 w-full bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#343434]">
+                class="text-[#566a7f] rounded-lg shadow px-3 lg:px-6 pt-3 w-full bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#343434]">
                 <div class="flex flex-col w-full gap-y-2">
                     <!-- <p class="font-bold underline underline-offset-4">ข้อมูลพนักงาน</p> -->
-                    <div class="flex flex-row w-full items-center justify-between mt-2">
-                        <div class="w-[30%] flex flex-row items-center">
-                            <p class="w-[30%]">วันที่เริ่มงาน</p>
-                            <mat-form-field appearance="fill" class="w-[70%]">
+                    <div class="flex flex-row w-full items-center mt-2 gap-x-2">
+                        <div class="w-[35%] flex flex-row items-center">
+                            <p class="w-[40%] lg:w-[30%] text-center">วันที่เริ่มงาน</p>
+                            <mat-form-field appearance="fill" class="w-[60%] lg:w-[70%]">
                                 <input matInput type="text" value="11/11/2545" readonly>
                             </mat-form-field>
                         </div>
-                        <div class="w-[40%] flex flex-row items-center">
-                            <p class="w-[40%]">วันที่ผ่านการทดลองงาน</p>
-                            <mat-form-field appearance="fill" class="w-[60%]">
+                        <div class="w-[45%] flex flex-row items-center">
+                            <p class="w-[55%] lg:w-[40%] text-center">วันที่ผ่านการทดลองงาน</p>
+                            <mat-form-field appearance="fill" class="w-[45%] lg:w-[60%]">
                                 <input matInput type="text" value="11/11/2545" readonly>
                             </mat-form-field>
                         </div>
                         <div class="w-[20%] flex flex-row items-center">
-                            <p class="w-[30%]">ประเภท</p>
-                            <mat-form-field appearance="fill" class="w-[70%]">
+                            <p class="w-[40%] lg:w-[30%] text-center">ประเภท</p>
+                            <mat-form-field appearance="fill" class="w-[60%] lg:w-[70%]">
                                 <input matInput type="text" value="AA" readonly>
                             </mat-form-field>
                         </div>
