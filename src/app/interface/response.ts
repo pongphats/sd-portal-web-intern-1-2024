@@ -54,11 +54,14 @@ export interface CreateTrainingResponse {
 }
 
 export interface Budget {
-  id: number;
   year: string;
   budgetTraining: number;
-  budgetCer: number;
-  total_exp: number;
-  company: company;
   departmentCode: string;
+  budgetCer: number;
+  company: string;
+  id: number;
+  totalExp: number;
+  budgetCerRemain: number;
+  budgetTrainingRemain: number;
+  totalExpRemain: number;
 }
