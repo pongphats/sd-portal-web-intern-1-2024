@@ -4,7 +4,7 @@ import { welfareForm } from 'src/app/interface/form';
 import { ApiService } from 'src/app/services/api.service';
 import { CommonService } from 'src/app/services/common.service';
 import { SwalService } from 'src/app/services/swal.service';
-import { catchError, debounceTime, distinctUntilChanged, map, Observable, of, startWith, switchMap } from 'rxjs';
+import { debounceTime, map, Observable, of, switchMap } from 'rxjs';
 import { Employee } from 'src/app/interface/employee';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogExpenseComponent } from './components/dialog-expense/dialog-expense.component';
@@ -83,7 +83,11 @@ export class WelfareFormsPageComponent implements OnInit {
   dataPositionName: string = '';
   dataEmail: string = '';
   dataLevel: string = '';
+  dataStartDate: string = '';
+  dataPassDate: string = '';
+  dataTypeEmp: string = '';
   searchEmp() {
+    console.log(this.dataEmp)
     if (this.dataEmp.length === 1) {
       const data = this.dataEmp[0];
       this.datafullName = `${data.title} ${data.firstname} ${data.lastname}`
@@ -92,6 +96,9 @@ export class WelfareFormsPageComponent implements OnInit {
       this.dataPositionName = data.position.positionName
       this.dataEmail = data.email
       this.dataLevel = data.level
+      this.dataStartDate = data.startDate || ''
+      this.dataPassDate = data.passDate || ''
+      this.dataTypeEmp = data.typeEmp || ''
 
     } else {
       this.datafullName = ''
@@ -100,6 +107,9 @@ export class WelfareFormsPageComponent implements OnInit {
       this.dataPositionName = ''
       this.dataEmail = ''
       this.dataLevel = ''
+      this.dataStartDate = ''
+      this.dataPassDate = ''
+      this.dataTypeEmp = ''
       console.log("กรุณากรอกชื่อให้ครบถ้วน")
 
     }
