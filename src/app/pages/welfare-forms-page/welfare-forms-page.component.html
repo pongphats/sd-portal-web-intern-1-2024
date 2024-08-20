@@ -1,102 +1,115 @@
 <div class="bg-transparent w-full">
 
-    <div
-        class="w-full px-4 py-3 rounded-lg lg:px-6 bg-content shadow-card dark:bg-content-dark dark:shadow-none">
+    <div class="w-full px-4 py-3 rounded-lg lg:px-6 bg-content shadow-card dark:bg-content-dark dark:shadow-none">
         <p class="text-2xl text-font-header  mt-5 mb-3">ฟอร์มเบิกค่ารักษาพยาบาล</p>
 
-        <div class="">
-            <div class="flex flex-col lg:flex-row justify-center gap-4 w-full">
-                <div class="w-full lg:w-[50%]">
-                    <form [formGroup]="welfareForm">
-                        <div class="flex flex-row items-center">
-                            <label for="fullName" class="w-[10%] lg:w-[15%]">ค้นหาชื่อ:</label>
-                            <!-- fullName -->
-                            <div class="w-[75%] lg:w-[60%] flex">
-                                <mat-form-field appearance="fill" class="w-full">
-                                    <mat-label>ค้นหาชื่อ</mat-label>
-                                    <input matInput formControlName="fullName" [matAutocomplete]="auto">
-                                    <mat-autocomplete #auto="matAutocomplete">
-                                        <mat-option *ngFor="let option of filteredOptions | async"
-                                            [value]="option.fullName">
-                                            {{option.fullName}}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field>
-                            </div>
-                            <div class="w-[15%] lg:w-[25%] justify-end lg:justify-center flex">
-                                <button mat-raised-button type="button" (click)="searchEmp()"
-                                    class="flex items-center text-center bg-[#696cf8] dark:bg-[#696cf8]">
-                                    <i class='bx bx-search pr-2 text-white dark:text-white'></i>
-                                    <span class="text-white dark:text-white">ค้นหา</span>
-                                </button>
-                            </div>
-
+        <div class="flex flex-col lg:flex-row justify-center gap-4 w-full">
+            <div class="w-full lg:w-[50%]">
+                <form [formGroup]="welfareForm">
+                    <div class="flex flex-row items-center">
+                        <label for="fullName" class="w-[10%] lg:w-[15%]">ค้นหาชื่อ:</label>
+                        <!-- fullName -->
+                        <div class="w-[75%] lg:w-[60%] flex">
+                            <mat-form-field appearance="fill" class="w-full">
+                                <mat-label>ค้นหาชื่อ</mat-label>
+                                <input matInput formControlName="fullName" [matAutocomplete]="auto">
+                                <mat-autocomplete #auto="matAutocomplete">
+                                    <mat-option *ngFor="let option of filteredOptions | async"
+                                        [value]="option.fullName">
+                                        {{option.fullName}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
                         </div>
-
-                    </form>
-                </div>
-                <div
-                    class="w-full lg:w-[50%] flex flex-col lg:flex-row text-[#566a7f] rounded-lg shadow p-6 w-full bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#343434] mb-3">
-                    <div class="flex flex-col w-full gap-y-2" *ngIf="datafullName != ''">
-                        <p class="font-bold">ข้อมูลพนักงาน</p>
-                        <div class="flex flex-row w-full">
-                            <p class="w-[50%]">{{datafullName}}</p>
-                            <p class="w-[50%]">รหัสพนักงาน: {{dataEmpCode}}</p>
-                        </div>
-                        <div class="flex flex-row w-full">
-                            <p class="w-[50%]">แผนก: {{dataSectorName}}</p>
-                            <p class="w-[50%]">{{dataPositionName}}</p>
-                        </div>
-                        <div class="flex flex-row w-full">
-                            <p class="w-[50%]">Email : {{dataEmail}}</p>
-                            <p class="w-[50%]">ระดับพนักงาน (LEVEL): {{dataLevel}}</p>
-                        </div>
-                        <div class="flex flex-row w-full">
-                            <button mat-raised-button type="button" (click)="openDialog()"
+                        <div class="w-[15%] lg:w-[25%] justify-end lg:justify-center flex">
+                            <button mat-raised-button type="button" (click)="searchEmp()"
                                 class="flex items-center text-center bg-[#696cf8] dark:bg-[#696cf8]">
-                                <!-- <i class='bx bx-search pr-2 text-white dark:text-white'></i> -->
-                                <span class="text-white dark:text-white">เบิกค่ารักษาพยาบาล</span>
+                                <i class='bx bx-search pr-2 text-white dark:text-white'></i>
+                                <span class="text-white dark:text-white">ค้นหา</span>
                             </button>
                         </div>
-                    </div>
-                    <div class="flex flex-col w-full" *ngIf="datafullName == ''">
-                        <p class="font-bold text-xl py-5 text-center ">กรุณาค้นหาชื่อพนักงานที่ต้องการเพื่อดำเนินการต่อ
-                        </p>
+
                     </div>
 
+                </form>
+            </div>
+            <div
+                class="w-full lg:w-[50%] flex flex-col lg:flex-row text-[#566a7f] rounded-lg shadow p-6 w-full bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#343434] mb-3">
+                <div class="flex flex-col w-full gap-y-2" *ngIf="datafullName != ''">
+                    <p class="font-bold">ข้อมูลพนักงาน</p>
+                    <div class="flex flex-row w-full">
+                        <p class="w-[55%]">{{datafullName}}</p>
+                        <p class="w-[45%]">รหัสพนักงาน: {{dataEmpCode}}</p>
+                    </div>
+                    <div class="flex flex-row w-full">
+                        <p class="w-[55%]">แผนก: {{dataSectorName}}</p>
+                        <p class="w-[45%]">{{dataPositionName}}</p>
+                    </div>
+                    <div class="flex flex-row w-full">
+                        <p class="w-[55%]">Email : {{dataEmail}}</p>
+                        <p class="w-[45%]">ระดับพนักงาน (LEVEL): {{dataLevel}}</p>
+                    </div>
+                    <div class="flex flex-row w-full">
+                        <button mat-raised-button type="button" (click)="openDialog()"
+                            class="flex items-center text-center bg-[#696cf8] dark:bg-[#696cf8]">
+                            <span class="text-white dark:text-white">เบิกค่ารักษาพยาบาล</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex flex-col w-full" *ngIf="datafullName == ''">
+                    <p class="font-bold text-xl py-5 text-center ">กรุณาค้นหาชื่อพนักงานที่ต้องการเพื่อดำเนินการต่อ
+                    </p>
                 </div>
             </div>
+        </div><!-- part1-->
 
-            <div
-                class="text-[#566a7f] rounded-lg shadow px-3 lg:px-6 pt-3 w-full bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#343434]">
-                <div class="flex flex-col w-full gap-y-2">
-                    <!-- <p class="font-bold underline underline-offset-4">ข้อมูลพนักงาน</p> -->
-                    <div class="flex flex-row w-full items-center mt-2 gap-x-2">
-                        <div class="w-[35%] flex flex-row items-center">
-                            <p class="w-[40%] lg:w-[30%] text-center">วันที่เริ่มงาน</p>
-                            <mat-form-field appearance="fill" class="w-[60%] lg:w-[70%]">
-                                <input matInput type="text" value="11/11/2545" readonly>
-                            </mat-form-field>
-                        </div>
-                        <div class="w-[45%] flex flex-row items-center">
-                            <p class="w-[55%] lg:w-[40%] text-center">วันที่ผ่านการทดลองงาน</p>
-                            <mat-form-field appearance="fill" class="w-[45%] lg:w-[60%]">
-                                <input matInput type="text" value="11/11/2545" readonly>
-                            </mat-form-field>
-                        </div>
-                        <div class="w-[20%] flex flex-row items-center">
-                            <p class="w-[40%] lg:w-[30%] text-center">ประเภท</p>
-                            <mat-form-field appearance="fill" class="w-[60%] lg:w-[70%]">
-                                <input matInput type="text" value="AA" readonly>
-                            </mat-form-field>
-                        </div>
-
+        <!-- part2 Version1-->
+        <div
+            class="text-[#566a7f] rounded-lg shadow px-3 lg:px-6 pt-3 w-full bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#343434]">
+            <div class="flex flex-col w-full gap-y-2">
+                <div class="flex flex-row w-full items-center mt-2 gap-x-2">
+                    <div class="w-[35%] flex flex-row items-center">
+                        <p class="w-[40%] lg:w-[30%] text-center">วันที่เริ่มงาน</p>
+                        <mat-form-field appearance="fill" class="w-[60%] lg:w-[70%]">
+                            <input matInput type="text" value="11/11/2545" readonly>
+                        </mat-form-field>
+                    </div>
+                    <div class="w-[45%] flex flex-row items-center">
+                        <p class="w-[55%] lg:w-[40%] text-center">วันที่ผ่านการทดลองงาน</p>
+                        <mat-form-field appearance="fill" class="w-[45%] lg:w-[60%]">
+                            <input matInput type="text" value="11/11/2545" readonly>
+                        </mat-form-field>
+                    </div>
+                    <div class="w-[20%] flex flex-row items-center">
+                        <p class="w-[40%] lg:w-[30%] text-center">ประเภท</p>
+                        <mat-form-field appearance="fill" class="w-[60%] lg:w-[70%]">
+                            <input matInput type="text" value="AA" readonly>
+                        </mat-form-field>
                     </div>
                 </div>
-
             </div>
         </div>
 
-    </div>
+        <!-- part2 Version2-->
+        <!-- <div
+            class="text-[#566a7f] rounded-lg shadow px-3 lg:px-6 py-2 w-full bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#343434]">
+            <div class="flex flex-col w-full gap-y-2">
+                <div class="flex flex-row w-full items-center my-2 gap-x-2">
+                    <div class="w-[35%] flex flex-row items-center gap-x-2">
+                        <p class="w-[40%] lg:w-[30%] text-center">วันที่เริ่มงาน:</p>
+                        <p class="w-[60%] lg:w-[70%] bg-content dark:bg-[#444444] py-2 pl-2 rounded-lg">11/11/2545</p>
+                    </div>
+                    <div class="w-[45%] flex flex-row items-center gap-x-2">
+                        <p class="w-[55%] lg:w-[40%] text-center">วันที่ผ่านการทดลองงาน:</p>
+                        <p class="w-[60%] lg:w-[70%] bg-content dark:bg-[#444444] py-2 pl-2 rounded-lg">11/11/2545</p>
+                    </div>
+                    <div class="w-[20%] flex flex-row items-center gap-x-2">
+                        <p class="w-[40%] lg:w-[30%] text-center">ประเภท:</p>
+                        <p class="w-[60%] lg:w-[70%] bg-content dark:bg-[#444444] py-2 pl-2 rounded-lg">AA</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
 
-</div>
+    </div>
