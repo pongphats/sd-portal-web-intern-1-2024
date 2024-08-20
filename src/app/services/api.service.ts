@@ -149,4 +149,20 @@ export class ApiService {
       .get<Budget[]>(`${this.trainingUrl}/findAllBudget`)
       .pipe(map((res) => res));
   }
+
+  uploadFile(file: File) {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+
+    return this.http
+      .post(`${this.trainingUrl}/uploadFile`, formData)
+      .pipe(map((res) => res));
+    // const headers = new HttpHeaders({
+    //   Accept: 'application/json', // แก้ไขตามความต้องการของ API
+    // });
+
+    // return this.http.post(`${this.api}/uploadFile`, formData, {
+    //   headers: headers,
+    // });
+  }
 }

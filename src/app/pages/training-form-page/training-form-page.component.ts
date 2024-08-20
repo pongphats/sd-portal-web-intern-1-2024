@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatTableDataSource } from '@angular/material/table';
 import { BuddhistDatePipe } from '@shared/pipes/budhist-date.pipe';
 import { map, Observable, startWith } from 'rxjs';
-import { Course } from 'src/app/interface/common';
+import { Course, fileTable } from 'src/app/interface/common';
 import { Employee } from 'src/app/interface/employee';
 import { trainingForm } from 'src/app/interface/form';
 import { MngDeptListRes } from 'src/app/interface/response';
@@ -41,6 +42,8 @@ export class TrainingFormPageComponent implements OnInit {
   presidentsList: Employee[] = [];
 
   courseList!: Course[];
+
+  fileDataSource = new MatTableDataSource<fileTable>([])
 
   constructor(
     private fb: FormBuilder,
