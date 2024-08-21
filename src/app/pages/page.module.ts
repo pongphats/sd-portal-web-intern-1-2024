@@ -37,7 +37,6 @@ import { ManageCoursePageComponent } from './manage-course-page/manage-course-pa
 import { TrainingFormPageComponent } from './training-form-page/training-form-page.component';
 import { TraingCreateFormsTableComponent } from './training-form-page/components/traing-create-forms-table/traing-create-forms-table.component';
 import { WelfareFormsPageComponent } from './welfare-forms-page/welfare-forms-page.component';
-import { DialogExpenseComponent } from './welfare-forms-page/components/dialog-expense/dialog-expense.component';
 
 @NgModule({
   declarations: [
@@ -74,7 +73,6 @@ import { DialogExpenseComponent } from './welfare-forms-page/components/dialog-e
     TrainingFormPageComponent,
     TraingCreateFormsTableComponent,
     WelfareFormsPageComponent,
-    DialogExpenseComponent,
   ],
   imports: [
     MatIconModule,
