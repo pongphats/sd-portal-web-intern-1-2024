@@ -4,6 +4,8 @@ import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { sector } from '../interface/common';
 import { ApiService } from './api.service';
+import { ApiResponse } from '../interface/response';
+import { Employee } from '../interface/employee';
 
 @Injectable({
   providedIn: 'root',
@@ -94,5 +96,15 @@ export class CommonService {
 
   convertNumberToStringFormatted(number: number): string {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  getUserDetailByEmpcode(empCode: string): Observable<Employee> {
+    return this.http
+      .get<ApiResponse<Employee>>(`${this.trainingUrl}/findByEmpCode`, {
+        params: {
+          empCode: empCode,
+        },
+      })
+      .pipe(map((res) => res.responseData.result));
   }
 }

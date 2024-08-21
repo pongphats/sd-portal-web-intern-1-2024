@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import {
   CreateSectorRequest,
   CreateTrainingRequest,
+  CreateTrainingRequestForm,
   saveBudgetByYearRequest,
 } from '../interface/request';
 import { map, Observable } from 'rxjs';
@@ -150,7 +151,7 @@ export class ApiService {
       .pipe(map((res) => res));
   }
 
-  uploadFile(file: File) {
+  uploadFile(file: File) : Observable<any> {
     const formData = new FormData();
     formData.append('file', file, file.name);
 
@@ -164,5 +165,11 @@ export class ApiService {
     // return this.http.post(`${this.api}/uploadFile`, formData, {
     //   headers: headers,
     // });
+  }
+
+  createTrainingForms(req : CreateTrainingRequestForm) {
+    return this.http
+     .post<any>(`${this.trainingUrl}/createTraining`, req)
+     .pipe(map((res) => res));
   }
 }
