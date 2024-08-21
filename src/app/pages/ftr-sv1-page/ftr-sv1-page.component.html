@@ -59,11 +59,11 @@
     <div
       class="text-[#566a7f] mt-2 mb-3 rounded-md shadow p-6 w-full bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#242526]"
     >
-      <div class="flex-col lg:flex-row">
-        <mat-label class="self-center w-full lg:w-[15%] mr-3" for="udgetTrain"
+      <div class="flex flex-col lg:flex-row">
+        <mat-label class="self-center w-full lg:w-[19%] mr-5" for="udgetTrain"
           >งบประมาณการอบรม</mat-label
         >
-        <mat-form-field appearance="fill" class="w-full lg:w-[20%]">
+        <mat-form-field appearance="fill" class="w-full lg:w-[16%] mx-3">
           <input
             matInput
             id=" budgetTrain"
@@ -79,10 +79,10 @@
             >กรุณากรอกข้อมูล
           </mat-error>
         </mat-form-field>
-        <mat-label class="self-center w-full lg:w-[15%] ml-5" for="budgetCer"
+        <mat-label class="self-center w-full lg:w-[19%] ml-5" for="budgetCer"
           >งบประมาณการสอบ</mat-label
         >
-        <mat-form-field appearance="fill" class="w-full lg:w-[20%] mx-3">
+        <mat-form-field appearance="fill" class="w-full lg:w-[16%] mx-3">
           <input
             matInput
             id="budgetCer"
@@ -98,10 +98,10 @@
             >กรุณากรอกข้อมูล
           </mat-error>
         </mat-form-field>
-        <mat-label class="self-center w-full lg:w-[15%] ml-5" for="budgetTotal"
+        <mat-label class="self-center w-full lg:w-[14%] ml-5" for="budgetTotal"
           >งบประมาณรวม</mat-label
         >
-        <mat-form-field appearance="fill" class="w-full lg:w-[20%] mx-3">
+        <mat-form-field appearance="fill" class="w-full lg:w-[16%] mx-3">
           <input
             matInput
             readonly
@@ -178,6 +178,11 @@
         >
           {{ number(element.year) }}
         </td>
+        <td
+          mat-footer-cell
+          *matFooterCellDef
+          class="!px-2 !py-2 text-sm text-slate-600 !text-center"
+        ></td>
       </ng-container>
       <!-- company Column -->
       <ng-container matColumnDef="company">
@@ -194,6 +199,13 @@
           class="!px-2 !py-2 text-sm text-slate-600 !text-center"
         >
           {{ element.company }}
+        </td>
+        <td
+          mat-footer-cell
+          *matFooterCellDef
+          class="!px-2 !py-2 text-sm text-slate-600 !text-center font-bold"
+        >
+          งบประมาณคงเหลือ
         </td>
       </ng-container>
       <!-- departmentCode Column -->
@@ -212,6 +224,11 @@
         >
           {{ element.departmentCode }}
         </td>
+        <td
+          mat-footer-cell
+          *matFooterCellDef
+          class="!px-2 !py-2 text-sm text-slate-600 !text-center"
+        ></td>
       </ng-container>
 
       <!-- budgetTraining Column -->
@@ -229,6 +246,13 @@
           class="!px-2 !py-2 text-sm text-slate-600 !text-right"
         >
           {{ element.budgetTraining | number : "1.2-2" }}
+        </td>
+        <td
+          mat-footer-cell
+          *matFooterCellDef
+          class="!px-2 !py-2 text-sm text-slate-600 !text-right"
+        >
+          {{ budgetTrainingRemain | number : "1.2-2" }}
         </td>
       </ng-container>
 
@@ -248,6 +272,13 @@
         >
           {{ element.budgetCer | number : "1.2-2" }}
         </td>
+        <td
+          mat-footer-cell
+          *matFooterCellDef
+          class="!px-2 !py-2 text-sm text-slate-600 !text-right"
+        >
+          {{ budgetCerRemain | number : "1.2-2" }}
+        </td>
       </ng-container>
       <!-- totalExp Column -->
       <ng-container matColumnDef="totalExp">
@@ -264,6 +295,13 @@
           class="text-sm text-slate-600 !text-right"
         >
           {{ element.totalExp | number : "1.2-2" }}
+        </td>
+        <td
+          mat-footer-cell
+          *matFooterCellDef
+          class="text-sm text-slate-600 !text-right"
+        >
+          {{ totalExpRemain | number : "1.2-2" }}
         </td>
       </ng-container>
       <!-- edit Column -->
@@ -288,10 +326,20 @@
             <span> แก้ไข</span>
           </button>
         </td>
+        <td
+          mat-footer-cell
+          *matFooterCellDef
+          class="!px-2 !py-2 text-sm text-slate-600 !text-center"
+        ></td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      <tr
+        mat-footer-row
+        *matFooterRowDef="displayedColumns"
+        [class.hidden]="!showFooter"
+      ></tr>
     </table>
   </div>
   <mat-paginator

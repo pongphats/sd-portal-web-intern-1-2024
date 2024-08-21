@@ -24,6 +24,11 @@ export class FtrSv1PageComponent implements OnInit, AfterViewInit {
   invalidAccommodationExpInput: boolean = false;
   totalBudget: number = 0;
   remainingBudget: number = 0;
+  cloneDataSource: any;
+
+  // budgetCerRemain: number = 1999;
+  // budgetTrainingRemain: number = 11999;
+  // totalExpRemain: number = 111999;
 
   totalAmount: number = 0;
   remainingAmount: number = 0;
@@ -53,6 +58,7 @@ export class FtrSv1PageComponent implements OnInit, AfterViewInit {
   ) {}
 
   async ngOnInit() {
+    this.getAllBudget();
     this.budgetForm = this.fb.group({
       company: ['', Validators.required],
       budgetYear: ['', Validators.required],
@@ -65,11 +71,20 @@ export class FtrSv1PageComponent implements OnInit, AfterViewInit {
     this.budgetForm.get('company')?.valueChanges.subscribe(async (company) => {
       if (company) {
         const depts = await this.genDeptsByCompanyName();
-        this.depts = depts || []; // อัปเดต depts เมื่อ company เปลี่ยนแปลง
-        this.budgetForm.get('dept')?.setValue(''); // รีเซ็ตค่า dept
+        this.depts = depts || [];
+        this.budgetForm.get('dept')?.setValue('');
       } else {
         this.depts = [];
       }
+      this.searchBudget(); // เรียกใช้ searchBudget เมื่อ company เปลี่ยนแปลง
+    });
+
+    this.budgetForm.get('budgetYear')?.valueChanges.subscribe(() => {
+      this.searchBudget(); // เรียกใช้ searchBudget เมื่อ budgetYear เปลี่ยนแปลง
+    });
+
+    this.budgetForm.get('dept')?.valueChanges.subscribe(() => {
+      this.searchBudget(); // เรียกใช้ searchBudget เมื่อ dept เปลี่ยนแปลง
     });
 
     this.budgetForm.get('budgetTrain')?.valueChanges.subscribe(() => {
@@ -80,14 +95,70 @@ export class FtrSv1PageComponent implements OnInit, AfterViewInit {
       this.onTotalBudget();
     });
 
-    this.apiService.getAllBudget().subscribe(
-      (data) => {
-        this.dataSource.data = data.sort((a: any, b: any) => a.id - b.id);
-      },
-      (error) => {
-        console.error('Error fetching budget data:', error);
+    this.budgetForm.valueChanges.subscribe(() => {
+      this.searchBudget();
+    });
+  }
+
+  async getAllBudget() {
+    const res = await this.apiService.getAllBudget().toPromise();
+    console.log(res);
+    if (res) {
+      this.dataSource.data = res.sort((a: any, b: any) => a.id - b.id);
+      this.cloneDataSource = res.sort((a: any, b: any) => a.id - b.id);
+    }
+  }
+
+  //--------------------------------->  searchBudget
+
+  budgetCerRemain: number = 0;
+  budgetTrainingRemain: number = 0;
+  totalExpRemain: number = 0;
+  showFooter: boolean = false;
+
+  searchBudget() {
+    const company = this.budgetForm.get('company')?.value;
+    const budgetYear = this.budgetForm.get('budgetYear')?.value;
+    const dept = this.budgetForm.get('dept')?.value;
+
+    this.filteredData = this.cloneDataSource.filter((item: Budget) => {
+      return (
+        (!company || item.company === company) &&
+        (!budgetYear ||
+          (Number(item.year) + 543)
+            .toString()
+            .includes(budgetYear.toString())) &&
+        (!dept || item.departmentCode === dept)
+      );
+    });
+
+    if (this.filteredData.length > 0) {
+      let budgetData = this.filteredData.find(
+        (item) =>
+          item.company === company &&
+          (item.year === budgetYear ||
+            (Number(item.year) + 543).toString() === budgetYear) &&
+          item.departmentCode === dept
+      );
+
+      if (budgetData) {
+        this.budgetCerRemain = budgetData.budgetCerRemain;
+        this.budgetTrainingRemain = budgetData.budgetTrainingRemain;
+        this.totalExpRemain = budgetData.totalExpRemain;
+        this.showFooter = true;
+      } else {
+        this.budgetCerRemain = 0;
+        this.budgetTrainingRemain = 0;
+        this.totalExpRemain = 0;
       }
-    );
+    } else {
+      this.budgetCerRemain = 0;
+      this.budgetTrainingRemain = 0;
+      this.totalExpRemain = 0;
+      this.showFooter = false;
+    }
+
+    this.dataSource.data = this.filteredData.length ? this.filteredData : [];
   }
 
   //---------------------------------> swalService
@@ -122,17 +193,20 @@ export class FtrSv1PageComponent implements OnInit, AfterViewInit {
         Number(this.budgetForm.value.budgetCer?.replace(/,/g, '')) || 0,
     };
 
-    const res = await this.apiService.saveBudgetByYear(req).toPromise();
-    if (res?.responseMessage === 'ทำรายการเรียบร้อย') {
-      this.swalService.showSuccess('ทำรายการเรียบร้อย').then(() => {
-        this.clear();
-      });
-    } else if (
-      res?.responseMessage === 'งบที่อัพเดทมีค่าน้อยกว่าที่ใช้ไปแล้ว'
-    ) {
+    try {
+      const res = await this.apiService.saveBudgetByYear(req).toPromise();
+
+      if (res?.responseMessage === 'ทำรายการเรียบร้อย') {
+        await this.swalService.showSuccess('ทำรายการเรียบร้อย').then(() => {
+          this.clear();
+        });
+      }
+      console.log(res);
+    } catch (error) {
+      // จัดการข้อผิดพลาดที่เกิดขึ้น
+      console.error('งบที่อัพเดทมีค่าน้อยกว่าที่ใช้ไปแล้ว', error);
       this.swalService.showError('งบที่อัพเดทมีค่าน้อยกว่าที่ใช้ไปแล้ว');
     }
-    console.log(res);
   }
 
   //---------------------------------> Api Edit
