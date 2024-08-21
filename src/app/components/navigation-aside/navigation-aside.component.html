@@ -1,17 +1,10 @@
-<div
-  class="bg-[#435971] opacity-10 cursor-pointer z-40 w-full h-full fixed xl:hidden {{
+<div class="bg-[#435971] opacity-10 cursor-pointer z-40 w-full h-full fixed xl:hidden {{
     openAsideNavigation ? '' : 'hidden'
-  }}"
-  (click)="onToggleAsideNavigation()"
-></div>
-<aside
-  class="fixed h-full top-0 bottom-0 z-50 shadow-[0_0.125rem_0.375rem_0_rgba(161,172,180,0.5)] transition-all duration-200 {{
+  }}" (click)="onToggleAsideNavigation()"></div>
+<aside class="fixed h-full top-0 bottom-0 z-50 shadow-[0_0.125rem_0.375rem_0_rgba(161,172,180,0.5)] transition-all duration-200 {{
     openAsideNavigation ? 'left-0 xl:left-0' : '-left-80 xl:left-0'
-  }} dark:shadow-none"
->
-  <div
-    class="relative flex flex-col w-64 h-full pt-4 bg-body-page gap-y-3 dark:bg-content-dark"
-  >
+  }} dark:shadow-none">
+  <div class="relative flex flex-col w-64 h-full pt-4 bg-body-page gap-y-3 dark:bg-content-dark">
     <div class="flex items-center justify-center gap-x-2">
       <div>
         <!-- <svg width="25" viewBox="0 0 25 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -50,9 +43,7 @@
         <img src="favicon.ico" class="w-16" />
       </div>
       <div class="mt-1">
-        <h1
-          class="text-2xl font-bold text-font-header dark:text-font-header-dark"
-        >
+        <h1 class="text-2xl font-bold text-font-header dark:text-font-header-dark">
           PCC-SD Portal
         </h1>
       </div>
@@ -67,13 +58,9 @@
     <hr />
     <nav class="flex flex-col items-start w-full p-3 gap-y-1 overflow-y-auto">
       <div class="w-full">
-        <a
-          [routerLink]="['/pccth']"
-          [routerLinkActiveOptions]="{ exact: true }"
-          [routerLinkActive]="['active-link']"
+        <a [routerLink]="['/pccth']" [routerLinkActiveOptions]="{ exact: true }" [routerLinkActive]="['active-link']"
           class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-          (click)="onCloseAsideNavigationToLink()"
-        >
+          (click)="onCloseAsideNavigationToLink()">
           <div class="mt-[0.1rem]">
             <em class="text-xl bx bx-home"></em>
           </div>
@@ -83,12 +70,9 @@
         </a>
       </div>
       <div class="w-full">
-        <a
-          [routerLink]="['/pccth/news']"
-          [routerLinkActive]="['active-link']"
+        <a [routerLink]="['/pccth/news']" [routerLinkActive]="['active-link']"
           class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-          (click)="onCloseAsideNavigationToLink()"
-        >
+          (click)="onCloseAsideNavigationToLink()">
           <div class="mt-[0.1rem]">
             <em class="text-xl bx bx-news"></em>
           </div>
@@ -99,15 +83,9 @@
       </div>
 
       <div class="w-full">
-        <input
-          type="checkbox"
-          id="toggle-submenu-training"
-          class="hidden toggle-submenu-training"
-        />
-        <label
-          for="toggle-submenu-training"
-          class="flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-        >
+        <input type="checkbox" id="toggle-submenu-training" class="hidden toggle-submenu-training" />
+        <label for="toggle-submenu-training"
+          class="flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5">
           <div class="flex items-center gap-x-4">
             <div class="mt-[0.1rem]">
               <em class="bx bx-folder-open"></em>
@@ -120,16 +98,11 @@
             <em class="bx bx-chevron-right"></em>
           </div>
         </label>
-        <div
-          class="flex flex-col items-start w-full overflow-hidden bg-transparent gap-y-1 submenu-training"
-        >
+        <div class="flex flex-col items-start w-full overflow-hidden bg-transparent gap-y-1 submenu-training">
           <div class="w-full">
-            <a
-              [routerLink]="['/pccth/ftr-of1']"
-              [routerLinkActive]="['active-link']"
+            <a [routerLink]="['/pccth/ftr-of1']" [routerLinkActive]="['active-link']"
               class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-              (click)="onCloseAsideNavigationToLink()"
-            >
+              (click)="onCloseAsideNavigationToLink()">
               <div class="mt-[0.2rem]">
                 <em class="bx bx-chevron-right"></em>
               </div>
@@ -139,12 +112,9 @@
             </a>
           </div>
           <div class="w-full">
-            <a
-              [routerLink]="['/pccth/training-forms']"
-              [routerLinkActive]="['active-link']"
+            <a [routerLink]="['/pccth/training-forms']" [routerLinkActive]="['active-link']"
               class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-              (click)="onCloseAsideNavigationToLink()"
-            >
+              (click)="onCloseAsideNavigationToLink()">
               <div class="mt-[0.2rem]">
                 <em class="bx bx-chevron-right"></em>
               </div>
@@ -154,12 +124,9 @@
             </a>
           </div>
           <div class="w-full">
-            <a
-              [routerLink]="['/pccth/ftr-oj1']"
-              [routerLinkActive]="['active-link']"
+            <a [routerLink]="['/pccth/ftr-oj1']" [routerLinkActive]="['active-link']"
               class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-              (click)="onCloseAsideNavigationToLink()"
-            >
+              (click)="onCloseAsideNavigationToLink()">
               <div class="mt-[0.2rem]">
                 <em class="bx bx-chevron-right"></em>
               </div>
@@ -169,12 +136,9 @@
             </a>
           </div>
           <div class="w-full">
-            <a
-              [routerLink]="['/pccth/ftr-sv1']"
-              [routerLinkActive]="['active-link']"
+            <a [routerLink]="['/pccth/ftr-sv1']" [routerLinkActive]="['active-link']"
               class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-              (click)="onCloseAsideNavigationToLink()"
-            >
+              (click)="onCloseAsideNavigationToLink()">
               <div class="mt-[0.2rem]">
                 <em class="bx bx-chevron-right"></em>
               </div>
@@ -184,12 +148,9 @@
             </a>
           </div>
           <div class="w-full">
-            <a
-              [routerLink]="['/pccth/manage-course-page']"
-              [routerLinkActive]="['active-link']"
+            <a [routerLink]="['/pccth/manage-course-page']" [routerLinkActive]="['active-link']"
               class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-              (click)="onCloseAsideNavigationToLink()"
-            >
+              (click)="onCloseAsideNavigationToLink()">
               <div class="mt-[0.2rem]">
                 <em class="bx bx-chevron-right"></em>
               </div>
@@ -200,13 +161,22 @@
           </div>
         </div>
       </div>
+      <div class="w-full">
+        <a [routerLink]="['/pccth/welfare-forms']" [routerLinkActive]="['active-link']"
+          class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
+          (click)="onCloseAsideNavigationToLink()">
+          <div class="mt-[0.1rem]">
+            <em class="text-lg bx bxs-shield-plus"></em>
+          </div>
+          <div>
+            <span class="text-base">ฟอร์มเบิกค่ารักษาพยาบาล</span>
+          </div>
+        </a>
+      </div>
 
       <div class="w-full">
-        <a
-          [routerLink]="['/pccth/sign-in']"
-          [routerLinkActive]="['active-link']"
-          class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-        >
+        <a [routerLink]="['/pccth/sign-in']" [routerLinkActive]="['active-link']"
+          class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5">
           <div class="mt-[0.1rem]">
             <em class="text-xl bx bx-key"></em>
           </div>
@@ -216,12 +186,9 @@
         </a>
       </div>
       <div class="w-full">
-        <a
-          [routerLink]="['/pccth/calender']"
-          [routerLinkActive]="['active-link']"
+        <a [routerLink]="['/pccth/calender']" [routerLinkActive]="['active-link']"
           class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-          (click)="onCloseAsideNavigationToLink()"
-        >
+          (click)="onCloseAsideNavigationToLink()">
           <div class="mt-[0.1rem]">
             <em class="bx bx-calendar"></em>
           </div>
@@ -231,12 +198,9 @@
         </a>
       </div>
       <div class="w-full">
-        <a
-          [routerLink]="['/pccth/dashboard']"
-          [routerLinkActive]="['active-link']"
+        <a [routerLink]="['/pccth/dashboard']" [routerLinkActive]="['active-link']"
           class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-          (click)="onCloseAsideNavigationToLink()"
-        >
+          (click)="onCloseAsideNavigationToLink()">
           <div class="mt-[0.1rem]">
             <em class="bx bx-bar-chart-alt-2"></em>
           </div>
@@ -246,15 +210,9 @@
         </a>
       </div>
       <div class="w-full">
-        <input
-          type="checkbox"
-          id="toggle-submenu-job"
-          class="hidden toggle-submenu-job"
-        />
-        <label
-          for="toggle-submenu-job"
-          class="flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-        >
+        <input type="checkbox" id="toggle-submenu-job" class="hidden toggle-submenu-job" />
+        <label for="toggle-submenu-job"
+          class="flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5">
           <div class="flex items-center gap-x-4">
             <div class="mt-[0.1rem]">
               <em class="bx bx-box"></em>
@@ -267,16 +225,11 @@
             <em class="bx bx-chevron-right"></em>
           </div>
         </label>
-        <div
-          class="flex flex-col items-start w-full overflow-hidden bg-transparent gap-y-1 submenu-job"
-        >
+        <div class="flex flex-col items-start w-full overflow-hidden bg-transparent gap-y-1 submenu-job">
           <div class="w-full">
-            <a
-              [routerLink]="['/pccth/job-day-add/dashboard-job']"
-              [routerLinkActive]="['active-link']"
+            <a [routerLink]="['/pccth/job-day-add/dashboard-job']" [routerLinkActive]="['active-link']"
               class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-              (click)="onCloseAsideNavigationToLink()"
-            >
+              (click)="onCloseAsideNavigationToLink()">
               <div class="mt-[0.2rem]">
                 <em class="bx bx-chevron-right"></em>
               </div>
@@ -286,11 +239,9 @@
             </a>
           </div>
           <div class="w-full">
-            <a
-              [routerLink]="['/pccth/job-day-view']"
+            <a [routerLink]="['/pccth/job-day-view']"
               class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-              (click)="onCloseAsideNavigationToLink()"
-            >
+              (click)="onCloseAsideNavigationToLink()">
               <div class="mt-[0.2rem]">
                 <em class="bx bx-chevron-right"></em>
               </div>
@@ -302,15 +253,9 @@
         </div>
       </div>
       <div class="w-full">
-        <input
-          type="checkbox"
-          id="toggle-submenu-admin"
-          class="hidden toggle-submenu-admin"
-        />
-        <label
-          for="toggle-submenu-admin"
-          class="flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-        >
+        <input type="checkbox" id="toggle-submenu-admin" class="hidden toggle-submenu-admin" />
+        <label for="toggle-submenu-admin"
+          class="flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5">
           <div class="flex items-center gap-x-4">
             <div class="mt-[0.1rem]">
               <em class="bx bx-desktop"></em>
@@ -323,15 +268,11 @@
             <em class="bx bx-chevron-right"></em>
           </div>
         </label>
-        <div
-          class="flex flex-col items-start w-full overflow-hidden bg-transparent gap-y-1 submenu-admin"
-        >
+        <div class="flex flex-col items-start w-full overflow-hidden bg-transparent gap-y-1 submenu-admin">
           <div class="w-full">
-            <a
-              [routerLink]="['/pccth/']"
+            <a [routerLink]="['/pccth/']"
               class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-              (click)="onCloseAsideNavigationToLink()"
-            >
+              (click)="onCloseAsideNavigationToLink()">
               <div class="mt-[0.2rem]">
                 <em class="bx bx-chevron-right"></em>
               </div>
@@ -341,11 +282,9 @@
             </a>
           </div>
           <div class="w-full">
-            <a
-              [routerLink]="['/pccth/']"
+            <a [routerLink]="['/pccth/']"
               class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-              (click)="onCloseAsideNavigationToLink()"
-            >
+              (click)="onCloseAsideNavigationToLink()">
               <div class="mt-[0.2rem]">
                 <em class="bx bx-chevron-right"></em>
               </div>
@@ -355,11 +294,9 @@
             </a>
           </div>
           <div class="w-full">
-            <a
-              [routerLink]="['/pccth/management-role']"
+            <a [routerLink]="['/pccth/management-role']"
               class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-              (click)="onCloseAsideNavigationToLink()"
-            >
+              (click)="onCloseAsideNavigationToLink()">
               <div class="mt-[0.2rem]">
                 <em class="bx bx-chevron-right"></em>
               </div>
@@ -370,11 +307,9 @@
           </div>
 
           <div class="w-full">
-            <a
-              [routerLink]="['/pccth/management-company']"
+            <a [routerLink]="['/pccth/management-company']"
               class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-              (click)="onCloseAsideNavigationToLink()"
-            >
+              (click)="onCloseAsideNavigationToLink()">
               <div class="mt-[0.2rem]">
                 <em class="bx bx-chevron-right"></em>
               </div>
