@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { welfareForm } from 'src/app/interface/form';
 import { ApiService } from 'src/app/services/api.service';
 import { CommonService } from 'src/app/services/common.service';
@@ -7,7 +7,6 @@ import { SwalService } from 'src/app/services/swal.service';
 import { debounceTime, map, Observable, of, switchMap } from 'rxjs';
 import { Employee } from 'src/app/interface/employee';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogExpenseComponent } from './components/dialog-expense/dialog-expense.component';
 
 @Component({
   selector: 'app-welfare-forms-page',
@@ -16,6 +15,7 @@ import { DialogExpenseComponent } from './components/dialog-expense/dialog-expen
 })
 export class WelfareFormsPageComponent implements OnInit {
   welfareForm!: FormGroup<welfareForm>;
+  expenseForm: FormGroup;
 
   constructor(
     private fb: FormBuilder,
@@ -27,13 +27,16 @@ export class WelfareFormsPageComponent implements OnInit {
     this.welfareForm = this.fb.group({
       fullName: [''],
     })
-  }
 
-  openDialog() {
-    const dialogRef = this.dialog.open(DialogExpenseComponent);
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+    this.expenseForm = this.fb.group({
+      treatmentType: ['', Validators.required],
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
+      daysCount: ['', Validators.required],
+      medicalCost: ['', Validators.required],
+      roomAndBoardCost: ['', Validators.required],
+      details: [''],
+      notes: ['']
     });
   }
 
@@ -47,8 +50,19 @@ export class WelfareFormsPageComponent implements OnInit {
       switchMap(value => this.getEmp(value ? value : ""))
     );
 
+    this.expenseForm.get('startDate')?.valueChanges.subscribe(() => {
+      this.calculateDaysCount();
+    });
+
+    this.expenseForm.get('endDate')?.valueChanges.subscribe(() => {
+      this.calculateDaysCount();
+    });
+
   }
 
+  /**
+   * part 1
+   */
   dataEmp: Employee[] = [];
   getEmp(term: string): Observable<any[]> {
     // กรณี ไม่กรอกอะไรเลย
@@ -96,9 +110,9 @@ export class WelfareFormsPageComponent implements OnInit {
       this.dataPositionName = data.position.positionName
       this.dataEmail = data.email
       this.dataLevel = data.level
-      this.dataStartDate = data.startDate || ''
-      this.dataPassDate = data.passDate || ''
-      this.dataTypeEmp = data.typeEmp || ''
+      this.dataStartDate = data.startDate || '-'
+      this.dataPassDate = data.passDate || '-'
+      this.dataTypeEmp = data.typeEmp || '-'
 
     } else {
       this.datafullName = ''
@@ -114,5 +128,61 @@ export class WelfareFormsPageComponent implements OnInit {
 
     }
   }
+
+  
+  /**
+   * part 2
+   */
+
+  onSave(): void {
+    if (this.expenseForm.valid) {
+      console.log('treatmentType >> ' + this.expenseForm.value.treatmentType)
+      console.log('startDate >> ' + this.expenseForm.value.startDate)
+      console.log('endDate >> ' + this.expenseForm.value.endDate)
+      console.log('daysCount >> ' + this.expenseForm.value.daysCount)
+      console.log('medicalCost >> ' + this.expenseForm.value.medicalCost)
+      console.log('roomAndBoardCost >> ' + this.expenseForm.value.roomAndBoardCost)
+      console.log('details >> ' + this.expenseForm.value.details)
+      console.log('notes >> ' + this.expenseForm.value.notes)
+    }
+  }
+
+  clearForm() {
+    this.expenseForm.reset();
+  }
+
+  calculateDaysCount(): void {
+    const startDate = this.expenseForm.get('startDate')?.value;
+    const endDate = this.expenseForm.get('endDate')?.value;
+
+    if (startDate && endDate) {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      const diffTime = Math.abs(end.getTime() - start.getTime());
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+      this.expenseForm.patchValue({ daysCount: diffDays });
+    } else {
+      this.expenseForm.patchValue({ daysCount: '' });
+    }
+  }
+
+  formatCurrency(event: any, controlName: string): void {
+    let value = event.target.value;
+    if (value) {
+      // Remove any existing commas
+      const cleanedValue = value.toString().replace(/,/g, '');
+      // Convert to number and format
+      const numberValue = parseFloat(cleanedValue);
+      if (!isNaN(numberValue)) {
+        const formattedValue = numberValue.toLocaleString('en-US', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        });
+        this.expenseForm.patchValue({ [controlName]: formattedValue }, { emitEvent: false });
+      }
+    }
+  }
+
+
 }
 
