@@ -100,6 +100,10 @@ export class WelfareFormsPageComponent implements OnInit {
   dataStartDate: string = '';
   dataPassDate: string = '';
   dataTypeEmp: string = '';
+
+  dataOPD: string = 'x,xxx';
+  dataIPD: string = 'x,xxx';
+  dataRoom: string = 'x,xxx';
   searchEmp() {
     console.log(this.dataEmp)
     if (this.dataEmp.length === 1) {
@@ -113,6 +117,8 @@ export class WelfareFormsPageComponent implements OnInit {
       this.dataStartDate = data.startDate || '-'
       this.dataPassDate = data.passDate || '-'
       this.dataTypeEmp = data.typeEmp || '-'
+
+      this.getExpenseRemainByUserIdAndLevel(data)
 
     } else {
       this.datafullName = ''
@@ -129,10 +135,19 @@ export class WelfareFormsPageComponent implements OnInit {
     }
   }
 
-  
+
   /**
    * part 2
    */
+
+  getExpenseRemainByUserIdAndLevel(data: any) {
+    const userId = data.id
+    const level = data.level
+    const res = this.apiService.getExpenseRemainByUserIdAndLevel(userId, level);
+
+    console.log("test: " , res)
+  }
+
 
   onSave(): void {
     if (this.expenseForm.valid) {
