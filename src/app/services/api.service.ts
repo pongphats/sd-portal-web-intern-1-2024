@@ -12,6 +12,7 @@ import {
   ApiResponse,
   Budget,
   ExpenseRemain,
+  BudgetWellFare,
   MngDeptListRes,
   saveBudgetResponse,
 } from '../interface/response';
@@ -25,7 +26,7 @@ export class ApiService {
   trainingUrl: string = environment.trainingService;
   welfareUrl: string = environment.welfareService;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   saveBudgetByYear(
     req: saveBudgetByYearRequest
@@ -97,15 +98,22 @@ export class ApiService {
   }
 
   // welfare-forms-page
-  getExpenseRemainByUserIdAndLevel(userId: number, level: string): Observable<ExpenseRemain> {
+  getExpenseRemainByUserIdAndLevel(
+    userId: number,
+    level: string
+  ): Observable<ExpenseRemain> {
     return this.http
-      .get<ApiResponse<any>>(`${this.welfareUrl}/expenses/getExpenseRemaining?userId=${userId}&level=${level}`)
+      .get<ApiResponse<any>>(
+        `${this.welfareUrl}/expenses/getExpenseRemaining?userId=${userId}&level=${level}`
+      )
       .pipe(map((res) => res.responseData.result));
   }
 
   getExpenseUidAndYear(uid: number, year: number): Observable<any> {
     return this.http
-      .get<ApiResponse<any>>(`${this.welfareUrl}/expenses/allExpenseByUidAndYear?uid=${uid}&year=${year}`)
+      .get<ApiResponse<any>>(
+        `${this.welfareUrl}/expenses/allExpenseByUidAndYear?uid=${uid}&year=${year}`
+      )
       .pipe(map((res) => res.responseData.result));
   }
 
@@ -160,9 +168,7 @@ export class ApiService {
 
   getEmplistByName(term: string): Observable<any[]> {
     return this.http
-      .get<any[]>(
-        `${this.trainingUrl}/seacrhUser/byNames?searchTerm=${term}`
-      )
+      .get<any[]>(`${this.trainingUrl}/seacrhUser/byNames?searchTerm=${term}`)
       .pipe(map((response: any) => response.responseData));
   }
 
@@ -192,5 +198,11 @@ export class ApiService {
     return this.http
       .post<any>(`${this.trainingUrl}/createTraining`, req)
       .pipe(map((res) => res));
+  }
+
+  getBudgetWelfare(): Observable<BudgetWellFare[]> {
+    return this.http
+      .get<ApiResponse<any>>(`${this.welfareUrl}/budget/getBudget`)
+      .pipe(map((res) => res.responseData.result));
   }
 }

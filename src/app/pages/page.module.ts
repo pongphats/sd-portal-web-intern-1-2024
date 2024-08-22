@@ -30,7 +30,7 @@ import { FtrOf1PageComponent } from './ftr-of1-page/ftr-of1-page.component';
 import { FtrOj1PageComponent } from './ftr-oj1-page/ftr-oj1-page.component';
 import { FtrSv1PageComponent } from './ftr-sv1-page/ftr-sv1-page.component';
 import { LoginPageComponent } from './login-page/login-page.component';
-import { PccSdPortalComponentModule } from "../components/pcc-sd-portal-component.module";
+import { PccSdPortalComponentModule } from '../components/pcc-sd-portal-component.module';
 import { MatIconModule } from '@angular/material/icon';
 import { ManageCompanyComponent } from './manage-company/manage-company.component';
 import { ManageCoursePageComponent } from './manage-course-page/manage-course-page.component';
@@ -39,6 +39,7 @@ import { TraingCreateFormsTableComponent } from './training-form-page/components
 import { WelfareFormsPageComponent } from './welfare-forms-page/welfare-forms-page.component';
 import { ManagementTrainingPageComponent } from './management-training-page/management-training-page.component';
 import { ManagementUserPageComponent } from './management-user-page/management-user-page.component';
+import { BudgetWellfareManagePageComponent } from './budget-wellfare-manage-page/budget-wellfare-manage-page.component';
 
 @NgModule({
   declarations: [
@@ -77,16 +78,17 @@ import { ManagementUserPageComponent } from './management-user-page/management-u
     WelfareFormsPageComponent,
     ManagementTrainingPageComponent,
     ManagementUserPageComponent,
+    BudgetWellfareManagePageComponent,
   ],
   imports: [
     MatIconModule,
     SharedModule,
     JobDayAddPageModule,
     CalendarModule.forRoot({
-        provide: DateAdapter,
-        useFactory: adapterFactory,
+      provide: DateAdapter,
+      useFactory: adapterFactory,
     }),
-    PccSdPortalComponentModule
-]
+    PccSdPortalComponentModule,
+  ],
 })
 export class PageModule {}

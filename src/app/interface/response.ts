@@ -66,10 +66,17 @@ export interface Budget {
   totalExpRemain: number;
 }
 
-
 // welfare-forms-page
 export interface ExpenseRemain {
-  opd: number,
-  ipd: number,
-  room: number
+  opd: number;
+  ipd: number;
+  room: number;
+}
+export interface BudgetWellFare {
+  id: number;
+  level: string;
+  opd: number;
+  ipd: number;
+  room: number;
+  no: number;
 }
