@@ -11,7 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-welfare-forms-page',
   templateUrl: './welfare-forms-page.component.html',
-  styleUrls: ['./welfare-forms-page.component.scss']
+  styleUrls: ['./welfare-forms-page.component.scss'],
 })
 export class WelfareFormsPageComponent implements OnInit {
   welfareForm!: FormGroup<welfareForm>;
@@ -26,7 +26,7 @@ export class WelfareFormsPageComponent implements OnInit {
   ) {
     this.welfareForm = this.fb.group({
       fullName: [''],
-    })
+    });
 
     this.expenseForm = this.fb.group({
       treatmentType: ['', Validators.required],
@@ -36,18 +36,17 @@ export class WelfareFormsPageComponent implements OnInit {
       medicalCost: ['', Validators.required],
       roomAndBoardCost: ['', Validators.required],
       details: [''],
-      notes: ['']
+      notes: [''],
     });
   }
 
   filteredOptions!: Observable<any[]>;
 
   ngOnInit(): void {
-
     // ตั้งต้นว่าผูก Observable
     this.filteredOptions = this.welfareForm.get('fullName')!.valueChanges.pipe(
       debounceTime(300),
-      switchMap(value => this.getEmp(value ? value : ""))
+      switchMap((value) => this.getEmp(value ? value : ''))
     );
 
     this.expenseForm.get('startDate')?.valueChanges.subscribe(() => {
@@ -57,7 +56,6 @@ export class WelfareFormsPageComponent implements OnInit {
     this.expenseForm.get('endDate')?.valueChanges.subscribe(() => {
       this.calculateDaysCount();
     });
-
   }
 
   /**
@@ -67,28 +65,28 @@ export class WelfareFormsPageComponent implements OnInit {
   getEmp(term: string): Observable<any[]> {
     // กรณี ไม่กรอกอะไรเลย
     if (term == '') {
-      this.dataEmp = []
+      this.dataEmp = [];
       return of([]);
     }
     return this.apiService.getEmplistByName(term).pipe(
       map((res: any) => {
         if (res == null) {
-          this.dataEmp = []
-          return []
-        }
-        else {
+          this.dataEmp = [];
+          return [];
+        } else {
           const result = res.result;
           if (result.length == 0) {
-            this.dataEmp = []
-            return []
+            this.dataEmp = [];
+            return [];
           }
           this.dataEmp = result.map((item: any) => ({
             ...item,
-            fullName: `${item.firstname} ${item.lastname}`
-          }))
-          return this.dataEmp
+            fullName: `${item.firstname} ${item.lastname}`,
+          }));
+          return this.dataEmp;
         }
-      }));
+      })
+    );
   }
 
   datafullName: string = '';
@@ -105,60 +103,64 @@ export class WelfareFormsPageComponent implements OnInit {
   dataIPD: string = 'x,xxx';
   dataRoom: string = 'x,xxx';
   searchEmp() {
-    console.log(this.dataEmp)
+    console.log(this.dataEmp);
     if (this.dataEmp.length === 1) {
       const data = this.dataEmp[0];
-      this.datafullName = `${data.title} ${data.firstname} ${data.lastname}`
-      this.dataEmpCode = data.empCode
-      this.dataSectorName = data.sector.sectorName
-      this.dataPositionName = data.position.positionName
-      this.dataEmail = data.email
-      this.dataLevel = data.level
-      this.dataStartDate = data.startDate || '-'
-      this.dataPassDate = data.passDate || '-'
-      this.dataTypeEmp = data.typeEmp || '-'
+      this.datafullName = `${data.title} ${data.firstname} ${data.lastname}`;
+      this.dataEmpCode = data.empCode;
+      this.dataSectorName = data.sector.sectorName;
+      this.dataPositionName = data.position.positionName;
+      this.dataEmail = data.email;
+      this.dataLevel = data.level;
+      this.dataStartDate = data.startDate || '-';
+      this.dataPassDate = data.passDate || '-';
+      this.dataTypeEmp = data.typeEmp || '-';
 
-      this.getExpenseRemainByUserIdAndLevel(data)
-
+      this.getExpenseRemainByUserIdAndLevel(data);
     } else {
-      this.datafullName = ''
-      this.dataEmpCode = ''
-      this.dataSectorName = ''
-      this.dataPositionName = ''
-      this.dataEmail = ''
-      this.dataLevel = ''
-      this.dataStartDate = ''
-      this.dataPassDate = ''
-      this.dataTypeEmp = ''
-      console.log("กรุณากรอกชื่อให้ครบถ้วน")
-
+      this.datafullName = '';
+      this.dataEmpCode = '';
+      this.dataSectorName = '';
+      this.dataPositionName = '';
+      this.dataEmail = '';
+      this.dataLevel = '';
+      this.dataStartDate = '';
+      this.dataPassDate = '';
+      this.dataTypeEmp = '';
+      console.log('กรุณากรอกชื่อให้ครบถ้วน');
     }
   }
-
 
   /**
    * part 2
    */
 
-  getExpenseRemainByUserIdAndLevel(data: any) {
-    const userId = data.id
-    const level = data.level
-    const res = this.apiService.getExpenseRemainByUserIdAndLevel(userId, level);
+  async getExpenseRemainByUserIdAndLevel(data: any) {
+    try {
+      const userId = data.id;
+      const level = data.level;
+      const res = await this.apiService
+        .getExpenseRemainByUserIdAndLevel(userId, level)
+        .toPromise();
 
-    console.log("test: " , res)
+      console.log('test: ', res.responseData.result);
+    } catch (error) {
+      console.error(error);
+    }
   }
-
 
   onSave(): void {
     if (this.expenseForm.valid) {
-      console.log('treatmentType >> ' + this.expenseForm.value.treatmentType)
-      console.log('startDate >> ' + this.expenseForm.value.startDate)
-      console.log('endDate >> ' + this.expenseForm.value.endDate)
-      console.log('daysCount >> ' + this.expenseForm.value.daysCount)
-      console.log('medicalCost >> ' + this.expenseForm.value.medicalCost)
-      console.log('roomAndBoardCost >> ' + this.expenseForm.value.roomAndBoardCost)
-      console.log('details >> ' + this.expenseForm.value.details)
-      console.log('notes >> ' + this.expenseForm.value.notes)
+      console.log('treatmentType >> ' + this.expenseForm.value.treatmentType);
+      console.log('startDate >> ' + this.expenseForm.value.startDate);
+      console.log('endDate >> ' + this.expenseForm.value.endDate);
+      console.log('daysCount >> ' + this.expenseForm.value.daysCount);
+      console.log('medicalCost >> ' + this.expenseForm.value.medicalCost);
+      console.log(
+        'roomAndBoardCost >> ' + this.expenseForm.value.roomAndBoardCost
+      );
+      console.log('details >> ' + this.expenseForm.value.details);
+      console.log('notes >> ' + this.expenseForm.value.notes);
     }
   }
 
@@ -191,13 +193,13 @@ export class WelfareFormsPageComponent implements OnInit {
       if (!isNaN(numberValue)) {
         const formattedValue = numberValue.toLocaleString('en-US', {
           minimumFractionDigits: 2,
-          maximumFractionDigits: 2
+          maximumFractionDigits: 2,
         });
-        this.expenseForm.patchValue({ [controlName]: formattedValue }, { emitEvent: false });
+        this.expenseForm.patchValue(
+          { [controlName]: formattedValue },
+          { emitEvent: false }
+        );
       }
     }
   }
-
-
 }
-

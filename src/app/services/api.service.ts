@@ -101,10 +101,7 @@ export class ApiService {
     console.log(userId, level)
     return this.http
       .get<any>(`${this.welfareUrl}/expenses/getExpenseRemaining?userId=${userId}&level=${level}`)
-      .pipe(map((res) => {
-        console.log('Mapped Response:', res);
-        return res;
-      }));
+      .pipe(map((res) => res));
   }
 
   getAllActiveEmpsByDeptId(deptId: number): Observable<Employee[]> {
