@@ -22,6 +22,7 @@ import { ManageCoursePageComponent } from './pages/manage-course-page/manage-cou
 import { TrainingFormPageComponent } from './pages/training-form-page/training-form-page.component';
 import { WelfareFormsPageComponent } from './pages/welfare-forms-page/welfare-forms-page.component';
 import { ManagementTrainingPageComponent } from './pages/management-training-page/management-training-page.component';
+import { ManagementUserPageComponent } from './pages/management-user-page/management-user-page.component';
 const routes: Routes = new Array<Route>(
   {
     path: 'sign-in',
@@ -95,6 +96,10 @@ const routes: Routes = new Array<Route>(
       {
         path: 'welfare-forms',
         component: WelfareFormsPageComponent,
+      },
+      {
+        path: 'management-users',
+        component : ManagementUserPageComponent
       }
     ),
   },

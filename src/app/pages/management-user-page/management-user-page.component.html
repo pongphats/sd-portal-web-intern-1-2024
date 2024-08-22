@@ -1,0 +1,163 @@
+<div class="bg-transparent p-4 md:p-6 lg:p-8">
+   <h1 class="text-2xl md:text-3xl lg:text-4xl mb-6">จัดการพนักงาน</h1>
+   <form class="p-4 md:p-6 lg:p-8 bg-content dark:bg-content-dark rounded-md drop-shadow-md">
+     
+     <div class="mb-6">
+       <mat-radio-group aria-label="เลือกบริษัท" class="flex flex-wrap gap-4">
+         <mat-radio-button value="PCCTH">PCCTH</mat-radio-button>
+         <mat-radio-button value="WiseSoft">WiseSoft</mat-radio-button>
+       </mat-radio-group>
+     </div>
+ 
+     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+       <div class="flex flex-col">
+         <label for="sector" class="mb-2">ฝ่าย</label>
+         <mat-form-field appearance="fill">
+           <mat-label>เลือกฝ่าย</mat-label>
+           <mat-select>
+             <mat-option> </mat-option>
+           </mat-select>
+         </mat-form-field>
+       </div>
+       <div class="flex flex-col">
+         <label class="mb-2">รหัสฝ่าย</label>
+         <mat-form-field appearance="fill">
+           <mat-label>รหัสฝ่าย</mat-label>
+           <input readonly matInput placeholder="รหัสฝ่าย" />
+         </mat-form-field>
+       </div>
+       <div class="flex flex-col">
+         <label for="sector" class="mb-2">แผนก</label>
+         <mat-form-field appearance="fill">
+           <mat-label>เลือกแผนก</mat-label>
+           <mat-select>
+             <mat-option> </mat-option>
+           </mat-select>
+         </mat-form-field>
+       </div>
+       <div class="flex flex-col">
+         <label class="mb-2">รหัสแผนก</label>
+         <mat-form-field appearance="fill">
+           <mat-label>รหัสแผนก</mat-label>
+           <input readonly matInput placeholder="รหัสแผนก" />
+         </mat-form-field>
+       </div>
+     </div>
+ 
+     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+       <div class="flex flex-col">
+         <label for="employeeId" class="mb-2">รหัสพนักงาน</label>
+         <mat-form-field appearance="fill">
+           <mat-label>รหัสพนักงาน</mat-label>
+           <input matInput placeholder="รหัสพนักงาน" />
+         </mat-form-field>
+       </div>
+       <div class="flex flex-col">
+         <label for="prefix" class="mb-2">คำนำหน้า</label>
+         <mat-form-field appearance="fill">
+           <mat-label>คำนำหน้า</mat-label>
+           <mat-select>
+             <mat-option value="นาย">นาย</mat-option>
+             <mat-option value="นาง">นาง</mat-option>
+             <mat-option value="นางสาว">นางสาว</mat-option>
+             <mat-option value="น.ส.">น.ส.</mat-option>
+           </mat-select>
+         </mat-form-field>
+       </div>
+       <div class="flex flex-col">
+         <label for="firstName" class="mb-2">ชื่อ</label>
+         <mat-form-field appearance="fill">
+           <mat-label>ชื่อ</mat-label>
+           <input matInput placeholder="ชื่อ" />
+         </mat-form-field>
+       </div>
+       <div class="flex flex-col">
+         <label for="lastName" class="mb-2">นามสกุล</label>
+         <mat-form-field appearance="fill">
+           <mat-label>นามสกุล</mat-label>
+           <input matInput placeholder="นามสกุล" />
+         </mat-form-field>
+       </div>
+       <div class="flex flex-col">
+         <label for="email" class="mb-2">อีเมล</label>
+         <mat-form-field appearance="fill">
+           <mat-label>อีเมล</mat-label>
+           <input matInput placeholder="อีเมล" />
+         </mat-form-field>
+       </div>
+       <div class="flex flex-col">
+         <label for="position" class="mb-2">ตำแหน่ง</label>
+         <mat-form-field appearance="fill">
+           <mat-label>ตำแหน่ง</mat-label>
+           <mat-select>
+             <mat-option value="option1">ตำแหน่ง 1</mat-option>
+             <mat-option value="option2">ตำแหน่ง 2</mat-option>
+             <mat-option value="option3">ตำแหน่ง 3</mat-option>
+           </mat-select>
+         </mat-form-field>
+       </div>
+       <div class="flex flex-col">
+         <label for="level" class="mb-2">ระดับ</label>
+         <mat-form-field appearance="fill">
+           <mat-label>ระดับ</mat-label>
+           <mat-select>
+             <mat-option value="level1">ระดับ 1</mat-option>
+             <mat-option value="level2">ระดับ 2</mat-option>
+             <mat-option value="level3">ระดับ 3</mat-option>
+           </mat-select>
+         </mat-form-field>
+       </div>
+       <div class="flex flex-col">
+         <label for="role" class="mb-2">กำหนดสิทธิ์</label>
+         <mat-form-field appearance="fill">
+           <mat-label>กำหนดสิทธิ์</mat-label>
+           <mat-select>
+             <mat-option value="Admin">ผู้ดูแลระบบ</mat-option>
+             <mat-option value="User">พนักงาน</mat-option>
+             <mat-option value="Approver">หัวหน้างาน</mat-option>
+             <mat-option value="Manager">ผู้บังคับบัญชา</mat-option>
+             <mat-option value="ManagerAndPersonnel">ผู้บังคับบัญชา/แผนกบุคคล</mat-option>
+             <mat-option value="VicePresident">ผู้บริหาร</mat-option>
+             <mat-option value="Personnel">แผนกบุคคล</mat-option>
+             <mat-option value="President">ประธานเจ้าหน้าที่บริหาร/กรรมการผู้จัดการ</mat-option>
+           </mat-select>
+         </mat-form-field>
+       </div>
+       <div class="flex flex-col">
+         <label for="employeeType" class="mb-2">ประเภทพนักงาน</label>
+         <mat-form-field appearance="fill">
+           <mat-label>ประเภทพนักงาน</mat-label>
+           <mat-select>
+             <mat-option value="พนักงานประจำ">พนักงานประจำ</mat-option>
+             <mat-option value="พนักงานสัญญาจ้าง">พนักงานสัญญาจ้าง</mat-option>
+           </mat-select>
+         </mat-form-field>
+       </div>
+     </div>
+ 
+     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+       <div class="flex flex-col">
+         <label for="startDate" class="mb-2">วันที่เริ่มงาน</label>
+         <mat-form-field appearance="fill">
+           <mat-label>วันที่เริ่มงาน</mat-label>
+           <input matInput [matDatepicker]="startWrkpicker" />
+           <mat-datepicker-toggle matSuffix [for]="startWrkpicker"></mat-datepicker-toggle>
+           <mat-datepicker #startWrkpicker></mat-datepicker>
+         </mat-form-field>
+       </div>
+       <div class="flex flex-col">
+         <label for="passDate" class="mb-2">วันที่ผ่านการทดลองงาน</label>
+         <mat-form-field appearance="fill">
+           <mat-label>วันที่ผ่านการทดลองงาน</mat-label>
+           <input matInput [matDatepicker]="passWrkpicker" />
+           <mat-datepicker-toggle matSuffix [for]="passWrkpicker"></mat-datepicker-toggle>
+           <mat-datepicker #passWrkpicker></mat-datepicker>
+         </mat-form-field>
+       </div>
+     </div>
+ 
+     <div class="mt-8 flex justify-end">
+       <button mat-raised-button color="primary">บันทึกข้อมูล</button>
+     </div>
+   </form>
+ </div>

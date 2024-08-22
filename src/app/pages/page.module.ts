@@ -38,6 +38,7 @@ import { TrainingFormPageComponent } from './training-form-page/training-form-pa
 import { TraingCreateFormsTableComponent } from './training-form-page/components/traing-create-forms-table/traing-create-forms-table.component';
 import { WelfareFormsPageComponent } from './welfare-forms-page/welfare-forms-page.component';
 import { ManagementTrainingPageComponent } from './management-training-page/management-training-page.component';
+import { ManagementUserPageComponent } from './management-user-page/management-user-page.component';
 
 @NgModule({
   declarations: [
@@ -75,6 +76,7 @@ import { ManagementTrainingPageComponent } from './management-training-page/mana
     TraingCreateFormsTableComponent,
     WelfareFormsPageComponent,
     ManagementTrainingPageComponent,
+    ManagementUserPageComponent,
   ],
   imports: [
     MatIconModule,
