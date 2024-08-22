@@ -11,8 +11,8 @@
             <div
                 class="text-[#566a7f] rounded-md mt-5 mb-3 shadow p-6 w-full bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#242526]">
 
-                <div class="grid grid-cols-3 gap-4">
-                    <div class="flex justify-center items-center  mb-6">
+                <div class="flex flex-wrap items-center gap-4 p-4">
+                    <div class="flex justify-center items-center mb-6 w-full sm:w-auto">
                         <label class="flex-initial self-center w-28">บริษัท :</label>
                         <mat-radio-group aria-label="Select an option" formControlName="company"
                             (change)="loadSpecificCompanySectors()">
@@ -22,76 +22,69 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-3 gap-4">
-                    <!-- เนื้อหาภายในกริดจะถูกวางใน 3 คอลัมน์ โดยมีระยะห่าง 3 หน่วยระหว่างคอลัมน์และแถว -->
-
-                    <div class="flex justify-center items-center"> <!-- ใช้ space-x-4 เพิ่มระยะห่างระหว่างองค์ประกอบ -->
-                        <label for="" class="flex-initial self-center w-28">ฝ่าย (ภาษาไทย):</label>
-                        <!-- w-28 เลขน้อยขยับชิดซ้าย -->
-                        <mat-form-field appearance="fill">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="flex flex-col">
+                        <label class="flex-initial self-center w-full sm:w-18">ฝ่าย (ภาษาไทย):</label>
+                        <mat-form-field appearance="fill" class="w-full">
                             <mat-label>ระบุชื่อฝ่ายเป็นภาษาไทย</mat-label>
                             <input matInput formControlName="sectorTname">
                         </mat-form-field>
                     </div>
 
-
-                    <div class="flex items-center">
-                        <label for="" class="w-40 flex-shrink-0">ฝ่าย (ภาษาอังกฤษ):</label>
-                        <mat-form-field appearance="fill" class="flex-grow">
+                    <div class="flex flex-col">
+                        <label class="flex-initial self-center w-full sm:w-18">ฝ่าย (ภาษาอังกฤษ):</label>
+                        <mat-form-field appearance="fill" class="w-full">
                             <mat-label>ระบุชื่อฝ่ายเป็นภาษาอังกฤษ</mat-label>
                             <input matInput formControlName="sectorEname">
                         </mat-form-field>
                     </div>
 
-                    <div class="flex items-center space-x-4 justify-end">
-                        <label for="" class="flex-initial self-center w-18">รหัสฝ่าย:</label>
-                        <mat-form-field appearance="fill">
+                    <div class="flex flex-col">
+                        <label class="flex-initial self-center w-full sm:w-18">รหัสฝ่าย:</label>
+                        <mat-form-field appearance="fill" class="w-full">
                             <mat-label>รหัสฝ่าย</mat-label>
                             <input matInput formControlName="sectorCode">
                         </mat-form-field>
                     </div>
-
                 </div>
 
-                <div class="grid grid-cols-3 gap-4">
-
-                    <div class="flex justify-start">
-                        <label for="" class="flex-initial self-center">แผนก (ภาษาไทย):</label>
-                        <mat-form-field appearance="fill" style="margin-left: 16px;">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="flex flex-col">
+                        <label class="flex-initial self-center w-full sm:w-18">แผนก (ภาษาไทย):</label>
+                        <mat-form-field appearance="fill" class="w-full">
                             <mat-label>ระบุชื่อแผนกเป็นภาษาไทย</mat-label>
                             <input matInput formControlName="deptTname">
                         </mat-form-field>
                     </div>
 
-                    <div class="flex items-center">
-                        <!--items-center ใช้เพื่อจัดแนวแนวตั้งของเนื้อหาภายใน flex container ให้ตรงกลาง-->
-                        <label for="" class="w-40 flex-shrink-0">แผนก (ภาษาอังกฤษ):</label>
-                        <!--w-40 ตั้งค่าความกว้างของlabel flex-shrink-0 ป้องกันไม่ให้ <label> หดตัว - flex-grow ทำให้ <mat-form-field> ขยายเพื่อเติมพื้นที่ที่เหลือ-->
-                        <mat-form-field appearance="fill" class="flex-grow">
+                    <div class="flex flex-col">
+                        <label class="flex-initial self-center w-full sm:w-18">แผนก (ภาษาอังกฤษ):</label>
+                        <mat-form-field appearance="fill" class="w-full">
                             <mat-label>ระบุชื่อแผนกเป็นภาษาอังกฤษ</mat-label>
                             <input matInput formControlName="deptEname">
                         </mat-form-field>
                     </div>
 
-                    <div class="flex items-center space-x-4 justify-end">
-                        <label for="" class="flex-initial self-center w-18">รหัสและไอดี:</label>
-                        <mat-form-field appearance="fill" class="small-form-field">
-                            <!--css - class="small-form-field"-->
-                            <mat-label>รหัสแผนก</mat-label>
-                            <input matInput formControlName="deptCode">
-                        </mat-form-field>
-                        <mat-form-field appearance="fill" class="small-form-field">
-                            <mat-label>ไอดีแผนก</mat-label>
-                            <input matInput formControlName="deptId">
-                        </mat-form-field>
+                    <div class="flex flex-col space-y-2">
+                        <div class="flex flex-col">
+                            <label class="flex-initial self-center w-full sm:w-18">รหัสและไอดี:</label>
+                            <div class="flex flex-col sm:flex-row gap-2">
+                                <mat-form-field appearance="fill" class="w-full sm:w-1/2">
+                                    <mat-label>รหัสแผนก</mat-label>
+                                    <input matInput formControlName="deptCode">
+                                </mat-form-field>
+                                <mat-form-field appearance="fill" class="w-full sm:w-1/2">
+                                    <mat-label>ไอดีแผนก</mat-label>
+                                    <input matInput formControlName="deptId">
+                                </mat-form-field>
+                            </div>
+                        </div>
                     </div>
-
                 </div>
-
-                <div class="grid grid-cols-3 gap-4">
-                    <div class="flex justify-center items-center">
-                        <label for="" class="flex-initial self-center w-28">ผู้ดูแลแผนก:</label>
-                        <!-- <form [formGroup]="sectorManageForm"> -->
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="flex flex-col">
+                        <label class="flex-initial self-center w-full sm:w-18">ผู้ดูแลแผนก:</label>
                         <mat-form-field class="example-full-width" appearance="fill">
                             <mat-label>ระบุชื่อผู้ดูแลแผนก</mat-label>
                             <input matInput formControlName="deptManage" [matAutocomplete]="auto">
@@ -101,11 +94,10 @@
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
-                        <!-- </form> -->
                     </div>
                 </div>
 
-                <div class="flex justify-center my-2 gap-4"> <!--gap ระยะห่างเท่ากัน-->
+                <div class="flex flex-col sm:flex-row justify-center my-2 gap-4">
                     <div>
                         <button mat-raised-button [ngClass]="{'bg-[#8d918d]': !isEditing, 'bg-[#235d3a]': isEditing}"
                             class="text-white py-2 px-4 rounded flex items-center"
@@ -128,10 +120,13 @@
                     </div>
                 </div>
             </div>
+
         </form>
     </div>
 
     <!-- Table 1 -->
+    
+    
 
     <table mat-table [dataSource]="dataManageCompany" class="mat-elevation-z8 w-full overflow-x-auto">
 
@@ -192,24 +187,27 @@
         </ng-container>
 
         <!--Delete  Column -->
-        <ng-container matColumnDef="actions">
+        <!-- <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef class="font-bold text-black text-[16px] !text-center">ลบข้อมูล</th>
             <td mat-cell *matCellDef="let element" class=" !text-center">
                 <button mat-icon-button (click)="deleteDataRow(element)">
                     <i class='bx bx-trash'></i>
                 </button>
             </td>
-        </ng-container>
+        </ng-container> -->
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="cursor-pointer hover:bg-gray-200"></tr>
 
     </table>
-
-    <mat-paginator class="mat-elevation-z8 " [length]="dataManageCompany.data.length" [pageSize]="10"
+    
+    <mat-paginator class="mat-elevation-z8" [length]="dataManageCompany.data.length" [pageSize]="10"
         [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page">
     </mat-paginator>
+   
 
+    
+    
 
     <!--NEXT PART-->
 
@@ -221,113 +219,78 @@
             </div>
         </div>
 
-        <form [formGroup]="sectorManageForm">
+        <!-- <form [formGroup]="sectorManageForm"> -->
 
-        <div
-            class="text-[#566a7f] rounded-md mt-5 mb-3 shadow p-6 w-full bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#242526]">
+            <div
+                class="text-[#566a7f] rounded-md mt-5 mb-3 shadow p-6 w-full bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#242526]">
 
-            <!-- <div class=" grid grid-cols-6 gap-4 flex">
-
-                <div class="col-start-1 col-span-2">
-                    <label class="flex-initial self-center w-28">ตำแหน่ง:</label>
-                    <mat-form-field appearance="fill" class="ml-4">
-                        <mat-label>ระบุตำแหน่ง</mat-label>
-                        <input matInput formControlName="deptName">
-                    </mat-form-field>
-                </div>
-
-                <div class="col-start-3 col-end-5">
-                    <label class="flex-initial self-center w-28">แผนก:</label>
-                    <mat-form-field appearance="fill" class="ml-4"> 
-                        <mat-label>ระบุแผนก</mat-label>
-                        <input matInput formControlName="deptCode">
-                    </mat-form-field>
-                </div>
-
-
-                <div class="flex justify-center items-center  gap-4">
-                    <div class="col-start-5">
-                        <button mat-raised-button class="bg-[#8d918d] !text-white flex items-center py-2 px-4 rounded"
-                            type="button">
-                            <span class="!text-white">เพิ่มตำแหน่ง</span>
-                        </button>
+                <div class="flex flex-wrap items-center gap-4 p-4">
+                    <div class="flex-1 min-w-[200px]">
+                        <label class="block text-sm font-medium">ตำแหน่ง:</label>
+                        <mat-form-field appearance="fill" class="w-full">
+                            <mat-label>ระบุตำแหน่ง</mat-label>
+                            <input matInput [(ngModel)]="positionManage">
+                            
+                        </mat-form-field>
                     </div>
 
-                    <div class="col-start-6">
-                        <button mat-raised-button class="bg-[#dfa006] !text-white flex items-center py-2 px-4 rounded"
-                            type="button">
+                    <div class="flex-1 min-w-[200px]">
+                        <label class="block text-sm font-medium">แผนก:</label>
+                        <mat-form-field appearance="fill" class="w-full">
+                            <mat-label>ระบุแผนก</mat-label>
+                            <input matInput [value]="sectorManageForm.get('deptCode')?.value" readonly>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 items-center justify-end mt-4 sm:mt-0">
+                        <button mat-raised-button [ngClass]="{'bg-[#8d918d]' : !isEditingPositon, 'bg-[#235d3a]': isEditingPositon}" 
+                        class="text-white py-2 px-4 rounded flex items-center"
+                        (click)="isEditingPositon ? editPositon() : createPositon()"
+                        type="button">
+                            <span class="text-white">{{ isEditingPositon ? 'แก้ไขตำแหน่ง' : 'เพิ่มตำแหน่ง' }}</span>
+                        </button>
+
+
+                        <button mat-raised-button class="bg-[#dfa006] !text-white py-2 px-4 rounded" (click)="clearForm2()" type="button">
                             <i class='bx bx-revision text-white mr-2'></i>
-                            <span class="!text-white">เคลียร์ข้อมูล</span>
+                            <span class="text-white">เคลียร์ข้อมูล</span>
                         </button>
-
+                        <div  *ngIf="selectedRow">
+                        <button mat-raised-button class="bg-[#ba0900] !text-white py-2 px-4 rounded" (click)="deleteRow()" type="button">
+                            <i class='bx bx-trash text-white mr-2'></i>
+                            <span class="text-white">ลบข้อมูล</span>
+                        </button>
+                    </div>
                     </div>
                 </div>
-            </div> -->
-
-            <div class="grid grid-cols-1 md:grid-cols-6 gap-4 p-4">
-                <div class="col-span-1 md:col-span-2">
-                    <label class="block text-sm font-medium">ตำแหน่ง:</label>
-                    <mat-form-field appearance="fill" class="w-full">
-                        <mat-label>ระบุตำแหน่ง</mat-label>
-                        <input matInput formControlName="deptName">
-                    </mat-form-field>
-                </div>
-            
-                <div class="col-span-1 md:col-span-2">
-                    <label class="block text-sm font-medium">แผนก:</label>
-                    <mat-form-field appearance="fill" class="w-full">
-                        <mat-label>ระบุแผนก</mat-label>
-                        <input matInput formControlName="deptCode">
-                    </mat-form-field>
-                </div>
-            
-                <div class="col-span-1 md:col-span-2 flex items-center justify-end gap-4">
-                    <button mat-raised-button class="bg-[#8d918d] !text-white py-2 px-4 rounded" type="button">
-                        <span class="text-white">เพิ่มตำแหน่ง</span>
-                    </button>
-                    <button mat-raised-button class="bg-[#dfa006] !text-white py-2 px-4 rounded" type="button">
-                        <i class='bx bx-revision text-white mr-2'></i>
-                        <span class="text-white">เคลียร์ข้อมูล</span>
-                    </button>
-                </div>
-            </div>
-            
 
 
 
-
-        </div> <!--END Gray-->
-        </form>
-
-
-
-
-
-        <table mat-table [dataSource]="positionManagement" class="mat-elevation-z8 w-full overflow-x-auto">
-
-            <ng-container matColumnDef="id">
-                <th mat-header-cell *matHeaderCellDef class="font-bold text-black  text-[16px] !text-center"> ลำดับ
-                </th>
-                <td mat-cell *matCellDef="let element" class="justify-center !text-center"> {{element.id}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="positionName">
-                <th mat-header-cell *matHeaderCellDef class="font-bold text-black  text-[16px] !text-center"> ตำแหน่ง
-                </th>
-                <td mat-cell *matCellDef="let element" class="justify-center !text-center"> {{element.positionName}}
-                </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
-        </table>
-
-
-
-
-
+            </div> <!--END Gray-->
+        <!-- </form> -->
 
     </div> <!--END White-->
+    <!-- Table2 -->
+
+
+    <table mat-table [dataSource]="positionManagement" class="mat-elevation-z8 w-full overflow-x-auto">
+
+        <ng-container matColumnDef="positionNo">
+            <th mat-header-cell *matHeaderCellDef class="font-bold text-black  text-[16px] !text-center"> ลำดับ
+            </th>
+            <td mat-cell *matCellDef="let element" class="justify-center !text-center"> {{element.positionNo}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="positionName">
+            <th mat-header-cell *matHeaderCellDef class="font-bold text-black  text-[16px] !text-center"> ตำแหน่ง
+            </th>
+            <td mat-cell *matCellDef="let element" class="justify-center !text-center"> {{element.positionName}}
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns2;" (click)="onRowClick2(row)" class="cursor-pointer hover:bg-gray-200"></tr>
+    </table>
 
 
 </div>

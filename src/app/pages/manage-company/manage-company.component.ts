@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { SectorManageForm } from 'src/app/interface/form';
-import { CreateSectorRequest } from 'src/app/interface/request';
+import { createAndUpdateBudgetRequest, CreateSectorRequest } from 'src/app/interface/request';
 import { map, startWith } from 'rxjs/operators';
 import { CommonService } from 'src/app/services/common.service';
 import { ApiService } from 'src/app/services/api.service';
@@ -45,7 +45,7 @@ export class ManageCompanyComponent implements OnInit {
       deptCode: ['', [Validators.required]], //รหัสแผนก
       deptManage: ['', [Validators.required]],
     });
-
+       
   }
 
 
@@ -233,7 +233,7 @@ export class ManageCompanyComponent implements OnInit {
 
 
   //แสดงในตารางไม่ครบตรงนี้ จาก swagger
-  displayedColumns: string[] = ['sectorTname', 'sectorFullName', 'sectorCode', 'department.deptTname', 'department.deptFullName', 'department.deptName', 'department.deptCode', 'actions'];
+  displayedColumns: string[] = ['sectorTname', 'sectorFullName', 'sectorCode', 'department.deptTname', 'department.deptFullName', 'department.deptName', 'department.deptCode'];
 
 
   async loadSpecificCompanySectors() {
@@ -321,7 +321,7 @@ export class ManageCompanyComponent implements OnInit {
         this.isEditing = true; // Switch to edit mode
         this.showDeleteButton = true; // Show delete button
 
-        // Fetch and display positions for the selected department *****
+        // Fetch and display positions for the selected department Table2*****
         await this.loadPositionManagement();
       } else {
         console.error('Admin details not found');
@@ -363,37 +363,91 @@ export class ManageCompanyComponent implements OnInit {
 
   //Taable 2
   positionManagement = new MatTableDataSource<any>([]);
-  displayedColumns2: string[] = ['id', 'positionName'];
+  displayedColumns2: string[] = ['positionNo', 'positionName'];
+  
 
+  // async loadPositionManagement() {
+  //   try {
+  //     // Call API to get position data for the selected department
+  //     const positions = await this.apiService.getAllPositionDept(this.deptId).toPromise();
+  //     console.log('Positions for selected department:', positions);
 
+  //   } catch (error) {
+  //     console.error('Error loading position management data:', error);
+  //   }
+  // }
+ 
   async loadPositionManagement() {
     try {
       // Call API to get position data for the selected department
-      const positions = await this.apiService.getAllPositionDept(this.deptId).toPromise();
-      console.log('Positions for selected department:', positions);
-
+      const responsePosition = await this.apiService.getAllPositionDept(this.deptId).toPromise();
+      
+      // Handle cases where response might be undefined ตรวจสอบว่า response ไม่เป็น undefined และเป็น array
+      if (responsePosition && Array.isArray(responsePosition)) {
+        console.log('Positions for selected department:', responsePosition);
+  
+        // Map the positions data to include a sequential position number
+        const mappedPositions = responsePosition.map((position: any, index: number) => ({
+          positionNo: index + 1, // Position number starts from 1
+          positionName: position.positionName // Assuming the API returns an object with positionName
+        }));
+  
+        // Set the data for the MatTableDataSource
+        this.positionManagement.data = mappedPositions;
+      } else {
+        console.error('Unexpected data format or no data for positions:', responsePosition);
+        this.positionManagement.data = []; // Clear data if the format is unexpected or if data is undefined
+      }
     } catch (error) {
       console.error('Error loading position management data:', error);
+      this.positionManagement.data = []; // Ensure table is cleared if an error occurs
     }
   }
 
+  positionManage: string = ''; //ตำแหน่ง
+
+  onRowClick2(row: any) {
+    console.log('Row clicked:', row); // เพิ่มบรรทัดนี้
+    this.positionManage = row.positionName;
+    console.log('Position Manage Updated:', this.positionManage); // ตรวจสอบการอัปเดต
+    this.selectedRow = row; //ปุ่มลบแสดง
+  }
   
   
+  selectedRow: any = null; // ใช้เก็บแถวที่ถูกเลือก
+   // ฟังก์ชันสำหรับลบข้อมูล
+   async deleteRow() {
+    const confirmed = await this.swalService.showConfirm("ต้องการลบใช่มั้ย")
+    if (this.selectedRow) {
+      // ลบข้อมูลที่ selectedRow
+      console.log('ลบข้อมูล:', this.selectedRow);
+      this.selectedRow = null; // รีเซ็ตค่า selectedRow
+    }
+  }
 
 
- 
+  async clearForm2() {
+   
+    this.positionManage = '';
 
-
-
- 
+       //เปลี่ยนสถานะกลับไปที่โหมดการสร้าง
+       this.isEditingPositon = false;
   
+  }
+
+  isEditingPositon: boolean = false;
+
+  async createPositon(){
+    // const req: createPosition = {
+
+    // }
 
 
-  
+  }
 
+  async editPositon() {
 
-
-
+  }
 
 
 
