@@ -10,6 +10,7 @@ import { map, Observable } from 'rxjs';
 import {
   ApiResponse,
   Budget,
+  BudgetWellFare,
   MngDeptListRes,
   saveBudgetResponse,
 } from '../interface/response';
@@ -138,15 +139,19 @@ export class ApiService {
 
   getEmplistByName(term: string): Observable<any[]> {
     return this.http
-      .get<any[]>(
-        `${this.trainingUrl}/seacrhUser/byNames?searchTerm=${term}`
-      )
-      .pipe(map((response : any) => response.responseData));
+      .get<any[]>(`${this.trainingUrl}/seacrhUser/byNames?searchTerm=${term}`)
+      .pipe(map((response: any) => response.responseData));
   }
 
   getAllBudget(): Observable<Budget[]> {
     return this.http
       .get<Budget[]>(`${this.trainingUrl}/findAllBudget`)
       .pipe(map((res) => res));
+  }
+
+  getBudgetWelfare(): Observable<BudgetWellFare[]> {
+    return this.http
+      .get<ApiResponse<any>>(`${this.welfareUrl}/budget/getBudget`)
+      .pipe(map((res) => res.responseData.result));
   }
 }

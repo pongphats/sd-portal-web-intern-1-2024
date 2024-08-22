@@ -21,6 +21,7 @@ import { ManageCompanyComponent } from './pages/manage-company/manage-company.co
 import { ManageCoursePageComponent } from './pages/manage-course-page/manage-course-page.component';
 import { TrainingFormPageComponent } from './pages/training-form-page/training-form-page.component';
 import { WelfareFormsPageComponent } from './pages/welfare-forms-page/welfare-forms-page.component';
+import { BudgetWellfareManagePageComponent } from './pages/budget-wellfare-manage-page/budget-wellfare-manage-page.component';
 const routes: Routes = new Array<Route>(
   {
     path: 'sign-in',
@@ -94,6 +95,10 @@ const routes: Routes = new Array<Route>(
       {
         path: 'welfare-forms',
         component: WelfareFormsPageComponent,
+      },
+      {
+        path: 'budget-wellfare-manage',
+        component: BudgetWellfareManagePageComponent,
       }
     ),
   },
@@ -108,6 +113,6 @@ const routes: Routes = new Array<Route>(
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers: [AuthGuard]
+  providers: [AuthGuard],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

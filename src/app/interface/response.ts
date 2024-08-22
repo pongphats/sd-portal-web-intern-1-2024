@@ -65,3 +65,12 @@ export interface Budget {
   budgetTrainingRemain: number;
   totalExpRemain: number;
 }
+
+export interface BudgetWellFare {
+  id: number;
+  level: string;
+  opd: number;
+  ipd: number;
+  room: number;
+  no: number;
+}
