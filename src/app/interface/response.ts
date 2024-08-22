@@ -65,3 +65,11 @@ export interface Budget {
   budgetTrainingRemain: number;
   totalExpRemain: number;
 }
+
+
+// welfare-forms-page
+export interface ExpenseRemain {
+  opd: number,
+  ipd: number,
+  room: number
+}

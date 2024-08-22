@@ -11,6 +11,7 @@ import { map, Observable } from 'rxjs';
 import {
   ApiResponse,
   Budget,
+  ExpenseRemain,
   MngDeptListRes,
   saveBudgetResponse,
 } from '../interface/response';
@@ -49,12 +50,6 @@ export class ApiService {
       .pipe(map((res) => res));
   }
 
-  createTraining(req: CreateTrainingRequest): Observable<any> {
-    return this.http
-      .post<any>(`${this.trainingUrl}/createCourse`, req)
-      .pipe(map((res) => res));
-  }
-
   getSectorsDeptsCompanysList(): Observable<sector[]> {
     return this.http
       .get<sector[]>(`${this.trainingUrl}/findAllJoinDepartmentsSector`)
@@ -71,6 +66,13 @@ export class ApiService {
           params: { uid },
         }
       )
+      .pipe(map((res) => res));
+  }
+
+  // manage-course-page
+  createTraining(req: CreateTrainingRequest): Observable<any> {
+    return this.http
+      .post<any>(`${this.trainingUrl}/createCourse`, req)
       .pipe(map((res) => res));
   }
 
@@ -92,6 +94,17 @@ export class ApiService {
         params: { courseID: id },
       })
       .pipe(map((res) => res));
+  }
+
+  // welfare-forms-page
+  getExpenseRemainByUserIdAndLevel(userId: number, level: string): Observable<any> {
+    console.log(userId, level)
+    return this.http
+      .get<any>(`${this.welfareUrl}/expenses/getExpenseRemaining?userId=${userId}&level=${level}`)
+      .pipe(map((res) => {
+        console.log('Mapped Response:', res);
+        return res;
+      }));
   }
 
   getAllActiveEmpsByDeptId(deptId: number): Observable<Employee[]> {
