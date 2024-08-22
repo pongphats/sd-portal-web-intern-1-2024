@@ -97,11 +97,11 @@ export class ApiService {
   }
 
   // welfare-forms-page
-  getExpenseRemainByUserIdAndLevel(userId: number, level: string): Observable<any> {
-    console.log(userId, level)
+  getExpenseRemainByUserIdAndLevel(userId: number, level: string): Observable<ExpenseRemain> {
+    console.log(level, userId)
     return this.http
-      .get<any>(`${this.welfareUrl}/expenses/getExpenseRemaining?userId=${userId}&level=${level}`)
-      .pipe(map((res) => res));
+      .get<ApiResponse<any>>(`${this.welfareUrl}/expenses/getExpenseRemaining?userId=${userId}&level=${level}`)
+      .pipe(map((res) => res.responseData.result));
   }
 
   getAllActiveEmpsByDeptId(deptId: number): Observable<Employee[]> {

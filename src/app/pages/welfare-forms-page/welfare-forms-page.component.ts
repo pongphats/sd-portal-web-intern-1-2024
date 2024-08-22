@@ -61,34 +61,35 @@ export class WelfareFormsPageComponent implements OnInit {
   /**
    * part 1
    */
-  dataEmp: Employee[] = [];
+  dataListEmp: Employee[] = [];
   getEmp(term: string): Observable<any[]> {
     // กรณี ไม่กรอกอะไรเลย
     if (term == '') {
-      this.dataEmp = [];
+      this.dataListEmp = [];
       return of([]);
     }
     return this.apiService.getEmplistByName(term).pipe(
       map((res: any) => {
         if (res == null) {
-          this.dataEmp = [];
+          this.dataListEmp = [];
           return [];
         } else {
           const result = res.result;
           if (result.length == 0) {
-            this.dataEmp = [];
+            this.dataListEmp = [];
             return [];
           }
-          this.dataEmp = result.map((item: any) => ({
+          this.dataListEmp = result.map((item: any) => ({
             ...item,
             fullName: `${item.firstname} ${item.lastname}`,
           }));
-          return this.dataEmp;
+          return this.dataListEmp;
         }
       })
     );
   }
 
+  dataEmp!: Employee;
   datafullName: string = '';
   dataEmpCode: string = '';
   dataSectorName: string = '';
@@ -99,13 +100,10 @@ export class WelfareFormsPageComponent implements OnInit {
   dataPassDate: string = '';
   dataTypeEmp: string = '';
 
-  dataOPD: string = 'x,xxx';
-  dataIPD: string = 'x,xxx';
-  dataRoom: string = 'x,xxx';
   searchEmp() {
-    console.log(this.dataEmp);
-    if (this.dataEmp.length === 1) {
-      const data = this.dataEmp[0];
+    if (this.dataListEmp.length === 1) {
+      this.dataEmp = this.dataListEmp[0];
+      const data = this.dataEmp
       this.datafullName = `${data.title} ${data.firstname} ${data.lastname}`;
       this.dataEmpCode = data.empCode;
       this.dataSectorName = data.sector.sectorName;
@@ -135,17 +133,25 @@ export class WelfareFormsPageComponent implements OnInit {
    * part 2
    */
 
+  dataOPD: string = '';
+  dataIPD: string = '';
+  dataRoom: string = '';
+
   async getExpenseRemainByUserIdAndLevel(data: any) {
     try {
       const userId = data.id;
-      const level = data.level;
-      const res = await this.apiService
-        .getExpenseRemainByUserIdAndLevel(userId, level)
-        .toPromise();
-
-      console.log('test: ', res.responseData.result);
+      const level = data.level ? data.level : '' ;
+      const res = await this.apiService.getExpenseRemainByUserIdAndLevel(userId, level).toPromise();
+      if (res) {
+        this.dataOPD = this.commonService.convertNumberToStringFormatted2(res.opd)
+        this.dataIPD = this.commonService.convertNumberToStringFormatted2(res.ipd);
+        this.dataRoom = this.commonService.convertNumberToStringFormatted2(res.room);
+      } 
     } catch (error) {
-      console.error(error);
+      console.log("ไม่มีการระบุ Level")
+      this.dataOPD = ''
+      this.dataIPD = ''
+      this.dataRoom = ''
     }
   }
 

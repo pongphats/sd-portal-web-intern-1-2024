@@ -1,10 +1,10 @@
 <div class="bg-transparent w-full">
 
-    <div class="w-full px-4 py-3 rounded-lg lg:px-6 bg-content shadow-card dark:bg-content-dark dark:shadow-none">
+    <div class="w-full px-4 py-3 rounded-lg lg:px-6 bg-content shadow-card dark:bg-content-dark dark:text-[#e4e6eb] dark:shadow-none">
         <p class="text-2xl text-font-header  mt-5 mb-3">ฟอร์มเบิกค่ารักษาพยาบาล</p>
 
         <div class="flex flex-col lg:flex-row justify-center gap-4 w-full">
-            <div class="w-full lg:w-[50%]">
+            <div class="w-full lg:w-[45%]">
                 <form [formGroup]="welfareForm">
                     <div class="flex flex-row items-center">
                         <label for="fullName" class="w-[10%] lg:w-[15%]">ค้นหาชื่อ:</label>
@@ -34,28 +34,27 @@
                 </form>
             </div>
             <div
-                class="w-full lg:w-[50%] flex flex-col lg:flex-row text-[#566a7f] rounded-lg shadow p-6 w-full bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#343434] mb-3">
+                class="w-full lg:w-[55%] flex flex-col lg:flex-row text-[#566a7f] rounded-lg shadow p-6 w-full bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#343434] mb-3">
                 <div class="flex flex-col w-full gap-y-2" *ngIf="datafullName != ''">
                     <p class="font-bold">ข้อมูลพนักงาน</p>
                     <div class="flex flex-row w-full">
-                        <p class="w-[55%]">{{datafullName}}</p>
-                        <p class="w-[45%]">รหัสพนักงาน: {{dataEmpCode}}</p>
+                        <p class="w-[58%]">{{datafullName}}</p>
+                        <p class="w-[42%]">รหัสพนักงาน: {{dataEmpCode}}</p>
                     </div>
                     <div class="flex flex-row w-full">
-                        <p class="w-[55%]">แผนก: {{dataSectorName}}</p>
-                        <p class="w-[45%]">{{dataPositionName}}</p>
+                        <p class="w-[58%]">แผนก: {{dataSectorName}}</p>
+                        <p class="w-[42%]">{{dataPositionName}}</p>
                     </div>
                     <div class="flex flex-row w-full">
-                        <p class="w-[55%]">Email : {{dataEmail}}</p>
-                        <p class="w-[45%]">ระดับพนักงาน (LEVEL): {{dataLevel}}</p>
+                        <p class="w-[58%]">Email : {{dataEmail}}</p>
+                        <p class="w-[42%]">ระดับพนักงาน (LEVEL): {{dataLevel}}</p>
                     </div>
                     <div class="flex flex-row w-full">
-                        <p class="w-[55%]">วันที่เริ่มงาน : {{dataStartDate| buddhistDate : "DD/MM/yyyy"}}</p>
-                        <p class="w-[45%]">ประเภท : {{dataTypeEmp}}</p>
+                        <p class="w-[58%]">วันที่เริ่มงาน : {{dataStartDate| buddhistDate : "DD/MM/yyyy"}}</p>
+                        <p class="w-[42%]">ประเภท : {{dataTypeEmp}}</p>
                     </div>
                     <div class="flex flex-row w-full">
-                        <p class="w-[55%]">วันที่ผ่านการทดลองงาน : {{dataPassDate | buddhistDate : "DD/MM/yyyy"}}</p>
-                        <p class="w-[45%]"></p>
+                        <p class="w-full">วันที่ผ่านการทดลองงาน : {{dataPassDate | buddhistDate : "DD/MM/yyyy"}}</p>
                     </div>
                 </div>
                 <div class="flex flex-col w-full" *ngIf="datafullName == ''">
@@ -65,30 +64,25 @@
             </div>
         </div><!-- part1-->
 
-        <!-- <div
-            class="w-full flex flex-col text-[#566a7f] rounded-lg shadow p-6 bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#343434]">
-
-        </div> -->
-
         <div>
             <form [formGroup]="expenseForm">
                 <div
                     class="w-full flex flex-col text-[#566a7f] rounded-lg shadow p-6 bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#343434]">
 
-                    <div class="flex flex-row pb-5">
-                        <div class="w-[50%]">
-                            <p class="underline underline-offset-1 py-2">ค่ารักษาพยาบาลคงเหลือ</p>
-                            <div class="flex flex-row gap-x-6">
+                    <div class="flex flex-row pb-3 gap-x-3 dark:text-white"
+                        *ngIf="dataOPD != '' && dataIPD != '' && dataRoom != '' ">
+                        <div class="w-[50%] bg-white dark:bg-[#ffffff1a] rounded-lg px-4 py-2">
+                            <p class="underline underline-offset-1 py-3">ค่ารักษาพยาบาลคงเหลือ</p>
+                            <div class="flex flex-row gap-x-3">
                                 <p class="">OPD: {{dataOPD}} บาท</p>
                                 <p class="">IPD: {{dataIPD}} บาท</p>
                             </div>
                         </div>
-                        <div class="w-[50%]">
-                            <p class="underline underline-offset-1 py-2">ค่าห้องและค่าอาหารที่สามารถเบิกได้ต่อวัน</p>
+                        <div class="w-[50%] bg-white dark:bg-[#ffffff1a] rounded-lg p-2">
+                            <p class="underline underline-offset-1 py-3">ค่าห้องและค่าอาหารที่สามารถเบิกได้ต่อวัน</p>
                             <p class="">ค่าห้อง + ค่าอาการ: {{dataRoom}} บาท</p>
                         </div>
                     </div>
-
 
                     <div class="flex flex-col gap-y-2">
                         <p>ประเภทการรักษา</p>
