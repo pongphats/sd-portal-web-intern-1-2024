@@ -20,7 +20,7 @@ export class WelfareFormsPageComponent implements OnInit {
   welfareForm!: FormGroup<welfareForm>;
   expenseForm: FormGroup;
   yearForm!: FormGroup;
-  
+
   constructor(
     private fb: FormBuilder,
     private swalService: SwalService,
@@ -100,7 +100,7 @@ export class WelfareFormsPageComponent implements OnInit {
     );
   }
 
-  dataEmp!: Employee;
+  dataEmp: Employee | undefined = undefined;
   datafullName: string = '';
   dataEmpCode: string = '';
   dataSectorName: string = '';
@@ -141,6 +141,9 @@ export class WelfareFormsPageComponent implements OnInit {
       this.dataOPD = ''
       this.dataIPD = ''
       this.dataRoom = ''
+      this.dataSource.data = []
+      this.allExpense = []
+      this.dataEmp = undefined;
       console.log('กรุณากรอกชื่อให้ครบถ้วน');
     }
   }
@@ -156,7 +159,7 @@ export class WelfareFormsPageComponent implements OnInit {
   async getExpenseRemainByUserIdAndLevel(data: any) {
     try {
       const userId = data.id;
-      const level = data.level ? data.level : '' ;
+      const level = data.level ? data.level : '';
       const res = await this.apiService.getExpenseRemainByUserIdAndLevel(userId, level).toPromise();
       if (res) {
         this.dataOPD = this.convertNumberToStringFormat(res.opd)
@@ -228,11 +231,11 @@ export class WelfareFormsPageComponent implements OnInit {
   /**
    * part3
    */
-  searchHistoryByYear(){
+  searchHistoryByYear() {
     console.log(this.yearForm.value.yearSearch)
   }
 
-  searchAllHistory(){
+  searchAllHistory() {
     console.log("ดูทั้งหมด")
   }
 
@@ -246,30 +249,31 @@ export class WelfareFormsPageComponent implements OnInit {
   allExpense: any[] = [];
   displayedColumns: string[] = ['No', 'date', 'detail', 'ipd', 'opd', 'room', 'price', 'editOrDelete'];
   async getExpenseUidAndYear() {
-    const uid = this.dataEmp.id
-    const year = (this.yearForm.value.yearSearch) - 543
-    const res = await this.apiService.getExpenseUidAndYear(uid, year).toPromise();
-    if (res) {
-      this.allExpense = res.map((expense: any, index: number) => ({
-        ...expense,
-        no: index+1
-      }));
+    if (this.dataEmp) {
+      const uid = this.dataEmp.id
+      const year = (this.yearForm.value.yearSearch) - 543
+      const res = await this.apiService.getExpenseUidAndYear(uid, year).toPromise();
+      if (res) {
+        this.allExpense = res.map((expense: any, index: number) => ({
+          ...expense,
+          no: index + 1
+        }));
 
-      this.dataSource.data = this.allExpense;
-    } else {
-      this.dataSource.data = [];
+        this.dataSource.data = this.allExpense;
+      }
     }
+
   }
 
-  editBtn(element: any){
+  editBtn(element: any) {
     console.log("edit", element)
   }
 
-  deleteBtn(element: any){
+  deleteBtn(element: any) {
     console.log("delete", element)
   }
 
-  convertNumberToStringFormat(number:number) : string {
+  convertNumberToStringFormat(number: number): string {
     return this.commonService.convertNumberToStringFormatted2(number);
   }
 }
