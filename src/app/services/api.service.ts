@@ -25,7 +25,7 @@ export class ApiService {
   trainingUrl: string = environment.trainingService;
   welfareUrl: string = environment.welfareService;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   saveBudgetByYear(
     req: saveBudgetByYearRequest
@@ -98,9 +98,20 @@ export class ApiService {
 
   // welfare-forms-page
   getExpenseRemainByUserIdAndLevel(userId: number, level: string): Observable<ExpenseRemain> {
-    console.log(level, userId)
     return this.http
       .get<ApiResponse<any>>(`${this.welfareUrl}/expenses/getExpenseRemaining?userId=${userId}&level=${level}`)
+      .pipe(map((res) => res.responseData.result));
+  }
+
+  getExpenseUidAndYear(uid: number, year: number): Observable<any> {
+    return this.http
+      .get<ApiResponse<any>>(`${this.welfareUrl}/expenses/allExpenseByUidAndYear?uid=${uid}&year=${year}`)
+      .pipe(map((res) => res.responseData.result));
+  }
+
+  getAllExpense(): Observable<any> {
+    return this.http
+      .get<ApiResponse<any>>(`${this.welfareUrl}/expenses/getAllExpenseInUsed`)
       .pipe(map((res) => res.responseData.result));
   }
 
@@ -152,7 +163,7 @@ export class ApiService {
       .get<any[]>(
         `${this.trainingUrl}/seacrhUser/byNames?searchTerm=${term}`
       )
-      .pipe(map((response : any) => response.responseData));
+      .pipe(map((response: any) => response.responseData));
   }
 
   getAllBudget(): Observable<Budget[]> {
@@ -161,7 +172,7 @@ export class ApiService {
       .pipe(map((res) => res));
   }
 
-  uploadFile(file: File) : Observable<any> {
+  uploadFile(file: File): Observable<any> {
     const formData = new FormData();
     formData.append('file', file, file.name);
 
@@ -177,9 +188,9 @@ export class ApiService {
     // });
   }
 
-  createTrainingForms(req : CreateTrainingRequestForm) {
+  createTrainingForms(req: CreateTrainingRequestForm) {
     return this.http
-     .post<any>(`${this.trainingUrl}/createTraining`, req)
-     .pipe(map((res) => res));
+      .post<any>(`${this.trainingUrl}/createTraining`, req)
+      .pipe(map((res) => res));
   }
 }

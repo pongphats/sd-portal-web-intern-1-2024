@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { welfareForm } from 'src/app/interface/form';
 import { ApiService } from 'src/app/services/api.service';
@@ -7,6 +7,9 @@ import { SwalService } from 'src/app/services/swal.service';
 import { debounceTime, map, Observable, of, switchMap } from 'rxjs';
 import { Employee } from 'src/app/interface/employee';
 import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-welfare-forms-page',
@@ -16,7 +19,8 @@ import { MatDialog } from '@angular/material/dialog';
 export class WelfareFormsPageComponent implements OnInit {
   welfareForm!: FormGroup<welfareForm>;
   expenseForm: FormGroup;
-
+  yearForm!: FormGroup;
+  
   constructor(
     private fb: FormBuilder,
     private swalService: SwalService,
@@ -38,6 +42,12 @@ export class WelfareFormsPageComponent implements OnInit {
       details: [''],
       notes: [''],
     });
+
+    const currentYear = new Date().getFullYear() + 543; // คำนวณปีปัจจุบัน
+
+    this.yearForm = this.fb.group({
+      yearSearch: [currentYear],
+    });
   }
 
   filteredOptions!: Observable<any[]>;
@@ -56,6 +66,7 @@ export class WelfareFormsPageComponent implements OnInit {
     this.expenseForm.get('endDate')?.valueChanges.subscribe(() => {
       this.calculateDaysCount();
     });
+    // this.getAllExpense()
   }
 
   /**
@@ -115,6 +126,8 @@ export class WelfareFormsPageComponent implements OnInit {
       this.dataTypeEmp = data.typeEmp || '-';
 
       this.getExpenseRemainByUserIdAndLevel(data);
+      this.getExpenseUidAndYear()
+
     } else {
       this.datafullName = '';
       this.dataEmpCode = '';
@@ -125,6 +138,9 @@ export class WelfareFormsPageComponent implements OnInit {
       this.dataStartDate = '';
       this.dataPassDate = '';
       this.dataTypeEmp = '';
+      this.dataOPD = ''
+      this.dataIPD = ''
+      this.dataRoom = ''
       console.log('กรุณากรอกชื่อให้ครบถ้วน');
     }
   }
@@ -143,10 +159,10 @@ export class WelfareFormsPageComponent implements OnInit {
       const level = data.level ? data.level : '' ;
       const res = await this.apiService.getExpenseRemainByUserIdAndLevel(userId, level).toPromise();
       if (res) {
-        this.dataOPD = this.commonService.convertNumberToStringFormatted2(res.opd)
-        this.dataIPD = this.commonService.convertNumberToStringFormatted2(res.ipd);
-        this.dataRoom = this.commonService.convertNumberToStringFormatted2(res.room);
-      } 
+        this.dataOPD = this.convertNumberToStringFormat(res.opd)
+        this.dataIPD = this.convertNumberToStringFormat(res.ipd);
+        this.dataRoom = this.convertNumberToStringFormat(res.room);
+      }
     } catch (error) {
       console.log("ไม่มีการระบุ Level")
       this.dataOPD = ''
@@ -207,5 +223,53 @@ export class WelfareFormsPageComponent implements OnInit {
         );
       }
     }
+  }
+
+  /**
+   * part3
+   */
+  searchHistoryByYear(){
+    console.log(this.yearForm.value.yearSearch)
+  }
+
+  searchAllHistory(){
+    console.log("ดูทั้งหมด")
+  }
+
+  /**
+   * part4
+   */
+  dataSource = new MatTableDataSource<any>([]); // เริ่มต้นด้วยข้อมูลว่าง
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  allExpense: any[] = [];
+  displayedColumns: string[] = ['No', 'date', 'detail', 'ipd', 'opd', 'room', 'price', 'editOrDelete'];
+  async getExpenseUidAndYear() {
+    const uid = this.dataEmp.id
+    const year = (this.yearForm.value.yearSearch) - 543
+    const res = await this.apiService.getExpenseUidAndYear(uid, year).toPromise();
+    if (res) {
+      this.allExpense = res.map((expense: any, index: number) => ({
+        ...expense,
+        no: index+1
+      }));
+
+      this.dataSource.data = this.allExpense;
+    } else {
+      this.dataSource.data = [];
+    }
+  }
+
+  editBtn(element: any){
+    console.log("edit", element)
+  }
+
+  deleteBtn(element: any){
+    console.log("delete", element)
+  }
+
+  convertNumberToStringFormat(number:number) : string {
+    return this.commonService.convertNumberToStringFormatted2(number);
   }
 }
