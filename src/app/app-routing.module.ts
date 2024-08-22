@@ -20,6 +20,8 @@ import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { ManageCompanyComponent } from './pages/manage-company/manage-company.component';
 import { ManageCoursePageComponent } from './pages/manage-course-page/manage-course-page.component';
 import { TrainingFormPageComponent } from './pages/training-form-page/training-form-page.component';
+import { WelfareFormsPageComponent } from './pages/welfare-forms-page/welfare-forms-page.component';
+import { ManagementTrainingPageComponent } from './pages/management-training-page/management-training-page.component';
 const routes: Routes = new Array<Route>(
   {
     path: 'sign-in',
@@ -51,8 +53,8 @@ const routes: Routes = new Array<Route>(
         component: FtrOf1PageComponent,
       },
       {
-        path: 'ftr-oj1',
-        component: FtrOj1PageComponent,
+        path: 'management-training',
+        component: ManagementTrainingPageComponent,
       },
       {
         path: 'ftr-sv1',
@@ -85,9 +87,14 @@ const routes: Routes = new Array<Route>(
       {
         path: 'news-detail',
         component: NewsDetailPageComponent,
-      } , {
-        path : 'training-forms',
+      },
+      {
+        path: 'training-forms',
         component: TrainingFormPageComponent,
+      },
+      {
+        path: 'welfare-forms',
+        component: WelfareFormsPageComponent,
       }
     ),
   },
@@ -104,4 +111,4 @@ const routes: Routes = new Array<Route>(
   exports: [RouterModule],
   providers: [AuthGuard]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

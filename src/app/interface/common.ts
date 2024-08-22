@@ -50,3 +50,10 @@ export interface Budget {
   budgetTrainingRemain: number;
   totalExpRemain: number;
 }
+
+export interface fileTable {
+  position: number;
+  fileName: string;
+  fileSize: string;
+  fileId: number;
+}

@@ -257,6 +257,7 @@ export class ManageCoursePageComponent implements OnInit {
         const res = await this.apiService.deleteCourseById(this.deleteId).toPromise();
         this.getAllCourses()
         this.swalService.showSuccess("สำเร็จ")
+        this.clearForm()
       } else {
         console.log("ยกเลิก")
       }
@@ -272,22 +273,6 @@ export class ManageCoursePageComponent implements OnInit {
 
   clearForm() {
     this.courseForm.reset();
-
-    // this.courseForm.reset({
-    //   id: '',
-    //   courseName: '',
-    //   startDate: null,
-    //   endDate: null,
-    //   timeStart: '',
-    //   timeEnd: '',
-    //   hours: '',
-    //   note: '',
-    //   price: '',
-    //   priceProject: '',
-    //   institute: '',
-    //   place: ''
-    // });
-
     this.editMode = false
     this.editId = -1
   }

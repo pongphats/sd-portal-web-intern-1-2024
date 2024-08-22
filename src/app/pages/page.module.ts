@@ -36,6 +36,8 @@ import { ManageCompanyComponent } from './manage-company/manage-company.componen
 import { ManageCoursePageComponent } from './manage-course-page/manage-course-page.component';
 import { TrainingFormPageComponent } from './training-form-page/training-form-page.component';
 import { TraingCreateFormsTableComponent } from './training-form-page/components/traing-create-forms-table/traing-create-forms-table.component';
+import { WelfareFormsPageComponent } from './welfare-forms-page/welfare-forms-page.component';
+import { ManagementTrainingPageComponent } from './management-training-page/management-training-page.component';
 
 @NgModule({
   declarations: [
@@ -71,6 +73,8 @@ import { TraingCreateFormsTableComponent } from './training-form-page/components
     ManageCoursePageComponent,
     TrainingFormPageComponent,
     TraingCreateFormsTableComponent,
+    WelfareFormsPageComponent,
+    ManagementTrainingPageComponent,
   ],
   imports: [
     MatIconModule,

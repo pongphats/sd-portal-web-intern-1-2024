@@ -1,4 +1,4 @@
-<form [formGroup]="budgetForm" (submit)="onSave()">
+<form [formGroup]="budgetForm">
   <div
     class="px-2 py-1 rounded-md lg:py-3 lg:px-6 bg-content shadow-card dark:bg-content-dark dark:shadow-none mt-5 mb-3"
   >
@@ -20,11 +20,11 @@
           >
         </mat-radio-group>
       </div>
-      <div class="grow flex">
-        <mat-label class="self-center-cm" for="budgetYear"
+      <div class="flex-col lg:flex-row">
+        <mat-label class="self-center w-full" for="budgetYear"
           >ฝึกอบรมรายปี</mat-label
         >
-        <mat-form-field appearance="fill" class="size-16 grow mx-3">
+        <mat-form-field appearance="fill" class="w-full lg:w-[35%] mx-3">
           <input
             matInput
             id="budgetYear"
@@ -36,14 +36,16 @@
             >กรุณากรอกข้อมูล
           </mat-error>
         </mat-form-field>
-        <mat-label class="self-center-cm" for="dept">ฝ่าย/แผนก</mat-label>
-        <mat-form-field appearance="fill" class="grow mx-3">
+        <mat-label class="self-center w-full" for="dept">ฝ่าย/แผนก</mat-label>
+        <mat-form-field appearance="fill" class="w-full lg:w-[35%] mx-3">
           <mat-label>ฝ่าย/แผนก</mat-label>
           <mat-select
             formControlName="dept"
             id="dept"
             (click)="checkCompanySelected()"
+            [disabled]="!depts.length"
           >
+            <mat-option value="" disabled selected>เลือกแผนก</mat-option>
             <mat-option *ngFor="let dept of depts" [value]="dept">{{
               dept
             }}</mat-option>
@@ -57,11 +59,11 @@
     <div
       class="text-[#566a7f] mt-2 mb-3 rounded-md shadow p-6 w-full bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#242526]"
     >
-      <div class="flex gap-2">
-        <mat-label class="self-center w-2/12" for=" udgetTrain"
+      <div class="flex flex-col lg:flex-row">
+        <mat-label class="self-center w-full lg:w-[19%] mr-5" for="udgetTrain"
           >งบประมาณการอบรม</mat-label
         >
-        <mat-form-field appearance="fill" class="">
+        <mat-form-field appearance="fill" class="w-full lg:w-[16%] mx-3">
           <input
             matInput
             id=" budgetTrain"
@@ -69,18 +71,18 @@
             type="text"
             (keypress)="onInputKeyPressFee($event)"
             (blur)="onBlurFee($event, 0)"
-            class="w-2/12"
             placeholder="0.00"
-          /><span matPrefix class="pr-2">฿ </span>
+          />
+          <span matPrefix class="pr-2">฿ </span>
           <span matSuffix>บาท</span>
-          <mat-error *ngIf="this.budgetForm.controls.dept.invalid"
+          <mat-error *ngIf="this.budgetForm.controls.budgetTrain.invalid"
             >กรุณากรอกข้อมูล
           </mat-error>
         </mat-form-field>
-        <mat-label class="self-center w-2/12" for="budgetCer"
+        <mat-label class="self-center w-full lg:w-[19%] ml-5" for="budgetCer"
           >งบประมาณการสอบ</mat-label
         >
-        <mat-form-field appearance="fill" class="mx-3">
+        <mat-form-field appearance="fill" class="w-full lg:w-[16%] mx-3">
           <input
             matInput
             id="budgetCer"
@@ -88,18 +90,18 @@
             type="text"
             (keypress)="onInputKeyPressAccommodation($event)"
             (blur)="onBlurFee($event, 1)"
-            class="w-2/12"
             placeholder="0.00"
-          /><span matPrefix class="pr-2">฿ </span>
+          />
+          <span matPrefix class="pr-2">฿ </span>
           <span matSuffix>บาท</span>
-          <mat-error *ngIf="this.budgetForm.controls.dept.invalid"
+          <mat-error *ngIf="this.budgetForm.controls.budgetCer.invalid"
             >กรุณากรอกข้อมูล
           </mat-error>
         </mat-form-field>
-        <mat-label class="self-center-cm w-2/12" for="budgetTotal"
+        <mat-label class="self-center w-full lg:w-[14%] ml-5" for="budgetTotal"
           >งบประมาณรวม</mat-label
         >
-        <mat-form-field appearance="fill" class="grow mx-3">
+        <mat-form-field appearance="fill" class="w-full lg:w-[16%] mx-3">
           <input
             matInput
             readonly
@@ -107,12 +109,11 @@
             formControlName="budgetTotal"
             type="text"
             (focus)="onTotalBudget()"
-            class="w-2/12"
             placeholder="0.00"
           />
           <span matPrefix class="pr-2">฿ </span>
           <span matSuffix>บาท</span>
-          <mat-error *ngIf="this.budgetForm.controls.dept.invalid"
+          <mat-error *ngIf="this.budgetForm.controls.budgetTotal.invalid"
             >กรุณากรอกข้อมูล
           </mat-error>
         </mat-form-field>
@@ -120,11 +121,12 @@
     </div>
     <div class="flex justify-center gap-x-1">
       <button
+        (click)="onSave()"
         mat-raised-button
-        type="submit"
+        type="button"
         [disabled]="budgetForm.invalid"
         color="primary"
-        class="flex items-center text-center {{
+        class="w-full lg:w-[9%] flex items-center text-center {{
           budgetForm.invalid
             ? 'cursor-not-allowed bg-gray-400 border-2 border-gray-400'
             : 'cursor-pointer bg-[#696cf8] hover:bg-[#696cf8] !text-white hover:!text-white border-2 border-[#696cf8]'
@@ -136,14 +138,14 @@
           }}"
         ></i
         ><span class="{{ budgetForm.invalid ? '' : 'text-white' }}"
-          >เพื่มข้อมูล</span
+          >เพิ่มข้อมูล</span
         >
       </button>
       <button
         mat-stroked-button
         color="primary"
-        (click)="clearForm()"
-        class="clear-button"
+        (click)="clear()"
+        class="w-full lg:w-[10%] clear-button"
       >
         <i class="fas fa-sync-alt mr-1"></i>
         <span> เคลียร์ข้อมูล</span>
@@ -151,136 +153,198 @@
     </div>
   </div>
 </form>
-<div class="w-full overflow-x-auto shadow rounded-b-md">
-  <table
-    id="data-table"
-    class="table-auto text-[#566a7f] text-base lg:w-full dark:text-white"
-  >
-    <colgroup>
-      <col style="width: 10%" />
-      <col style="width: 90%" />
-    </colgroup>
-    <thead
-      class="text-sm bg-white border-b dark:bg-neutral-800 dark:shadow-none"
+<div
+  class="text-[#566a7f] mt-2 mb-3 rounded-md shadow p-6 w-full bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#242526]"
+>
+  <div class="w-full overflow-x-auto">
+    <table
+      mat-table
+      [dataSource]="dataSource"
+      class="mat-elevation-z8 !shadow-md"
     >
-      <tr class="h-16 text-center border-b-2 border-b-gray-300">
-        <th scope="col">ปี</th>
-        <th scope="col">ข้อมูล</th>
-      </tr>
-    </thead>
-    <tbody>
-      <ng-container *ngFor="let element of dataSource">
-        <tr>
-          <td class="border-b-2 border-b-gray-300 text-center">
-            {{ element.budgetYear }}
-          </td>
-          <td>
-            <mat-accordion>
-              <mat-expansion-panel
-                class="dark:hover:bg-[#2a2a2b] dark:bg-[#3a3b3c]"
-              >
-                <mat-expansion-panel-header
-                  class="border-b-2 border-b-gray-300"
-                >
-                  <mat-panel-title class="dark:text-white"
-                    >ข้อมูลของปี {{ element.budgetYear }}</mat-panel-title
-                  >
-                  <div class="mr-3">
-                    <button
-                      mat-stroked-button
-                      color="primary"
-                      (click)="editDocs()"
-                      *ngIf="isEditButtonVisible()"
-                      class="clear-button"
-                    >
-                      <i class="fas fa-sync-alt mr-1"></i>
-                      <span> แก้ไข</span>
-                    </button>
-                  </div>
-                </mat-expansion-panel-header>
-                <div>
-                  <table
-                    id="data-table2"
-                    class="table-auto text-[#566a7f] text-base lg:w-full dark:text-white"
-                  >
-                    <colgroup>
-                      <col style="width: 20%" />
-                      <col style="width: 20%" />
-                      <col style="width: 20%" />
-                      <col style="width: 20%" />
-                      <col style="width: 20%" />
-                    </colgroup>
-                    <thead
-                      class="text-sm bg-white border-b dark:bg-neutral-800 dark:shadow-none"
-                    >
-                      <tr class="h-16 text-center border-b-2 border-b-gray-300">
-                        <th scope="col" style="width: 15%">บริษัท</th>
-                        <th scope="col" style="width: 15%">ฝ่าย</th>
-                        <th scope="col" style="width: 15%">งบประมาณการอบรม</th>
-                        <th scope="col" style="width: 15%">
-                          งบประมาณการสอบ Certificate
-                        </th>
-                        <th scope="col" style="width: 15%">งบประมาณรวม</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr
-                        class="dark:bg-[#3a3b3c] text-center truncate h-12 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700"
-                      >
-                        <td>{{ element.company }}</td>
-                        <td>{{ element.dept }}</td>
-                        <td class="text-right pr-6">
-                          {{ element.budgetTrain | number : "1.2-2" }}
-                        </td>
-                        <td class="text-right pr-6">
-                          {{ element.budgetCer | number : "1.2-2" }}
-                        </td>
-                        <td class="text-right pr-6">
-                          {{ element.budgetTotal | number : "1.2-2" }}
-                        </td>
-                      </tr>
-                    </tbody>
-                    <tfoot
-                      *ngIf="isAmountVisible()"
-                      class="border-t-2 border-b-2 border-t-gray-300 border-b-gray-300"
-                    >
-                      <tr class="h-12 text-center">
-                        <td colspan="2">ยอดเงินรวม</td>
-                        <td class="text-right pr-6">
-                          {{ element.budgetTrain | number : "1.2-2" }}
-                        </td>
-                        <td class="text-right pr-6">
-                          {{ element.budgetCer | number : "1.2-2" }}
-                        </td>
-                        <td class="text-right pr-6">
-                          {{ element.budgetTotal | number : "1.2-2" }}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td colspan="6">
-                          <hr style="border: 1px solid #dcdcdc; width: 100%" />
-                        </td>
-                      </tr>
-                      <tr class="h-12 text-center">
-                        <td colspan="2">ยอดเงินคงเหลือ</td>
-                        <td class="text-right pr-6">
-                          {{ element?.budgetTrain | number : "1.2-2" }}
-                        </td>
-                        <td class="text-right pr-6">
-                          {{ element?.budgetCer | number : "1.2-2" }}
-                        </td>
-                        <td class="text-right pr-6">
-                          {{ element?.budgetTotal | number : "1.2-2" }}
-                        </td>
-                      </tr>
-                    </tfoot>
-                  </table>
-                </div>
-              </mat-expansion-panel>
-            </mat-accordion>
-          </td>
-        </tr>
+      <!-- year Column -->
+      <ng-container matColumnDef="year">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="!text-center text-sm font-bold text-black w-[12vw] !pl-0"
+        >
+          ปี
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="!px-2 !py-2 text-sm text-slate-600 !text-center"
+        >
+          {{ number(element.year) }}
+        </td>
+        <td
+          mat-footer-cell
+          *matFooterCellDef
+          class="!px-2 !py-2 text-sm text-slate-600 !text-center"
+        ></td>
       </ng-container>
-    </tbody>
-  </table>
+      <!-- company Column -->
+      <ng-container matColumnDef="company">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="!text-center text-sm font-bold text-black w-[12vw] !pl-0"
+        >
+          บริษัท
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="!px-2 !py-2 text-sm text-slate-600 !text-center"
+        >
+          {{ element.company }}
+        </td>
+        <td
+          mat-footer-cell
+          *matFooterCellDef
+          class="!px-2 !py-2 text-sm text-slate-600 !text-center font-bold"
+        >
+          งบประมาณคงเหลือ
+        </td>
+      </ng-container>
+      <!-- departmentCode Column -->
+      <ng-container matColumnDef="departmentCode">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="!text-center text-sm font-bold text-black w-[12vw] !pl-0"
+        >
+          ฝ่าย
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="!px-2 !py-2 text-sm text-slate-600 !text-center"
+        >
+          {{ element.departmentCode }}
+        </td>
+        <td
+          mat-footer-cell
+          *matFooterCellDef
+          class="!px-2 !py-2 text-sm text-slate-600 !text-center"
+        ></td>
+      </ng-container>
+
+      <!-- budgetTraining Column -->
+      <ng-container matColumnDef="budgetTraining">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="!text-right text-sm font-bold text-black w-[12vw] !pl-0"
+        >
+          งบประมาณการอบรม
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="!px-2 !py-2 text-sm text-slate-600 !text-right"
+        >
+          {{ element.budgetTraining | number : "1.2-2" }}
+        </td>
+        <td
+          mat-footer-cell
+          *matFooterCellDef
+          class="!px-2 !py-2 text-sm text-slate-600 !text-right"
+        >
+          {{ budgetTrainingRemain | number : "1.2-2" }}
+        </td>
+      </ng-container>
+
+      <!-- budgetCer Column -->
+      <ng-container matColumnDef="budgetCer">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="!text-right text-sm font-bold text-black w-[12vw] !pl-0"
+        >
+          งบประมาณการสอบ
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="!px-2 !py-2 text-sm text-slate-600 !text-right"
+        >
+          {{ element.budgetCer | number : "1.2-2" }}
+        </td>
+        <td
+          mat-footer-cell
+          *matFooterCellDef
+          class="!px-2 !py-2 text-sm text-slate-600 !text-right"
+        >
+          {{ budgetCerRemain | number : "1.2-2" }}
+        </td>
+      </ng-container>
+      <!-- totalExp Column -->
+      <ng-container matColumnDef="totalExp">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="!text-right text-sm font-bold text-black w-[12vw] !pl-0"
+        >
+          งบประมาณรวม
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="text-sm text-slate-600 !text-right"
+        >
+          {{ element.totalExp | number : "1.2-2" }}
+        </td>
+        <td
+          mat-footer-cell
+          *matFooterCellDef
+          class="text-sm text-slate-600 !text-right"
+        >
+          {{ totalExpRemain | number : "1.2-2" }}
+        </td>
+      </ng-container>
+      <!-- edit Column -->
+      <ng-container matColumnDef="edit">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="!text-center text-sm font-bold text-black w-[12vw] !pl-0"
+        ></th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="text-sm text-slate-600 !text-right"
+        >
+          <button
+            mat-stroked-button
+            color="primary"
+            (click)="onEdit(element)"
+            class="clear-button"
+          >
+            <i class="fas fa-sync-alt mr-1"></i>
+            <span> แก้ไข</span>
+          </button>
+        </td>
+        <td
+          mat-footer-cell
+          *matFooterCellDef
+          class="!px-2 !py-2 text-sm text-slate-600 !text-center"
+        ></td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      <tr
+        mat-footer-row
+        *matFooterRowDef="displayedColumns"
+        [class.hidden]="!showFooter"
+      ></tr>
+    </table>
+  </div>
+  <mat-paginator
+    [pageSize]="5"
+    [pageSizeOptions]="[5, 10]"
+    class="mat-elevation-z8 !shadow-md"
+  ></mat-paginator>
 </div>

@@ -8,7 +8,7 @@
         <th class="text-start p-4">หัวข้อในการอบรม/สัมมนา</th>
         <th class="text-start p-4">ประเภทฟอร์ม</th>
         <th>
-          <button mat-flat-button class="!bg-green-500 dark:!bg-green-600 !scale-110">
+          <button (click)="saveTraining()" mat-flat-button class="!bg-green-500 dark:!bg-green-600 !scale-110">
             <span class="!text-white space-x-2"
               > <i class='bx bx-check'></i> ยืนยันการสร้างแบบฟอร์ม
             </span>
@@ -23,7 +23,7 @@
         <td class="p-4">{{ item.employeeName }}</td>
         <td class="p-4">{{ item.courseName}}</td>
         <td class="p-4">{{ item.formsType | formsTypeTranslate }}</td>
-        <td class="p-4">
+        <td class="p-4 text-center">
           <button (click)="removeTrainning(i)" mat-flat-button color="warn">
             <span class="!text-white space-x-2"
               >ลบ <i class="bx bxs-trash"></i>
