@@ -21,6 +21,8 @@ import { ManageCompanyComponent } from './pages/manage-company/manage-company.co
 import { ManageCoursePageComponent } from './pages/manage-course-page/manage-course-page.component';
 import { TrainingFormPageComponent } from './pages/training-form-page/training-form-page.component';
 import { WelfareFormsPageComponent } from './pages/welfare-forms-page/welfare-forms-page.component';
+import { ManagementTrainingPageComponent } from './pages/management-training-page/management-training-page.component';
+import { ManagementUserPageComponent } from './pages/management-user-page/management-user-page.component';
 import { BudgetWellfareManagePageComponent } from './pages/budget-wellfare-manage-page/budget-wellfare-manage-page.component';
 const routes: Routes = new Array<Route>(
   {
@@ -53,8 +55,8 @@ const routes: Routes = new Array<Route>(
         component: FtrOf1PageComponent,
       },
       {
-        path: 'ftr-oj1',
-        component: FtrOj1PageComponent,
+        path: 'management-training',
+        component: ManagementTrainingPageComponent,
       },
       {
         path: 'ftr-sv1',
@@ -95,6 +97,10 @@ const routes: Routes = new Array<Route>(
       {
         path: 'welfare-forms',
         component: WelfareFormsPageComponent,
+      },
+      {
+        path: 'management-users',
+        component: ManagementUserPageComponent,
       },
       {
         path: 'budget-wellfare-manage',

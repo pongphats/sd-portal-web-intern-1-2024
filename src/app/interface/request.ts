@@ -68,3 +68,19 @@ export interface createAndUpdateBudgetRequest {
   budgetTraining: number;
   budgetCer: number;
 }
+
+// welfare-forms-page
+export interface CreateExpenseRequest {
+  types: string;
+  level: string;
+  startDate: string;
+  endDate: string;
+  days: number;
+  ipd: number;
+  opd: number;
+  roomService: number;
+  description: string;
+  remark: string;
+  adMission: string;
+  userId: number;
+}

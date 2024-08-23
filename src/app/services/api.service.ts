@@ -2,8 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import {
+  CreateExpenseRequest,
   CreateSectorRequest,
   CreateTrainingRequest,
+  CreateTrainingRequestForm,
   saveBudgetByYearRequest,
 } from '../interface/request';
 import { map, Observable } from 'rxjs';
@@ -11,6 +13,8 @@ import {
   ApiResponse,
   Budget,
   BudgetWellFare,
+  ExpenseRemainByYearResponse,
+  ExpenseRemainResponse,
   MngDeptListRes,
   saveBudgetResponse,
 } from '../interface/response';
@@ -49,12 +53,6 @@ export class ApiService {
       .pipe(map((res) => res));
   }
 
-  createTraining(req: CreateTrainingRequest): Observable<any> {
-    return this.http
-      .post<any>(`${this.trainingUrl}/createCourse`, req)
-      .pipe(map((res) => res));
-  }
-
   getSectorsDeptsCompanysList(): Observable<sector[]> {
     return this.http
       .get<sector[]>(`${this.trainingUrl}/findAllJoinDepartmentsSector`)
@@ -71,6 +69,13 @@ export class ApiService {
           params: { uid },
         }
       )
+      .pipe(map((res) => res));
+  }
+
+  // manage-course-page
+  createTraining(req: CreateTrainingRequest): Observable<any> {
+    return this.http
+      .post<any>(`${this.trainingUrl}/createCourse`, req)
       .pipe(map((res) => res));
   }
 
@@ -92,6 +97,35 @@ export class ApiService {
         params: { courseID: id },
       })
       .pipe(map((res) => res));
+  }
+
+  // welfare-forms-page
+  getExpenseRemainByUserIdAndLevel(userId: number, level: string): Observable<ExpenseRemainResponse> {
+    return this.http
+      .get<ApiResponse<any>>(
+        `${this.welfareUrl}/expenses/getExpenseRemaining?userId=${userId}&level=${level}`
+      )
+      .pipe(map((res) => res.responseData.result));
+  }
+
+  createExpense(req: CreateExpenseRequest){
+    return this.http
+      .post<ApiResponse<any>>(`${this.welfareUrl}/expenses/create`, req)
+      .pipe(map((res) => res));
+  }
+
+  getExpenseUidAndYear(uid: number, year: number): Observable<ExpenseRemainByYearResponse[]> {
+    return this.http
+      .get<ApiResponse<any>>(
+        `${this.welfareUrl}/expenses/allExpenseByUidAndYear?uid=${uid}&year=${year}`
+      )
+      .pipe(map((res) => res.responseData.result));
+  }
+
+  getAllExpense(): Observable<any> {
+    return this.http
+      .get<ApiResponse<any>>(`${this.welfareUrl}/expenses/getAllExpenseInUsed`)
+      .pipe(map((res) => res.responseData.result));
   }
 
   getAllActiveEmpsByDeptId(deptId: number): Observable<Employee[]> {
@@ -146,6 +180,28 @@ export class ApiService {
   getAllBudget(): Observable<Budget[]> {
     return this.http
       .get<Budget[]>(`${this.trainingUrl}/findAllBudget`)
+      .pipe(map((res) => res));
+  }
+
+  uploadFile(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+
+    return this.http
+      .post(`${this.trainingUrl}/uploadFile`, formData)
+      .pipe(map((res) => res));
+    // const headers = new HttpHeaders({
+    //   Accept: 'application/json', // แก้ไขตามความต้องการของ API
+    // });
+
+    // return this.http.post(`${this.api}/uploadFile`, formData, {
+    //   headers: headers,
+    // });
+  }
+
+  createTrainingForms(req: CreateTrainingRequestForm) {
+    return this.http
+      .post<any>(`${this.trainingUrl}/createTraining`, req)
       .pipe(map((res) => res));
   }
 

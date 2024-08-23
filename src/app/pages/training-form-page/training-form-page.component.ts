@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatTableDataSource } from '@angular/material/table';
 import { BuddhistDatePipe } from '@shared/pipes/budhist-date.pipe';
 import { map, Observable, startWith } from 'rxjs';
-import { Course } from 'src/app/interface/common';
+import { Course, fileTable } from 'src/app/interface/common';
 import { Employee } from 'src/app/interface/employee';
 import { trainingForm } from 'src/app/interface/form';
 import { MngDeptListRes } from 'src/app/interface/response';
@@ -41,6 +42,14 @@ export class TrainingFormPageComponent implements OnInit {
   presidentsList: Employee[] = [];
 
   courseList!: Course[];
+
+  displayedColumns: string[] = ['position', 'fileName', 'browseUpload'];
+
+  fileDataSource = new MatTableDataSource<fileTable>([]);
+
+  @ViewChild('fileInput') fileInput!: ElementRef;
+
+  tableToggle: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -82,6 +91,14 @@ export class TrainingFormPageComponent implements OnInit {
     await this.generateDeptListByUser();
     await this.generateCoursesList();
     this.displayAutocomplete();
+    this.fileDataSource = new MatTableDataSource<fileTable>([
+      {
+        position: 1,
+        fileName: 'test.txt',
+        fileSize: '100 KB',
+        fileId: 1,
+      },
+    ]);
   }
 
   checkValue(value: any) {
@@ -181,7 +198,7 @@ export class TrainingFormPageComponent implements OnInit {
 
       // for show in autocomplete
       this.empNameList = this.empList.map(
-        (item) => item.title + ' ' + item.firstname + ' ' + item.lastname
+        (item) => item.firstname + ' ' + item.lastname
       );
     } catch (error) {
       console.error(error);
@@ -190,8 +207,7 @@ export class TrainingFormPageComponent implements OnInit {
 
   generateEmpDetails(empFullName: string) {
     const filterEmpList = this.empList.find(
-      (item) =>
-        item.title + ' ' + item.firstname + ' ' + item.lastname === empFullName
+      (item) => item.firstname + ' ' + item.lastname === empFullName
     );
     if (filterEmpList) {
       this.trainingForm.patchValue({
@@ -244,7 +260,111 @@ export class TrainingFormPageComponent implements OnInit {
       );
   }
 
-  pushToTable() {
-    this.trainingService.pushTraining(this.trainingForm.value);
+  async pushToTable() {
+    try {
+      const empCode = this.trainingForm.controls.employeeId.value;
+      const courseId =
+        this.courseList.find(
+          (item) =>
+            item.courseName == this.trainingForm.controls.courseName.value &&
+            item.institute == this.trainingForm.controls.courseTeacher.value
+        )?.id || 0;
+      const employeeId = await this.commonService
+        .getUserDetailByEmpcode(empCode || '')
+        .toPromise();
+
+      // call mapped approve id function
+      const mappedApproveIds = this.mappedPriviledgeApproveId();
+      if (employeeId) {
+        const currentForms = {
+          ...this.trainingForm.value,
+          fileID: [...this.filesId],
+          empId: employeeId.id,
+          adminId: this.uId,
+          ...mappedApproveIds,
+          courseId,
+        };
+        this.trainingService.pushTraining(currentForms);
+        this.clearFormAfterPush();
+      }
+    } catch (error) {
+      console.error(error);
+      
+    }
+  }
+
+  clearFormAfterPush() {
+    this.trainingForm.patchValue({
+      employeeId: '',
+      employeeName: '',
+      employeePosition: '',
+    })
+  }
+
+  clearApproverForms() {
+    this.trainingForm.patchValue({
+      approverName: null,
+      managerName: null,
+      vicePresName: null,
+      vicePresName2: null,
+      presidentName: null,
+    });
+  }
+
+  openFileDialog() {
+    this.fileInput.nativeElement.click();
+  }
+
+  selectedFile: any[] = [];
+  async onFileSelected(event: Event) {
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files && fileInput.files.length > 0) {
+      for (let i = 0; i < fileInput.files.length; i++) {
+        const file = fileInput.files[i];
+        await this.uploadFile(file);
+        this.selectedFile.push(file);
+      }
+    } else {
+      console.error('No file selected');
+    }
+  }
+
+  filesId: number[] = [];
+  async uploadFile(file: File) {
+    try {
+      const res = await this.apiService.uploadFile(file).toPromise();
+      if (res) {
+        this.filesId.push(res.ID);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  removeFile(index: number) {
+    this.selectedFile.splice(index, 1);
+    this.filesId.splice(index, 1);
+  }
+
+  mappedPriviledgeApproveId() {
+    const approveEmpCode = this.trainingForm.controls.approverName.value;
+    const managerEmpCode = this.trainingForm.controls.managerName.value;
+    const viceOneEmpCode = this.trainingForm.controls.vicePresName.value;
+    const viceTwoEmpCode = this.trainingForm.controls.vicePresName2.value;
+    const presidentEmpCode = this.trainingForm.controls.presidentName.value;
+    const approveId =
+      this.approversList.find((item) => item.empCode == approveEmpCode)?.id ||
+      0;
+    const managerId =
+      this.managersList.find((item) => item.empCode == managerEmpCode)?.id || 0;
+    const vicePresIdOne =
+      this.vicePresList.find((item) => item.empCode == viceOneEmpCode)?.id || 0;
+    const vicePresIdTwo =
+      this.vicePresList.find((item) => item.empCode == viceTwoEmpCode)?.id || 0;
+    const presidentId =
+      this.presidentsList.find((item) => item.empCode == presidentEmpCode)
+        ?.id || 0;
+
+    return { approveId, managerId, vicePresIdOne, vicePresIdTwo, presidentId };
   }
 }

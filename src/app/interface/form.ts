@@ -68,7 +68,28 @@ export interface trainingForm {
   presidentName: FormControl<string | null>;
 }
 
-export interface welfareForm {
+export interface WelfareForm {
   fullName: FormControl<string | null>;
 }
 
+// export interface expenseForm {
+//   treatmentType: FormControl<string | null>;
+//   startDate: FormControl<string | null>;
+//   endDate: FormControl<string | null>;
+//   daysCount: FormControl<string | null>;
+//   medicalCost: FormControl<string | null>;
+//   roomAndBoardCost: FormControl<string | null>;
+//   datails: FormControl<string | null>;
+//   notes: FormControl<string | null>;
+// }
+
+export interface ExpenseForm {
+  treatmentType: FormControl<string | null>;
+  startDate: FormControl<string | null>;
+  endDate: FormControl<string | null>;
+  daysCount: FormControl<string | null>;
+  medicalCost: FormControl<string | null>;
+  roomAndBoardCost: FormControl<string | null>;
+  details: FormControl<string | null>;
+  notes: FormControl<string | null>;
+}
