@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import {
   createEmployeeReq,
+  CreateExpenseRequest,
   CreateSectorRequest,
   CreateTrainingRequest,
   CreateTrainingRequestForm,
@@ -13,7 +14,9 @@ import {
   ApiResponse,
   Budget,
   Company,
-  ExpenseRemain,
+  BudgetWellFare,
+  ExpenseRemainByYearResponse,
+  ExpenseRemainResponse,
   MngDeptListRes,
   saveBudgetResponse,
 } from '../interface/response';
@@ -102,13 +105,35 @@ export class ApiService {
   getExpenseRemainByUserIdAndLevel(
     userId: number,
     level: string
-  ): Observable<any> {
-    console.log(userId, level);
+  ): Observable<ExpenseRemainResponse> {
     return this.http
-      .get<any>(
+      .get<ApiResponse<any>>(
         `${this.welfareUrl}/expenses/getExpenseRemaining?userId=${userId}&level=${level}`
       )
+      .pipe(map((res) => res.responseData.result));
+  }
+
+  createExpense(req: CreateExpenseRequest) {
+    return this.http
+      .post<ApiResponse<any>>(`${this.welfareUrl}/expenses/create`, req)
       .pipe(map((res) => res));
+  }
+
+  getExpenseUidAndYear(
+    uid: number,
+    year: number
+  ): Observable<ExpenseRemainByYearResponse[]> {
+    return this.http
+      .get<ApiResponse<any>>(
+        `${this.welfareUrl}/expenses/allExpenseByUidAndYear?uid=${uid}&year=${year}`
+      )
+      .pipe(map((res) => res.responseData.result));
+  }
+
+  getAllExpense(): Observable<any> {
+    return this.http
+      .get<ApiResponse<any>>(`${this.welfareUrl}/expenses/getAllExpenseInUsed`)
+      .pipe(map((res) => res.responseData.result));
   }
 
   getAllActiveEmpsByDeptId(deptId: number): Observable<Employee[]> {
@@ -219,9 +244,14 @@ export class ApiService {
   }
 
   editEmployee(data: createEmployeeReq, uid: number): Observable<any> {
-    return this.http.put<any>(
-      `${this.trainingUrl}/editEmployee?userId=${uid}`,
-      data
-    ).pipe(map((res) => res));;
+    return this.http
+      .put<any>(`${this.trainingUrl}/editEmployee?userId=${uid}`, data)
+      .pipe(map((res) => res));
+  }
+
+  getBudgetWelfare(): Observable<BudgetWellFare[]> {
+    return this.http
+      .get<ApiResponse<any>>(`${this.welfareUrl}/budget/getBudget`)
+      .pipe(map((res) => res.responseData.result));
   }
 }

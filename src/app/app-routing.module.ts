@@ -23,6 +23,7 @@ import { TrainingFormPageComponent } from './pages/training-form-page/training-f
 import { WelfareFormsPageComponent } from './pages/welfare-forms-page/welfare-forms-page.component';
 import { ManagementTrainingPageComponent } from './pages/management-training-page/management-training-page.component';
 import { ManagementUserPageComponent } from './pages/management-user-page/management-user-page.component';
+import { BudgetWellfareManagePageComponent } from './pages/budget-wellfare-manage-page/budget-wellfare-manage-page.component';
 const routes: Routes = new Array<Route>(
   {
     path: 'sign-in',
@@ -99,7 +100,11 @@ const routes: Routes = new Array<Route>(
       },
       {
         path: 'management-users',
-        component : ManagementUserPageComponent
+        component: ManagementUserPageComponent,
+      },
+      {
+        path: 'budget-wellfare-manage',
+        component: BudgetWellfareManagePageComponent,
       }
     ),
   },
@@ -114,6 +119,6 @@ const routes: Routes = new Array<Route>(
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers: [AuthGuard]
+  providers: [AuthGuard],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

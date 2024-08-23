@@ -79,4 +79,13 @@ export class SwalService {
       confirmButtonColor: '#696cf8',
     });
   }
+  showErrorBudgetWellFareForm(message: string) {
+    Swal.fire({
+      title: 'กรุณากรอกข้อมูลให้ครบ',
+      text: message,
+      icon: 'warning',
+      confirmButtonText: 'ตกลง',
+      confirmButtonColor: '#696cf8',
+    });
+  }
 }
