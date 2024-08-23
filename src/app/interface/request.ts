@@ -102,3 +102,16 @@ export interface CreateExpenseRequest {
   adMission: string;
   userId: number;
 }
+export interface createPosition {
+  positionName: string;
+  departmentId: number;
+}
+
+export interface editPosition {
+  posName: string;
+  posId: number;
+}
+
+
+
+

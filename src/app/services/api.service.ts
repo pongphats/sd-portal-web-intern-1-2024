@@ -8,6 +8,8 @@ import {
   CreateTrainingRequest,
   CreateTrainingRequestForm,
   saveBudgetByYearRequest,
+  editPosition,
+  createPosition,
 } from '../interface/request';
 import { map, Observable } from 'rxjs';
 import {
@@ -179,6 +181,32 @@ export class ApiService {
       .pipe(map((res) => res.responseData.result[0]));
   }
 
+  deleteDepartmantId(id: number): Observable<ApiResponse<any>> {
+    return this.http
+      .delete<ApiResponse<any>>(`${this.trainingUrl}/department/${id}`)
+      .pipe(map((res) => res));
+  }
+
+  //Table2
+  // getAllPositionDept(deptId: number): Observable<Employee[]> {
+  //   return this.http
+  //     .get<Employee[]>(`${this.trainingUrl}/findall/position/dept`, {
+  //       params: { deptId: deptId },
+  //     })
+  //     .pipe(map((res) => res));
+  // }
+
+  getAllPositionDept(deptId: number): Observable<ApiResponse<any>> {
+    return this.http
+      .get<ApiResponse<any>>(`${this.trainingUrl}/findall/position/dept`, {
+        params: { deptId: deptId },
+      })
+      .pipe(map((res) => res.responseData.result));
+  }
+
+  
+  
+  
   getEmplistByName(term: string): Observable<any[]> {
     return this.http
       .get<any[]>(`${this.trainingUrl}/seacrhUser/byNames?searchTerm=${term}`)
@@ -254,4 +282,38 @@ export class ApiService {
       .get<ApiResponse<any>>(`${this.welfareUrl}/budget/getBudget`)
       .pipe(map((res) => res.responseData.result));
   }
+
+  editPosition(req : editPosition)  {
+    return this.http
+     .post<any>(`${this.trainingUrl}/edit/position`, req)
+     .pipe(map((res) => res));
+  }
+
+  createPosition(req : createPosition)  {
+    return this.http
+     .post<any>(`${this.trainingUrl}/createPosition`, req)
+     .pipe(map((res) => res));
+  }
+
+  
+
+  
+  deletePosition(id: number): Observable<ApiResponse<any>> {
+    return this.http
+      .delete<ApiResponse<any>>(`${this.trainingUrl}/del/position`,{
+        params: { pId: id},
+      })
+      .pipe(map((res) => res));
+  }
+
+
+
+
+
+
+
+
+
+
 }
+
