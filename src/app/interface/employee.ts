@@ -46,7 +46,7 @@ export interface Employee {
    companyName: string;
  }
  
- interface Position {
+ export interface Position {
    id: number;
    positionName: string;
    department: Department;
