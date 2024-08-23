@@ -3,7 +3,7 @@
 >
   <p class="text-2xl text-font-header mt-5 mb-3">รายละเอียดข้อมูลงบประมาณ</p>
 
-  <!-- <form [formGroup]="BudgetWellfareForm">
+  <form [formGroup]="BudgetWellfareForm">
     <div class="flex flex-col lg:flex-row">
       <mat-label class="self-center w-full lg:w-[25%]" for="level"
         >ระดับพนักงาน (Level)</mat-label
@@ -94,13 +94,17 @@
         <span>ปิด</span>
       </button>
     </div>
-  </form> -->
+  </form>
 </div>
 <div
   class="text-[#566a7f] mt-5 mb-3 rounded-md shadow p-6 w-full bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#242526]"
 >
   <div class="w-full overflow-x-auto">
-    <table mat-table class="mat-elevation-z8 !shadow-md">
+    <table
+      mat-table
+      class="mat-elevation-z8 !shadow-md"
+      [dataSource]="dataSource"
+    >
       <!-- year Column -->
       <ng-container matColumnDef="id">
         <th
@@ -232,9 +236,9 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
   </div>
-  <!-- <mat-paginator
+  <mat-paginator
     [pageSize]="5"
     [pageSizeOptions]="[5, 10]"
     class="mat-elevation-z8 !shadow-md lg:w-[100%]"
-  ></mat-paginator> -->
+  ></mat-paginator>
 </div>
