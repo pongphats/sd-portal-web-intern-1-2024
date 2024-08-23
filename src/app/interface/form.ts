@@ -72,3 +72,21 @@ export interface welfareForm {
   fullName: FormControl<string | null>;
 }
 
+export interface userForms {
+  companyName: FormControl<string | null>;
+  sectorName: FormControl<string | null>;
+  sectorCode: FormControl<string | null>;
+  deptName: FormControl<string | null>;
+  deptCode: FormControl<string | null>;
+  empCode: FormControl<string | null>;
+  empPrefix: FormControl<string | null>;
+  empFirstName: FormControl<string | null>;
+  empLastName: FormControl<string | null>;
+  empEmail: FormControl<string | null>;
+  empPosition: FormControl<string | null>;
+  empLevel: FormControl<string | null>;
+  empPrivileges: FormControl<string | null>;
+  empType: FormControl<string | null>;
+  empStartDate: FormControl<Date | null>;
+  empPassDate: FormControl<Date | null>;
+}

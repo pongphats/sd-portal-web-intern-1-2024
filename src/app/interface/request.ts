@@ -68,3 +68,22 @@ export interface createAndUpdateBudgetRequest {
   budgetTraining: number;
   budgetCer: number;
 }
+
+export interface createEmployeeReq {
+  empCode: string;
+  title: string;
+  firstname: string;
+  lastname: string;
+  positionName: string;
+  email: string;
+  level: string;
+  typeEmp: string;
+  startDate: string;
+  passDate: string;
+  dept_actual: number;
+  sector_actual: number;
+  deptID: number[];
+  companyID: number[];
+  sectorID: number[];
+  roles: string[];
+}

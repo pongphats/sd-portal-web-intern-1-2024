@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import {
+  createEmployeeReq,
   CreateSectorRequest,
   CreateTrainingRequest,
   CreateTrainingRequestForm,
@@ -11,11 +12,12 @@ import { map, Observable } from 'rxjs';
 import {
   ApiResponse,
   Budget,
+  Company,
   ExpenseRemain,
   MngDeptListRes,
   saveBudgetResponse,
 } from '../interface/response';
-import { Course, sector } from '../interface/common';
+import { Course, level, sector } from '../interface/common';
 import { Employee } from '../interface/employee';
 
 @Injectable({
@@ -97,10 +99,15 @@ export class ApiService {
   }
 
   // welfare-forms-page
-  getExpenseRemainByUserIdAndLevel(userId: number, level: string): Observable<any> {
-    console.log(userId, level)
+  getExpenseRemainByUserIdAndLevel(
+    userId: number,
+    level: string
+  ): Observable<any> {
+    console.log(userId, level);
     return this.http
-      .get<any>(`${this.welfareUrl}/expenses/getExpenseRemaining?userId=${userId}&level=${level}`)
+      .get<any>(
+        `${this.welfareUrl}/expenses/getExpenseRemaining?userId=${userId}&level=${level}`
+      )
       .pipe(map((res) => res));
   }
 
@@ -149,10 +156,8 @@ export class ApiService {
 
   getEmplistByName(term: string): Observable<any[]> {
     return this.http
-      .get<any[]>(
-        `${this.trainingUrl}/seacrhUser/byNames?searchTerm=${term}`
-      )
-      .pipe(map((response : any) => response.responseData));
+      .get<any[]>(`${this.trainingUrl}/seacrhUser/byNames?searchTerm=${term}`)
+      .pipe(map((response: any) => response.responseData));
   }
 
   getAllBudget(): Observable<Budget[]> {
@@ -161,7 +166,7 @@ export class ApiService {
       .pipe(map((res) => res));
   }
 
-  uploadFile(file: File) : Observable<any> {
+  uploadFile(file: File): Observable<any> {
     const formData = new FormData();
     formData.append('file', file, file.name);
 
@@ -177,9 +182,46 @@ export class ApiService {
     // });
   }
 
-  createTrainingForms(req : CreateTrainingRequestForm) {
+  createTrainingForms(req: CreateTrainingRequestForm) {
     return this.http
-     .post<any>(`${this.trainingUrl}/createTraining`, req)
-     .pipe(map((res) => res));
+      .post<any>(`${this.trainingUrl}/createTraining`, req)
+      .pipe(map((res) => res));
+  }
+
+  findAllSectorDepartmentPostions(): Observable<Company[]> {
+    return this.http
+      .get<Company[]>(`${this.trainingUrl}/findAllJoinDepartments`)
+      .pipe(map((res) => res));
+  }
+
+  getEmpLevels(): Observable<level[]> {
+    return this.http
+      .get<ApiResponse<level[]>>(`${this.welfareUrl}/budget/getBudget`)
+      .pipe(map((res) => res.responseData.result));
+  }
+
+  uploadPccUser(data: any): Observable<any> {
+    return this.http
+      .post<any>(`${this.trainingUrl}/csv/upload/users/pccth`, data)
+      .pipe(map((res) => res));
+  }
+
+  uploadWsUser(data: any): Observable<any> {
+    return this.http
+      .post<any>(`${this.trainingUrl}/csv/upload/users/wisesoft`, data)
+      .pipe(map((res) => res));
+  }
+
+  createEmployee(data: createEmployeeReq): Observable<any> {
+    return this.http
+      .post<any>(`${this.trainingUrl}/createEmployee`, data)
+      .pipe(map((res) => res));
+  }
+
+  editEmployee(data: createEmployeeReq, uid: number): Observable<any> {
+    return this.http.put<any>(
+      `${this.trainingUrl}/editEmployee?userId=${uid}`,
+      data
+    ).pipe(map((res) => res));;
   }
 }
