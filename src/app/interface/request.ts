@@ -68,3 +68,17 @@ export interface createAndUpdateBudgetRequest {
   budgetTraining: number;
   budgetCer: number;
 }
+
+export interface createPosition {
+  positionName: string;
+  departmentId: number;
+}
+
+export interface editPosition {
+  posName: string;
+  posId: number;
+}
+
+
+
+

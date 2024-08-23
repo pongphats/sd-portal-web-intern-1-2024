@@ -81,7 +81,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div class="flex flex-col">
                         <label class="flex-initial self-center w-full sm:w-18">ผู้ดูแลแผนก:</label>
@@ -98,6 +98,7 @@
                 </div>
 
                 <div class="flex flex-col sm:flex-row justify-center my-2 gap-4">
+
                     <div>
                         <button mat-raised-button [ngClass]="{'bg-[#8d918d]': !isEditing, 'bg-[#235d3a]': isEditing}"
                             class="text-white py-2 px-4 rounded flex items-center"
@@ -125,8 +126,8 @@
     </div>
 
     <!-- Table 1 -->
-    
-    
+
+
 
     <table mat-table [dataSource]="dataManageCompany" class="mat-elevation-z8 w-full overflow-x-auto">
 
@@ -200,19 +201,19 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="cursor-pointer hover:bg-gray-200"></tr>
 
     </table>
-    
+
     <mat-paginator class="mat-elevation-z8" [length]="dataManageCompany.data.length" [pageSize]="10"
         [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page">
     </mat-paginator>
-   
 
-    
-    
+
+
+
 
     <!--NEXT PART-->
 
 
-    <div class="flex flex-col bg-content rounded-xl px-5 py-5 my-8 shadow-card dark:bg-content-dark dark:shadow-none">
+    <div class="flex flex-col bg-content rounded-xl px-5 py-5 my-8 shadow-card dark:bg-content-dark dark:shadow-none" #formContainer>
         <div class="py-2 inline-block min-w-full sm:px-0">
             <div class="overflow-hidden">
                 <h1 class="text-xl text-slate-500 dark:text-white font-semibold"> จัดการ ตำแหน่ง</h1>
@@ -221,52 +222,60 @@
 
         <!-- <form [formGroup]="sectorManageForm"> -->
 
-            <div
-                class="text-[#566a7f] rounded-md mt-5 mb-3 shadow p-6 w-full bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#242526]">
+        <div
+            class="text-[#566a7f] rounded-md mt-5 mb-3 shadow p-6 w-full bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#242526]">
 
-                <div class="flex flex-wrap items-center gap-4 p-4">
-                    <div class="flex-1 min-w-[200px]">
-                        <label class="block text-sm font-medium">ตำแหน่ง:</label>
-                        <mat-form-field appearance="fill" class="w-full">
-                            <mat-label>ระบุตำแหน่ง</mat-label>
-                            <input matInput [(ngModel)]="positionManage">
-                            
-                        </mat-form-field>
-                    </div>
+            <div class="flex flex-wrap items-center gap-4 p-4">
+                <div class="flex-1 min-w-[200px]">
+                    <label class="block text-sm font-medium">ตำแหน่ง:</label>
+                    <mat-form-field appearance="fill" class="w-full">
+                        <mat-label>ระบุตำแหน่ง</mat-label>
+                        <input matInput [(ngModel)]="positionManage" (ngModelChange)="onPositionManageChange()">
 
-                    <div class="flex-1 min-w-[200px]">
-                        <label class="block text-sm font-medium">แผนก:</label>
-                        <mat-form-field appearance="fill" class="w-full">
-                            <mat-label>ระบุแผนก</mat-label>
-                            <input matInput [value]="sectorManageForm.get('deptCode')?.value" readonly>
-                        </mat-form-field>
-                    </div>
+                    </mat-form-field>
+                </div>
 
-                    <div class="flex flex-wrap gap-2 items-center justify-end mt-4 sm:mt-0">
-                        <button mat-raised-button [ngClass]="{'bg-[#8d918d]' : !isEditingPositon, 'bg-[#235d3a]': isEditingPositon}" 
-                        class="text-white py-2 px-4 rounded flex items-center"
-                        (click)="isEditingPositon ? editPositon() : createPositon()"
-                        type="button">
+                <div class="flex-1 min-w-[200px]">
+                    <label class="block text-sm font-medium">แผนก:</label>
+                    <mat-form-field appearance="fill" class="w-full">
+                        <mat-label>ระบุแผนก</mat-label>
+                        <input matInput [value]="sectorManageForm.get('deptCode')?.value" readonly>
+                    </mat-form-field>
+                </div>
+
+                <div class="flex flex-wrap gap-2 items-center justify-end mt-4 sm:mt-0">
+                    <!-- layout ไม่เปลี่ยน -->
+                    <ng-template [ngIf]="isPositionNameEntered">  
+                    <!-- <div *ngIf="isPositionNameEntered"> -->
+                        <button mat-raised-button
+                            [ngClass]="{'bg-[#8d918d]' : !isEditingPositon, 'bg-[#235d3a]': isEditingPositon}"
+                            class="text-white py-2 px-4 rounded flex items-center"
+                            (click)="isEditingPositon ? editPositon() : createPositon()" type="button">
                             <span class="text-white">{{ isEditingPositon ? 'แก้ไขตำแหน่ง' : 'เพิ่มตำแหน่ง' }}</span>
                         </button>
 
 
-                        <button mat-raised-button class="bg-[#dfa006] !text-white py-2 px-4 rounded" (click)="clearForm2()" type="button">
+                        <button mat-raised-button class="bg-[#dfa006] !text-white py-2 px-4 rounded"
+                            (click)="clearForm2()" type="button">
                             <i class='bx bx-revision text-white mr-2'></i>
                             <span class="text-white">เคลียร์ข้อมูล</span>
                         </button>
-                        <div  *ngIf="selectedRow">
-                        <button mat-raised-button class="bg-[#ba0900] !text-white py-2 px-4 rounded" (click)="deleteRow()" type="button">
+                    <!-- </div> -->
+                     </ng-template>
+
+                    <div *ngIf="selectedRowShowButton">
+                        <button mat-raised-button class="bg-[#ba0900] !text-white py-2 px-4 rounded"
+                            (click)="deletePosition()" type="button">
                             <i class='bx bx-trash text-white mr-2'></i>
                             <span class="text-white">ลบข้อมูล</span>
                         </button>
                     </div>
-                    </div>
                 </div>
+            </div>
 
 
 
-            </div> <!--END Gray-->
+        </div> <!--END Gray-->
         <!-- </form> -->
 
     </div> <!--END White-->
@@ -289,7 +298,8 @@
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns2;" (click)="onRowClick2(row)" class="cursor-pointer hover:bg-gray-200"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns2;" (click)="onRowClick2(row)"
+            class="cursor-pointer hover:bg-gray-200"></tr>
     </table>
 
 

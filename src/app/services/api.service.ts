@@ -6,6 +6,8 @@ import {
   CreateTrainingRequest,
   CreateTrainingRequestForm,
   saveBudgetByYearRequest,
+  editPosition,
+  createPosition,
 } from '../interface/request';
 import { map, Observable } from 'rxjs';
 import {
@@ -198,5 +200,38 @@ export class ApiService {
      .post<any>(`${this.trainingUrl}/createTraining`, req)
      .pipe(map((res) => res));
   }
+
+  editPosition(req : editPosition)  {
+    return this.http
+     .post<any>(`${this.trainingUrl}/edit/position`, req)
+     .pipe(map((res) => res));
+  }
+
+  createPosition(req : createPosition)  {
+    return this.http
+     .post<any>(`${this.trainingUrl}/createPosition`, req)
+     .pipe(map((res) => res));
+  }
+
+  
+
+  
+  deletePosition(id: number): Observable<ApiResponse<any>> {
+    return this.http
+      .delete<ApiResponse<any>>(`${this.trainingUrl}/del/position`,{
+        params: { pId: id},
+      })
+      .pipe(map((res) => res));
+  }
+
+
+
+
+
+
+
+
+
+
 }
 
