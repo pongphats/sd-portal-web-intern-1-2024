@@ -53,6 +53,7 @@ export interface CreateTrainingResponse {
   type: string;
 }
 
+
 export interface Budget {
   year: string;
   budgetTraining: number;
@@ -66,8 +67,17 @@ export interface Budget {
   totalExpRemain: number;
 }
 
+// Budget-welfare
+export interface BudgetWellFare {
+  id: number;
+  level: string;
+  opd: number;
+  ipd: number;
+  room: number;
+  no: number;
+}
 
-// welfare-forms-page
+// welfare-forms
 export interface ExpenseRemainResponse {
   opd: number,
   ipd: number,
@@ -88,3 +98,5 @@ export interface ExpenseRemainByYearResponse {
   description: string,
   remark: string,
 }
+
+

@@ -1,0 +1,215 @@
+<div
+  class="text-[#566a7f] mt-5 mb-3 rounded-md shadow p-6 w-full bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#242526]"
+>
+  <p class="text-2xl text-font-header mt-5 mb-3">รายละเอียดข้อมูลงบประมาณ</p>
+
+  <!-- <form [formGroup]="BudgetWellfareForm">
+    <div class="flex flex-col lg:flex-row">
+      <mat-label class="self-center w-full lg:w-[25%]" for="level"
+        >ระดับพนักงาน (Level)</mat-label
+      >
+      <mat-form-field appearance="fill" class="w-full lg:w-[75%] mx-3">
+        <input matInput id="level" formControlName="level" type="text" />
+      </mat-form-field>
+    </div>
+
+    <div class="flex flex-col lg:flex-row">
+      <mat-label class="self-center w-full lg:w-[25%]" for="opd"
+        >OPD (ผู้ป่วยนอก)</mat-label
+      >
+      <mat-form-field appearance="fill" class="w-full lg:w-[75%] mx-3">
+        <input matInput id=" opd" formControlName="opd" type="text" />
+      </mat-form-field>
+    </div>
+
+    <div class="flex flex-col lg:flex-row">
+      <mat-label class="self-center w-full lg:w-[25%]" for="ipd"
+        >IPD (ผู้ป่วยใน)</mat-label
+      >
+      <mat-form-field appearance="fill" class="w-full lg:w-[75%] mx-3">
+        <input matInput id="ipd" formControlName="ipd" type="text" />
+      </mat-form-field>
+    </div>
+
+    <div class="flex flex-col lg:flex-row">
+      <mat-label class="self-center w-full lg:w-[25%]" for="room"
+        >ค่าห้อง+ค่าอาหาร</mat-label
+      >
+      <mat-form-field appearance="fill" class="w-full lg:w-[75%] mx-3">
+        <input matInput id="room" formControlName="room" type="text" />
+      </mat-form-field>
+    </div>
+    <div class="flex justify-end mr-3">
+      <button
+        mat-stroked-button
+        color="primary"
+        class="w-full lg:w-[9%] clear-button"
+        *ngIf="!editingMode"
+        type="submit"
+      >
+        <i class="bx bx-book-add"></i>
+        <span>เพิ่มข้อมูล</span>
+      </button>
+
+      <button
+        mat-stroked-button
+        color="primary"
+        class="w-full lg:w-[9%] clear-button2 !mr-1"
+        *ngIf="editingMode"
+        type="update"
+      >
+        <i class="bx bx-book-add"></i>
+        <span>อัปเดต</span>
+      </button>
+
+      <button
+        mat-stroked-button
+        color="primary"
+        class="w-full lg:w-[9%] clear-button1"
+        *ngIf="editingMode"
+        type="update"
+        (click)="closeEditModal()"
+      >
+        <i class="bx bx-book-add"></i>
+        <span>ปิด</span>
+      </button>
+    </div>
+  </form> -->
+</div>
+<div
+  class="text-[#566a7f] mt-5 mb-3 rounded-md shadow p-6 w-full bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#242526]"
+>
+  <div class="w-full overflow-x-auto">
+    <table mat-table class="mat-elevation-z8 !shadow-md">
+      <!-- year Column -->
+      <ng-container matColumnDef="id">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="!text-center text-sm font-bold text-black w-[12vw] !pl-0"
+        >
+          ปี
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="!px-2 !py-2 text-sm text-slate-600 !text-center"
+        >
+          {{ element.no }}
+        </td>
+      </ng-container>
+
+      <!-- company Column -->
+      <ng-container matColumnDef="level">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="!text-center text-sm font-bold text-black w-[12vw] !pl-0"
+        >
+          บริษัท
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="!px-2 !py-2 text-sm text-slate-600 !text-center"
+        >
+          {{ element.level }}
+        </td>
+      </ng-container>
+
+      <!-- departmentCode Column -->
+      <ng-container matColumnDef="opd">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="!text-center text-sm font-bold text-black w-[12vw] !pl-0"
+        >
+          ฝ่าย
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="!px-2 !py-2 text-sm text-slate-600 !text-center"
+        >
+          {{ element.opd }}
+        </td>
+      </ng-container>
+
+      <!-- budgetTraining Column -->
+      <ng-container matColumnDef="ipd">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="!text-right text-sm font-bold text-black w-[12vw] !pl-0"
+        >
+          งบประมาณการอบรม
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="!px-2 !py-2 text-sm text-slate-600 !text-right"
+        >
+          {{ element.ipd }}
+        </td>
+      </ng-container>
+
+      <!-- budgetCer Column -->
+      <ng-container matColumnDef="room">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="!text-right text-sm font-bold text-black w-[12vw] !pl-0"
+        >
+          งบประมาณการสอบ
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="!px-2 !py-2 text-sm text-slate-600 !text-right"
+        >
+          {{ element.room }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="edit">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="!text-center text-sm font-bold text-black w-[12vw] !pl-0"
+        ></th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="text-sm text-slate-600 !text-right"
+        >
+          <button
+            mat-stroked-button
+            color="primary"
+            class="clear-button !mr-1"
+            (click)="onEdit(element)"
+          >
+            <i class="fas fa-sync-alt mr-1"></i>
+            <span> แก้ไข</span>
+          </button>
+          <button mat-stroked-button color="primary" class="clear-button1">
+            <i class="bx bx-trash"></i>
+            <span>ลบ</span>
+          </button>
+        </td>
+        <td
+          mat-footer-cell
+          *matFooterCellDef
+          class="!px-2 !py-2 text-sm text-slate-600 !text-center"
+        ></td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+  <!-- <mat-paginator
+    [pageSize]="5"
+    [pageSizeOptions]="[5, 10]"
+    class="mat-elevation-z8 !shadow-md lg:w-[100%]"
+  ></mat-paginator> -->
+</div>

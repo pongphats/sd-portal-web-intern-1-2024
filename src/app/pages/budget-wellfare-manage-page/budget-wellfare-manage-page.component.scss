@@ -1,0 +1,45 @@
+::ng-deep .clear-button:hover {
+  border-color: #2196f3 !important;
+  color: #2196f3 !important;
+  background-color: rgba(33, 150, 243, 0.1) !important;
+}
+
+::ng-deep .clear-button:hover span {
+  color: #2196f3 !important;
+}
+
+::ng-deep .clear-button:hover i {
+  color: #2196f3 !important;
+}
+
+::ng-deep .clear-button1:hover {
+  border-color: #f51010 !important;
+  color: #f51010 !important;
+  background-color: rgba(33, 150, 243, 0.1) !important;
+}
+
+::ng-deep .clear-button1:hover span {
+  color: #f51010 !important;
+}
+
+::ng-deep .clear-button1:hover i {
+  color: #f51010 !important;
+}
+
+::ng-deep .clear-button2:hover {
+  border-color: #02d006 !important;
+  color: #02d006 !important;
+  background-color: rgba(33, 150, 243, 0.1) !important;
+}
+
+::ng-deep .clear-button2:hover span {
+  color: #02d006 !important;
+}
+
+::ng-deep .clear-button2:hover i {
+  color: #02d006 !important;
+}
+
+table {
+  width: 100%;
+}
