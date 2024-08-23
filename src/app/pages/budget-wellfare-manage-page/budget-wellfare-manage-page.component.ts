@@ -64,9 +64,9 @@ export class BudgetWellfareManagePageComponent implements OnInit {
     this.editingMode = true;
     this.BudgetWellfareForm.patchValue({
       level: element.level,
-      opd: element.opd,
-      ipd: element.ipd,
-      room: element.room,
+      opd: this.formatNumberWithComma(element.opd),
+      ipd: this.formatNumberWithComma(element.ipd),
+      room: this.formatNumberWithComma(element.room),
     });
   }
 
@@ -135,5 +135,14 @@ export class BudgetWellfareManagePageComponent implements OnInit {
       value = parseInt(value).toLocaleString();
     }
     event.target.value = value;
+  }
+
+  formatNumberWithComma(val: any): string {
+    let valString = val + '';
+    if (valString.length > 3) {
+      return (valString = parseInt(valString).toLocaleString());
+    } else {
+      return valString;
+    }
   }
 }
