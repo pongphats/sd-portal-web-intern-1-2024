@@ -11,7 +11,8 @@ import { map, Observable } from 'rxjs';
 import {
   ApiResponse,
   Budget,
-  ExpenseRemain,
+  ExpenseRemainByYearResponse,
+  ExpenseRemainResponse,
   MngDeptListRes,
   saveBudgetResponse,
 } from '../interface/response';
@@ -97,13 +98,13 @@ export class ApiService {
   }
 
   // welfare-forms-page
-  getExpenseRemainByUserIdAndLevel(userId: number, level: string): Observable<ExpenseRemain> {
+  getExpenseRemainByUserIdAndLevel(userId: number, level: string): Observable<ExpenseRemainResponse> {
     return this.http
       .get<ApiResponse<any>>(`${this.welfareUrl}/expenses/getExpenseRemaining?userId=${userId}&level=${level}`)
       .pipe(map((res) => res.responseData.result));
   }
 
-  getExpenseUidAndYear(uid: number, year: number): Observable<any> {
+  getExpenseUidAndYear(uid: number, year: number): Observable<ExpenseRemainByYearResponse[]> {
     return this.http
       .get<ApiResponse<any>>(`${this.welfareUrl}/expenses/allExpenseByUidAndYear?uid=${uid}&year=${year}`)
       .pipe(map((res) => res.responseData.result));

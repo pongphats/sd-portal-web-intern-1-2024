@@ -68,8 +68,23 @@ export interface Budget {
 
 
 // welfare-forms-page
-export interface ExpenseRemain {
+export interface ExpenseRemainResponse {
   opd: number,
   ipd: number,
   room: number
+}
+
+export interface ExpenseRemainByYearResponse {
+  id: number,
+  userId: number,
+  dateOfAdmission: string,
+  startDate: string,
+  endDate: string,
+  days: number,
+  opd: number,
+  ipd: number,
+  roomService: number,
+  canWithdraw: number
+  description: string,
+  remark: string,
 }

@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { ExpenseRemainByYearResponse } from 'src/app/interface/response';
 
 @Component({
   selector: 'app-welfare-forms-page',
@@ -181,11 +182,23 @@ export class WelfareFormsPageComponent implements OnInit {
       console.log('endDate >> ' + this.expenseForm.value.endDate);
       console.log('daysCount >> ' + this.expenseForm.value.daysCount);
       console.log('medicalCost >> ' + this.expenseForm.value.medicalCost);
-      console.log(
-        'roomAndBoardCost >> ' + this.expenseForm.value.roomAndBoardCost
-      );
+      console.log('roomAndBoardCost >> ' + this.expenseForm.value.roomAndBoardCost);
       console.log('details >> ' + this.expenseForm.value.details);
       console.log('notes >> ' + this.expenseForm.value.notes);
+
+      // const req: any = {
+      //   courseName: this.courseForm.value.courseName || '',
+      //   startDate: startDate,
+      //   endDate: endDate,
+      //   time: mergedTime,
+      //   hours: this.courseForm.value.hours || '',
+      //   note: this.courseForm.value.note || '',
+      //   price: parseFloat((this.courseForm.value.price || '').replace(/,/g, '')),
+      //   priceProject: this.courseForm.value.priceProject || '',
+      //   institute: this.courseForm.value.institute || '',
+      //   place: this.courseForm.value.place || '',
+      //   type: 'อบรม',
+      // };
     }
   }
 
@@ -201,7 +214,8 @@ export class WelfareFormsPageComponent implements OnInit {
       const start = new Date(startDate);
       const end = new Date(endDate);
       const diffTime = Math.abs(end.getTime() - start.getTime());
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+      // const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       this.expenseForm.patchValue({ daysCount: diffDays });
     } else {
       this.expenseForm.patchValue({ daysCount: '' });
@@ -254,7 +268,7 @@ export class WelfareFormsPageComponent implements OnInit {
       const year = (this.yearForm.value.yearSearch) - 543
       const res = await this.apiService.getExpenseUidAndYear(uid, year).toPromise();
       if (res) {
-        this.allExpense = res.map((expense: any, index: number) => ({
+        this.allExpense = res.map((expense: ExpenseRemainByYearResponse , index: number) => ({
           ...expense,
           no: index + 1
         }));
