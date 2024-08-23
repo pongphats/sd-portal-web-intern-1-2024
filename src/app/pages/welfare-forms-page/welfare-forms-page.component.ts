@@ -114,7 +114,9 @@ export class WelfareFormsPageComponent implements OnInit {
   dataTypeEmp: string = '';
 
   searchEmp() {
-    if (this.dataListEmp.length === 1) {
+    // เช็คว่าพิมพ์ชื่อครบถ้วน
+    const condition = this.dataListEmp[0].firstname + " " + this.dataListEmp[0].lastname === this.welfareForm.value.fullName
+    if (this.dataListEmp.length === 1 && condition) {
       this.dataEmp = this.dataListEmp[0];
       const data = this.dataEmp
       this.datafullName = `${data.title} ${data.firstname} ${data.lastname}`;
@@ -146,7 +148,7 @@ export class WelfareFormsPageComponent implements OnInit {
       this.dataSource.data = []
       this.allExpense = []
       this.dataEmp = undefined;
-      console.log('กรุณากรอกชื่อให้ครบถ้วน');
+      this.swalService.showWarning("กรุณากรอกชื่อให้ครบถ้วน")
     }
   }
 
@@ -218,12 +220,8 @@ export class WelfareFormsPageComponent implements OnInit {
         userId: userId || -1
       };
 
-      console.log(req)
-
       const res = await this.apiService.createExpense(req).toPromise()
-      console.log(res)
-
-      if(res?.responseMessage == 'กรอกข้อมูลเรียบร้อย'){
+      if (res?.responseMessage == 'กรอกข้อมูลเรียบร้อย') {
         this.searchEmp()
         this.clearForm();
       }
@@ -253,9 +251,7 @@ export class WelfareFormsPageComponent implements OnInit {
   formatCurrency(event: any, controlName: string): void {
     let value = event.target.value;
     if (value) {
-      // Remove any existing commas
       const cleanedValue = value.toString().replace(/,/g, '');
-      // Convert to number and format
       const numberValue = parseFloat(cleanedValue);
       if (!isNaN(numberValue)) {
         const formattedValue = numberValue.toLocaleString('en-US', {
@@ -277,9 +273,9 @@ export class WelfareFormsPageComponent implements OnInit {
     console.log(this.yearForm.value.yearSearch)
   }
 
-  searchAllHistory() {
-    console.log("ดูทั้งหมด")
-  }
+  // searchAllHistory() {
+  //   console.log("ดูทั้งหมด")
+  // }
 
   /**
    * part4
@@ -292,17 +288,24 @@ export class WelfareFormsPageComponent implements OnInit {
   displayedColumns: string[] = ['No', 'date', 'detail', 'ipd', 'opd', 'room', 'price', 'editOrDelete'];
   async getExpenseUidAndYear() {
     if (this.dataEmp) {
-      const uid = this.dataEmp.id
-      const year = (this.yearForm.value.yearSearch) - 543
-      const res = await this.apiService.getExpenseUidAndYear(uid, year).toPromise();
-      if (res) {
-        this.allExpense = res.map((expense: ExpenseRemainByYearResponse, index: number) => ({
-          ...expense,
-          no: index + 1
-        }));
-
-        this.dataSource.data = this.allExpense;
+      const yearInput = this.yearForm.value.yearSearch
+      if (/^\d+$/.test(yearInput.toString())) {
+        const uid = this.dataEmp.id
+        const year = yearInput - 543
+        const res = await this.apiService.getExpenseUidAndYear(uid, year).toPromise();
+        if (res) {
+          this.allExpense = res.map((expense: ExpenseRemainByYearResponse, index: number) => ({
+            ...expense,
+            no: index + 1
+          }));
+          this.dataSource.data = this.allExpense;
+        }
+      } else {
+        this.swalService.showWarning("กรุณากรอกปีให้ถูกต้อง")
       }
+
+    } else {
+      this.swalService.showWarning("ต้องค้นหาชื่อพนักงานก่อน")
     }
 
   }
