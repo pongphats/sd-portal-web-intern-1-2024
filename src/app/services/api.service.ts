@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import {
+  CreateExpenseRequest,
   CreateSectorRequest,
   CreateTrainingRequest,
   CreateTrainingRequestForm,
@@ -105,6 +106,12 @@ export class ApiService {
         `${this.welfareUrl}/expenses/getExpenseRemaining?userId=${userId}&level=${level}`
       )
       .pipe(map((res) => res.responseData.result));
+  }
+
+  createExpense(req: CreateExpenseRequest){
+    return this.http
+      .post<ApiResponse<any>>(`${this.welfareUrl}/expenses/create`, req)
+      .pipe(map((res) => res));
   }
 
   getExpenseUidAndYear(uid: number, year: number): Observable<ExpenseRemainByYearResponse[]> {

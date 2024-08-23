@@ -70,7 +70,7 @@ export interface createAndUpdateBudgetRequest {
 }
 
 // welfare-forms-page
-export interface createExpenseRequest {
+export interface CreateExpenseRequest {
   types: string;
   level: string;
   startDate: string;

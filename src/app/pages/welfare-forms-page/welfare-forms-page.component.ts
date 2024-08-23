@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { welfareForm } from 'src/app/interface/form';
+import { ExpenseForm, WelfareForm } from 'src/app/interface/form';
 import { ApiService } from 'src/app/services/api.service';
 import { CommonService } from 'src/app/services/common.service';
 import { SwalService } from 'src/app/services/swal.service';
@@ -11,6 +11,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ExpenseRemainByYearResponse } from 'src/app/interface/response';
+import { CreateExpenseRequest } from 'src/app/interface/request';
 
 @Component({
   selector: 'app-welfare-forms-page',
@@ -18,8 +19,8 @@ import { ExpenseRemainByYearResponse } from 'src/app/interface/response';
   styleUrls: ['./welfare-forms-page.component.scss'],
 })
 export class WelfareFormsPageComponent implements OnInit {
-  welfareForm!: FormGroup<welfareForm>;
-  expenseForm: FormGroup;
+  welfareForm!: FormGroup<WelfareForm>;
+  expenseForm!: FormGroup<ExpenseForm>;
   yearForm!: FormGroup;
 
   constructor(
@@ -30,7 +31,7 @@ export class WelfareFormsPageComponent implements OnInit {
     public dialog: MatDialog
   ) {
     this.welfareForm = this.fb.group({
-      fullName: [''],
+      fullName: ['', Validators.required],
     });
 
     this.expenseForm = this.fb.group({
@@ -175,30 +176,57 @@ export class WelfareFormsPageComponent implements OnInit {
     }
   }
 
-  onSave(): void {
-    if (this.expenseForm.valid) {
-      console.log('treatmentType >> ' + this.expenseForm.value.treatmentType);
-      console.log('startDate >> ' + this.expenseForm.value.startDate);
-      console.log('endDate >> ' + this.expenseForm.value.endDate);
-      console.log('daysCount >> ' + this.expenseForm.value.daysCount);
-      console.log('medicalCost >> ' + this.expenseForm.value.medicalCost);
-      console.log('roomAndBoardCost >> ' + this.expenseForm.value.roomAndBoardCost);
-      console.log('details >> ' + this.expenseForm.value.details);
-      console.log('notes >> ' + this.expenseForm.value.notes);
+  async onSave() {
 
-      // const req: any = {
-      //   courseName: this.courseForm.value.courseName || '',
-      //   startDate: startDate,
-      //   endDate: endDate,
-      //   time: mergedTime,
-      //   hours: this.courseForm.value.hours || '',
-      //   note: this.courseForm.value.note || '',
-      //   price: parseFloat((this.courseForm.value.price || '').replace(/,/g, '')),
-      //   priceProject: this.courseForm.value.priceProject || '',
-      //   institute: this.courseForm.value.institute || '',
-      //   place: this.courseForm.value.place || '',
-      //   type: 'อบรม',
-      // };
+    if (this.expenseForm.valid && this.welfareForm.valid) {
+
+      let startDate = '';
+      let endDate = '';
+      const startDateValue = this.expenseForm.value.startDate;
+      const endDateValue = this.expenseForm.value.endDate;
+      if (startDateValue && endDateValue) {
+        startDate = this.commonService.formatDateToYYYYMMDDString(new Date(startDateValue))
+        endDate = this.commonService.formatDateToYYYYMMDDString(new Date(endDateValue))
+      }
+
+      const type = this.expenseForm.value.treatmentType;
+      let ipd = 0;
+      let opd = 0;
+      if (type == 'ipd') {
+        ipd = Number(this.expenseForm.value.medicalCost?.toString().replace(',', ''))
+      } else if (type == 'opd') {
+        opd = Number(this.expenseForm.value.medicalCost?.toString().replace(',', ''))
+      }
+
+      const days = Number(this.expenseForm.value.daysCount);
+
+      const userId = this.dataEmp?.id
+      const level = this.dataEmp?.level
+
+      const req: CreateExpenseRequest = {
+        types: type ? type : '',
+        level: level || '',
+        startDate: startDate,
+        endDate: endDate,
+        days: days,
+        ipd: ipd,
+        opd: opd,
+        roomService: Number(this.expenseForm.value.roomAndBoardCost?.toString().replace(',', '')),
+        description: this.expenseForm.value.details || '',
+        remark: this.expenseForm.value.notes || '',
+        adMission: '',
+        userId: userId || -1
+      };
+
+      console.log(req)
+
+      const res = await this.apiService.createExpense(req).toPromise()
+      console.log(res)
+
+      if(res?.responseMessage == 'กรอกข้อมูลเรียบร้อย'){
+        this.searchEmp()
+        this.clearForm();
+      }
     }
   }
 
@@ -216,7 +244,7 @@ export class WelfareFormsPageComponent implements OnInit {
       const diffTime = Math.abs(end.getTime() - start.getTime());
       // const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      this.expenseForm.patchValue({ daysCount: diffDays });
+      this.expenseForm.patchValue({ daysCount: diffDays.toString() });
     } else {
       this.expenseForm.patchValue({ daysCount: '' });
     }
@@ -268,7 +296,7 @@ export class WelfareFormsPageComponent implements OnInit {
       const year = (this.yearForm.value.yearSearch) - 543
       const res = await this.apiService.getExpenseUidAndYear(uid, year).toPromise();
       if (res) {
-        this.allExpense = res.map((expense: ExpenseRemainByYearResponse , index: number) => ({
+        this.allExpense = res.map((expense: ExpenseRemainByYearResponse, index: number) => ({
           ...expense,
           no: index + 1
         }));
