@@ -1,8 +1,70 @@
 <div class="bg-transparent">
-   <div class="w-full space-y-2">
-      <h1 class="text-2xl">รายละเอียดการส่งพนักงานเข้าอบรม</h1>
-      <div class="bg-content drop-shadow-md rounded-md p-4 dark:bg-content-dark">
-         
+  <div class="w-full space-y-2">
+    <h1 class="text-2xl">รายละเอียดการส่งพนักงานเข้าอบรม</h1>
+    <div class="bg-content drop-shadow-md rounded-md p-4 dark:bg-content-dark">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="flex flex-col">
+          <label for="company" class="mb-2">บริษัท</label>
+          <mat-form-field appearance="fill">
+            <mat-label>บริษัท</mat-label>
+            <mat-select>
+              <mat-option value="PCCTH">PCCTH</mat-option>
+              <mat-option value="WiseSoft">WiseSoft</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="flex flex-col">
+          <label class="mb-2">ตำแหน่งงาน</label>
+          <mat-form-field appearance="fill">
+            <mat-label>ตำแหน่งงาน</mat-label>
+            <input
+              class="dark:text-font-description-dark text-font-description"
+              matInput
+              placeholder="ตำแหน่งงาน"
+            />
+          </mat-form-field>
+        </div>
+        <div class="flex flex-col">
+          <label class="mb-2">ฝ่าย/แผนก</label>
+          <mat-form-field appearance="fill">
+            <mat-label>เลือกฝ่าย/แผนก</mat-label>
+            <mat-select> </mat-select>
+          </mat-form-field>
+        </div>
       </div>
-   </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="flex flex-col">
+          <label for="company" class="mb-2">วันที่เริ่ม</label>
+          <mat-form-field appearance="fill">
+            <mat-label>วันที่เริ่ม</mat-label>
+            <input matInput [matDatepicker]="startPicker" />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="startPicker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #startPicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="flex flex-col">
+          <label class="mb-2">วันที่สิ้นสุด</label>
+          <mat-form-field appearance="fill">
+            <mat-label>วันที่สิ้นสุด</mat-label>
+            <input matInput [matDatepicker]="endPicker" />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="endPicker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #endPicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="flex flex-col">
+          <label class="mb-2">หัวข้อในการอบรม/สัมมนา</label>
+          <mat-form-field appearance="fill">
+            <mat-label>หัวข้อในการอบรม/สัมมนา</mat-label>
+            <mat-select> </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

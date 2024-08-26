@@ -276,7 +276,7 @@
         mat-raised-button
         class="!bg-blue-700 w-full md:w-auto sm:w-full hover:!bg-blue-600 dark:!bg-blue-600 dark:hover:bg-blue-500"
         [ngClass]="{
-          'hover:!cursor-not-allowed !bg-gray-400 dark:!bg-gray-400 dark:!text-slate-600 !text-slate-600':
+          'hover:!cursor-not-allowed hover:!bg-gray-300 !bg-gray-400 dark:!bg-gray-400 dark:!text-slate-600 !text-slate-600':
             userForms.invalid
         }"
       >
@@ -303,7 +303,10 @@
   >
     <mat-form-field appearance="fill">
       <mat-label>ค้นหาด้วย</mat-label>
-      <mat-select formControlName="searchType">
+      <mat-select
+        (selectionChange)="initialSearchValue($event.value)"
+        formControlName="searchType"
+      >
         <mat-option value="empCode"> รหัสพนักงาน </mat-option>
         <mat-option value="fullName"> ชื่อ - นามสกุล </mat-option>
         <mat-option value="position"> ตำแหน่ง </mat-option>
@@ -317,17 +320,43 @@
         class="dark:text-font-description-dark text-font-description"
         matInput
         placeholder="ค้นหา"
+        [matAutocomplete]="auto"
       />
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <mat-option
+          *ngFor="let option of filteredSearchValue | async"
+          [value]="option"
+        >
+          {{ option }}
+        </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
 
     <button
       type="button"
       mat-raised-button
       class="!bg-blue-700 w-full sm:w-auto hover:!bg-blue-600 dark:!bg-blue-600 dark:hover:bg-blue-500"
+      (click)="filterBySearchValue()"
+      [disabled]="searchGroupControl.invalid"
+      [ngClass]="{
+        'hover:!cursor-not-allowed hover:!bg-gray-300 !bg-gray-400 dark:!bg-gray-400 dark:!text-slate-600 !text-slate-600':
+          searchGroupControl.invalid
+      }"
     >
       <span class="!text-white flex items-center gap-2 justify-center">
         ค้นหา
         <i class="bx bx-search"></i>
+      </span>
+    </button>
+    <button
+      type="button"
+      mat-raised-button
+      class="!bg-orange-700 w-full sm:w-auto hover:!bg-orange-600 dark:!bg-orange-600 dark:hover:bg-orange-500"
+      (click)="clearFilterSearch()"
+    >
+      <span class="!text-white flex items-center gap-2 justify-center">
+        เคลียร์
+        <i class="bx bx-revision"></i>
       </span>
     </button>
   </form>
