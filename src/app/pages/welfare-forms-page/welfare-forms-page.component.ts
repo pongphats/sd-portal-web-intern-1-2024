@@ -68,6 +68,8 @@ export class WelfareFormsPageComponent implements OnInit {
     this.expenseForm.get('endDate')?.valueChanges.subscribe(() => {
       this.calculateDaysCount();
     });
+
+
     // this.getAllExpense()
   }
 
@@ -220,11 +222,18 @@ export class WelfareFormsPageComponent implements OnInit {
         userId: userId || -1
       };
 
-      const res = await this.apiService.createExpense(req).toPromise()
-      if (res?.responseMessage == 'กรอกข้อมูลเรียบร้อย') {
-        this.searchEmp()
-        this.clearForm();
+      if (this.editMode) {
+        console.log('edit', req)
+        this.editMode = false;
+        this.swalService.showSuccess('แก้ไขรายการการเบิกค่ารักษาพยาบาลเรียบร้อยแล้ว')
+      } else {
+        const res = await this.apiService.createExpense(req).toPromise()
+        if (res?.responseMessage == 'กรอกข้อมูลเรียบร้อย') {
+          this.swalService.showSuccess('เพิ่มรายการการเบิกค่ารักษาพยาบาลเรียบร้อยแล้ว')
+        }
       }
+      this.searchEmp()
+      this.clearForm();
     }
   }
 
@@ -273,10 +282,6 @@ export class WelfareFormsPageComponent implements OnInit {
     console.log(this.yearForm.value.yearSearch)
   }
 
-  // searchAllHistory() {
-  //   console.log("ดูทั้งหมด")
-  // }
-
   /**
    * part4
    */
@@ -307,14 +312,39 @@ export class WelfareFormsPageComponent implements OnInit {
     } else {
       this.swalService.showWarning("ต้องค้นหาชื่อพนักงานก่อน")
     }
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
 
   }
 
-  editBtn(element: any) {
-    console.log("edit", element)
+  editMode: boolean = false;
+  editBtn(element: ExpenseRemainByYearResponse) {
+
+    this.editMode = true;
+    const type = element.opd !== 0 ? 'opd' : 'ipd';
+    const medicalCost = element.opd !== 0 ? element.opd : element.ipd;
+
+    this.expenseForm.setValue({
+      treatmentType: type,
+      startDate: element.startDate,
+      endDate: element.endDate,
+      daysCount: (element.days).toString(),
+      medicalCost: this.convertNumberToStringFormat(medicalCost),
+      roomAndBoardCost: this.convertNumberToStringFormat(element.roomService),
+      details: element.description,
+      notes: element.remark
+    });
   }
 
-  deleteBtn(element: any) {
+  async deleteBtn(element: any) {
+    const confirmed = await this.swalService.showConfirm("คุณต้องการลบรายการเบิกนี้หรือไม่");
+    if (confirmed) {
+      console.log("ลบแล้ว")
+      this.swalService.showSuccess('ลบรายการการเบิกค่ารักษาพยาบาลนี้เรียบร้อยแล้ว')
+      this.searchEmp()
+    } else {
+      console.log("ไม่ลบ")
+    }
     console.log("delete", element)
   }
 

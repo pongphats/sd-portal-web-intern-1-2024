@@ -90,7 +90,7 @@ export class CommonService {
     } catch (error) {
       console.error(error);
     }
-    console.log(sectors);
+    // console.log(sectors);
     return sectors;
   }
 
@@ -108,10 +108,57 @@ export class CommonService {
       .pipe(map((res) => res.responseData.result));
   }
 
+  checkDuplicateEmpCode(empCode: string): Observable<boolean> {
+    return this.http
+      .post<boolean>(`${this.trainingUrl}/check/empcode?empcode=${empCode}`, {})
+      .pipe(map((res) => res));
+  }
+
+  sortData(data: any[], property: string, order: 'asc' | 'desc'): any[] {
+    return data.sort((a, b) => {
+      const aValue = a[property];
+      const bValue = b[property];
+      if (order === 'asc') {
+        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+      } else {
+        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+      }
+    });
+  }
+
+  mappedRole(roles: any[]): string {
+    if (roles.length > 1) {
+      return roles
+        .map((role) => role.role)
+        .sort() // Sort roles alphabetically
+        .join('And'); // Concatenate sorted roles with 'And'
+    } else if (roles.length === 1) {
+      return roles[0].role;
+    }
+    return '';
+  }
+
+  splitRole(name: string): any[] {
+    const roles: any[] = [];
+
+    if (name.includes('And')) {
+      // Split the name by 'And'
+      const splitRoles = name.split('And');
+      // Loop through each split role and push to the roles array
+      splitRoles.forEach((role) => roles.push(role.trim()));
+    } else {
+      // If there is no 'And', just push the name as is
+      roles.push(name);
+    }
+
+    return roles;
+  }
   convertNumberToStringFormatted2(number: number) {
     const [integerPart, decimalPart] = number.toFixed(2).split('.');
-    const formattedIntegerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    const formattedIntegerPart = integerPart.replace(
+      /\B(?=(\d{3})+(?!\d))/g,
+      ','
+    );
     return `${formattedIntegerPart}.${decimalPart}`;
   }
 }
-
