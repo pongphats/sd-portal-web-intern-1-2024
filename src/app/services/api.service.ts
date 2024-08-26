@@ -332,4 +332,29 @@ export class ApiService {
       .put<ApiResponse<level>>(url, payload)
       .pipe(map((res) => res.responseData.result));
   }
+
+  getExpenseHisoryWithPagination(
+    page: number,
+    size: number,
+    userId: number
+  ) {
+    const filterReq = {
+      page,
+      size,
+      userId,
+    };
+    if (filterReq.userId != 0) {
+      return this.http
+        .get<any>(`${this.welfareUrl}/expenses/getExpenseByPage/filter`, {
+          params: { userId },
+        })
+        .pipe(map((res) => res));
+    } else {
+      return this.http
+        .get<any>(
+          `${this.welfareUrl}/expenses/getExpenseByPage?page=${page}&size=${size}&sort=id,desc`
+        )
+        .pipe(map((res) => res));
+    }
+  }
 }
