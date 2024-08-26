@@ -224,16 +224,23 @@ export class WelfareFormsPageComponent implements OnInit {
 
       if (this.editMode) {
         console.log('edit', req)
-        this.editMode = false;
-        this.swalService.showSuccess('แก้ไขรายการการเบิกค่ารักษาพยาบาลเรียบร้อยแล้ว')
+        const confirmed = await this.swalService.showConfirm("คุณต้องการแก้ไขรายการเบิกค่ารักษาพยาบาลนี้หรือไม่");
+        if (confirmed) {
+          this.editMode = false;
+          this.swalService.showSuccess('แก้ไขรายการการเบิกค่ารักษาพยาบาลเรียบร้อยแล้ว')
+          this.clearForm();
+        }else{
+          console.log("ไม่แก้ไข")
+        }
+
       } else {
         const res = await this.apiService.createExpense(req).toPromise()
         if (res?.responseMessage == 'กรอกข้อมูลเรียบร้อย') {
           this.swalService.showSuccess('เพิ่มรายการการเบิกค่ารักษาพยาบาลเรียบร้อยแล้ว')
+          this.clearForm();
         }
       }
       this.searchEmp()
-      this.clearForm();
     }
   }
 
