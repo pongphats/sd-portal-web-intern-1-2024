@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import {
+  createEmployeeReq,
   CreateExpenseRequest,
   CreateSectorRequest,
   CreateTrainingRequest,
@@ -14,13 +15,14 @@ import { map, Observable } from 'rxjs';
 import {
   ApiResponse,
   Budget,
+  Company,
   BudgetWellFare,
   ExpenseRemainByYearResponse,
   ExpenseRemainResponse,
   MngDeptListRes,
   saveBudgetResponse,
 } from '../interface/response';
-import { Course, sector } from '../interface/common';
+import { Course, level, sector } from '../interface/common';
 import { Employee } from '../interface/employee';
 
 @Injectable({
@@ -102,7 +104,10 @@ export class ApiService {
   }
 
   // welfare-forms-page
-  getExpenseRemainByUserIdAndLevel(userId: number, level: string): Observable<ExpenseRemainResponse> {
+  getExpenseRemainByUserIdAndLevel(
+    userId: number,
+    level: string
+  ): Observable<ExpenseRemainResponse> {
     return this.http
       .get<ApiResponse<any>>(
         `${this.welfareUrl}/expenses/getExpenseRemaining?userId=${userId}&level=${level}`
@@ -110,13 +115,21 @@ export class ApiService {
       .pipe(map((res) => res.responseData.result));
   }
 
-  createExpense(req: CreateExpenseRequest){
+  createExpense(req: CreateExpenseRequest) {
     return this.http
       .post<ApiResponse<any>>(`${this.welfareUrl}/expenses/create`, req)
       .pipe(map((res) => res));
   }
 
-  getExpenseUidAndYear(uid: number, year: number): Observable<ExpenseRemainByYearResponse[]> {
+  updateExpense(req: CreateExpenseRequest, id: number) {
+    const url = `${this.welfareUrl}/expenses/update/${id}`;
+    return this.http.put<ApiResponse<any>>(url, req).pipe(map((res) => res));
+  }
+
+  getExpenseUidAndYear(
+    uid: number,
+    year: number
+  ): Observable<ExpenseRemainByYearResponse[]> {
     return this.http
       .get<ApiResponse<any>>(
         `${this.welfareUrl}/expenses/allExpenseByUidAndYear?uid=${uid}&year=${year}`
@@ -196,9 +209,6 @@ export class ApiService {
       .pipe(map((res) => res.responseData.result));
   }
 
-  
-  
-  
   getEmplistByName(term: string): Observable<any[]> {
     return this.http
       .get<any[]>(`${this.trainingUrl}/seacrhUser/byNames?searchTerm=${term}`)
@@ -233,43 +243,118 @@ export class ApiService {
       .pipe(map((res) => res));
   }
 
+  findAllSectorDepartmentPostions(): Observable<Company[]> {
+    return this.http
+      .get<Company[]>(`${this.trainingUrl}/findAllJoinDepartments`)
+      .pipe(map((res) => res));
+  }
+
+  getEmpLevels(): Observable<level[]> {
+    return this.http
+      .get<ApiResponse<level[]>>(`${this.welfareUrl}/budget/getBudget`)
+      .pipe(map((res) => res.responseData.result));
+  }
+
+  uploadPccUser(data: any): Observable<any> {
+    return this.http
+      .post<any>(`${this.trainingUrl}/csv/upload/users/pccth`, data)
+      .pipe(map((res) => res));
+  }
+
+  uploadWsUser(data: any): Observable<any> {
+    return this.http
+      .post<any>(`${this.trainingUrl}/csv/upload/users/wisesoft`, data)
+      .pipe(map((res) => res));
+  }
+
+  createEmployee(data: createEmployeeReq): Observable<any> {
+    return this.http
+      .post<any>(`${this.trainingUrl}/createEmployee`, data)
+      .pipe(map((res) => res));
+  }
+
+  editEmployee(data: createEmployeeReq, uid: number): Observable<any> {
+    return this.http
+      .put<any>(`${this.trainingUrl}/editEmployee?userId=${uid}`, data)
+      .pipe(map((res) => res));
+  }
+
   getBudgetWelfare(): Observable<BudgetWellFare[]> {
     return this.http
       .get<ApiResponse<any>>(`${this.welfareUrl}/budget/getBudget`)
       .pipe(map((res) => res.responseData.result));
   }
 
-  editPosition(req : editPosition)  {
+  editPosition(req: editPosition) {
     return this.http
-     .post<any>(`${this.trainingUrl}/edit/position`, req)
-     .pipe(map((res) => res));
+      .post<any>(`${this.trainingUrl}/edit/position`, req)
+      .pipe(map((res) => res));
   }
 
-  createPosition(req : createPosition)  {
+  createPosition(req: createPosition) {
     return this.http
-     .post<any>(`${this.trainingUrl}/createPosition`, req)
-     .pipe(map((res) => res));
+      .post<any>(`${this.trainingUrl}/createPosition`, req)
+      .pipe(map((res) => res));
   }
 
-  
-
-  
   deletePosition(id: number): Observable<ApiResponse<any>> {
     return this.http
-      .delete<ApiResponse<any>>(`${this.trainingUrl}/del/position`,{
-        params: { pId: id},
+      .delete<ApiResponse<any>>(`${this.trainingUrl}/del/position`, {
+        params: { pId: id },
       })
       .pipe(map((res) => res));
   }
 
+  createNewLevel(req: level): Observable<level> {
+    return this.http
+      .post<ApiResponse<level>>(`${this.welfareUrl}/budget/create`, req)
+      .pipe(map((res) => res.responseData.result));
+  }
 
+  deleteLevel(id: number): Observable<any> {
+    return this.http
+      .delete<any>(`${this.welfareUrl}/budget/delete`, {
+        params: { budgetId: id },
+      })
+      .pipe(map((res) => res));
+  }
 
+  editLevel(req: level): Observable<level> {
+    const url = `${this.welfareUrl}/budget/editBudget/${req.id}`;
+    const payload = {
+      ipd: req.ipd,
+      opd: req.opd,
+      room: req.room,
+      level: req.level,
+    };
 
+    return this.http
+      .put<ApiResponse<level>>(url, payload)
+      .pipe(map((res) => res.responseData.result));
+  }
 
-
-
-
-
-
+  getExpenseHisoryWithPagination(
+    page: number,
+    size: number,
+    userId: number
+  ) {
+    const filterReq = {
+      page,
+      size,
+      userId,
+    };
+    if (filterReq.userId != 0) {
+      return this.http
+        .get<any>(`${this.welfareUrl}/expenses/getExpenseByPage/filter`, {
+          params: { userId },
+        })
+        .pipe(map((res) => res));
+    } else {
+      return this.http
+        .get<any>(
+          `${this.welfareUrl}/expenses/getExpenseByPage?page=${page}&size=${size}&sort=id,desc`
+        )
+        .pipe(map((res) => res));
+    }
+  }
 }
-

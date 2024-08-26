@@ -57,3 +57,11 @@ export interface fileTable {
   fileSize: string;
   fileId: number;
 }
+
+export interface level {
+  id: number;
+  level: string;
+  opd: number;
+  ipd: number;
+  room: number;
+}

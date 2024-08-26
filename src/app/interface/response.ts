@@ -84,6 +84,30 @@ export interface ExpenseRemainResponse {
   room: number
 }
 
+
+export interface Position {
+  id: string;
+  name: string;
+}
+
+export interface Department {
+  deptid: number;
+  deptname: string;
+  deptcode: string;
+  positions: Position[];
+}
+
+export interface Sector {
+  sectorid: number;
+  sectorname: string;
+  sectorcode: string;
+  departments: Department[];
+}
+
+export interface Company {
+  company: string;
+  sectors: Sector[];
+}
 export interface ExpenseRemainByYearResponse {
   id: number,
   userId: number,

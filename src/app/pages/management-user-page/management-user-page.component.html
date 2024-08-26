@@ -1,163 +1,391 @@
-<div class="bg-transparent p-4 md:p-6 lg:p-8">
-   <h1 class="text-2xl md:text-3xl lg:text-4xl mb-6">จัดการพนักงาน</h1>
-   <form class="p-4 md:p-6 lg:p-8 bg-content dark:bg-content-dark rounded-md drop-shadow-md">
-     
-     <div class="mb-6">
-       <mat-radio-group aria-label="เลือกบริษัท" class="flex flex-wrap gap-4">
-         <mat-radio-button value="PCCTH">PCCTH</mat-radio-button>
-         <mat-radio-button value="WiseSoft">WiseSoft</mat-radio-button>
-       </mat-radio-group>
-     </div>
- 
-     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-       <div class="flex flex-col">
-         <label for="sector" class="mb-2">ฝ่าย</label>
-         <mat-form-field appearance="fill">
-           <mat-label>เลือกฝ่าย</mat-label>
-           <mat-select>
-             <mat-option> </mat-option>
-           </mat-select>
-         </mat-form-field>
-       </div>
-       <div class="flex flex-col">
-         <label class="mb-2">รหัสฝ่าย</label>
-         <mat-form-field appearance="fill">
-           <mat-label>รหัสฝ่าย</mat-label>
-           <input readonly matInput placeholder="รหัสฝ่าย" />
-         </mat-form-field>
-       </div>
-       <div class="flex flex-col">
-         <label for="sector" class="mb-2">แผนก</label>
-         <mat-form-field appearance="fill">
-           <mat-label>เลือกแผนก</mat-label>
-           <mat-select>
-             <mat-option> </mat-option>
-           </mat-select>
-         </mat-form-field>
-       </div>
-       <div class="flex flex-col">
-         <label class="mb-2">รหัสแผนก</label>
-         <mat-form-field appearance="fill">
-           <mat-label>รหัสแผนก</mat-label>
-           <input readonly matInput placeholder="รหัสแผนก" />
-         </mat-form-field>
-       </div>
-     </div>
- 
-     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-       <div class="flex flex-col">
-         <label for="employeeId" class="mb-2">รหัสพนักงาน</label>
-         <mat-form-field appearance="fill">
-           <mat-label>รหัสพนักงาน</mat-label>
-           <input matInput placeholder="รหัสพนักงาน" />
-         </mat-form-field>
-       </div>
-       <div class="flex flex-col">
-         <label for="prefix" class="mb-2">คำนำหน้า</label>
-         <mat-form-field appearance="fill">
-           <mat-label>คำนำหน้า</mat-label>
-           <mat-select>
-             <mat-option value="นาย">นาย</mat-option>
-             <mat-option value="นาง">นาง</mat-option>
-             <mat-option value="นางสาว">นางสาว</mat-option>
-             <mat-option value="น.ส.">น.ส.</mat-option>
-           </mat-select>
-         </mat-form-field>
-       </div>
-       <div class="flex flex-col">
-         <label for="firstName" class="mb-2">ชื่อ</label>
-         <mat-form-field appearance="fill">
-           <mat-label>ชื่อ</mat-label>
-           <input matInput placeholder="ชื่อ" />
-         </mat-form-field>
-       </div>
-       <div class="flex flex-col">
-         <label for="lastName" class="mb-2">นามสกุล</label>
-         <mat-form-field appearance="fill">
-           <mat-label>นามสกุล</mat-label>
-           <input matInput placeholder="นามสกุล" />
-         </mat-form-field>
-       </div>
-       <div class="flex flex-col">
-         <label for="email" class="mb-2">อีเมล</label>
-         <mat-form-field appearance="fill">
-           <mat-label>อีเมล</mat-label>
-           <input matInput placeholder="อีเมล" />
-         </mat-form-field>
-       </div>
-       <div class="flex flex-col">
-         <label for="position" class="mb-2">ตำแหน่ง</label>
-         <mat-form-field appearance="fill">
-           <mat-label>ตำแหน่ง</mat-label>
-           <mat-select>
-             <mat-option value="option1">ตำแหน่ง 1</mat-option>
-             <mat-option value="option2">ตำแหน่ง 2</mat-option>
-             <mat-option value="option3">ตำแหน่ง 3</mat-option>
-           </mat-select>
-         </mat-form-field>
-       </div>
-       <div class="flex flex-col">
-         <label for="level" class="mb-2">ระดับ</label>
-         <mat-form-field appearance="fill">
-           <mat-label>ระดับ</mat-label>
-           <mat-select>
-             <mat-option value="level1">ระดับ 1</mat-option>
-             <mat-option value="level2">ระดับ 2</mat-option>
-             <mat-option value="level3">ระดับ 3</mat-option>
-           </mat-select>
-         </mat-form-field>
-       </div>
-       <div class="flex flex-col">
-         <label for="role" class="mb-2">กำหนดสิทธิ์</label>
-         <mat-form-field appearance="fill">
-           <mat-label>กำหนดสิทธิ์</mat-label>
-           <mat-select>
-             <mat-option value="Admin">ผู้ดูแลระบบ</mat-option>
-             <mat-option value="User">พนักงาน</mat-option>
-             <mat-option value="Approver">หัวหน้างาน</mat-option>
-             <mat-option value="Manager">ผู้บังคับบัญชา</mat-option>
-             <mat-option value="ManagerAndPersonnel">ผู้บังคับบัญชา/แผนกบุคคล</mat-option>
-             <mat-option value="VicePresident">ผู้บริหาร</mat-option>
-             <mat-option value="Personnel">แผนกบุคคล</mat-option>
-             <mat-option value="President">ประธานเจ้าหน้าที่บริหาร/กรรมการผู้จัดการ</mat-option>
-           </mat-select>
-         </mat-form-field>
-       </div>
-       <div class="flex flex-col">
-         <label for="employeeType" class="mb-2">ประเภทพนักงาน</label>
-         <mat-form-field appearance="fill">
-           <mat-label>ประเภทพนักงาน</mat-label>
-           <mat-select>
-             <mat-option value="พนักงานประจำ">พนักงานประจำ</mat-option>
-             <mat-option value="พนักงานสัญญาจ้าง">พนักงานสัญญาจ้าง</mat-option>
-           </mat-select>
-         </mat-form-field>
-       </div>
-     </div>
- 
-     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
-       <div class="flex flex-col">
-         <label for="startDate" class="mb-2">วันที่เริ่มงาน</label>
-         <mat-form-field appearance="fill">
-           <mat-label>วันที่เริ่มงาน</mat-label>
-           <input matInput [matDatepicker]="startWrkpicker" />
-           <mat-datepicker-toggle matSuffix [for]="startWrkpicker"></mat-datepicker-toggle>
-           <mat-datepicker #startWrkpicker></mat-datepicker>
-         </mat-form-field>
-       </div>
-       <div class="flex flex-col">
-         <label for="passDate" class="mb-2">วันที่ผ่านการทดลองงาน</label>
-         <mat-form-field appearance="fill">
-           <mat-label>วันที่ผ่านการทดลองงาน</mat-label>
-           <input matInput [matDatepicker]="passWrkpicker" />
-           <mat-datepicker-toggle matSuffix [for]="passWrkpicker"></mat-datepicker-toggle>
-           <mat-datepicker #passWrkpicker></mat-datepicker>
-         </mat-form-field>
-       </div>
-     </div>
- 
-     <div class="mt-8 flex justify-end">
-       <button mat-raised-button color="primary">บันทึกข้อมูล</button>
-     </div>
-   </form>
- </div>
+<div class="bg-transparent space-y-4">
+  <h1 class="text-xl mb-4">จัดการพนักงาน</h1>
+  <form
+    [formGroup]="userForms"
+    class="p-4 md:p-6 lg:p-8 bg-content dark:bg-content-dark rounded-md drop-shadow-md"
+  >
+    <div class="mb-6">
+      <mat-radio-group
+        formControlName="companyName"
+        (change)="filterSelectedCompany($event.value)"
+        aria-label="เลือกบริษัท"
+        class="flex flex-wrap gap-4"
+      >
+        <mat-radio-button value="PCCTH">PCCTH</mat-radio-button>
+        <mat-radio-button value="WiseSoft">WiseSoft</mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div class="flex flex-col">
+        <label for="sector" class="mb-2">ฝ่าย</label>
+        <mat-form-field appearance="fill">
+          <mat-label>เลือกฝ่าย</mat-label>
+          <mat-select
+            (selectionChange)="filterDeptBySectors($event.value)"
+            formControlName="sectorName"
+          >
+            <mat-option
+              *ngFor="let sector of allSectorDepts"
+              [value]="sector.sectorname"
+            >
+              {{ sector.sectorname }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="flex flex-col">
+        <label class="mb-2">รหัสฝ่าย</label>
+        <mat-form-field appearance="fill">
+          <mat-label>รหัสฝ่าย</mat-label>
+          <input
+            class="dark:text-font-description-dark text-font-description"
+            formControlName="sectorCode"
+            readonly
+            matInput
+            placeholder="รหัสฝ่าย"
+          />
+        </mat-form-field>
+      </div>
+      <div class="flex flex-col">
+        <label for="sector" class="mb-2">แผนก</label>
+        <mat-form-field appearance="fill">
+          <mat-label>เลือกแผนก</mat-label>
+          <mat-select
+            (selectionChange)="filterPositionByDept($event.value)"
+            formControlName="deptName"
+          >
+            <mat-option *ngFor="let dept of allDepts" [value]="dept.deptname">{{
+              dept.deptname
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="flex flex-col">
+        <label class="mb-2">รหัสแผนก</label>
+        <mat-form-field appearance="fill">
+          <mat-label>รหัสแผนก</mat-label>
+          <input
+            class="dark:text-font-description-dark text-font-description"
+            formControlName="deptCode"
+            readonly
+            matInput
+            placeholder="รหัสแผนก"
+          />
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="flex flex-col">
+        <label for="employeeId" class="mb-2">รหัสพนักงาน</label>
+        <mat-form-field appearance="fill">
+          <mat-label>รหัสพนักงาน</mat-label>
+          <input
+            class="text-font-description dark:text-font-description-dark"
+            maxlength="6"
+            placeholder="กรอกรหัสพนักงาน 6 หลัก"
+            (change)="checkDulicateEmpCode()"
+            oninput="
+          if(!this.value.match('^(2|22|24|24[0-9]{0,1}[0-9]{0,1}[0-9]{0,1}[0-9]{0,1}|22[0-9]{0,1}[0-9]{0,1}[0-9]{0,1}[0-9]{0,1})$')
+          ) this.value=''
+        "
+            formControlName="empCode"
+            matInput
+            placeholder="รหัสพนักงาน"
+          />
+          <mat-error *ngIf="empCodeIsDuplicate"
+            >มีรหัสพนักงานนี้อยู่แล้ว</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div class="flex flex-col">
+        <label for="prefix" class="mb-2">คำนำหน้า</label>
+        <mat-form-field appearance="fill">
+          <mat-label>คำนำหน้า</mat-label>
+          <mat-select formControlName="empPrefix">
+            <mat-option value="นาย">นาย</mat-option>
+            <mat-option value="นาง">นาง</mat-option>
+            <mat-option value="นางสาว">นางสาว</mat-option>
+            <mat-option value="น.ส.">น.ส.</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="flex flex-col">
+        <label for="firstName" class="mb-2">ชื่อ</label>
+        <mat-form-field appearance="fill">
+          <mat-label>ชื่อ</mat-label>
+          <input
+            class="text-font-description dark:text-font-description-dark"
+            formControlName="empFirstName"
+            matInput
+            placeholder="ชื่อ"
+          />
+        </mat-form-field>
+      </div>
+      <div class="flex flex-col">
+        <label for="lastName" class="mb-2">นามสกุล</label>
+        <mat-form-field appearance="fill">
+          <mat-label>นามสกุล</mat-label>
+          <input
+            class="text-font-description dark:text-font-description-dark"
+            formControlName="empLastName"
+            matInput
+            placeholder="นามสกุล"
+          />
+        </mat-form-field>
+      </div>
+      <div class="flex flex-col">
+        <label for="email" class="mb-2">อีเมล</label>
+        <mat-form-field appearance="fill">
+          <mat-label>อีเมล</mat-label>
+          <input
+            (change)="checkDulicateEmail()"
+            class="text-font-description dark:text-font-description-dark"
+            formControlName="empEmail"
+            matInput
+            placeholder="อีเมล"
+          />
+          <mat-error *ngIf="emailIsDuplicate"
+            >มีอีเมลนี้อยู่ในระบบอยู่แล้ว</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div class="flex flex-col">
+        <label for="position" class="mb-2">ตำแหน่ง</label>
+        <mat-form-field appearance="fill">
+          <mat-label>ตำแหน่ง</mat-label>
+          <mat-select formControlName="empPosition">
+            <mat-option
+              *ngFor="let position of allPositions"
+              [value]="position.name"
+            >
+              {{ position.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="flex flex-col">
+        <label for="level" class="mb-2">ระดับ</label>
+        <mat-form-field appearance="fill">
+          <mat-label>ระดับ</mat-label>
+          <mat-select formControlName="empLevel">
+            <mat-option *ngFor="let level of empLevels" [value]="level">{{
+              level
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="flex flex-col">
+        <label for="role" class="mb-2">กำหนดสิทธิ์</label>
+        <mat-form-field appearance="fill">
+          <mat-label>กำหนดสิทธิ์</mat-label>
+          <mat-select formControlName="empPrivileges">
+            <mat-option value="Admin">ผู้ดูแลระบบ</mat-option>
+            <mat-option value="User">พนักงาน</mat-option>
+            <mat-option value="Approver">หัวหน้างาน</mat-option>
+            <mat-option value="Manager">ผู้บังคับบัญชา</mat-option>
+            <mat-option value="ManagerAndPersonnel"
+              >ผู้บังคับบัญชา/แผนกบุคคล</mat-option
+            >
+            <mat-option value="VicePresident">ผู้บริหาร</mat-option>
+            <mat-option value="Personnel">แผนกบุคคล</mat-option>
+            <mat-option value="President"
+              >ประธานเจ้าหน้าที่บริหาร/กรรมการผู้จัดการ</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="flex flex-col">
+        <label for="employeeType" class="mb-2">ประเภทพนักงาน</label>
+        <mat-form-field appearance="fill">
+          <mat-label>ประเภทพนักงาน</mat-label>
+          <mat-select formControlName="empType">
+            <mat-option value="พนักงานประจำ">พนักงานประจำ</mat-option>
+            <mat-option value="พนักงานสัญญาจ้าง">พนักงานสัญญาจ้าง</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+      <div class="flex flex-col">
+        <label for="startDate" class="mb-2">วันที่เริ่มงาน</label>
+        <mat-form-field appearance="fill">
+          <mat-label>วันที่เริ่มงาน</mat-label>
+          <input
+            class="text-font-description dark:text-font-description-dark"
+            formControlName="empStartDate"
+            matInput
+            [matDatepicker]="startWrkpicker"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="startWrkpicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #startWrkpicker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="flex flex-col">
+        <label for="passDate" class="mb-2">วันที่ผ่านการทดลองงาน</label>
+        <mat-form-field appearance="fill">
+          <mat-label>วันที่ผ่านการทดลองงาน</mat-label>
+          <input
+            class="text-font-description dark:text-font-description-dark"
+            formControlName="empPassDate"
+            matInput
+            [matDatepicker]="passWrkpicker"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="passWrkpicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #passWrkpicker></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+    <div
+      class="w-full flex flex-col sm:flex-row justify-start items-start sm:items-end gap-4 mt-6"
+    >
+      <div class="w-full sm:w-auto mb-2 sm:mb-0">
+        <label for="file-upload" class="block mb-2">อัปโหลดไฟล์</label>
+        <input
+          id="file-upload"
+          class="w-full sm:w-auto px-2 py-1 text-gray-700 bg-white border border-gray-300 rounded-lg dark:border-[#3a3b3c] dark:bg-[#3a3b3c] dark:text-white"
+          type="file"
+          (change)="onFileChange($event)"
+          accept=".xls,.xlsx"
+        />
+      </div>
+      <button
+        type="button"
+        class="w-full sm:w-auto mt-2 sm:mt-0 text-white p-2 rounded shadow-md border-[#696cf8] bg-[#696cf8] hover:bg-[#696cf8]"
+        (click)="uploadFileUser()"
+      >
+        อัปโหลดข้อมูล
+      </button>
+    </div>
+
+    <div
+      class="flex mt-8 gap-4 flex-col justify-center md:flex-row lg:justify-end"
+    >
+      <button
+        (click)="saveForms()"
+        type="button"
+        [disabled]="userForms.invalid"
+        mat-raised-button
+        class="!bg-blue-700 w-full md:w-auto sm:w-full hover:!bg-blue-600 dark:!bg-blue-600 dark:hover:bg-blue-500"
+        [ngClass]="{
+          'hover:!cursor-not-allowed !bg-gray-400 dark:!bg-gray-400 dark:!text-slate-600 !text-slate-600':
+            userForms.invalid
+        }"
+      >
+        <span class="!text-white">{{
+          isEditMode ? "แก้ไขข้อมูล" : "บันทึกข้อมูล"
+        }}</span>
+      </button>
+
+      <button
+        type="button"
+        (mwlClick)="cancelAction()"
+        *ngIf="isEditMode"
+        mat-raised-button
+        class="!bg-red-700 w-full sm:w-auto hover:!bg-red-600 dark:!bg-red-600 dark:hover:bg-red-500"
+      >
+        <span class="!text-white">ยกเลิก</span>
+      </button>
+    </div>
+  </form>
+
+  <form
+    [formGroup]="searchGroupControl"
+    class="w-full flex flex-col md:flex-row gap-4 justify-center items-center"
+  >
+    <mat-form-field appearance="fill">
+      <mat-label>ค้นหาด้วย</mat-label>
+      <mat-select formControlName="searchType">
+        <mat-option value="empCode"> รหัสพนักงาน </mat-option>
+        <mat-option value="fullName"> ชื่อ - นามสกุล </mat-option>
+        <mat-option value="position"> ตำแหน่ง </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>ค้นหา</mat-label>
+      <input
+        formControlName="searchValue"
+        class="dark:text-font-description-dark text-font-description"
+        matInput
+        placeholder="ค้นหา"
+      />
+    </mat-form-field>
+
+    <button
+      type="button"
+      mat-raised-button
+      class="!bg-blue-700 w-full sm:w-auto hover:!bg-blue-600 dark:!bg-blue-600 dark:hover:bg-blue-500"
+    >
+      <span class="!text-white flex items-center gap-2 justify-center">
+        ค้นหา
+        <i class="bx bx-search"></i>
+      </span>
+    </button>
+  </form>
+
+  <div class="w-full p-4 bg-content dark:bg-content-dark rounded-md shadow-md">
+    <div class="overflow-x-auto">
+      <table class="table-auto w-full">
+        <thead class="text-center">
+          <tr class="dark:text-font-description-dark">
+            <th class="text-center p-4">บริษัท</th>
+            <th class="text-center p-4">ฝ่าย/แผนก</th>
+            <th class="text-center p-4">รหัสพนักงาน</th>
+            <th class="text-center p-4">ชื่อ</th>
+            <th class="text-center p-4">นามสกุล</th>
+            <th class="text-center p-4">ตำแหน่ง</th>
+            <th class="text-center p-4">อีเมล</th>
+            <th class="text-center p-4">สถานะ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="userResult.length === 0">
+            <td colspan="10" class="text-center py-20">
+              <span class="text-4xl">กรุณาเลือกฝ่าย และ แผนก</span>
+            </td>
+          </tr>
+          <tr
+            *ngFor="let user of userResult"
+            class="odd:bg-white dark:odd:bg-[#3a3b3c] dark:even:bg-content-dark even:bg-slate-100 text-center h-20 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 dark:text-font-description-dark"
+            (mwlClick)="initialUserToForms(user)"
+          >
+            <td>{{ user.company.companyName }}</td>
+            <td>
+              {{ user.sector.sectorName }} / {{ user.department.deptName }}
+            </td>
+            <td>{{ user.empCode }}</td>
+            <td>{{ user.title }} {{ user.firstname }}</td>
+            <td>{{ user.lastname }}</td>
+            <td>{{ user.position.positionName }}</td>
+            <td>{{ user.email }}</td>
+            <td
+              [ngClass]="{
+                'text-green-700 dark:text-green-600': user.status == 1,
+                'text-red-600 dark:text-red-500': user.status == 0
+              }"
+            >
+              {{ user.status == 1 ? "เป็นพนักงาน" : "ลาออก" }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <mat-paginator
+      class="dark:bg-[#6d6d6d] dark:text-white"
+      [length]="pageLength"
+      [pageSize]="5"
+      [pageSizeOptions]="[5, 10]"
+      aria-label="Select page"
+    >
+    </mat-paginator>
+  </div>
+</div>
