@@ -53,7 +53,6 @@ export interface CreateTrainingResponse {
   type: string;
 }
 
-
 export interface Budget {
   year: string;
   budgetTraining: number;
@@ -79,11 +78,10 @@ export interface BudgetWellFare {
 
 // welfare-forms
 export interface ExpenseRemainResponse {
-  opd: number,
-  ipd: number,
-  room: number
+  opd: number;
+  ipd: number;
+  room: number;
 }
-
 
 export interface Position {
   id: string;
@@ -109,18 +107,16 @@ export interface Company {
   sectors: Sector[];
 }
 export interface ExpenseRemainByYearResponse {
-  id: number,
-  userId: number,
-  dateOfAdmission: string,
-  startDate: string,
-  endDate: string,
-  days: number,
-  opd: number,
-  ipd: number,
-  roomService: number,
-  canWithdraw: number
-  description: string,
-  remark: string,
+  id: number;
+  userId: number;
+  dateOfAdmission: string;
+  startDate: string;
+  endDate: string;
+  days: number;
+  opd: number;
+  ipd: number;
+  roomService: number;
+  canWithdraw: number;
+  description: string;
+  remark: string;
 }
-
-

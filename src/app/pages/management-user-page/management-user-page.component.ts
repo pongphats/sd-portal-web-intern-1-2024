@@ -6,7 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
-import { tap } from 'rxjs';
+import { map, Observable, startWith, tap } from 'rxjs';
 import { level } from 'src/app/interface/common';
 import { Employee } from 'src/app/interface/employee';
 import { SearchEmpTableForms, userForms } from 'src/app/interface/form';
@@ -42,6 +42,7 @@ export class ManagementUserPageComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
   centerEmp: Employee[] = [];
+  centerEmpBackUp: Employee[] = [];
   isEditMode: boolean = false;
   editId: number = 0;
   searchGroupControl!: FormGroup<SearchEmpTableForms>;
@@ -49,6 +50,10 @@ export class ManagementUserPageComponent implements OnInit, AfterViewInit {
   empFullNameAutoComplte: string[] = [];
   empPositionAutoComplte: string[] = [];
   autoCompleteValue: string[] = [];
+
+  filteredSearchValue!: Observable<any[]>;
+  searchOptions: string[] = [];
+
   constructor(
     private apiService: ApiService,
     private commonService: CommonService,
@@ -75,8 +80,8 @@ export class ManagementUserPageComponent implements OnInit, AfterViewInit {
     }) as FormGroup<userForms>;
 
     this.searchGroupControl = this.fb.group({
-      searchType: [''],
-      searchValue: [''],
+      searchType: ['', Validators.required],
+      searchValue: ['', Validators.required],
     }) as FormGroup<SearchEmpTableForms>;
   }
 
@@ -84,7 +89,11 @@ export class ManagementUserPageComponent implements OnInit, AfterViewInit {
     await this.intSectorAndDeptByCompany();
     await this.initializedLevelInSelection();
     this.filterSelectedCompany();
-    // this.initailSectorAndDept();
+    this.filteredSearchValue =
+      this.searchGroupControl.controls.searchValue.valueChanges.pipe(
+        startWith(''),
+        map((value) => this._filter(value || ''))
+      );
   }
 
   loadingpage() {
@@ -92,7 +101,7 @@ export class ManagementUserPageComponent implements OnInit, AfterViewInit {
     const pageSize = this.paginator?.pageSize ?? 0;
     const startIndex = pageIndex * pageSize;
     const endIndex = startIndex + pageSize;
-
+    this.pageLength = this.centerEmp.length;
     this.userResult = this.centerEmp.slice(startIndex, endIndex);
   }
 
@@ -102,7 +111,6 @@ export class ManagementUserPageComponent implements OnInit, AfterViewInit {
 
   async intSectorAndDeptByCompany() {
     try {
-      // const data = await this.commonService.getSectorAndDeptsListByCompanyName(company)
       const data = await this.apiService
         .findAllSectorDepartmentPostions()
         .toPromise();
@@ -111,7 +119,6 @@ export class ManagementUserPageComponent implements OnInit, AfterViewInit {
       } else {
         throw new Error(`value not found`);
       }
-      // console.log(data);
     } catch (error) {
       console.error(error);
     }
@@ -157,6 +164,7 @@ export class ManagementUserPageComponent implements OnInit, AfterViewInit {
             .getAllActiveEmpsByDeptId(deptId)
             .toPromise()) || [];
         this.centerEmp = this.commonService.sortData(res, 'empCode', 'asc');
+        this.centerEmpBackUp = this.centerEmp;
         this.pageLength = this.centerEmp.length;
         this.userResult = this.centerEmp.slice(0, 5);
         Swal.close();
@@ -395,7 +403,6 @@ export class ManagementUserPageComponent implements OnInit, AfterViewInit {
       if (!this.mngSectorIdList.includes(sector_actualId)) {
         this.mngSectorIdList.push(sector_actualId);
       }
-      // const role = this.commonService.
       empRequstData = {
         companyID: [companyId],
         dept_actual: dept_actualId,
@@ -443,6 +450,7 @@ export class ManagementUserPageComponent implements OnInit, AfterViewInit {
         (await this.apiService.getAllActiveEmpsByDeptId(deptId).toPromise()) ||
         [];
       this.centerEmp = this.commonService.sortData(res, 'empCode', 'asc');
+      this.centerEmpBackUp = this.centerEmp;
       this.pageLength = this.centerEmp.length;
     } catch (error) {
       console.error(error);
@@ -452,11 +460,55 @@ export class ManagementUserPageComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // async initailSectorAndDept() {
-  //   try {
-  //     const res = await this.commonService.getSectorAndDeptsListByCompanyName(this.userForms.controls.company.value);
-  //   } catch (error) {
+  async initialSearchValue(option: string) {
+    if (option == 'empCode') {
+      this.searchOptions = this.centerEmpBackUp.map((item) => item.empCode);
+    } else if (option == 'fullName') {
+      this.searchOptions = this.centerEmpBackUp.map(
+        (item) => `${item.firstname} ${item.lastname}`
+      );
+    } else if (option == 'position') {
+      this.searchOptions = this.centerEmpBackUp.map(
+        (item) => item.position.positionName
+      );
+    } else {
+      this.searchOptions = [];
+    }
 
-  //   }
-  // }
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.searchOptions.filter((option) =>
+      option.toLowerCase().includes(filterValue)
+    );
+  }
+  filterBySearchValue() {
+    const option = this.searchGroupControl.controls.searchType.value || '';
+    const value = this.searchGroupControl.controls.searchValue.value || '';
+
+    if (option == 'empCode') {
+      this.centerEmp = this.centerEmpBackUp.filter(
+        (item) => item.empCode == value
+      );
+    } else if (option == 'fullName') {
+      this.centerEmp = this.centerEmpBackUp.filter(
+        (item) => `${item.firstname} ${item.lastname}` == value
+      );
+    } else if (option == 'position') {
+      this.centerEmp = this.centerEmpBackUp.filter(
+        (item) => item.position.positionName == value
+      );
+    } else {
+      this.centerEmp = this.centerEmpBackUp;
+    }
+    this.loadingpage();
+  }
+
+  clearFilterSearch() {
+    this.searchGroupControl.reset();
+    this.centerEmp = this.centerEmpBackUp;
+    this.loadingpage();
+  }
 }

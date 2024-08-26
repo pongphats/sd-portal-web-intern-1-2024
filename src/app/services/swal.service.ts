@@ -88,4 +88,13 @@ export class SwalService {
       confirmButtonColor: '#696cf8',
     });
   }
+  showErrorBudgetLevel(message: string) {
+    Swal.fire({
+      title: 'กรุณากรอกระดับพนักงานใหม่',
+      text: message,
+      icon: 'warning',
+      confirmButtonText: 'ตกลง',
+      confirmButtonColor: '#696cf8',
+    });
+  }
 }

@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { level } from 'src/app/interface/common';
+import { budgetCreate } from 'src/app/interface/request';
 import { BudgetWellFare } from 'src/app/interface/response';
 import { ApiService } from 'src/app/services/api.service';
 import { SwalService } from 'src/app/services/swal.service';
@@ -16,6 +18,7 @@ export class BudgetWellfareManagePageComponent implements OnInit {
   displayedColumns: string[] = ['id', 'level', 'opd', 'ipd', 'room', 'edit'];
   dataSource = new MatTableDataSource<BudgetWellFare>([]);
   editingMode = false;
+  editId: number = -1;
   showAddModal = false;
   showEditModal = false;
 
@@ -58,10 +61,81 @@ export class BudgetWellfareManagePageComponent implements OnInit {
     }
   }
 
+  //--------------------------> API Save
+  async onSave() {
+    if (
+      !this.BudgetWellfareForm.get('level')?.value ||
+      !this.BudgetWellfareForm.get('opd')?.value ||
+      !this.BudgetWellfareForm.get('ipd')?.value ||
+      !this.BudgetWellfareForm.get('room')?.value
+    ) {
+      this.showErrorBudgetWellFareForm('กรุณากรอกข้อมูลให้ครบทุกช่อง');
+    } else {
+      const newLevel = this.BudgetWellfareForm.get('level')?.value;
+
+      try {
+        const existingBudgetWelfare = await this.apiService
+          .getBudgetWelfare()
+          .toPromise();
+
+        const isDuplicate = existingBudgetWelfare?.some(
+          (budget: any) => budget.level === newLevel
+        );
+
+        if (isDuplicate) {
+          this.swalService.showErrorBudgetLevel(
+            `พนักงานระดับ "${newLevel}" มีอยู่ในระบบแล้ว`
+          );
+        } else {
+          const req: budgetCreate = {
+            level: newLevel || '',
+            opd: this.BudgetWellfareForm.value.opd?.replace(/,/g, '') ?? '0',
+            ipd: this.BudgetWellfareForm.value.ipd?.replace(/,/g, '') ?? '0',
+            room: this.BudgetWellfareForm.value.room?.replace(/,/g, '') ?? '0',
+          };
+
+          await this.apiService.createNewLevel(req).toPromise();
+          await this.swalService.showSuccess('เพิ่มข้อมูลสำเร็จ');
+          this.BudgetWellfareForm.reset();
+          this.getBudgetWelfare();
+        }
+      } catch (error) {
+        this.showErrorBudgetWellFareForm('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
+      }
+    }
+  }
+
+  //-----------------------------------> API Edit
+  protected async onEditButtonClick() {
+    const isConfirmed = await this.swalService.showConfirm(
+      'คุณต้องการแก้ไขข้อมูลนี้หรือไม่?'
+    );
+
+    if (isConfirmed) {
+      const req: level = {
+        id: this.editId || 0,
+        level: this.BudgetWellfareForm.value.level || '',
+        opd: this.BudgetWellfareForm.value.opd?.replace(/,/g, '') ?? '0',
+        ipd: this.BudgetWellfareForm.value.ipd?.replace(/,/g, '') ?? '0',
+        room: this.BudgetWellfareForm.value.room?.replace(/,/g, '') ?? '0',
+      };
+
+      try {
+        await this.apiService.editLevel(req).toPromise();
+        await this.swalService.showSuccess('อัพเดทข้อมูลสำเร็จ');
+        this.BudgetWellfareForm.reset();
+        this.getBudgetWelfare();
+      } catch (error) {
+        this.showErrorBudgetWellFareForm('เกิดข้อผิดพลาดในการอัพเดทข้อมูล');
+      }
+    }
+  }
+
   //--------------------------> edit
   protected onEdit(element: BudgetWellFare) {
     console.log('Element to edit:', element);
     this.editingMode = true;
+    this.editId = element.id;
     this.BudgetWellfareForm.patchValue({
       level: element.level,
       opd: this.formatNumberWithComma(element.opd),
@@ -70,36 +144,32 @@ export class BudgetWellfareManagePageComponent implements OnInit {
     });
   }
 
+  //-----------------------------------> API delete
+
+  protected async onDeleteButtonClick(id: number) {
+    const isConfirmed = await this.swalService.showConfirm(
+      'คุณต้องการลบข้อมูลนี้หรือไม่?'
+    );
+
+    if (isConfirmed) {
+      this.apiService.deleteLevel(id).subscribe(
+        (response) => {
+          this.getBudgetWelfare();
+          console.log('Deleted successfully', response);
+        },
+        (error) => {
+          console.error('Error deleting', error);
+        }
+      );
+    }
+  }
+
   //--------------------------> modalเปิด/ปิด
   protected closeEditModal() {
+    this.editId = -1;
     this.editingMode = false;
     this.showEditModal = false;
     this.BudgetWellfareForm.reset();
-  }
-
-  //--------------------------> เคลียร์ข้อมูล
-  protected close() {
-    setTimeout(() => {
-      location.reload();
-    }, 400);
-  }
-
-  //-----------------------------------> แจ้งเตือนกรอกข้อมูลให้ครบ
-  protected async checkBudgetWellFareForm() {
-    if (
-      !this.BudgetWellfareForm.get('level')?.value ||
-      !this.BudgetWellfareForm.get('opd')?.value ||
-      !this.BudgetWellfareForm.get('ipd')?.value ||
-      !this.BudgetWellfareForm.get('room')?.value
-    ) {
-      this.showErrorBudgetWellFareForm('');
-    } else {
-      // แสดงข้อความความสำเร็จ และรอให้ผู้ใช้กดปุ่มตกลง
-      await this.swalService.showSuccess('เพิ่มข้อมูลสำเร็จ');
-
-      // หลังจากผู้ใช้กดตกลงแล้ว จึงทำการรีเซ็ตฟอร์ม
-      this.BudgetWellfareForm.reset();
-    }
   }
 
   //-----------------------------------> แจ้งเตือนกรอกข้อมูลให้ครบ
@@ -107,27 +177,6 @@ export class BudgetWellfareManagePageComponent implements OnInit {
     this.swalService.showErrorBudgetWellFareForm(message);
   }
 
-  //-----------------------------------> แจ้งเตือนว่าคุณต้องการแจ้งเตือนว่าต้องการแก้ไขหรือไม่
-  protected async onEditButtonClick() {
-    const isConfirmed = await this.swalService.showConfirm(
-      'คุณต้องการแก้ไขข้อมูลนี้หรือไม่?'
-    );
-
-    if (isConfirmed) {
-      this.close();
-    }
-  }
-
-  //-----------------------------------> แจ้งเตือนลบข้อมูล
-  protected async onDeleteButtonClick() {
-    const isConfirmed = await this.swalService.showConfirm(
-      'คุณต้องการลบข้อมูลนี้หรือไม่?'
-    );
-
-    if (isConfirmed) {
-      this.close();
-    }
-  }
   //-----------------------------------> input comma
   formatNumber(event: any) {
     let value = event.target.value.replace(/\D/g, '');
