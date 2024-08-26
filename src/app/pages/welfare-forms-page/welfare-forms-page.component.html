@@ -171,6 +171,7 @@
                     formControlName="medicalCost"
                     (blur)="formatCurrency($event, 'medicalCost')"
                   />
+                  <mat-error *ngIf="checkCostOver">ค่ารักษาพยาบาลคงเหลือไม่เพียงพอ</mat-error>
                 </mat-form-field>
               </div>
               <div class="flex flex-col w-[50%]">
