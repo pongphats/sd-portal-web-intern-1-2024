@@ -10,6 +10,7 @@ import {
   saveBudgetByYearRequest,
   editPosition,
   createPosition,
+  budgetCreate,
 } from '../interface/request';
 import { map, Observable } from 'rxjs';
 import {
@@ -305,7 +306,7 @@ export class ApiService {
       .pipe(map((res) => res));
   }
 
-  createNewLevel(req: level): Observable<level> {
+  createNewLevel(req: budgetCreate): Observable<budgetCreate> {
     return this.http
       .post<ApiResponse<level>>(`${this.welfareUrl}/budget/create`, req)
       .pipe(map((res) => res.responseData.result));
@@ -313,7 +314,7 @@ export class ApiService {
 
   deleteLevel(id: number): Observable<any> {
     return this.http
-      .delete<any>(`${this.welfareUrl}/budget/delete`, {
+      .delete<any>(`${this.welfareUrl}/budget/deleteBudget`, {
         params: { budgetId: id },
       })
       .pipe(map((res) => res));
@@ -321,6 +322,7 @@ export class ApiService {
 
   editLevel(req: level): Observable<level> {
     const url = `${this.welfareUrl}/budget/editBudget/${req.id}`;
+    console.log(req.id);
     const payload = {
       ipd: req.ipd,
       opd: req.opd,
@@ -333,11 +335,7 @@ export class ApiService {
       .pipe(map((res) => res.responseData.result));
   }
 
-  getExpenseHisoryWithPagination(
-    page: number,
-    size: number,
-    userId: number
-  ) {
+  getExpenseHisoryWithPagination(page: number, size: number, userId: number) {
     const filterReq = {
       page,
       size,

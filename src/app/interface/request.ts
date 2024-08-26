@@ -112,6 +112,9 @@ export interface editPosition {
   posId: number;
 }
 
-
-
-
+export interface budgetCreate {
+  level: string;
+  opd: number;
+  ipd: number;
+  room: number;
+}
