@@ -121,6 +121,11 @@ export class ApiService {
       .pipe(map((res) => res));
   }
 
+  updateExpense(req: CreateExpenseRequest, id: number) {
+    const url = `${this.welfareUrl}/expenses/update/${id}`;
+    return this.http.put<ApiResponse<any>>(url, req).pipe(map((res) => res));
+  }
+
   getExpenseUidAndYear(
     uid: number,
     year: number
@@ -204,9 +209,6 @@ export class ApiService {
       .pipe(map((res) => res.responseData.result));
   }
 
-  
-  
-  
   getEmplistByName(term: string): Observable<any[]> {
     return this.http
       .get<any[]>(`${this.trainingUrl}/seacrhUser/byNames?searchTerm=${term}`)
@@ -283,37 +285,51 @@ export class ApiService {
       .pipe(map((res) => res.responseData.result));
   }
 
-  editPosition(req : editPosition)  {
+  editPosition(req: editPosition) {
     return this.http
-     .post<any>(`${this.trainingUrl}/edit/position`, req)
-     .pipe(map((res) => res));
+      .post<any>(`${this.trainingUrl}/edit/position`, req)
+      .pipe(map((res) => res));
   }
 
-  createPosition(req : createPosition)  {
+  createPosition(req: createPosition) {
     return this.http
-     .post<any>(`${this.trainingUrl}/createPosition`, req)
-     .pipe(map((res) => res));
+      .post<any>(`${this.trainingUrl}/createPosition`, req)
+      .pipe(map((res) => res));
   }
 
-  
-
-  
   deletePosition(id: number): Observable<ApiResponse<any>> {
     return this.http
-      .delete<ApiResponse<any>>(`${this.trainingUrl}/del/position`,{
-        params: { pId: id},
+      .delete<ApiResponse<any>>(`${this.trainingUrl}/del/position`, {
+        params: { pId: id },
       })
       .pipe(map((res) => res));
   }
 
+  createNewLevel(req: level): Observable<level> {
+    return this.http
+      .post<ApiResponse<level>>(`${this.welfareUrl}/budget/create`, req)
+      .pipe(map((res) => res.responseData.result));
+  }
 
+  deleteLevel(id: number): Observable<any> {
+    return this.http
+      .delete<any>(`${this.welfareUrl}/budget/delete`, {
+        params: { budgetId: id },
+      })
+      .pipe(map((res) => res));
+  }
 
+  editLevel(req: level): Observable<level> {
+    const url = `${this.welfareUrl}/budget/editBudget/${req.id}`;
+    const payload = {
+      ipd: req.ipd,
+      opd: req.opd,
+      room: req.room,
+      level: req.level,
+    };
 
-
-
-
-
-
-
+    return this.http
+      .put<ApiResponse<level>>(url, payload)
+      .pipe(map((res) => res.responseData.result));
+  }
 }
-

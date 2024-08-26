@@ -111,3 +111,8 @@ export interface ExpenseForm {
   details: FormControl<string | null>;
   notes: FormControl<string | null>;
 }
+
+export interface SearchEmpTableForms {
+  searchType: FormControl<string | null>;
+  searchValue: FormControl<string | null>;
+}

@@ -1,10 +1,15 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { tap } from 'rxjs';
 import { level } from 'src/app/interface/common';
 import { Employee } from 'src/app/interface/employee';
-import { userForms } from 'src/app/interface/form';
+import { SearchEmpTableForms, userForms } from 'src/app/interface/form';
 import { createEmployeeReq } from 'src/app/interface/request';
 import {
   Company,
@@ -39,6 +44,11 @@ export class ManagementUserPageComponent implements OnInit, AfterViewInit {
   centerEmp: Employee[] = [];
   isEditMode: boolean = false;
   editId: number = 0;
+  searchGroupControl!: FormGroup<SearchEmpTableForms>;
+  empCodeAutoComplte: string[] = [];
+  empFullNameAutoComplte: string[] = [];
+  empPositionAutoComplte: string[] = [];
+  autoCompleteValue: string[] = [];
   constructor(
     private apiService: ApiService,
     private commonService: CommonService,
@@ -63,6 +73,11 @@ export class ManagementUserPageComponent implements OnInit, AfterViewInit {
       empStartDate: [null, Validators.required],
       empPassDate: [null],
     }) as FormGroup<userForms>;
+
+    this.searchGroupControl = this.fb.group({
+      searchType: [''],
+      searchValue: [''],
+    }) as FormGroup<SearchEmpTableForms>;
   }
 
   async ngOnInit() {
@@ -145,6 +160,14 @@ export class ManagementUserPageComponent implements OnInit, AfterViewInit {
         this.pageLength = this.centerEmp.length;
         this.userResult = this.centerEmp.slice(0, 5);
         Swal.close();
+
+        this.empPositionAutoComplte = this.allPositions.map(
+          (item) => item.name
+        );
+        this.empCodeAutoComplte = this.centerEmp.map((item) => item.empCode);
+        this.empFullNameAutoComplte = this.centerEmp.map(
+          (item) => `${item.firstname} ${item.lastname}`
+        );
       } catch (error) {
         console.error(error);
         this.swalService.showError('เกิดข้อผิดพลาด');
@@ -428,6 +451,7 @@ export class ManagementUserPageComponent implements OnInit, AfterViewInit {
       this.cancelAction();
     }
   }
+
   // async initailSectorAndDept() {
   //   try {
   //     const res = await this.commonService.getSectorAndDeptsListByCompanyName(this.userForms.controls.company.value);
