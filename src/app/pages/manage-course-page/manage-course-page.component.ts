@@ -16,7 +16,7 @@ import { SwalService } from 'src/app/services/swal.service';
 @Component({
   selector: 'app-manage-course-page',
   templateUrl: './manage-course-page.component.html',
-  styleUrls: ['./manage-course-page.component.scss']
+  styleUrls: ['./manage-course-page.component.scss'],
 })
 export class ManageCoursePageComponent implements OnInit {
   courseForm!: FormGroup<CourseForm>;
@@ -47,7 +47,7 @@ export class ManageCoursePageComponent implements OnInit {
   }
 
   async ngOnInit() {
-    await this.getAllCourses()
+    await this.getAllCourses();
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
@@ -56,12 +56,18 @@ export class ManageCoursePageComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-
   async createTraining() {
     try {
-
-      const startDate = this.commonService.formatDateToYYYYMMDDString(this.courseForm.value.startDate ? new Date(this.courseForm.value.startDate) : new Date())
-      const endDate = this.commonService.formatDateToYYYYMMDDString(this.courseForm.value.endDate ? new Date(this.courseForm.value.endDate) : new Date())
+      const startDate = this.commonService.formatDateToYYYYMMDDString(
+        this.courseForm.value.startDate
+          ? new Date(this.courseForm.value.startDate)
+          : new Date()
+      );
+      const endDate = this.commonService.formatDateToYYYYMMDDString(
+        this.courseForm.value.endDate
+          ? new Date(this.courseForm.value.endDate)
+          : new Date()
+      );
 
       if (this.courseForm.valid) {
         // Merge timestart and timeend into a single time field
@@ -75,7 +81,9 @@ export class ManageCoursePageComponent implements OnInit {
           time: mergedTime,
           hours: this.courseForm.value.hours || '',
           note: this.courseForm.value.note || '',
-          price: parseFloat((this.courseForm.value.price || '').replace(/,/g, '')),
+          price: parseFloat(
+            (this.courseForm.value.price || '').replace(/,/g, '')
+          ),
           priceProject: this.courseForm.value.priceProject || '',
           institute: this.courseForm.value.institute || '',
           place: this.courseForm.value.place || '',
@@ -83,30 +91,33 @@ export class ManageCoursePageComponent implements OnInit {
         };
 
         if (this.editMode) {
-          const confirmed = await this.swalService.showConfirm("คุณต้องการแก้ไขหรือไม่");
+          const confirmed = await this.swalService.showConfirm(
+            'คุณต้องการแก้ไขหรือไม่'
+          );
           if (confirmed) {
             // call editCourseById API
-            const res = await this.apiService.editCourseById(this.editId, req).toPromise();
+            const res = await this.apiService
+              .editCourseById(this.editId, req)
+              .toPromise();
 
             if (res?.responseMessage == 'ทำรายการเรียบร้อย') {
-              this.clearForm()
-              this.getAllCourses()
-              this.swalService.showSuccess("สำเร็จ")
+              this.clearForm();
+              this.getAllCourses();
+              this.swalService.showSuccess('สำเร็จ');
               // location.reload()
             } else {
               throw new Error(res?.msg);
             }
           } else {
-            console.log("ยกเลิก")
+            console.log('ยกเลิก');
           }
-
         } else {
           // call createTraining API
           const res = await this.apiService.createTraining(req).toPromise();
           if (res?.responseMessage == 'ทำรายการเรียบร้อย') {
-            this.clearForm()
-            this.getAllCourses()
-            this.swalService.showSuccess("สำเร็จ")
+            this.clearForm();
+            this.getAllCourses();
+            this.swalService.showSuccess('สำเร็จ');
             // location.reload()
           } else {
             throw new Error(res?.msg);
@@ -121,19 +132,28 @@ export class ManageCoursePageComponent implements OnInit {
   }
 
   allCourses: any[] = [];
-  displayedColumns: string[] = ['courseName', 'startDate', 'endDate', 'time', 'note', 'price', 'institute', 'place', 'editOrDelete'];
+  displayedColumns: string[] = [
+    'courseName',
+    'startDate',
+    'endDate',
+    'time',
+    'note',
+    'price',
+    'institute',
+    'place',
+    'editOrDelete',
+  ];
   async getAllCourses() {
     const res = await this.apiService.getAllCoursesList().toPromise();
-    console.log(res)
+    console.log(res);
     if (res) {
       this.allCourses = res.sort((a: any, b: any) => a.id - b.id);
-      this.allCourses = res.map(course => ({
+      this.allCourses = res.map((course) => ({
         ...course,
-        price: this.onBlurPriceStartEdit(course.price)
+        price: this.onBlurPriceStartEdit(course.price),
       }));
 
       this.dataSource.data = this.allCourses; // กำหนดข้อมูลให้กับ dataSource
-
     } else {
       this.dataSource.data = [];
     }
@@ -202,14 +222,13 @@ export class ManageCoursePageComponent implements OnInit {
     }
   }
 
-
   editMode: boolean = false;
   editId: number = -1;
   editBtn(element: CreateTrainingResponse) {
     this.editMode = true;
     this.editId = Number(element.id);
 
-    const [timeStartClone, timeEndClone] = element.time.split("-")
+    const [timeStartClone, timeEndClone] = element.time.split('-');
 
     this.courseForm.setValue({
       id: element.id + '',
@@ -223,8 +242,8 @@ export class ManageCoursePageComponent implements OnInit {
       price: element.price + '',
       priceProject: element.priceProject,
       institute: element.institute,
-      place: element.place
-    })
+      place: element.place,
+    });
   }
 
   onBlurPriceStartEdit(numericValue: number): string {
@@ -243,50 +262,50 @@ export class ManageCoursePageComponent implements OnInit {
   }
 
   changeDate(dataString: string) {
-    return this.buddhistDatePipe.transform(dataString)
+    return this.buddhistDatePipe.transform(dataString);
   }
 
   deleteId: number = -1;
   async deleteBtn(element: CreateTrainingResponse) {
-
     try {
       this.deleteId = Number(element.id);
 
-      const confirmed = await this.swalService.showConfirm("คุณต้องการลบหัวข้อการอบรมนี้หรือไม่");
+      const confirmed = await this.swalService.showConfirm(
+        'คุณต้องการลบหัวข้อการอบรมนี้หรือไม่'
+      );
       if (confirmed) {
-        const res = await this.apiService.deleteCourseById(this.deleteId).toPromise();
-        this.getAllCourses()
-        this.swalService.showSuccess("สำเร็จ")
-        this.clearForm()
+        const res = await this.apiService
+          .deleteCourseById(this.deleteId)
+          .toPromise();
+        this.getAllCourses();
+        this.swalService.showSuccess('สำเร็จ');
+        this.clearForm();
       } else {
-        console.log("ยกเลิก")
+        console.log('ยกเลิก');
       }
-      this.deleteId = -1 // clear
-
+      this.deleteId = -1; // clear
     } catch (error) {
       // show error
       console.error(error);
       this.swalService.showError('หัวข้อนี้ไม่สามารถลบได้');
     }
-
   }
 
   clearForm() {
     this.courseForm.reset();
-    this.editMode = false
-    this.editId = -1
+    this.editMode = false;
+    this.editId = -1;
   }
-
 
   // test ตัวแปร
   testVariable() {
-    console.log("editMode : ", this.editMode)
-    console.log("editId : ", this.editId)
-    console.log("deleteBtn : ", this.deleteBtn)
-    console.log("deleteId : ", this.deleteId)
-    console.log("courseForm : ", this.courseForm)
-    console.log("allCourses : ", this.allCourses)
-    console.log("invalidhoursInput : ", this.invalidhoursInput)
-    console.log("invalidhoursInput : ", this.invalidhoursInput)
+    console.log('editMode : ', this.editMode);
+    console.log('editId : ', this.editId);
+    console.log('deleteBtn : ', this.deleteBtn);
+    console.log('deleteId : ', this.deleteId);
+    console.log('courseForm : ', this.courseForm);
+    console.log('allCourses : ', this.allCourses);
+    console.log('invalidhoursInput : ', this.invalidhoursInput);
+    console.log('invalidhoursInput : ', this.invalidhoursInput);
   }
 }

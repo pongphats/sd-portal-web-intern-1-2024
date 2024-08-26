@@ -69,7 +69,6 @@ export class WelfareFormsPageComponent implements OnInit {
       this.calculateDaysCount();
     });
 
-
     // this.getAllExpense()
   }
 
@@ -117,10 +116,12 @@ export class WelfareFormsPageComponent implements OnInit {
 
   searchEmp() {
     // เช็คว่าพิมพ์ชื่อครบถ้วน
-    const condition = this.dataListEmp[0].firstname + " " + this.dataListEmp[0].lastname === this.welfareForm.value.fullName
+    const condition =
+      this.dataListEmp[0].firstname + ' ' + this.dataListEmp[0].lastname ===
+      this.welfareForm.value.fullName;
     if (this.dataListEmp.length === 1 && condition) {
       this.dataEmp = this.dataListEmp[0];
-      const data = this.dataEmp
+      const data = this.dataEmp;
       this.datafullName = `${data.title} ${data.firstname} ${data.lastname}`;
       this.dataEmpCode = data.empCode;
       this.dataSectorName = data.sector.sectorName;
@@ -132,8 +133,7 @@ export class WelfareFormsPageComponent implements OnInit {
       this.dataTypeEmp = data.typeEmp || '-';
 
       this.getExpenseRemainByUserIdAndLevel(data);
-      this.getExpenseUidAndYear()
-
+      this.getExpenseUidAndYear();
     } else {
       this.datafullName = '';
       this.dataEmpCode = '';
@@ -144,13 +144,13 @@ export class WelfareFormsPageComponent implements OnInit {
       this.dataStartDate = '';
       this.dataPassDate = '';
       this.dataTypeEmp = '';
-      this.dataOPD = ''
-      this.dataIPD = ''
-      this.dataRoom = ''
-      this.dataSource.data = []
-      this.allExpense = []
+      this.dataOPD = '';
+      this.dataIPD = '';
+      this.dataRoom = '';
+      this.dataSource.data = [];
+      this.allExpense = [];
       this.dataEmp = undefined;
-      this.swalService.showWarning("กรุณากรอกชื่อให้ครบถ้วน")
+      this.swalService.showWarning('กรุณากรอกชื่อให้ครบถ้วน');
     }
   }
 
@@ -166,46 +166,54 @@ export class WelfareFormsPageComponent implements OnInit {
     try {
       const userId = data.id;
       const level = data.level ? data.level : '';
-      const res = await this.apiService.getExpenseRemainByUserIdAndLevel(userId, level).toPromise();
+      const res = await this.apiService
+        .getExpenseRemainByUserIdAndLevel(userId, level)
+        .toPromise();
       if (res) {
-        this.dataOPD = this.convertNumberToStringFormat(res.opd)
+        this.dataOPD = this.convertNumberToStringFormat(res.opd);
         this.dataIPD = this.convertNumberToStringFormat(res.ipd);
         this.dataRoom = this.convertNumberToStringFormat(res.room);
       }
     } catch (error) {
-      console.log("ไม่มีการระบุ Level")
-      this.dataOPD = ''
-      this.dataIPD = ''
-      this.dataRoom = ''
+      console.log('ไม่มีการระบุ Level');
+      this.dataOPD = '';
+      this.dataIPD = '';
+      this.dataRoom = '';
     }
   }
 
   async onSave() {
-
     if (this.expenseForm.valid && this.welfareForm.valid) {
-
       let startDate = '';
       let endDate = '';
       const startDateValue = this.expenseForm.value.startDate;
       const endDateValue = this.expenseForm.value.endDate;
       if (startDateValue && endDateValue) {
-        startDate = this.commonService.formatDateToYYYYMMDDString(new Date(startDateValue))
-        endDate = this.commonService.formatDateToYYYYMMDDString(new Date(endDateValue))
+        startDate = this.commonService.formatDateToYYYYMMDDString(
+          new Date(startDateValue)
+        );
+        endDate = this.commonService.formatDateToYYYYMMDDString(
+          new Date(endDateValue)
+        );
       }
 
       const type = this.expenseForm.value.treatmentType;
       let ipd = 0;
       let opd = 0;
       if (type == 'ipd') {
-        ipd = Number(this.expenseForm.value.medicalCost?.toString().replace(',', ''))
+        ipd = Number(
+          this.expenseForm.value.medicalCost?.toString().replace(',', '')
+        );
       } else if (type == 'opd') {
-        opd = Number(this.expenseForm.value.medicalCost?.toString().replace(',', ''))
+        opd = Number(
+          this.expenseForm.value.medicalCost?.toString().replace(',', '')
+        );
       }
 
       const days = Number(this.expenseForm.value.daysCount);
 
-      const userId = this.dataEmp?.id
-      const level = this.dataEmp?.level
+      const userId = this.dataEmp?.id;
+      const level = this.dataEmp?.level;
 
       const req: CreateExpenseRequest = {
         types: type ? type : '',
@@ -215,32 +223,39 @@ export class WelfareFormsPageComponent implements OnInit {
         days: days,
         ipd: ipd,
         opd: opd,
-        roomService: Number(this.expenseForm.value.roomAndBoardCost?.toString().replace(',', '')),
+        roomService: Number(
+          this.expenseForm.value.roomAndBoardCost?.toString().replace(',', '')
+        ),
         description: this.expenseForm.value.details || '',
         remark: this.expenseForm.value.notes || '',
         adMission: '',
-        userId: userId || -1
+        userId: userId || -1,
       };
 
       if (this.editMode) {
-        console.log('edit', req)
-        const confirmed = await this.swalService.showConfirm("คุณต้องการแก้ไขรายการเบิกค่ารักษาพยาบาลนี้หรือไม่");
+        console.log('edit', req);
+        const confirmed = await this.swalService.showConfirm(
+          'คุณต้องการแก้ไขรายการเบิกค่ารักษาพยาบาลนี้หรือไม่'
+        );
         if (confirmed) {
           this.editMode = false;
-          this.swalService.showSuccess('แก้ไขรายการการเบิกค่ารักษาพยาบาลเรียบร้อยแล้ว')
+          this.swalService.showSuccess(
+            'แก้ไขรายการการเบิกค่ารักษาพยาบาลเรียบร้อยแล้ว'
+          );
           this.clearForm();
-        }else{
-          console.log("ไม่แก้ไข")
+        } else {
+          console.log('ไม่แก้ไข');
         }
-
       } else {
-        const res = await this.apiService.createExpense(req).toPromise()
+        const res = await this.apiService.createExpense(req).toPromise();
         if (res?.responseMessage == 'กรอกข้อมูลเรียบร้อย') {
-          this.swalService.showSuccess('เพิ่มรายการการเบิกค่ารักษาพยาบาลเรียบร้อยแล้ว')
+          this.swalService.showSuccess(
+            'เพิ่มรายการการเบิกค่ารักษาพยาบาลเรียบร้อยแล้ว'
+          );
           this.clearForm();
         }
       }
-      this.searchEmp()
+      this.searchEmp();
     }
   }
 
@@ -286,7 +301,7 @@ export class WelfareFormsPageComponent implements OnInit {
    * part3
    */
   searchHistoryByYear() {
-    console.log(this.yearForm.value.yearSearch)
+    console.log(this.yearForm.value.yearSearch);
   }
 
   /**
@@ -297,36 +312,46 @@ export class WelfareFormsPageComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   allExpense: any[] = [];
-  displayedColumns: string[] = ['No', 'date', 'detail', 'ipd', 'opd', 'room', 'price', 'editOrDelete'];
+  displayedColumns: string[] = [
+    'No',
+    'date',
+    'detail',
+    'ipd',
+    'opd',
+    'room',
+    'price',
+    'editOrDelete',
+  ];
   async getExpenseUidAndYear() {
     if (this.dataEmp) {
-      const yearInput = this.yearForm.value.yearSearch
+      const yearInput = this.yearForm.value.yearSearch;
       if (/^\d+$/.test(yearInput.toString())) {
-        const uid = this.dataEmp.id
-        const year = yearInput - 543
-        const res = await this.apiService.getExpenseUidAndYear(uid, year).toPromise();
+        const uid = this.dataEmp.id;
+        const year = yearInput - 543;
+        const res = await this.apiService
+          .getExpenseUidAndYear(uid, year)
+          .toPromise();
         if (res) {
-          this.allExpense = res.map((expense: ExpenseRemainByYearResponse, index: number) => ({
-            ...expense,
-            no: index + 1
-          }));
+          this.allExpense = res.map(
+            (expense: ExpenseRemainByYearResponse, index: number) => ({
+              ...expense,
+              no: index + 1,
+            })
+          );
           this.dataSource.data = this.allExpense;
         }
       } else {
-        this.swalService.showWarning("กรุณากรอกปีให้ถูกต้อง")
+        this.swalService.showWarning('กรุณากรอกปีให้ถูกต้อง');
       }
-
     } else {
-      this.swalService.showWarning("ต้องค้นหาชื่อพนักงานก่อน")
+      this.swalService.showWarning('ต้องค้นหาชื่อพนักงานก่อน');
     }
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-
   }
 
   editMode: boolean = false;
   editBtn(element: ExpenseRemainByYearResponse) {
-
     this.editMode = true;
     const type = element.opd !== 0 ? 'opd' : 'ipd';
     const medicalCost = element.opd !== 0 ? element.opd : element.ipd;
@@ -335,24 +360,28 @@ export class WelfareFormsPageComponent implements OnInit {
       treatmentType: type,
       startDate: element.startDate,
       endDate: element.endDate,
-      daysCount: (element.days).toString(),
+      daysCount: element.days.toString(),
       medicalCost: this.convertNumberToStringFormat(medicalCost),
       roomAndBoardCost: this.convertNumberToStringFormat(element.roomService),
       details: element.description,
-      notes: element.remark
+      notes: element.remark,
     });
   }
 
   async deleteBtn(element: any) {
-    const confirmed = await this.swalService.showConfirm("คุณต้องการลบรายการเบิกนี้หรือไม่");
+    const confirmed = await this.swalService.showConfirm(
+      'คุณต้องการลบรายการเบิกนี้หรือไม่'
+    );
     if (confirmed) {
-      console.log("ลบแล้ว")
-      this.swalService.showSuccess('ลบรายการการเบิกค่ารักษาพยาบาลนี้เรียบร้อยแล้ว')
-      this.searchEmp()
+      console.log('ลบแล้ว');
+      this.swalService.showSuccess(
+        'ลบรายการการเบิกค่ารักษาพยาบาลนี้เรียบร้อยแล้ว'
+      );
+      this.searchEmp();
     } else {
-      console.log("ไม่ลบ")
+      console.log('ไม่ลบ');
     }
-    console.log("delete", element)
+    console.log('delete', element);
   }
 
   convertNumberToStringFormat(number: number): string {
