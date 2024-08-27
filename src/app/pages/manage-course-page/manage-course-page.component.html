@@ -230,7 +230,7 @@
   </form>
 
   <!-- table -->
-  <div class="w-full overflow-x-auto mt-3 rounded-t-lg">
+  <div class="w-full overflow-x-auto mt-3 rounded-t-lg shadow-card">
     <table
       mat-table
       [dataSource]="dataSource"
@@ -242,14 +242,14 @@
         <th
           mat-header-cell
           *matHeaderCellDef
-          class="bg-content dark:bg-transparent !text-center text-sm font-semibold text-slate-500 w-40 lg:w-[15%] !pl-0"
+          class="bg-content dark:bg-content-dark !text-center text-sm font-semibold text-slate-500 w-40 lg:w-[15%] !pl-0"
         >
           หัวข้อในการอบรม
         </th>
         <td
           mat-cell
           *matCellDef="let element"
-          class="bg-content dark:bg-[#494949] !px-2 xl:!pl-[2%] !py-2 text-sm text-slate-600 w-40 lg:w-[15%] whitespace-pre-line overflow-auto"
+          class="bg-content dark:bg-[#2d2e2f] !px-2 xl:!pl-[2%] !py-2 text-sm text-slate-600 w-40 lg:w-[15%] whitespace-pre-line overflow-auto"
         >
           {{ element.courseName }}
         </td>
@@ -260,14 +260,14 @@
         <th
           mat-header-cell
           *matHeaderCellDef
-          class="bg-content dark:bg-transparent !text-center text-sm font-semibold text-slate-500 w-24 lg:w-[8%]"
+          class="bg-content dark:bg-content-dark !text-center text-sm font-semibold text-slate-500 w-24 lg:w-[8%]"
         >
           วันเริ่มอบรม
         </th>
         <td
           mat-cell
           *matCellDef="let element"
-          class="bg-content dark:bg-[#494949] !px-2 !py-2 text-sm text-slate-600 w-24 lg:w-[8%] !text-center"
+          class="bg-content dark:bg-[#2d2e2f] !px-2 !py-2 text-sm text-slate-600 w-24 lg:w-[8%] !text-center"
         >
           {{ changeDate(element.startDate) }}
         </td>
@@ -278,14 +278,14 @@
         <th
           mat-header-cell
           *matHeaderCellDef
-          class="bg-content dark:bg-transparent !text-center text-sm font-semibold text-slate-500 w-28 lg:w-[12%]"
+          class="bg-content dark:bg-content-dark !text-center text-sm font-semibold text-slate-500 w-28 lg:w-[12%]"
         >
           วันสิ้นสุดการอบรม
         </th>
         <td
           mat-cell
           *matCellDef="let element"
-          class="bg-content dark:bg-[#494949] !px-2 !py-2 text-sm text-slate-600 w-28 lg:w-[12%] !text-center"
+          class="bg-content dark:bg-[#2d2e2f] !px-2 !py-2 text-sm text-slate-600 w-28 lg:w-[12%] !text-center"
         >
           {{ changeDate(element.endDate) }}
         </td>
@@ -296,14 +296,14 @@
         <th
           mat-header-cell
           *matHeaderCellDef
-          class="bg-content dark:bg-transparent !text-center text-sm font-semibold text-slate-500 w-24 lg:w-[6%]"
+          class="bg-content dark:bg-content-dark !text-center text-sm font-semibold text-slate-500 w-24 lg:w-[6%]"
         >
           เวลา
         </th>
         <td
           mat-cell
           *matCellDef="let element"
-          class="bg-content dark:bg-[#494949] !px-2 !py-2 text-sm text-slate-600 w-24 lg:w-[6%] !text-center"
+          class="bg-content dark:bg-[#2d2e2f] !px-2 !py-2 text-sm text-slate-600 w-24 lg:w-[6%] !text-center"
         >
           {{ element.time }}
         </td>
@@ -314,14 +314,14 @@
         <th
           mat-header-cell
           *matHeaderCellDef
-          class="bg-content dark:bg-transparent !text-center text-sm font-semibold text-slate-500 w-24 lg:w-[8%]"
+          class="bg-content dark:bg-content-dark !text-center text-sm font-semibold text-slate-500 w-24 lg:w-[8%]"
         >
           เพิ่มเติม
         </th>
         <td
           mat-cell
           *matCellDef="let element"
-          class="bg-content dark:bg-[#494949] !px-2 !py-2 text-sm text-slate-600 w-24 lg:w-[8%] 2xl:!text-center"
+          class="bg-content dark:bg-[#2d2e2f] !px-2 !py-2 text-sm text-slate-600 w-24 lg:w-[8%] 2xl:!text-center"
         >
           {{ element.note }}
         </td>
@@ -332,14 +332,14 @@
         <th
           mat-header-cell
           *matHeaderCellDef
-          class="bg-content dark:bg-transparent !text-center text-sm font-semibold text-slate-500 w-24 lg:w-[8%]"
+          class="bg-content dark:bg-content-dark !text-center text-sm font-semibold text-slate-500 w-24 lg:w-[8%]"
         >
           ค่าใช้จ่าย
         </th>
         <td
           mat-cell
           *matCellDef="let element"
-          class="bg-content dark:bg-[#494949] !px-2 !py-2 text-sm text-slate-600 !text-right w-24 lg:w-[8%] 2xl:!pr-[2%]"
+          class="bg-content dark:bg-[#2d2e2f] !px-2 !py-2 text-sm text-slate-600 !text-right w-24 lg:w-[8%] 2xl:!pr-[2%]"
         >
           {{ element.price }}
         </td>
@@ -350,14 +350,14 @@
         <th
           mat-header-cell
           *matHeaderCellDef
-          class="bg-content dark:bg-transparent !text-center text-sm font-semibold text-slate-500 w-24 lg:w-[8%]"
+          class="bg-content dark:bg-content-dark !text-center text-sm font-semibold text-slate-500 w-24 lg:w-[8%]"
         >
           ผู้จัดอบรม
         </th>
         <td
           mat-cell
           *matCellDef="let element"
-          class="bg-content dark:bg-[#494949] !px-2 !py-2 text-sm text-slate-600 w-24 lg:w-[8%]"
+          class="bg-content dark:bg-[#2d2e2f] !px-2 !py-2 text-sm text-slate-600 w-24 lg:w-[8%]"
         >
           {{ element.institute }}
         </td>
@@ -368,14 +368,14 @@
         <th
           mat-header-cell
           *matHeaderCellDef
-          class="bg-content dark:bg-transparent !text-center text-sm font-semibold text-slate-500 w-32 lg:w-[15%]"
+          class="bg-content dark:bg-content-dark !text-center text-sm font-semibold text-slate-500 w-32 lg:w-[15%]"
         >
           สถานที่ฝึกอบรม
         </th>
         <td
           mat-cell
           *matCellDef="let element"
-          class="bg-content dark:bg-[#494949] !px-2 xl:!pl-[2%] !py-2 text-sm text-slate-600 w-32 lg:w-[15%] whitespace-pre-line overflow-auto"
+          class="bg-content dark:bg-[#2d2e2f] !px-2 xl:!pl-[2%] !py-2 text-sm text-slate-600 w-32 lg:w-[15%] whitespace-pre-line overflow-auto"
         >
           {{ element.place }}
         </td>
@@ -386,12 +386,12 @@
         <th
           mat-header-cell
           *matHeaderCellDef
-          class="bg-content dark:bg-transparent !text-center text-sm font-semibold text-slate-500 !px-2 w-60 lg:w-[20%]"
+          class="bg-content dark:bg-content-dark !text-center text-sm font-semibold text-slate-500 !px-2 w-60 lg:w-[20%]"
         ></th>
         <td
           mat-cell
           *matCellDef="let element"
-          class="!px-2 text-sm w-60 lg:w-[20%] bg-content dark:bg-[#494949]"
+          class="!px-2 text-sm w-60 lg:w-[20%] bg-content dark:bg-[#2d2e2f]"
         >
           <div class="flex justify-center content-center">
             <button
@@ -419,7 +419,7 @@
   <mat-paginator
     [pageSize]="5"
     [pageSizeOptions]="[5, 10]"
-    class="rounded-b-lg bg-content"
+    class="rounded-b-lg bg-content dark:bg-content-dark shadow-card"
   ></mat-paginator>
 </div>
 <!-- </div> -->
