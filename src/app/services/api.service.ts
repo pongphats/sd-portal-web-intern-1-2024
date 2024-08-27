@@ -34,7 +34,7 @@ export class ApiService {
   trainingUrl: string = environment.trainingService;
   welfareUrl: string = environment.welfareService;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   saveBudgetByYear(
     req: saveBudgetByYearRequest
@@ -143,6 +143,11 @@ export class ApiService {
     return this.http
       .get<ApiResponse<any>>(`${this.welfareUrl}/expenses/getAllExpenseInUsed`)
       .pipe(map((res) => res.responseData.result));
+  }
+
+  deleteExpense(expenseId: number): Observable<ApiResponse<any>> {
+    const url = `${this.welfareUrl}/expenses/deleteExpenses/${expenseId}`;
+    return this.http.delete<ApiResponse<any>>(url).pipe(map((res) => res));
   }
 
   getAllActiveEmpsByDeptId(deptId: number): Observable<Employee[]> {
@@ -373,8 +378,4 @@ export class ApiService {
       .pipe(map((res) => res));
   }
 
-  deleteExpense(expenseId: number): Observable<any> {
-    const url = `${this.welfareUrl}/expenses/deleteExpenses/${expenseId}`;
-    return this.http.delete<any>(url).pipe(map((res) => res));
-  }
 }

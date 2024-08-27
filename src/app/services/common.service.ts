@@ -14,7 +14,7 @@ export class CommonService {
   trainingUrl: string = environment.trainingService;
   welfareUrl: string = environment.welfareService;
 
-  constructor(private http: HttpClient, private apiService: ApiService) {}
+  constructor(private http: HttpClient, private apiService: ApiService) { }
 
   getCompanyIdByName(name: string): Observable<number> {
     return this.http

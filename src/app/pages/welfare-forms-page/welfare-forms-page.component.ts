@@ -214,7 +214,7 @@ export class WelfareFormsPageComponent implements OnInit {
       const medicalCost = parseFloat(control.value.replace(',', ''));
       // *ถ้าไม่ใช่ตัวเลข
       if (isNaN(medicalCost)) {
-          return { duplicate1: true };
+        return { duplicate1: true };
       } else {
         const allowedOPD = Number(this.dataOPD.replace(',', ''))
         const allowedIPD = Number(this.dataIPD.replace(',', ''))
@@ -474,14 +474,16 @@ export class WelfareFormsPageComponent implements OnInit {
     );
     if (confirmed) {
       console.log('ลบแล้ว');
-      this.swalService.showSuccess(
-        'ลบรายการการเบิกค่ารักษาพยาบาลนี้เรียบร้อยแล้ว'
-      );
-      this.searchEmp();
+      const res = await this.apiService.deleteExpense(element.id).toPromise();
+      if (res?.responseMessage == 'ลบข้อมูลเรียบร้อย') {
+        this.swalService.showSuccess(
+          'ลบรายการการเบิกค่ารักษาพยาบาลนี้เรียบร้อยแล้ว'
+        );
+        this.searchEmp();
+      }
     } else {
       console.log('ไม่ลบ');
     }
-    console.log('delete', element);
   }
 
   convertNumberToStringFormat(number: number): string {
