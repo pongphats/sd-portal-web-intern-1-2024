@@ -372,4 +372,9 @@ export class ApiService {
       .get<TrainingTable[]>(`${this.trainingUrl}/findAllTraining`)
       .pipe(map((res) => res));
   }
+
+  deleteExpense(expenseId: number): Observable<any> {
+    const url = `${this.welfareUrl}/expenses/deleteExpenses/${expenseId}`;
+    return this.http.delete<any>(url).pipe(map((res) => res));
+  }
 }
