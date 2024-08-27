@@ -56,6 +56,8 @@ export class WelfareFormsPageComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.checkTreatmentType('opd');
+
     /**
      * TODO: Observer
      */
@@ -148,7 +150,6 @@ export class WelfareFormsPageComponent implements OnInit {
 
       this.getExpenseRemainByUserIdAndLevel(data);
       this.getExpenseUidAndYear();
-      this.validateAgain();
     }
     // *กรณีพิมพ์ไม่ครบ
     else {
@@ -180,7 +181,7 @@ export class WelfareFormsPageComponent implements OnInit {
   cloneDataOPD: string = '';
   cloneDataIPD: string = '';
   dataRoom: string = '';
-  // TODO: หาลิสต์ประวัติการเบิกค่ารักษาพยาบาลโดย uid และ year
+  // TODO: หาค่าคงเหลือในการเบิกค่ารักษาพยาบาลโดย uid และ level
   async getExpenseRemainByUserIdAndLevel(data: any) {
     try {
       const userId = data.id;
@@ -202,6 +203,7 @@ export class WelfareFormsPageComponent implements OnInit {
     // TODO: เก็บค่าคงเหลือตั้งต้นไว้
     this.cloneDataOPD = this.dataOPD
     this.cloneDataIPD = this.dataIPD
+    this.validateAgain();
   }
 
   validateAgain() {
@@ -218,6 +220,7 @@ export class WelfareFormsPageComponent implements OnInit {
       } else {
         const allowedOPD = Number(this.dataOPD.replace(',', ''))
         const allowedIPD = Number(this.dataIPD.replace(',', ''))
+        console.log(medicalCost, allowedIPD, allowedOPD)
 
         if (type === 'opd' && medicalCost > allowedOPD) {
           return { duplicate2: true };
@@ -238,7 +241,7 @@ export class WelfareFormsPageComponent implements OnInit {
   checkTreatmentType(type: any) {
     const controlRoomAndBoard = this.expenseForm.get('roomAndBoardCost');
     const controlDay = this.expenseForm.get('daysCount');
-    if (type === 'ipd') {
+    if (type === 'opd') {
       controlRoomAndBoard?.disable();
       controlDay?.disable();
       controlDay?.setValue('0');
@@ -412,6 +415,8 @@ export class WelfareFormsPageComponent implements OnInit {
     'price',
     'editOrDelete',
   ];
+
+    // TODO: หาลิสต์ประวัติการเบิกค่ารักษาพยาบาลโดย uid และ year
   async getExpenseUidAndYear() {
     if (this.dataEmp) {
       const yearInput = this.yearForm.value.yearSearch;
