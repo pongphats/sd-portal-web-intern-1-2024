@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ExpenseForm, WelfareForm } from 'src/app/interface/form';
 import { ApiService } from 'src/app/services/api.service';
 import { CommonService } from 'src/app/services/common.service';
@@ -39,7 +39,7 @@ export class WelfareFormsPageComponent implements OnInit {
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       daysCount: ['', Validators.required],
-      medicalCost: ['', Validators.required],
+      medicalCost: ['', [Validators.required, this.duplicateValidator.bind(this)]],
       roomAndBoardCost: ['', Validators.required],
       details: [''],
       notes: [''],
@@ -78,25 +78,9 @@ export class WelfareFormsPageComponent implements OnInit {
 
     this.expenseForm.get('treatmentType')?.valueChanges.subscribe(value => {
       this.checkTreatmentType(value);
+      this.validateAgain();
     });
 
-    this.expenseForm.get('medicalCost')?.valueChanges.subscribe(value => {
-      console.log("input", value)
-
-      // console.log("cloneDataIPD", this.cloneDataIPD.replace(',',''))
-      // console.log("cloneDataOPD", this.cloneDataOPD.replace(',',''))
-
-      // const type = this.expenseForm.value.treatmentType;
-      // let limit: number;
-      // if(type == "ipd"){
-      //   limit = Number(this.cloneDataIPD.replace(',',''))
-      // }else{
-      //   limit = Number(this.cloneDataOPD.replace(',','')) 
-      // }
-
-      // this.checkCostOver = (limit - Number(value)) < 0
-      // console.log("check", this.checkCostOver)
-    });
   }
 
   /**
@@ -164,6 +148,7 @@ export class WelfareFormsPageComponent implements OnInit {
 
       this.getExpenseRemainByUserIdAndLevel(data);
       this.getExpenseUidAndYear();
+      this.validateAgain();
     }
     // *กรณีพิมพ์ไม่ครบ
     else {
@@ -195,7 +180,6 @@ export class WelfareFormsPageComponent implements OnInit {
   cloneDataOPD: string = '';
   cloneDataIPD: string = '';
   dataRoom: string = '';
-  checkCostOver: boolean = false; //*เช็ค error ค่ารักษาพยาบาล ถ้าเบิกเกิน = true
   // TODO: หาลิสต์ประวัติการเบิกค่ารักษาพยาบาลโดย uid และ year
   async getExpenseRemainByUserIdAndLevel(data: any) {
     try {
@@ -218,6 +202,32 @@ export class WelfareFormsPageComponent implements OnInit {
     // TODO: เก็บค่าคงเหลือตั้งต้นไว้
     this.cloneDataOPD = this.dataOPD
     this.cloneDataIPD = this.dataIPD
+  }
+
+  validateAgain() {
+    this.expenseForm.get('medicalCost')?.updateValueAndValidity();
+  }
+  // TODO: Validate "medicalCost"
+  duplicateValidator(control: AbstractControl) {
+    if (this.dataEmp) {
+      const type = this.expenseForm.get('treatmentType')?.value;
+      const medicalCost = parseFloat(control.value.replace(',', ''));
+      // *ถ้าไม่ใช่ตัวเลข
+      if (isNaN(medicalCost)) {
+          return { duplicate1: true };
+      } else {
+        const allowedOPD = Number(this.dataOPD.replace(',', ''))
+        const allowedIPD = Number(this.dataIPD.replace(',', ''))
+
+        if (type === 'opd' && medicalCost > allowedOPD) {
+          return { duplicate2: true };
+        } else if (type === 'ipd' && medicalCost > allowedIPD) {
+          return { duplicate2: true };
+        }
+      }
+    }
+    return null;
+
   }
 
   /**
@@ -295,7 +305,7 @@ export class WelfareFormsPageComponent implements OnInit {
 
       //TODO: update
       if (this.editMode) {
-        console.log('edit', req);
+        console.log('edit req:', req);
         const confirmed = await this.swalService.showConfirm(
           'คุณต้องการแก้ไขรายการเบิกค่ารักษาพยาบาลนี้หรือไม่'
         );
@@ -314,6 +324,7 @@ export class WelfareFormsPageComponent implements OnInit {
       }
       //TODO: create
       else {
+        console.log("create req: ", req)
         const res = await this.apiService.createExpense(req).toPromise();
         if (res?.responseMessage == 'กรอกข้อมูลเรียบร้อย') {
           this.swalService.showSuccess(
@@ -327,11 +338,15 @@ export class WelfareFormsPageComponent implements OnInit {
   }
 
   clearForm() {
-    this.expenseForm.reset();
-    this.expenseForm.patchValue({
-      treatmentType: 'opd'
+    this.expenseForm.reset({
+      treatmentType: 'opd',
+      startDate: '',
+      endDate: '',
+      daysCount: '',
+      medicalCost: '',
+      details: '',
+      notes: '',
     });
-    this.expenseForm.setValue
     this.editMode = false;
     this.editId = -1;
     this.dataOPD = this.cloneDataOPD
