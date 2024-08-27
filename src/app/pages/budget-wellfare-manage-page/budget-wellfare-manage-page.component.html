@@ -64,7 +64,7 @@
         class="w-full lg:w-[9%] clear-button"
         *ngIf="!editingMode"
         type="button"
-        (click)="checkBudgetWellFareForm()"
+        (click)="onSave()"
       >
         <i class="bx bx-book-add"></i>
         <span>เพิ่มข้อมูล</span>
@@ -75,7 +75,7 @@
         color="primary"
         class="w-full lg:w-[9%] clear-button2 !mr-1"
         *ngIf="editingMode"
-        type="update"
+        type="button"
         (click)="onEditButtonClick()"
       >
         <i class="bx bx-book-add"></i>
@@ -87,7 +87,7 @@
         color="primary"
         class="w-full lg:w-[9%] clear-button1"
         *ngIf="editingMode"
-        type="update"
+        type="button"
         (click)="closeEditModal()"
       >
         <i class="bx bx-book-add"></i>
@@ -219,7 +219,7 @@
             mat-stroked-button
             color="primary"
             class="clear-button1"
-            (click)="onDeleteButtonClick()"
+            (click)="onDeleteButtonClick(element.id)"
           >
             <i class="bx bx-trash"></i>
             <span>ลบ</span>
