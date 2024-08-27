@@ -66,5 +66,101 @@
         </div>
       </div>
     </div>
+    <div class=""></div>
+    <div
+      class="bg-content drop-shadow-md rounded-md p-4 dark:bg-content-dark overflow-x-auto"
+    >
+      <table class="table-auto w-full">
+        <thead class="bg-content p-2 dark:bg-content-dark">
+          <tr class="p-4 dark:text-font-description-dark text-font-description">
+            <th class="text-center p-4">บริษัท</th>
+            <th class="text-center p-4">รหัสพนักงาน</th>
+            <th class="text-center p-4">ชื่อผู้ที่เข้าการอบรม</th>
+            <th class="text-center p-4">แผนก</th>
+            <th class="text-center p-4">เรื่อง</th>
+            <!-- <th class="text-center p-4">ระยะเวลา (วัน)</th> -->
+            <th class="text-center p-4">หมายเหตุ</th>
+            <th class="text-center p-4">สถานะ</th>
+            <th class="text-center p-4">ปุ่มตรวจสอบ</th>
+            <th class="text-center p-4">ปุ่มยกเลิก</th>
+            <th class="text-center p-4">ปุ่มพิมพ์รายงาน</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            class="text-font-description dark:text-font-description-dark"
+            *ngFor="let training of trainingTableList"
+          >
+            <td class="p-4 text-center">
+              {{ training.training.user.company.companyName }}
+            </td>
+            <td class="p-4 text-center">
+              {{ training.training.user.empCode }}
+            </td>
+            <td class="p-4 text-start whitespace-nowrap">
+              {{ training.training.user.firstname }} {{ " " }}
+              {{ training.training.user.lastname }}
+            </td>
+            <td class="p-4 text-center">
+              {{ training.training.user.department.deptName }}
+            </td>
+            <td class="p-4 text-start">
+              {{ training.training.courses[0].courseName }}
+            </td>
+            <!-- <td class="p-4 text-center">
+              {{
+                dateRange(
+                  training.training.courses[0].startDate,
+                  training.training.courses[0].endDate
+                )
+              }}
+            </td> -->
+            <td class="p-4 text-center">
+              {{
+                training.training.etcDetails != ""
+                  ? training.training.etcDetails
+                  : "-"
+              }}
+            </td>
+            <td class="p-4 text-center">
+              <!-- TODO status check with isDoResult -->
+            </td>
+            <td class="p-4 text-center">
+              <button
+                type="button"
+                mat-raised-button
+                class="!bg-orange-700 hover:!bg-orange-600"
+              >
+                <span class="!text-white"
+                  >ตรวจสอบ <i class="bx bx-search-alt"></i
+                ></span>
+              </button>
+            </td>
+            <td class="p-4 text-center">
+              <!-- TODO cancel status and cancel button -->
+              <button
+                type="button"
+                mat-raised-button
+                class="!bg-red-700 hover:!bg-red-600"
+              >
+                <span class="!text-white">ยกเลิก</span>
+              </button>
+            </td>
+            <td class="p-4 text-center">
+              <!-- TODO cancel status and cancel button -->
+              <button
+                type="button"
+                mat-raised-button
+                class="!bg-blue-700 hover:!bg-blue-600"
+              >
+                <span class="!text-white"
+                  >พิมพ์ <i class="bx bxs-file-pdf"></i
+                ></span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

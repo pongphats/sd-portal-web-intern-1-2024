@@ -14,27 +14,37 @@ export class AuthService {
 
   constructor(private http: HttpClient, private jwtService: JwtHelperService) {}
 
-  checkRole() {
+  checkRole(): string {
     const accessToken = localStorage.getItem('access_token');
+    let role = '';
     if (accessToken) {
       // Decode the JWT token
       const decodedToken = this.jwtService.decodeToken(accessToken);
       const userRoles = decodedToken.role.map(
         (role: { authority: any }) => role.authority
       );
-      return userRoles[0];
+      if (userRoles.length > 1) {
+        role = userRoles.sort().join('And');
+        // console.log(userRoles.sort().join('And'));
+        return role;
+      } else {
+        role = userRoles[0];
+        return role;
+      }
+    } else {
+      return '';
     }
   }
 
-  getUID() {
+  getUID(): number {
     const accessToken = localStorage.getItem('access_token');
     if (accessToken != null) {
       const decodedToken = this.jwtService.decodeToken(accessToken);
       const id = decodedToken.sub;
       return id;
+    } else {
+      return 0;
     }
-
-    return null;
   }
 
   login(loginReq: LoginRequest): Observable<LoginResponse> {

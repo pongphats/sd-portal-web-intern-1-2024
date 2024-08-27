@@ -24,6 +24,7 @@ import {
 } from '../interface/response';
 import { Course, level, sector } from '../interface/common';
 import { Employee } from '../interface/employee';
+import { TrainingTable } from '../interface/training';
 
 @Injectable({
   providedIn: 'root',
@@ -333,11 +334,7 @@ export class ApiService {
       .pipe(map((res) => res.responseData.result));
   }
 
-  getExpenseHisoryWithPagination(
-    page: number,
-    size: number,
-    userId: number
-  ) {
+  getExpenseHisoryWithPagination(page: number, size: number, userId: number) {
     const filterReq = {
       page,
       size,
@@ -356,5 +353,21 @@ export class ApiService {
         )
         .pipe(map((res) => res));
     }
+  }
+
+  findTrainingByPriveledgeUserId(userId: number): Observable<TrainingTable> {
+    return this.http
+      .get<TrainingTable>(`${this.trainingUrl}/findTrainingByApprove1Id`, {
+        params: {
+          approve1Id: userId,
+        },
+      })
+      .pipe(map((res) => res));
+  }
+
+  findAllTraining(): Observable<TrainingTable[]> {
+    return this.http
+      .get<TrainingTable[]>(`${this.trainingUrl}/findAllTraining`)
+      .pipe(map((res) => res));
   }
 }
