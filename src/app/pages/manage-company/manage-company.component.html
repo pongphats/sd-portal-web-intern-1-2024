@@ -13,7 +13,7 @@
 
                 <div class="flex flex-wrap items-center gap-4 p-4">
                     <div class="flex justify-center items-center mb-6 w-full sm:w-auto">
-                        <label class="flex-initial self-center w-28">บริษัท :</label>
+                        <label class="flex-initial self-center w-28 dark:text-[#ffffff]">บริษัท :</label>
                         <mat-radio-group aria-label="Select an option" formControlName="company"
                             (change)="loadSpecificCompanySectors()">
                             <mat-radio-button class="mr-4" value="PCCTH">PCCTH</mat-radio-button>
@@ -24,25 +24,25 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div class="flex flex-col">
-                        <label class="flex-initial self-center w-full sm:w-18">ฝ่าย (ภาษาไทย):</label>
+                        <label class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]">ฝ่าย (ภาษาไทย):</label>
                         <mat-form-field appearance="fill" class="w-full">
-                            <mat-label>ระบุชื่อฝ่ายเป็นภาษาไทย</mat-label>
+                            <mat-label class="dark:text-[#bebebe]">ระบุชื่อฝ่ายเป็นภาษาไทย</mat-label>
                             <input matInput formControlName="sectorTname">
                         </mat-form-field>
                     </div>
 
                     <div class="flex flex-col">
-                        <label class="flex-initial self-center w-full sm:w-18">ฝ่าย (ภาษาอังกฤษ):</label>
+                        <label class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]">ฝ่าย (ภาษาอังกฤษ):</label>
                         <mat-form-field appearance="fill" class="w-full">
-                            <mat-label>ระบุชื่อฝ่ายเป็นภาษาอังกฤษ</mat-label>
+                            <mat-label class="dark:text-[#bebebe]">ระบุชื่อฝ่ายเป็นภาษาอังกฤษ</mat-label>
                             <input matInput formControlName="sectorEname">
                         </mat-form-field>
                     </div>
 
                     <div class="flex flex-col">
-                        <label class="flex-initial self-center w-full sm:w-18">รหัสฝ่าย:</label>
+                        <label class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]">รหัสฝ่าย:</label>
                         <mat-form-field appearance="fill" class="w-full">
-                            <mat-label>รหัสฝ่าย</mat-label>
+                            <mat-label class="dark:text-[#bebebe]">รหัสฝ่าย</mat-label>
                             <input matInput formControlName="sectorCode">
                         </mat-form-field>
                     </div>
@@ -50,31 +50,31 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div class="flex flex-col">
-                        <label class="flex-initial self-center w-full sm:w-18">แผนก (ภาษาไทย):</label>
+                        <label class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]">แผนก (ภาษาไทย):</label>
                         <mat-form-field appearance="fill" class="w-full">
-                            <mat-label>ระบุชื่อแผนกเป็นภาษาไทย</mat-label>
+                            <mat-label class="dark:text-[#bebebe]">ระบุชื่อแผนกเป็นภาษาไทย</mat-label>
                             <input matInput formControlName="deptTname">
                         </mat-form-field>
                     </div>
 
                     <div class="flex flex-col">
-                        <label class="flex-initial self-center w-full sm:w-18">แผนก (ภาษาอังกฤษ):</label>
+                        <label class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]">แผนก (ภาษาอังกฤษ):</label>
                         <mat-form-field appearance="fill" class="w-full">
-                            <mat-label>ระบุชื่อแผนกเป็นภาษาอังกฤษ</mat-label>
+                            <mat-label class="dark:text-[#bebebe]">ระบุชื่อแผนกเป็นภาษาอังกฤษ</mat-label>
                             <input matInput formControlName="deptEname">
                         </mat-form-field>
                     </div>
 
                     <div class="flex flex-col space-y-2">
                         <div class="flex flex-col">
-                            <label class="flex-initial self-center w-full sm:w-18">รหัสและไอดี:</label>
+                            <label class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]">รหัสและไอดี:</label>
                             <div class="flex flex-col sm:flex-row gap-2">
                                 <mat-form-field appearance="fill" class="w-full sm:w-1/2">
-                                    <mat-label>รหัสแผนก</mat-label>
+                                    <mat-label class="dark:text-[#bebebe]">รหัสแผนก</mat-label>
                                     <input matInput formControlName="deptCode">
                                 </mat-form-field>
                                 <mat-form-field appearance="fill" class="w-full sm:w-1/2">
-                                    <mat-label>ไอดีแผนก</mat-label>
+                                    <mat-label class="dark:text-[#bebebe]">ไอดีแผนก</mat-label>
                                     <input matInput formControlName="deptId">
                                 </mat-form-field>
                             </div>
@@ -84,9 +84,9 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div class="flex flex-col">
-                        <label class="flex-initial self-center w-full sm:w-18">ผู้ดูแลแผนก:</label>
+                        <label class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]">ผู้ดูแลแผนก:</label>
                         <mat-form-field class="example-full-width" appearance="fill">
-                            <mat-label>ระบุชื่อผู้ดูแลแผนก</mat-label>
+                            <mat-label class="dark:text-[#bebebe]">ระบุชื่อผู้ดูแลแผนก</mat-label>
                             <input matInput formControlName="deptManage" [matAutocomplete]="auto">
                             <mat-autocomplete #auto="matAutocomplete">
                                 <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
@@ -101,22 +101,22 @@
 
                     <div>
                         <button mat-raised-button [ngClass]="{'bg-[#8d918d]': !isEditing, 'bg-[#235d3a]': isEditing}"
-                            class="text-white py-2 px-4 rounded flex items-center"
+                            class="text-white py-2 px-4 rounded flex items-center dark:bg-[#397d54]"
                             (click)="isEditing ? editSectorDept() : createSectorDept()" type="button">
-                            <span class="text-white">{{ isEditing ? 'แก้ไขข้อมูล' : 'เพิ่มข้อมูล' }}</span>
+                            <span class="text-white dark:text-[#ffffff]">{{ isEditing ? 'แก้ไขข้อมูล' : 'เพิ่มข้อมูล' }}</span>
                         </button>
                     </div>
                     <div>
-                        <button mat-raised-button class="bg-[#dfa006] text-white py-2 px-4 rounded flex items-center"
+                        <button mat-raised-button class="bg-[#dfa006] text-white py-2 px-4 rounded flex items-center dark:bg-[#fff200]"
                             (click)="clearForm()" type="button">
-                            <i class='bx bx-revision text-white mr-2'></i>
-                            <span class="text-white">เคลียร์ข้อมูล</span>
+                            <i class='bx bx-revision text-white mr-2 dark:text-[#235d3a]'></i>
+                            <span class="text-white dark:text-[#235d3a]">เคลียร์ข้อมูล</span>
                         </button>
                     </div>
                     <div *ngIf="showDeleteButton">
-                        <button mat-raised-button class="bg-[#ba0900] text-white" (click)="deleteData()" type="button">
+                        <button mat-raised-button class="bg-[#ba0900] text-white dark:bg-[#ff0000]" (click)="deleteData()" type="button">
                             <i class='bx bx-trash text-white mr-2'></i>
-                            <span class="text-white">ลบข้อมูล</span>
+                            <span class="text-white dark:text-[#ffffff]">ลบข้อมูล</span>
                         </button>
                     </div>
                 </div>
@@ -249,25 +249,25 @@
                     <!-- <div *ngIf="isPositionNameEntered"> -->
                         <button mat-raised-button
                             [ngClass]="{'bg-[#8d918d]' : !isEditingPositon, 'bg-[#235d3a]': isEditingPositon}"
-                            class="text-white py-2 px-4 rounded flex items-center"
+                            class="text-white py-2 px-4 rounded flex items-center dark:bg-[#397d54]"
                             (click)="isEditingPositon ? editPositon() : createPositon()" type="button">
-                            <span class="text-white">{{ isEditingPositon ? 'แก้ไขตำแหน่ง' : 'เพิ่มตำแหน่ง' }}</span>
+                            <span class="text-white dark:text-[#ffffff]">{{ isEditingPositon ? 'แก้ไขตำแหน่ง' : 'เพิ่มตำแหน่ง' }}</span>
                         </button>
 
 
-                        <button mat-raised-button class="bg-[#dfa006] !text-white py-2 px-4 rounded"
+                        <button mat-raised-button class="bg-[#dfa006] !text-white py-2 px-4 rounded dark:bg-[#fff200]"
                             (click)="clearForm2()" type="button">
-                            <i class='bx bx-revision text-white mr-2'></i>
-                            <span class="text-white">เคลียร์ข้อมูล</span>
+                            <i class='bx bx-revision text-white mr-2 dark:text-[#235d3a]'></i>
+                            <span class="text-white dark:text-[#235d3a]">เคลียร์ข้อมูล</span>
                         </button>
                     <!-- </div> -->
                      </ng-template>
 
                     <div *ngIf="selectedRowShowButton">
-                        <button mat-raised-button class="bg-[#ba0900] !text-white py-2 px-4 rounded"
+                        <button mat-raised-button class="bg-[#ba0900] !text-white py-2 px-4 rounded dark:bg-[#ff0000]"
                             (click)="deletePosition()" type="button">
                             <i class='bx bx-trash text-white mr-2'></i>
-                            <span class="text-white">ลบข้อมูล</span>
+                            <span class="text-white dark:text-[#ffffff]">ลบข้อมูล</span>
                         </button>
                     </div>
                 </div>

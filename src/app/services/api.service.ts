@@ -33,7 +33,7 @@ export class ApiService {
   trainingUrl: string = environment.trainingService;
   welfareUrl: string = environment.welfareService;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   saveBudgetByYear(
     req: saveBudgetByYearRequest
@@ -344,7 +344,11 @@ export class ApiService {
     if (filterReq.userId != 0) {
       return this.http
         .get<any>(`${this.welfareUrl}/expenses/getExpenseByPage/filter`, {
-          params: { userId },
+          params: {
+            searchValue: userId,
+            size: size,
+            page: page
+          },
         })
         .pipe(map((res) => res));
     } else {
