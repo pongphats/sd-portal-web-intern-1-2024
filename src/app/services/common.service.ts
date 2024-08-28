@@ -2,10 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { sector } from '../interface/common';
 import { ApiService } from './api.service';
-import { ApiResponse } from '../interface/response';
-import { Employee } from '../interface/employee';
+import { ApiResponse, Sector } from '../interface/response';
+import { Employee, Role } from '../interface/employee';
+import { sector } from '../interface/common';
 
 @Injectable({
   providedIn: 'root',
@@ -126,7 +126,7 @@ export class CommonService {
     });
   }
 
-  mappedRole(roles: any[]): string {
+  mappedRole(roles: Role[]): string {
     if (roles.length > 1) {
       return roles
         .map((role) => role.role)
@@ -136,6 +136,22 @@ export class CommonService {
       return roles[0].role;
     }
     return '';
+  }
+
+  translateRole(roles: Role[]): string {
+    const mappedRole = this.mappedRole(roles);
+    const roleMap: { [key: string]: string } = {
+      Admin: 'ผู้ดูแลระบบ',
+      Approver: 'หัวหน้างาน',
+      VicePresident: 'ผู้บริหาร',
+      Personnel: 'แผนกบุคคล',
+      User: 'พนักงาน',
+      President: 'ประธานเจ้าหน้าที่บริหาร/กรรมการผู้จัดการ',
+      Manager: 'ผู้บังคับบัญชา',
+      ManagerAndPersonnel: 'ผู้บังคับบัญชา/แผนกบุคคล',
+    };
+
+    return roleMap[mappedRole];
   }
 
   splitRole(name: string): any[] {
@@ -160,5 +176,71 @@ export class CommonService {
       ','
     );
     return `${formattedIntegerPart}.${decimalPart}`;
+  }
+
+  async getSectorCompanyName(companyName: string): Promise<any[]> {
+    let sectors: any[] = [];
+    try {
+      const res =
+        (await this.apiService.getSectorsDeptsCompanysList().toPromise()) || [];
+      const companyFilterData: sector[] = res.filter(
+        (item) => item.company === companyName
+      );
+
+      const uniqueSectorIds = new Set<number>();
+
+      companyFilterData.forEach((item) => {
+        if (!uniqueSectorIds.has(item.sectorId)) {
+          uniqueSectorIds.add(item.sectorId);
+          let mappedData: any = {
+            sectorid: item.sectorId,
+            sectorcode: item.sectorCode || '',
+            sectorname: item.sectorName || '',
+            sectorsFullName: item.sectorFullName || '',
+            sectorsThFullName: item.sectorTname || '',
+          };
+          sectors.push(mappedData);
+        }
+      });
+
+      // Sort the array by sectorcode
+      sectors.sort((a, b) => a.sectorcode.localeCompare(b.sectorcode));
+    } catch (error) {
+      console.error(error);
+    } finally {
+      return sectors;
+    }
+  }
+
+  async getDeptListBySectorId(sectorId: number): Promise<any[]> {
+    let depts: any[] = [];
+    try {
+      const res =
+        (await this.apiService.getSectorsDeptsCompanysList().toPromise()) || [];
+      const uniqueDeptIds = new Set<number>();
+
+      const sectorsFiltered = res.filter((d) => d.sectorId == sectorId);
+      sectorsFiltered.forEach((item) => {
+        if (!uniqueDeptIds.has(item.department.id)) {
+          depts.push({
+            deptId: item.department.id,
+            deptCode: item.department.deptCode || '',
+            deptName: item.department.deptName || '',
+            deptFullName: item.department.deptFullName || '',
+            deptThFullName: item.department.deptTname || '',
+          });
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      return depts.sort((a, b) => a.deptName.localeCompare(b.deptName));
+    }
+  }
+
+  filterNullUndefinedValues(obj: any) {
+    return Object.entries(obj)
+      .filter(([_, value]) => value !== null && value !== undefined)
+      .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
   }
 }

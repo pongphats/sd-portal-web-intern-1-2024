@@ -65,3 +65,19 @@ export interface level {
   ipd: number;
   room: number;
 }
+
+export interface ExpenseWelfare {
+  id: number;
+  dateOfAdmission: string; // ISO 8601 datetime format
+  description: string;
+  opd: number;
+  ipd: number;
+  remark: string;
+  roomService: number;
+  userId: number;
+  days: number;
+  startDate: string; // ISO 8601 datetime format
+  endDate: string; // ISO 8601 datetime format
+  canWithdraw: number;
+}
+

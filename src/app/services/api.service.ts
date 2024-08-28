@@ -11,6 +11,7 @@ import {
   editPosition,
   createPosition,
   budgetCreate,
+  expenseReportRequest,
 } from '../interface/request';
 import { map, Observable } from 'rxjs';
 import {
@@ -23,8 +24,11 @@ import {
   MngDeptListRes,
   saveBudgetResponse,
 } from '../interface/response';
-import { Course, level, sector } from '../interface/common';
+import { Course, ExpenseWelfare, level, sector } from '../interface/common';
 import { Employee } from '../interface/employee';
+import { TrainingTable } from '../interface/training';
+import { PaginatedResponse } from '../interface/pagination';
+import { CommonService } from './common.service';
 
 @Injectable({
   providedIn: 'root',
@@ -33,7 +37,7 @@ export class ApiService {
   trainingUrl: string = environment.trainingService;
   welfareUrl: string = environment.welfareService;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private commonService: CommonService) {}
 
   saveBudgetByYear(
     req: saveBudgetByYearRequest
@@ -142,6 +146,11 @@ export class ApiService {
     return this.http
       .get<ApiResponse<any>>(`${this.welfareUrl}/expenses/getAllExpenseInUsed`)
       .pipe(map((res) => res.responseData.result));
+  }
+
+  deleteExpense(expenseId: number): Observable<ApiResponse<any>> {
+    const url = `${this.welfareUrl}/expenses/deleteExpenses/${expenseId}`;
+    return this.http.delete<ApiResponse<any>>(url).pipe(map((res) => res));
   }
 
   getAllActiveEmpsByDeptId(deptId: number): Observable<Employee[]> {
@@ -354,5 +363,79 @@ export class ApiService {
         )
         .pipe(map((res) => res));
     }
+  }
+
+  findTrainingByPriveledgeUserId(userId: number): Observable<TrainingTable> {
+    return this.http
+      .get<TrainingTable>(`${this.trainingUrl}/findTrainingByApprove1Id`, {
+        params: {
+          approve1Id: userId,
+        },
+      })
+      .pipe(map((res) => res));
+  }
+
+  findAllTraining(): Observable<TrainingTable[]> {
+    return this.http
+      .get<TrainingTable[]>(`${this.trainingUrl}/findAllTraining`)
+      .pipe(map((res) => res));
+  }
+
+  getEmpByDeptId(deptId: number): Observable<Employee> {
+    return this.http
+      .get<ApiResponse<Employee>>(
+        `${this.trainingUrl}/findallUserListByDeptActual`,
+        {
+          params: {
+            deptId,
+          },
+        }
+      )
+      .pipe(map((res) => res.responseData.result));
+  }
+
+  getExpenseReportWithPagination(
+    req: expenseReportRequest
+  ): Observable<PaginatedResponse<ExpenseWelfare>> {
+    const filteredParams = this.commonService.filterNullUndefinedValues(req);
+
+    return this.http
+      .get<PaginatedResponse<ExpenseWelfare>>(
+        `${this.welfareUrl}/expenses/getExpensesByPageAndFilterReport/filter`,
+        {
+          params: {
+            ...filteredParams,
+          },
+        }
+      )
+      .pipe(map((res) => res));
+  }
+
+  getAllPrivilegeApprovers(): Observable<Employee[]> {
+    return this.http
+      .get<ApiResponse<Employee[]>>(
+        `${this.trainingUrl}/findAllPrivilegeApprovers`
+      )
+      .pipe(
+        map((res) =>
+          res.responseData.result.sort((a, b) =>
+            a.empCode.localeCompare(b.empCode)
+          )
+        )
+      );
+  }
+
+  uploadSignature(userId: number, imageFile: File): Observable<string> {
+    const url = `${this.trainingUrl}/uploadSignatureImage?userId=${userId}`;
+    const formData = new FormData();
+    formData.append('file', imageFile);
+    return this.http
+      .post(url, formData, { responseType: 'text' })
+      .pipe(map((res) => res));
+  }
+
+  getSignatureImage(userId: number): Observable<Blob> {
+    const url = `${this.trainingUrl}/getSignatureImage?userId=${userId}`;
+    return this.http.get(url, { responseType: 'blob' }).pipe(map((res) => res));
   }
 }
