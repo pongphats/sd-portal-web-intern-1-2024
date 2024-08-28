@@ -118,3 +118,14 @@ export interface budgetCreate {
   ipd: number;
   room: number;
 }
+
+export interface expenseReportRequest {
+  page: number | 0;
+  size: number | 10;
+  companyId: number;
+  sectorId: number;
+  deptId: number;
+  userId: number;
+  startDate: string; // string format: YYYY-MM-DD (2024-12-01) , (2024-01-30)
+  endDate: string; // string format: YYYY-MM-DD (2024-12-01) , (2024-01-30)
+}

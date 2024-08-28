@@ -105,7 +105,7 @@
       class="mat-elevation-z8 !shadow-md"
       [dataSource]="dataSource"
     >
-      <!-- year Column -->
+      <!-- NO Column -->
       <ng-container matColumnDef="id">
         <th
           mat-header-cell
@@ -123,7 +123,7 @@
         </td>
       </ng-container>
 
-      <!-- company Column -->
+      <!-- level Column -->
       <ng-container matColumnDef="level">
         <th
           mat-header-cell
@@ -141,7 +141,7 @@
         </td>
       </ng-container>
 
-      <!-- departmentCode Column -->
+      <!-- opd Column -->
       <ng-container matColumnDef="opd">
         <th
           mat-header-cell
@@ -159,7 +159,7 @@
         </td>
       </ng-container>
 
-      <!-- budgetTraining Column -->
+      <!-- ipd Column -->
       <ng-container matColumnDef="ipd">
         <th
           mat-header-cell
@@ -177,7 +177,7 @@
         </td>
       </ng-container>
 
-      <!-- budgetCer Column -->
+      <!-- room Column -->
       <ng-container matColumnDef="room">
         <th
           mat-header-cell
@@ -195,6 +195,7 @@
         </td>
       </ng-container>
 
+      <!-- edit and delete Column -->
       <ng-container matColumnDef="edit">
         <th
           mat-header-cell
@@ -212,7 +213,7 @@
             class="clear-button !mr-1"
             (click)="onEdit(element)"
           >
-            <i class="fas fa-sync-alt mr-1"></i>
+            <i class="bx bxs-edit"></i>
             <span> แก้ไข</span>
           </button>
           <button

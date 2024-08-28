@@ -20,7 +20,7 @@ export interface Employee {
    passDate: null | string;
  }
  
- interface Role {
+export interface Role {
    id: number;
    role: string;
  }
