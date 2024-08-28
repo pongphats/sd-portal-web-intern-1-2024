@@ -42,6 +42,7 @@ import { ManagementUserPageComponent } from './management-user-page/management-u
 import { BudgetWellfareManagePageComponent } from './budget-wellfare-manage-page/budget-wellfare-manage-page.component';
 import { WelfareExpenseHistoryComponent } from './welfare-expense-history/welfare-expense-history.component';
 import { DialogContentComponent } from './welfare-expense-history/dialog-content/dialog-content.component';
+import { ApproverManagePageComponent } from './approver-manage-page/approver-manage-page.component';
 
 @NgModule({
   declarations: [
@@ -83,6 +84,7 @@ import { DialogContentComponent } from './welfare-expense-history/dialog-content
     BudgetWellfareManagePageComponent,
     WelfareExpenseHistoryComponent,
     DialogContentComponent,
+    ApproverManagePageComponent,
   ],
   imports: [
     MatIconModule,

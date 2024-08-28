@@ -98,6 +98,7 @@
         </a>
       </div>
 
+      <!-- ฝึกอบรม -->
       <div class="w-full">
         <input
           type="checkbox"
@@ -203,7 +204,6 @@
               </div>
             </a>
           </div>
-
           <div class="w-full">
             <a
               [routerLink]="['/pccth/management-users']"
@@ -219,7 +219,6 @@
               </div>
             </a>
           </div>
-
           <div class="w-full">
             <a
               [routerLink]="['/pccth/management-company']"
@@ -235,8 +234,25 @@
               </div>
             </a>
           </div>
+          <div class="w-full">
+            <a
+              [routerLink]="['/pccth/approver-manage']"
+              [routerLinkActive]="['active-link']"
+              class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
+              (click)="onCloseAsideNavigationToLink()"
+            >
+              <div class="mt-[0.2rem]">
+                <em class="bx bx-chevron-right"></em>
+              </div>
+              <div>
+                <span class="text-sm">จัดการผู้ลงนามอนุมัติ</span>
+              </div>
+            </a>
+          </div>
         </div>
       </div>
+
+      <!-- สวัสดิการ -->
       <div class="w-full">
         <a
           [routerLink]="['/pccth/welfare-forms']"
@@ -268,6 +284,7 @@
         </a>
       </div>
 
+      <!-- อื่นๆ -->
       <div class="w-full">
         <a
           [routerLink]="['/pccth/welfare-expense-history']"
@@ -285,8 +302,6 @@
           </div>
         </a>
       </div>
-
-
       <div class="w-full">
         <a
           [routerLink]="['/pccth/sign-in']"
@@ -331,6 +346,8 @@
           </div>
         </a>
       </div>
+
+      <!-- งานประจำวัน -->
       <div class="w-full">
         <input
           type="checkbox"
@@ -387,6 +404,8 @@
           </div>
         </div>
       </div>
+      
+      <!-- ผู้ดูแลระบบ -->
       <div class="w-full">
         <input
           type="checkbox"
