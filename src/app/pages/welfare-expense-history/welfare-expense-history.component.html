@@ -1,0 +1,230 @@
+<div class="bg-transparent">
+    <div class="flex flex-col bg-content rounded-xl px-5 py-5 my-8 shadow-card dark:bg-content-dark dark:shadow-none">
+
+        <div class="py-2 inline-block min-w-full sm:px-0">
+            <div class="overflow-hidden">
+                <h1 class="text-xl text-slate-500 dark:text-white font-semibold"> ตารางแสดงการเบิกค่ารักษาพยาบาลทั้งหมด
+                </h1>
+            </div>
+        </div>
+
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
+
+            <form [formGroup]="welfareForm" class="col-span-1 md:col-span-2 lg:col-span-2 flex flex-col space-y-4">
+                <div class="col-span-1 md:col-span-2 lg:col-span-2">
+                    <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4">
+                        <label class="block mb-2">ค้นหาด้วย</label>
+                        <mat-form-field class="flex-1" appearance="fill">
+                            <mat-label class="dark:text-[#bebebe]">กรอกชื่อพนักงานที่ต้องการค้นหา</mat-label>
+
+                            <input matInput formControlName="fullName" [matAutocomplete]="auto" class="dark:text-white">
+                            <mat-autocomplete #auto="matAutocomplete">
+                                <mat-option *ngFor="let option of filteredOptions | async" [value]="option.fullName">
+                                    {{option.fullName}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </form>
+            <div class="col-span-1 md:col-span-1 lg:col-span-1">
+                <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-2 items-center mt-4">
+                    <button mat-raised-button class="flex items-center text-center bg-[#1134A6] dark:bg-[#696cf8]"
+                        (click)="searchExpenses()">
+                        <i class='bx bx-search pr-2 text-white dark:text-white'></i>
+                        <span class="text-white dark:text-white">ค้นหา</span>
+                    </button>
+
+                    <button mat-raised-button (click)="openDialog()"
+                        class="flex items-center text-center bg-[#1134A6] dark:bg-[#696cf8]">
+                        <i class='bx bx-printer pr-2 text-white dark:text-white'></i>
+                        <span class="text-white dark:text-white">พิมพ์</span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-span-1 lg:col-span-1">
+                <!-- Content for col-start-4 (if any) -->
+            </div>
+
+        </div>
+
+
+        <!-- form -->
+        <form [formGroup]="expenseForm">
+            <div
+                class="w-full flex flex-col text-[#566a7f] rounded-lg shadow p-6 bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#343434]">
+
+                <div class="flex flex-wrap items-center gap-4 p-4">
+                    <div class="flex justify-center items-center mb-6 w-full sm:w-auto">
+                        <label class="flex-initial self-center w-28 dark:text-[#ffffff]">บริษัท :</label>
+                        <mat-radio-group aria-label="Select an option">
+                            <!--  (change)="loadSpecificCompanySectors()  formControlName="companyName"-->
+                            <mat-radio-button class="mr-4" value="PCCTH">PCCTH</mat-radio-button>
+                            <mat-radio-button class="mr-4" value="WiseSoft">WiseSoft</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                </div>
+
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="flex flex-col">
+                        <label class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]">ฝ่าย:</label>
+                        <mat-form-field appearance="fill">
+                            <mat-label>State</mat-label>
+                            <mat-select>
+                                <mat-option>None</mat-option>
+                                <!-- <mat-option *ngFor="let state of sectorName"
+                                    [value]="sectorName">{{sectorName}}</mat-option> -->
+                            </mat-select>
+                        </mat-form-field>
+
+                    </div>
+
+                    <div class="flex flex-col">
+                        <label class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]">แผนก:</label>
+                        <mat-form-field appearance="fill" class="w-full">
+                            <mat-label class="dark:text-[#bebebe]">ระบุชื่อฝ่าย</mat-label>
+                            <input matInput formControlName="deptName">
+                        </mat-form-field>
+                    </div>
+
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="flex flex-col">
+                        <label class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]">ฝ่าย
+                            (ภาษาไทย):</label>
+                        <mat-form-field appearance="fill" class="w-full">
+                            <mat-label class="dark:text-[#bebebe]">ระบุชื่อฝ่ายเป็นภาษาไทย</mat-label>
+                            <input matInput formControlName="sectorTname">
+                        </mat-form-field>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <label class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]">ฝ่าย
+                            (ภาษาอังกฤษ):</label>
+                        <mat-form-field appearance="fill" class="w-full">
+                            <mat-label class="dark:text-[#bebebe]">ระบุชื่อฝ่ายเป็นภาษาอังกฤษ</mat-label>
+                            <input matInput formControlName="sectorEname">
+                        </mat-form-field>
+                    </div>
+
+                </div>
+
+
+
+
+
+
+
+
+            </div>
+
+
+
+        </form>
+
+        <br>
+
+        <div
+            class="w-full flex flex-col text-[#566a7f] rounded-lg shadow p-6 bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#343434]">
+            <div class="flex items-center justify-start">
+                <button mat-stroked-button
+                    class="border-5 border-[#1134A6] text-[#1134A6] dark:border-[#ffffff] dark:text-[#ffffff] bg-transparent hover:bg-[#e0e0e0] dark:hover:bg-[#333]">
+                    <i class='bx bx-filter-alt pr-2 text-[#1134A6] dark:text-[#ffffff]'></i>
+                    <span class="text-[#1134A6] dark:text-[#ffffff]">Clear</span>
+                </button>
+            </div>
+
+
+            <table mat-table [dataSource]="welfareExpense" class="mat-elevation-z8 w-full overflow-x-auto mt-4">
+
+                <ng-container matColumnDef="dateOfAdmission">
+                    <th mat-header-cell *matHeaderCellDef
+                        class="font-bold text-[#4d4d4f] bg-gray-100 text-[16px] dark:bg-content-dark !text-center">
+                        วันที่เบิก
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="justify-center !text-center">
+                        {{element.dateOfAdmission | buddhistDate : "DD/MM/yyyy"}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="fullName">
+                    <th mat-header-cell *matHeaderCellDef
+                        class="font-bold text-[#4d4d4f] bg-gray-100 text-[16px] dark:bg-content-dark !text-center">
+                        ชื่อ-นามสกุล
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="justify-center !text-center"> {{element.fullName}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="level">
+                    <th mat-header-cell *matHeaderCellDef
+                        class="font-bold text-[#4d4d4f] bg-gray-100 text-[16px] dark:bg-content-dark !text-center">
+                        ระดับ
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="justify-center !text-center"> {{element.level}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="canWithdraw">
+                    <th mat-header-cell *matHeaderCellDef
+                        class="font-bold text-[#4d4d4f] bg-gray-100 text-[16px] dark:bg-content-dark !text-center">
+                        เงินที่เบิกได้
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="justify-center !text-center"> {{element.canWithdraw}}
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+                    class="cursor-pointer hover:bg-gray-200 dark:hover:bg-[#a1c4d8]">
+                </tr>
+            </table>
+
+            <mat-paginator class="mat-elevation-z8" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"
+                aria-label="Select page">
+
+
+
+            </mat-paginator>
+
+            <!-- <div>
+                {{ getPaginatorLabel() }}
+              </div> -->
+
+
+
+
+
+
+
+        </div> <!--ปิดเทา-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+</div>

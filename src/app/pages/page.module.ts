@@ -41,6 +41,8 @@ import { ManagementTrainingPageComponent } from './management-training-page/mana
 import { ManagementUserPageComponent } from './management-user-page/management-user-page.component';
 import { BudgetWellfareManagePageComponent } from './budget-wellfare-manage-page/budget-wellfare-manage-page.component';
 import { SignaturePageComponent } from './signature-page/signature-page.component';
+import { WelfareExpenseHistoryComponent } from './welfare-expense-history/welfare-expense-history.component';
+import { DialogContentComponent } from './welfare-expense-history/dialog-content/dialog-content.component';
 
 @NgModule({
   declarations: [
@@ -81,6 +83,8 @@ import { SignaturePageComponent } from './signature-page/signature-page.componen
     ManagementUserPageComponent,
     BudgetWellfareManagePageComponent,
     SignaturePageComponent,
+    WelfareExpenseHistoryComponent,
+    DialogContentComponent,
   ],
   imports: [
     MatIconModule,

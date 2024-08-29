@@ -14,7 +14,7 @@ export class NewsPageComponent implements OnInit {
     private commonService: CommonService
   ) {}
   async ngOnInit() {
-    // const data = await this.commonService.getSectorCompanyName('WiseSoft')
+    const data = await this.commonService.getSectorCompanyByName('WiseSoft').toPromise() || []
 
     const deptData = await this.apiService
       .getAllPrivilegeApprovers()
@@ -30,6 +30,12 @@ export class NewsPageComponent implements OnInit {
       },
     ];
     const roleTh = this.commonService.translateRole(roles);
-    console.log(roleTh);
+    const depts = await this.commonService.getDeptListBySectorId(17).toPromise() || []
+    console.log(depts);
+  }
+
+  async check(values: string) {
+    const data = await this.commonService.getSectorCompanyByName(values).toPromise() || []
+    console.log(data);
   }
 }

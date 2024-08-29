@@ -96,7 +96,7 @@ interface Course {
   type: number;
 }
 
-interface Status {
+export interface Status {
   id: number;
   status: string;
   active: number;

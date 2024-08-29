@@ -353,7 +353,11 @@ export class ApiService {
     if (filterReq.userId != 0) {
       return this.http
         .get<any>(`${this.welfareUrl}/expenses/getExpenseByPage/filter`, {
-          params: { userId },
+          params: {
+            searchValue: userId,
+            size: size,
+            page: page
+          },
         })
         .pipe(map((res) => res));
     } else {
@@ -437,5 +441,15 @@ export class ApiService {
   getSignatureImage(userId: number): Observable<Blob> {
     const url = `${this.trainingUrl}/getSignatureImage?userId=${userId}`;
     return this.http.get(url, { responseType: 'blob' }).pipe(map((res) => res));
+  }
+
+  getTrainingByApproveId(approve1Id: number): Observable<TrainingTable[]> {
+    return this.http
+      .get<TrainingTable[]>(`${this.trainingUrl}/findTrainingByApprove1Id`, {
+        params: {
+          approve1Id,
+        },
+      })
+      .pipe(map((res) => res));
   }
 }
