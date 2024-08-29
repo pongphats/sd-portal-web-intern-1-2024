@@ -122,8 +122,136 @@
                   : "-"
               }}
             </td>
-            <td class="p-4 text-center">
+            <td class="p-4 text-center whitespace-nowrap">
               <!-- TODO status check with isDoResult -->
+              <div *ngIf="userRole == 'ROLE_ManagerAndROLE_Personnel'">
+                <div
+                  *ngIf="
+                    training.result_status == 'ไม่อนุมัติ' ||
+                      training.result_status == 'ยกเลิก';
+                    else PMelseBlock1
+                  "
+                  class="text-red-600 dark:text-red-500"
+                >
+                  {{ training.result_status }}
+                </div>
+                <ng-template #PMelseBlock1>
+                  <div
+                    *ngIf="training.isDo == undefined; else PMelseBlock2"
+                    [ngClass]="{
+                      'text-yellow-600 dark:text-yellow-500':
+                        training.result_status == 'รอประเมิน' ||
+                        (training.result_status == 'รอประเมิน' &&
+                          watingApproveCheck(training.training.status)),
+                      'text-green-600 dark:text-green-500':
+                        training.result_status != 'รอประเมิน'
+                    }"
+                  >
+                    {{
+                      training.result_status == "รอประเมิน" &&
+                      watingApproveCheck(training.training.status)
+                        ? "รออนุมัติ"
+                        : training.result_status
+                    }}
+                  </div>
+                </ng-template>
+                <ng-template #PMelseBlock2>
+                  <div *ngIf="training.isDo != undefined">
+                    <div *ngFor="let state of training.training.status">
+                      <p
+                        [ngClass]="{
+                          'text-green-600 dark:text-green-500':
+                            state.status == 'อนุมัติ',
+                          'text-red-600 dark:text-red-500':
+                            state.status == 'ไม่อนุมัติ',
+                          'text-yellow-600 dark:text-yellow-500':
+                            state.status == null
+                        }"
+                      >
+                        {{ state.status ? state.status : "รอการอนุมัติ" }}
+                      </p>
+                    </div>
+                  </div>
+                </ng-template>
+              </div>
+
+              <div
+                *ngIf="userRole == 'ROLE_Admin' || userRole == 'ROLE_Personnel'"
+              >
+                <div
+                  *ngIf="
+                    training.result_status == 'ไม่อนุมัติ' ||
+                      training.result_status == 'ยกเลิก';
+                    else AorPelseBlock1
+                  "
+                  class="text-red-600 dark:text-red-500"
+                >
+                  {{ training.result_status }}
+                </div>
+                <ng-template #AorPelseBlock1>
+                  <div
+                    *ngIf="training.isDo == undefined"
+                    [ngClass]="{
+                      'text-yellow-600 dark:text-yellow-500':
+                        training.result_status == 'รอประเมิน' ||
+                        (training.result_status == 'รอประเมิน' &&
+                          watingApproveCheck(training.training.status)),
+                      'text-green-600 dark:text-green-500':
+                        training.result_status != 'รอประเมิน'
+                    }"
+                  >
+                    {{
+                      training.result_status == "รอประเมิน" &&
+                      watingApproveCheck(training.training.status)
+                        ? "รออนุมัติ"
+                        : training.result_status
+                    }}
+                  </div>
+                </ng-template>
+              </div>
+
+              <div
+                *ngIf="
+                  userRole == 'ROLE_Approver' ||
+                  userRole == 'ROLE_Manager' ||
+                  userRole == 'ROLE_VicePresident' ||
+                  userRole == 'ROLE_President'
+                "
+              >
+                <div
+                  *ngIf="
+                    training.result_status == 'ไม่อนุมัติ' ||
+                      training.result_status == 'ยกเลิก';
+                    else PRVelseBlock1
+                  "
+                  class="text-red-600 dark:text-red-500"
+                >
+                  {{ training.result_status }}
+                </div>
+              </div>
+              <ng-template #PRVelseBlock1>
+                <div
+                  *ngIf="
+                    training.result_status == 'อนุมัติ' &&
+                      training.training.result[0].result == null;
+                    else PRVelseBlock2
+                  "
+                  class="text-yellow-600 dark:text-yellow-500"
+                >
+                  รอประเมินผล
+                </div>
+              </ng-template>
+              <ng-template #PRVelseBlock2>
+                <div
+                  class=""
+                  *ngIf="
+                    training.result_status == 'อนุมัติ' &&
+                    training.training.result[0].result != null
+                  "
+                >
+                  {{ (training.training.result[0].result == 'pass') }}
+                </div>
+              </ng-template>
             </td>
             <td class="p-4 text-center">
               <button
