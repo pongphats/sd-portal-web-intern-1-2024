@@ -34,7 +34,7 @@ export class ApproverManagePageComponent implements OnInit {
     })
 
     this.approverManageForm = this.fb.group({
-      dataCompany: ['PCCTH'],
+      dataCompany: [''],
       dataDept: [''],
     })
   }
@@ -44,35 +44,60 @@ export class ApproverManagePageComponent implements OnInit {
 
     this.approverManageForm.get('dataCompany')?.valueChanges.subscribe(value => {
       console.log("company change")
-      if (this.isVicePresident) {
-        console.log("role: president")
-        this.getListSector(value);
-      } else {
-        console.log("role: order")
-        this.getListDept(value);
-      }
+      this.checkCompanyAndRole(value);
+
     });
   }
 
-  ngAfterViewInit() {
+  checkCompanyAndRole(value: string) {
 
+    if (this.isVicePresident) {
+      console.log("role: president", value)
+      if (value === null) {
+        value = this.dataEmpSelect.company.companyName
+      }
+      this.getListSector(value);
+    }
+
+    else {
+      console.log("role: order", value)
+      if (this.dataEmpSelect) {
+        const sectorId = this.dataEmpSelect.sector.id
+        this.getListDept(sectorId);
+      }
+      else {
+        this.swalService.showWarning("กรุณารายชื่อผู้มีอำนาจลงนามอนุมัติ")
+        this.approverManageForm.reset()
+      }
+    }
   }
 
-  async getListDept(value: string) {
-    // const res = await this.commonService.getSectorCompanyName
 
+  async getListDept(sectorId: number) {
+    console.log(sectorId)
+    const res = await this.commonService.getDeptListBySectorId(sectorId).toPromise();
+    console.log(res)
+    if (res) {
+      this.deptOrSectorList = res.map((item: any) => item.deptName)
+    }
   }
 
-  getListSector(value: string) {
-    // Replace with your API call logic for API b
+  async getListSector(value: string) {
+    const res = await this.commonService.getSectorCompanyByName(value).toPromise();
+    console.log(res)
+    if (res) {
+      this.deptOrSectorList = res.map((item: any) => item.sectorName)
+    }
   }
+
+  dataEmpSelect!: Employee;
 
   approverForm!: FormGroup<approverForms>;
   approverManageForm!: FormGroup<any>;
 
   isVicePresident: boolean = false;
 
-  deptOrSectorList: string[] = ['1', '2', '3']
+  deptOrSectorList!: string[];
   personList!: Employee[];
 
   dataSourceTable1 = new MatTableDataSource<any>([]); // เริ่มต้นด้วยข้อมูลว่าง
@@ -110,6 +135,8 @@ export class ApproverManagePageComponent implements OnInit {
   async settingPrivilegeBtn(element: any) {
     console.log("settingPrivilegeBtn")
 
+    this.dataEmpSelect = element;
+
     // TODO: set "isVicePresident"
     this.isVicePresident = element.roles.some((role: any) => role.role === 'VicePresident');
     if (this.isVicePresident) {
@@ -120,7 +147,7 @@ export class ApproverManagePageComponent implements OnInit {
 
     const company = element.company;
     const sector = element.sector;
-    // TODO: set Form
+    // TODO: set "approverForm"
     this.approverForm.patchValue({
       fullName: element.firstname + ' ' + element.lastname,
       position: element.typeEmp,
@@ -129,6 +156,11 @@ export class ApproverManagePageComponent implements OnInit {
       deptCode: element.department.deptCode,
     })
 
+    // TODO: get "deptOrSectorList"
+    this.approverManageForm.reset()
+    // this.checkCompanyAndRole('-')
+
+    // TODO: get "dataSourceTable1"
     const res = await this.commonService.getUserDetailByEmpcode(element.empCode).toPromise();
     if (this.isVicePresident) {
       console.log("v")
