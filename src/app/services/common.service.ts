@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 import { ApiService } from './api.service';
 import { ApiResponse, Sector } from '../interface/response';
 import { Employee, Role } from '../interface/employee';
-import { sector } from '../interface/common';
+import { department, sector } from '../interface/common';
 
 @Injectable({
   providedIn: 'root',
@@ -178,65 +178,97 @@ export class CommonService {
     return `${formattedIntegerPart}.${decimalPart}`;
   }
 
-  async getSectorCompanyName(companyName: string): Promise<any[]> {
-    let sectors: any[] = [];
-    try {
-      const res =
-        (await this.apiService.getSectorsDeptsCompanysList().toPromise()) || [];
-      const companyFilterData: sector[] = res.filter(
-        (item) => item.company === companyName
-      );
+  getSectorCompanyByName(companyName: string): Observable<any[]> {
+    return this.http
+      .get<any[]>(`${this.trainingUrl}/findAllJoinDepartmentsSector`)
+      .pipe(
+        map((res) => {
+          const sectors: any[] = [];
+          const companyFilterData: sector[] = res.filter(
+            (item) => item.company === companyName
+          );
+          const uniqueSectorIds = new Set<number>();
 
-      const uniqueSectorIds = new Set<number>();
-
-      companyFilterData.forEach((item) => {
-        if (!uniqueSectorIds.has(item.sectorId)) {
-          uniqueSectorIds.add(item.sectorId);
-          let mappedData: any = {
-            sectorid: item.sectorId,
-            sectorcode: item.sectorCode || '',
-            sectorname: item.sectorName || '',
-            sectorsFullName: item.sectorFullName || '',
-            sectorsThFullName: item.sectorTname || '',
-          };
-          sectors.push(mappedData);
-        }
-      });
-
-      // Sort the array by sectorcode
-      sectors.sort((a, b) => a.sectorcode.localeCompare(b.sectorcode));
-    } catch (error) {
-      console.error(error);
-    } finally {
-      return sectors;
-    }
-  }
-
-  async getDeptListBySectorId(sectorId: number): Promise<any[]> {
-    let depts: any[] = [];
-    try {
-      const res =
-        (await this.apiService.getSectorsDeptsCompanysList().toPromise()) || [];
-      const uniqueDeptIds = new Set<number>();
-
-      const sectorsFiltered = res.filter((d) => d.sectorId == sectorId);
-      sectorsFiltered.forEach((item) => {
-        if (!uniqueDeptIds.has(item.department.id)) {
-          depts.push({
-            deptId: item.department.id,
-            deptCode: item.department.deptCode || '',
-            deptName: item.department.deptName || '',
-            deptFullName: item.department.deptFullName || '',
-            deptThFullName: item.department.deptTname || '',
+          companyFilterData.forEach((item) => {
+            if (!uniqueSectorIds.has(item.sectorId)) {
+              uniqueSectorIds.add(item.sectorId);
+              sectors.push({
+                sectorId: item.sectorId,
+                sectorFullName: item.sectorFullName,
+                sectorCode: item.sectorCode,
+                company: item.company,
+                sectorName: item.sectorName,
+                sectorTname: item.sectorTname,
+              });
+            }
           });
-        }
-      });
-    } catch (error) {
-      console.error(error);
-    } finally {
-      return depts.sort((a, b) => a.deptName.localeCompare(b.deptName));
-    }
+
+          // Sort the array after processing all elements
+          return sectors.sort((a, b) =>
+            a.sectorCode.localeCompare(b.sectorCode)
+          );
+        })
+      );
   }
+
+  getDeptListBySectorId(sectorId: number): Observable<department[]> {
+    return this.http
+      .get<sector[]>(`${this.trainingUrl}/findAllJoinDepartmentsSector`)
+      .pipe(
+        map((res) => {
+          const sectorFilterData: sector[] = res.filter(
+            (item) => item.sectorId == sectorId
+          );
+          const depts: department[] = [];
+          sectorFilterData.forEach((item) => {
+            depts.push({
+              ...item.department,
+            });
+          });
+
+          return depts.sort((a, b) => a.deptName.localeCompare(b.deptName));
+        })
+      );
+  }
+
+  // async getSectorCompanyName(companyName: string): Promise<any[]> {
+  //   const sectors: any[] = [];
+
+  //   try {
+  //     // Ensure that the method call is correctly defined on apiService
+  //     const res =
+  //       (await this.apiService.getSectorsDeptsCompanysList().toPromise()) || [];
+
+  //     // Filter data by the provided company name
+  //     const companyFilterData: sector[] = res.filter(
+  //       (item) => item.company === companyName
+  //     );
+
+  //     const uniqueSectorIds = new Set<number>();
+
+  //     // Process and collect unique sector entries
+  //     companyFilterData.forEach((item) => {
+  //       if (!uniqueSectorIds.has(item.sectorId)) {
+  //         uniqueSectorIds.add(item.sectorId);
+  //         const mappedData: any = {
+  //           sectorid: item.sectorId,
+  //           sectorcode: item.sectorCode || '',
+  //           sectorname: item.sectorName || '',
+  //           sectorsFullName: item.sectorFullName || '',
+  //           sectorsThFullName: item.sectorTname || '',
+  //         };
+  //         sectors.push(mappedData);
+  //       }
+  //     });
+
+  //     // Sort the resulting array by sectorcode
+  //     sectors.sort((a, b) => a.sectorcode.localeCompare(b.sectorcode));
+  //   } catch (error) {
+  //     console.error('Error fetching sector data:', error);
+  //   } finally {
+  //     return sectors;
+  //   }
+  // }
 
   filterNullUndefinedValues(obj: any) {
     return Object.entries(obj)
