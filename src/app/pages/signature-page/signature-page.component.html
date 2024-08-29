@@ -1,0 +1,71 @@
+<div
+  class="text-[#566a7f] mt-5 mb-3 rounded-md shadow p-6 w-full bg-white dark:text-[#e4e6eb] dark:bg-[#242526]"
+>
+  <p class="text-2xl text-font-header mt-5 mb-3">อัปโหลดลายเซ็น</p>
+
+  <div
+    class="text-[#566a7f] mt-5 mb-3 rounded-md shadow p-6 w-full bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#242526]"
+  >
+    <form [formGroup]="signaturePage">
+      <div class="flex flex-col lg:flex-row">
+        <div class="flex flex-col w-full lg:w-[50%]">
+          <mat-label class="w-full"
+            >เลือกพนักงานที่ต้องการอัปโหลดลายเซ็น</mat-label
+          >
+          <mat-form-field appearance="fill" class="w-full lg:w-[60%]">
+            <mat-select
+              [formControl]="fullNameControl"
+              (selectionChange)="onEmployeeSelect($event.value)"
+            >
+              <mat-option
+                *ngFor="let employee of employees"
+                [value]="employee.id"
+              >
+                {{ employee.fullName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <div *ngIf="signatureImageUrl && !errorMessage">
+            <img [src]="signatureImageUrl" alt="Employee Signature" />
+          </div>
+
+          <div *ngIf="errorMessage">
+            <p style="color: red">{{ errorMessage }}</p>
+          </div>
+        </div>
+
+        <div class="flex flex-col w-full lg:w-[50%]">
+          <mat-label class="w-full">เลือกรูปภาพลายเซ็น</mat-label>
+          <div class="flex flex-col lg:flex-row">
+            <mat-form-field appearance="fill" class="w-full lg:w-[60%] mr-1">
+              <input
+                matInput
+                id="level"
+                type="file"
+                (change)="getUploadFile($event)"
+              />
+            </mat-form-field>
+
+            <button
+              mat-stroked-button
+              type="button"
+              class="mr-1 lg:w-[25%] h-[75%]"
+              (click)="getUploadSignature()"
+            >
+              <span>อัปโหลดรูปภาพ</span>
+            </button>
+          </div>
+          <div class="flex flex-col lg:flex-row">
+            <img
+              *ngIf="uploadedImageUrl"
+              [src]="uploadedImageUrl"
+              alt="Uploaded Image"
+              class="object-fill w-36 h-6 mt-2"
+            />
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

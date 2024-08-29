@@ -24,6 +24,7 @@ import { WelfareFormsPageComponent } from './pages/welfare-forms-page/welfare-fo
 import { ManagementTrainingPageComponent } from './pages/management-training-page/management-training-page.component';
 import { ManagementUserPageComponent } from './pages/management-user-page/management-user-page.component';
 import { BudgetWellfareManagePageComponent } from './pages/budget-wellfare-manage-page/budget-wellfare-manage-page.component';
+import { SignaturePageComponent } from './pages/signature-page/signature-page.component';
 const routes: Routes = new Array<Route>(
   {
     path: 'sign-in',
@@ -105,6 +106,10 @@ const routes: Routes = new Array<Route>(
       {
         path: 'budget-wellfare-manage',
         component: BudgetWellfareManagePageComponent,
+      },
+      {
+        path: 'signature-page',
+        component: SignaturePageComponent,
       }
     ),
   },
