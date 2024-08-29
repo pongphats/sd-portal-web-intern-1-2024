@@ -353,7 +353,11 @@ export class ApiService {
     if (filterReq.userId != 0) {
       return this.http
         .get<any>(`${this.welfareUrl}/expenses/getExpenseByPage/filter`, {
-          params: { userId },
+          params: {
+            searchValue: userId,
+            size: size,
+            page: page
+          },
         })
         .pipe(map((res) => res));
     } else {

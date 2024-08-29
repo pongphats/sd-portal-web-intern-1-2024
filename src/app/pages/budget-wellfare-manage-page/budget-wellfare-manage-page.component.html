@@ -9,7 +9,13 @@
         >ระดับพนักงาน (Level)</mat-label
       >
       <mat-form-field appearance="fill" class="w-full lg:w-[75%] mx-3">
-        <input matInput id="level" formControlName="level" type="text" />
+        <input
+          matInput
+          id="level"
+          formControlName="level"
+          type="text"
+          placeholder="กรอกระดับพนักงาน"
+        />
       </mat-form-field>
     </div>
 
@@ -24,6 +30,7 @@
           formControlName="opd"
           type="text"
           (input)="formatNumber($event)"
+          placeholder="0.00"
         />
       </mat-form-field>
     </div>
@@ -39,6 +46,7 @@
           formControlName="ipd"
           type="text"
           (input)="formatNumber($event)"
+          placeholder="0.00"
         />
       </mat-form-field>
     </div>
@@ -54,6 +62,7 @@
           formControlName="room"
           type="text"
           (input)="formatNumber($event)"
+          placeholder="0.00"
         />
       </mat-form-field>
     </div>
@@ -210,7 +219,7 @@
           <button
             mat-stroked-button
             color="primary"
-            class="clear-button !mr-1"
+            class="clear-button !mr-1 !mt-1 !mb-1"
             (click)="onEdit(element)"
           >
             <i class="bx bxs-edit"></i>
@@ -219,7 +228,7 @@
           <button
             mat-stroked-button
             color="primary"
-            class="clear-button1"
+            class="clear-button1 !mr-1 !mt-1 !mb-1"
             (click)="onDeleteButtonClick(element.id)"
           >
             <i class="bx bx-trash"></i>

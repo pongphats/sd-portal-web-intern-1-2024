@@ -270,6 +270,25 @@
 
       <div class="w-full">
         <a
+          [routerLink]="['/pccth/welfare-expense-history']"
+          [routerLinkActive]="['active-link']"
+          class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
+          (click)="onCloseAsideNavigationToLink()"
+        >
+          <div class="mt-[0.1rem]">
+            <!-- <i class="bx bx-plus-medical bx-rotate-90"></i> -->
+
+            <i class='bx bx-table'></i>
+          </div>
+          <div>
+            <span class="text-base">ตารางเบิกค่ารักษาพยาบาล</span>
+          </div>
+        </a>
+      </div>
+
+
+      <div class="w-full">
+        <a
           [routerLink]="['/pccth/sign-in']"
           [routerLinkActive]="['active-link']"
           class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
