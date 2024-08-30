@@ -50,7 +50,7 @@
         </div>
 
 
-        <!-- form -->
+        <!-- Newform -->
         <form [formGroup]="expenseForm">
             <div
                 class="w-full flex flex-col text-[#566a7f] rounded-lg shadow p-6 bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#343434]">
@@ -58,8 +58,8 @@
                 <div class="flex flex-wrap items-center gap-4 p-4">
                     <div class="flex justify-center items-center mb-6 w-full sm:w-auto">
                         <label class="flex-initial self-center w-28 dark:text-[#ffffff]">บริษัท :</label>
-                        <mat-radio-group aria-label="Select an option">
-                            <!--  (change)="loadSpecificCompanySectors()  formControlName="companyName"-->
+                        <mat-radio-group aria-label="Select an option" formControlName="companyName">
+                          
                             <mat-radio-button class="mr-4" value="PCCTH">PCCTH</mat-radio-button>
                             <mat-radio-button class="mr-4" value="WiseSoft">WiseSoft</mat-radio-button>
                         </mat-radio-group>
@@ -70,12 +70,12 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div class="flex flex-col">
                         <label class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]">ฝ่าย:</label>
-                        <mat-form-field appearance="fill">
-                            <mat-label>State</mat-label>
+                        <mat-form-field appearance="fill"  class="w-full">
+                            <mat-label>เลือกชื่อฝ่าย</mat-label>
                             <mat-select>
                                 <mat-option>None</mat-option>
-                                <!-- <mat-option *ngFor="let state of sectorName"
-                                    [value]="sectorName">{{sectorName}}</mat-option> -->
+                                <mat-option *ngFor="let sector of sectorOptions"
+                                    [value]="sector.sectorid">{{sectorName}}</mat-option>
                             </mat-select>
                         </mat-form-field>
 
@@ -83,9 +83,13 @@
 
                     <div class="flex flex-col">
                         <label class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]">แผนก:</label>
-                        <mat-form-field appearance="fill" class="w-full">
-                            <mat-label class="dark:text-[#bebebe]">ระบุชื่อฝ่าย</mat-label>
-                            <input matInput formControlName="deptName">
+                        <mat-form-field appearance="fill"  class="w-full">
+                            <mat-label>เลือกชื่อแผนก</mat-label>
+                            <mat-select>
+                                <mat-option>None</mat-option>
+                                <mat-option *ngFor="let dept of deptName"
+                                    [value]="deptName">{{deptName}}</mat-option>
+                            </mat-select>
                         </mat-form-field>
                     </div>
 
@@ -95,19 +99,30 @@
                     <div class="flex flex-col">
                         <label class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]">ฝ่าย
                             (ภาษาไทย):</label>
-                        <mat-form-field appearance="fill" class="w-full">
-                            <mat-label class="dark:text-[#bebebe]">ระบุชื่อฝ่ายเป็นภาษาไทย</mat-label>
-                            <input matInput formControlName="sectorTname">
-                        </mat-form-field>
+                            <mat-form-field class="example-full-width" appearance="fill">
+                                <mat-label class="dark:text-[#bebebe]">ระบุชื่อฝ่าย</mat-label>
+                                <input matInput formControlName="empName" [matAutocomplete]="auto">
+                                <mat-autocomplete #auto="matAutocomplete">
+                                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                                        {{option}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
                     </div>
 
                     <div class="flex flex-col">
-                        <label class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]">ฝ่าย
-                            (ภาษาอังกฤษ):</label>
-                        <mat-form-field appearance="fill" class="w-full">
-                            <mat-label class="dark:text-[#bebebe]">ระบุชื่อฝ่ายเป็นภาษาอังกฤษ</mat-label>
-                            <input matInput formControlName="sectorEname">
-                        </mat-form-field>
+                        <label class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]">
+                            วันที่</label>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Enter a date range</mat-label>
+                                <mat-date-range-input [rangePicker]="picker">
+                                  <input matStartDate placeholder="Start date">
+                                  <input matEndDate placeholder="End date">
+                                </mat-date-range-input>
+                                <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                              </mat-form-field>
                     </div>
 
                 </div>

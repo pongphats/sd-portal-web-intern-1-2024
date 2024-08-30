@@ -18,11 +18,15 @@ import { DialogContentComponent } from './dialog-content/dialog-content.componen
   templateUrl: './welfare-expense-history.component.html',
   styleUrls: ['./welfare-expense-history.component.scss']
 })
+
+
 export class WelfareExpenseHistoryComponent implements OnInit {
 
   
   //Auto
   welfareForm!: FormGroup<WelfareForm>;
+  expenseForm!: FormGroup<any>;
+
   constructor(
     private fb: FormBuilder,
     private swalService: SwalService,
@@ -32,6 +36,11 @@ export class WelfareExpenseHistoryComponent implements OnInit {
   ) { 
     this.welfareForm = this.fb.group({
       fullName: ['', Validators.required],
+    });
+
+    this.expenseForm = this.fb.group({
+      companyName: [''],
+      sectorName: ['']
     });
     
   }
@@ -52,8 +61,18 @@ export class WelfareExpenseHistoryComponent implements OnInit {
       debounceTime(300),
       switchMap((value) => this.getEmp(value ? value : ''))
     );
+
+    // ฟังการเปลี่ยนแปลงของฟอร์ม
+    this.expenseForm.get('companyName')?.valueChanges.subscribe((companyName) => {
+      if (companyName) {
+        this.getSectors(companyName);
+      }
+    });
     
   }
+
+  
+
 
   ngAfterViewInit() {
     this.welfareExpense.paginator = this.paginator;
@@ -134,9 +153,25 @@ export class WelfareExpenseHistoryComponent implements OnInit {
       return '';
     }
 
-    expenseForm!: FormGroup<ExpenseForm>;
+
+    sectorName!: string;
+  
+    sectorOptions: any[] = [];
 
     
+  async getSectors(companyName: string) {
+    console.log("api1", companyName)
+    try {
+      const res = await this.commonService.getSectorCompanyName(companyName);
+      console.log(res)
+      this.sectorOptions = res
+    } catch (error) {
+      console.error('Error fetching sectors:', error);
+    }
+    console.log("api")
+  }
+
+  deptName: any[] = [];
    
 
     

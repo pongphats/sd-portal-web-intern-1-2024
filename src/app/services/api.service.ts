@@ -68,6 +68,7 @@ export class ApiService {
       .pipe(map((res) => res));
   }
 
+
   getManageDeptsListByUserId(
     uid: number
   ): Observable<ApiResponse<MngDeptListRes[]>> {
@@ -442,4 +443,6 @@ export class ApiService {
     const url = `${this.trainingUrl}/getSignatureImage?userId=${userId}`;
     return this.http.get(url, { responseType: 'blob' }).pipe(map((res) => res));
   }
+  
 }
+ 

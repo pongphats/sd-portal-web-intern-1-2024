@@ -14,7 +14,7 @@ export class CommonService {
   trainingUrl: string = environment.trainingService;
   welfareUrl: string = environment.welfareService;
 
-  constructor(private http: HttpClient, private apiService: ApiService) {}
+  constructor(private http: HttpClient, private apiService: ApiService) { }
 
   getCompanyIdByName(name: string): Observable<number> {
     return this.http
@@ -183,6 +183,7 @@ export class CommonService {
     try {
       const res =
         (await this.apiService.getSectorsDeptsCompanysList().toPromise()) || [];
+      
       const companyFilterData: sector[] = res.filter(
         (item) => item.company === companyName
       );
