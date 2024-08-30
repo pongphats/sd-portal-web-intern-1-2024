@@ -40,12 +40,14 @@ import { WelfareFormsPageComponent } from './welfare-forms-page/welfare-forms-pa
 import { ManagementTrainingPageComponent } from './management-training-page/management-training-page.component';
 import { ManagementUserPageComponent } from './management-user-page/management-user-page.component';
 import { BudgetWellfareManagePageComponent } from './budget-wellfare-manage-page/budget-wellfare-manage-page.component';
+import { SignaturePageComponent } from './signature-page/signature-page.component';
 import { WelfareExpenseHistoryComponent } from './welfare-expense-history/welfare-expense-history.component';
 import { DialogContentComponent } from './welfare-expense-history/dialog-content/dialog-content.component';
 import { CheckTrainingModalComponent } from './management-training-page/components/check-training-modal/check-training-modal.component';
 import { SectionOneFormComponent } from './management-training-page/components/section-one-form/section-one-form.component';
 import { SectionTwoFormComponent } from './management-training-page/components/section-two-form/section-two-form.component';
 import { Generic9FormComponent } from './management-training-page/components/generic9-form/generic9-form.component';
+import { ApproverManagePageComponent } from './approver-manage-page/approver-manage-page.component';
 
 @NgModule({
   declarations: [
@@ -85,12 +87,14 @@ import { Generic9FormComponent } from './management-training-page/components/gen
     ManagementTrainingPageComponent,
     ManagementUserPageComponent,
     BudgetWellfareManagePageComponent,
+    SignaturePageComponent,
     WelfareExpenseHistoryComponent,
     DialogContentComponent,
     CheckTrainingModalComponent,
     SectionOneFormComponent,
     SectionTwoFormComponent,
     Generic9FormComponent,
+    ApproverManagePageComponent,
   ],
   imports: [
     MatIconModule,
