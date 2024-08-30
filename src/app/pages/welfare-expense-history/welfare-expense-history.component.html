@@ -72,10 +72,11 @@
                         <label class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]">ฝ่าย:</label>
                         <mat-form-field appearance="fill"  class="w-full">
                             <mat-label>เลือกชื่อฝ่าย</mat-label>
-                            <mat-select>
-                                <mat-option>None</mat-option>
+                            <mat-select formControlName="sectorName">
+                                <!-- <mat-option>None</mat-option> -->
                                 <mat-option *ngFor="let sector of sectorOptions"
-                                    [value]="sector.sectorid">{{sectorName}}</mat-option>
+                                    [value]="sector.sectorId">{{sector.sectorName}}</mat-option>
+                                    <!-- sectorId = console -->
                             </mat-select>
                         </mat-form-field>
 
@@ -85,10 +86,11 @@
                         <label class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]">แผนก:</label>
                         <mat-form-field appearance="fill"  class="w-full">
                             <mat-label>เลือกชื่อแผนก</mat-label>
-                            <mat-select>
-                                <mat-option>None</mat-option>
-                                <mat-option *ngFor="let dept of deptName"
-                                    [value]="deptName">{{deptName}}</mat-option>
+                            <mat-select formControlName="deptName">
+                                <!-- <mat-option>None</mat-option> -->
+                                <mat-option *ngFor="let dept of deptOptions"
+                                    [value]="dept.id">{{dept.deptName}}</mat-option>
+                                    <!-- id = console -->
                             </mat-select>
                         </mat-form-field>
                     </div>
@@ -97,14 +99,15 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div class="flex flex-col">
-                        <label class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]">ฝ่าย
-                            (ภาษาไทย):</label>
+                        <label class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]">
+                            ชื่อพนักงาน
+                        </label>
                             <mat-form-field class="example-full-width" appearance="fill">
-                                <mat-label class="dark:text-[#bebebe]">ระบุชื่อฝ่าย</mat-label>
+                                <mat-label class="dark:text-[#bebebe]">ระบุชื่อพนักงาน</mat-label>
                                 <input matInput formControlName="empName" [matAutocomplete]="auto">
                                 <mat-autocomplete #auto="matAutocomplete">
-                                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                                        {{option}}
+                                    <mat-option *ngFor="let emp of empFormOption | async" [value]="emp.fullName">
+                                        {{emp.fullName}}
                                     </mat-option>
                                 </mat-autocomplete>
                             </mat-form-field>
@@ -127,17 +130,7 @@
 
                 </div>
 
-
-
-
-
-
-
-
             </div>
-
-
-
         </form>
 
         <br>
