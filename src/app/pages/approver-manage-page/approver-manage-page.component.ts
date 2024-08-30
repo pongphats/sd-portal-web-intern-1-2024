@@ -4,7 +4,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-// import { sector } from 'src/app/interface/common';
 import { Department, Employee, Role, Sector } from 'src/app/interface/employee';
 import { approverForms } from 'src/app/interface/form';
 import { createEmployeeReq } from 'src/app/interface/request';
@@ -53,7 +52,9 @@ export class ApproverManagePageComponent implements OnInit {
     });
   }
 
+
   async getDataSectorsDeptsCompany() {
+    // TODO: เรียกข้อมูลทั้งหมด "Sectors" & "Departments" & "Companys"
     try {
       const res = await this.apiService.getSectorsDeptsCompanysList().toPromise();
       if (res) {
@@ -76,7 +77,6 @@ export class ApproverManagePageComponent implements OnInit {
       this.getListDept(value)
     }
   }
-
 
   async getListDept(value: string) {
     const resSector = await this.commonService.getSectorCompanyByName(value).toPromise();
@@ -117,8 +117,8 @@ export class ApproverManagePageComponent implements OnInit {
   deptOrSectorList!: { id: number; name: string; }[];
   personList!: Employee[];
 
-  dataSourceTable1 = new MatTableDataSource<any>([]); // เริ่มต้นด้วยข้อมูลว่าง
-  dataSourceTable2 = new MatTableDataSource<any>([]); // เริ่มต้นด้วยข้อมูลว่าง
+  dataSourceTable1 = new MatTableDataSource<any>([]);
+  dataSourceTable2 = new MatTableDataSource<any>([]);
   @ViewChild('paginator1') paginator1!: MatPaginator;
   @ViewChild('paginator2') paginator2!: MatPaginator;
 
@@ -141,9 +141,57 @@ export class ApproverManagePageComponent implements OnInit {
     'assignPrivilege'
   ];
 
-  cancelPrivilegeBtn(element: any) {
+  async cancelPrivilegeBtn(element: any) {
     console.log("cancelPrivilegeBtn")
-    console.log(element)
+
+    const confirmed = await this.swalService.showConfirm(
+      'คุณต้องการยกเลิกสิทธิ์หรือไม่'
+    );
+
+    if (confirmed) {
+      let sectorListId: number[];
+      let deptListId: number[];
+      if (this.isVicePresident) {
+        sectorListId = this.dataEmpSelect.sectors.map((sector: Sector) => sector.id);
+        sectorListId = sectorListId.filter(id => id != (element.sectorId))
+        deptListId = this.dataEmpSelect.departments.map((department: Department) => department.id);
+      }
+      else {
+        sectorListId = this.dataEmpSelect.sectors.map((sector: Sector) => sector.id);
+        deptListId = this.dataEmpSelect.departments.map((department: Department) => department.id);
+        deptListId = deptListId.filter(id => id != (element.deptId))
+      }
+
+      const uid = this.dataEmpSelect.id
+
+      const req: createEmployeeReq = {
+        empCode: this.dataEmpSelect.empCode,
+        title: this.dataEmpSelect.title,
+        firstname: this.dataEmpSelect.firstname,
+        lastname: this.dataEmpSelect.lastname,
+        positionName: this.dataEmpSelect.position.positionName,
+        email: this.dataEmpSelect.email,
+        level: this.dataEmpSelect.level,
+        typeEmp: this.dataEmpSelect.typeEmp || '',
+        startDate: this.dataEmpSelect.startDate || '',
+        passDate: this.dataEmpSelect.passDate || '',
+        dept_actual: this.dataEmpSelect.department.id,
+        sector_actual: this.dataEmpSelect.sector.id,
+        deptID: deptListId,
+        companyID: this.dataEmpSelect.companys.map((company: any) => company.id),
+        sectorID: sectorListId,
+        roles: this.dataEmpSelect.roles.map((role: Role) => role.role),
+      }
+      const res = await this.apiService.editEmployee(req, uid).toPromise();
+      console.log("res", res)
+      if (res.responseMessage == 'กรอกข้อมูลเรียบร้อย') {
+        this.swalService.showSuccess("ลบสิทธิ์เรียบร้อยแล้ว")
+        this.settingPrivilegeBtn(this.dataEmpSelect)
+      }
+    }
+    else {
+      console.log("ยกเลิก")
+    }
   }
 
   async addPrivilegeBtn() {
@@ -180,9 +228,8 @@ export class ApproverManagePageComponent implements OnInit {
         deptID: deptListId,
         companyID: this.dataEmpSelect.companys.map((company: any) => company.id),
         sectorID: sectorListId,
-        roles: this.dataEmpSelect.roles.map((role: Role) => role.role),//ทำไมเอาแค่string มันมี id,role
+        roles: this.dataEmpSelect.roles.map((role: Role) => role.role),
       }
-      console.log("req", req)
       const res = await this.apiService.editEmployee(req, uid).toPromise();
       console.log("res", res)
       if (res.responseMessage == 'กรอกข้อมูลเรียบร้อย') {
@@ -201,7 +248,6 @@ export class ApproverManagePageComponent implements OnInit {
       }
     }
   }
-
 
   async settingPrivilegeBtn(element: any) {
     console.log("settingPrivilegeBtn")
@@ -232,16 +278,14 @@ export class ApproverManagePageComponent implements OnInit {
 
     // TODO: get "dataSourceTable1"
     const res = await this.commonService.getUserDetailByEmpcode(element.empCode).toPromise();
-    console.log("res: ", res)
     if (this.isVicePresident) {
       const sectors = res?.sectors.map((item: any) => {
         const departmentDetail = this.dataSectorsDeptsCompany.find(data => data.sectorId === item.id);
         return departmentDetail ? {
           company: departmentDetail.company,
+          sectorId: departmentDetail.sectorId,
           sectorCode: departmentDetail.sectorCode,
           sectorName: departmentDetail.sectorName,
-          deptCode: '-',
-          deptName: '-'
         } : null;
       })
       this.dataSourceTable1.data = sectors || [];
@@ -252,21 +296,21 @@ export class ApproverManagePageComponent implements OnInit {
         const departmentDetail = this.dataSectorsDeptsCompany.find(data => data.department.id === item.id);
         return departmentDetail ? {
           company: departmentDetail.company,
+          sectorId: departmentDetail.sectorId,
           sectorCode: departmentDetail.sectorCode,
           sectorName: departmentDetail.sectorName,
+          deptId: departmentDetail.department.id,
           deptCode: departmentDetail.department.deptCode,
-          deptName: departmentDetail.department.deptFullName
+          deptName: departmentDetail.department.deptFullName,
         } : null;
       })
       this.dataSourceTable1.data = departments || [];
     }
-
     this.dataSourceTable1.paginator = this.paginator1;
   }
 
   async getAllPrivilegeApprover() {
     const res = await this.apiService.getAllPrivilegeApprovers().toPromise();
-    console.log(res)
     if (res) {
       this.personList = res
     }
@@ -282,7 +326,6 @@ export class ApproverManagePageComponent implements OnInit {
     this.dataSourceTable2.data.sort((a, b) => {
       return order.indexOf(a.roleTH) - order.indexOf(b.roleTH);
     });
-
     this.dataSourceTable2.paginator = this.paginator2;
 
   }
