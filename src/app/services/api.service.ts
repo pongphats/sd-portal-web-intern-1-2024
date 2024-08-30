@@ -444,5 +444,15 @@ export class ApiService {
     return this.http.get(url, { responseType: 'blob' }).pipe(map((res) => res));
   }
   
+
+  getTrainingByApproveId(approve1Id: number): Observable<TrainingTable[]> {
+    return this.http
+      .get<TrainingTable[]>(`${this.trainingUrl}/findTrainingByApprove1Id`, {
+        params: {
+          approve1Id,
+        },
+      })
+      .pipe(map((res) => res));
+  }
 }
  
