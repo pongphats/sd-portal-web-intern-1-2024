@@ -4,8 +4,10 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { Employee } from 'src/app/interface/employee';
+// import { sector } from 'src/app/interface/common';
+import { Department, Employee, Role, Sector } from 'src/app/interface/employee';
 import { approverForms } from 'src/app/interface/form';
+import { createEmployeeReq } from 'src/app/interface/request';
 import { ApiService } from 'src/app/services/api.service';
 import { CommonService } from 'src/app/services/common.service';
 import { SwalService } from 'src/app/services/swal.service';
@@ -16,7 +18,6 @@ import { SwalService } from 'src/app/services/swal.service';
   styleUrls: ['./approver-manage-page.component.scss']
 })
 export class ApproverManagePageComponent implements OnInit {
-  [x: string]: any;
 
   constructor(
     private fb: FormBuilder,
@@ -39,8 +40,11 @@ export class ApproverManagePageComponent implements OnInit {
     })
   }
 
+  dataSectorsDeptsCompany: any[] = [];
+
   ngOnInit(): void {
     this.getAllPrivilegeApprover()
+    this.getDataSectorsDeptsCompany()
 
     this.approverManageForm.get('dataCompany')?.valueChanges.subscribe(value => {
       console.log("company change")
@@ -49,8 +53,18 @@ export class ApproverManagePageComponent implements OnInit {
     });
   }
 
+  async getDataSectorsDeptsCompany() {
+    try {
+      const res = await this.apiService.getSectorsDeptsCompanysList().toPromise();
+      if (res) {
+        this.dataSectorsDeptsCompany = res;
+      }
+    } catch (error) {
+      this.dataSectorsDeptsCompany = [];
+    }
+  }
+
   async checkCompanyAndRole(value: string) {
-    // this.deptOrSectorList = [];
 
     if (this.isVicePresident) {
       console.log("role: president", value)
@@ -107,7 +121,7 @@ export class ApproverManagePageComponent implements OnInit {
   dataSourceTable2 = new MatTableDataSource<any>([]); // เริ่มต้นด้วยข้อมูลว่าง
   @ViewChild('paginator1') paginator1!: MatPaginator;
   @ViewChild('paginator2') paginator2!: MatPaginator;
-  
+
   originalDisplayedColumns1: string[] = [
     'company',
     'sectorCode',
@@ -132,9 +146,60 @@ export class ApproverManagePageComponent implements OnInit {
     console.log(element)
   }
 
-  addPrivilegeBtn() {
+  async addPrivilegeBtn() {
     console.log("grantBtn")
-    console.log(this.approverManageForm.value.dataDeptOrSector)
+    if (this.dataEmpSelect && this.approverManageForm.value.dataDeptOrSector) {
+      let sectorListId: number[];
+      let deptListId: number[];
+      if (this.isVicePresident) {
+        sectorListId = this.dataEmpSelect.sectors.map((sector: Sector) => sector.id);
+        sectorListId.push(this.approverManageForm.value.dataDeptOrSector.id)
+        deptListId = this.dataEmpSelect.departments.map((department: Department) => department.id);
+      }
+      else {
+        sectorListId = this.dataEmpSelect.sectors.map((sector: Sector) => sector.id);
+        deptListId = this.dataEmpSelect.departments.map((department: Department) => department.id);
+        deptListId.push(this.approverManageForm.value.dataDeptOrSector.id)
+      }
+
+      const uid = this.dataEmpSelect.id
+
+      const req: createEmployeeReq = {
+        empCode: this.dataEmpSelect.empCode,
+        title: this.dataEmpSelect.title,
+        firstname: this.dataEmpSelect.firstname,
+        lastname: this.dataEmpSelect.lastname,
+        positionName: this.dataEmpSelect.position.positionName,
+        email: this.dataEmpSelect.email,
+        level: this.dataEmpSelect.level,
+        typeEmp: this.dataEmpSelect.typeEmp || '',
+        startDate: this.dataEmpSelect.startDate || '',
+        passDate: this.dataEmpSelect.passDate || '',
+        dept_actual: this.dataEmpSelect.department.id,
+        sector_actual: this.dataEmpSelect.sector.id,
+        deptID: deptListId,
+        companyID: this.dataEmpSelect.companys.map((company: any) => company.id),
+        sectorID: sectorListId,
+        roles: this.dataEmpSelect.roles.map((role: Role) => role.role),//ทำไมเอาแค่string มันมี id,role
+      }
+      console.log("req", req)
+      const res = await this.apiService.editEmployee(req, uid).toPromise();
+      console.log("res", res)
+      if (res.responseMessage == 'กรอกข้อมูลเรียบร้อย') {
+        this.swalService.showSuccess("เพิ่มสิทธิ์เรียบร้อยแล้ว")
+        this.settingPrivilegeBtn(this.dataEmpSelect)
+      }
+    }
+    else {
+      if (!this.dataEmpSelect) {
+        this.swalService.showWarning("กรุณาเลือกรายชื่อผู้มีสิทธิอนุมัติ")
+      }
+      else if (!this.approverManageForm.value.dataDeptOrSector) {
+        const mes = this.isVicePresident ? "กรุณาเลือกฝ่าย" : "กรุณาเลือกแผนก";
+        this.swalService.showWarning(mes)
+
+      }
+    }
   }
 
 
@@ -151,8 +216,6 @@ export class ApproverManagePageComponent implements OnInit {
       this.displayedColumns1 = [...this.originalDisplayedColumns1];
     }
 
-    // this.dataSourceTable1.paginator = this.paginator;
-
     const company = element.company;
     const sector = element.sector;
     // TODO: set show "approverForm"
@@ -166,29 +229,35 @@ export class ApproverManagePageComponent implements OnInit {
 
     // TODO: get "deptOrSectorList"
     this.approverManageForm.reset()
-    // this.checkCompanyAndRole('-')
 
     // TODO: get "dataSourceTable1"
     const res = await this.commonService.getUserDetailByEmpcode(element.empCode).toPromise();
+    console.log("res: ", res)
     if (this.isVicePresident) {
-      console.log("v")
-      const sectors = res?.sectors.map((item: any) => ({
-        company: company?.companyName,
-        sectorCode: item.sectorCode,
-        sectorName: item.sectorName,
-        deptCode: '-',
-        deptName: '-'
-      }))
+      const sectors = res?.sectors.map((item: any) => {
+        const departmentDetail = this.dataSectorsDeptsCompany.find(data => data.sectorId === item.id);
+        return departmentDetail ? {
+          company: departmentDetail.company,
+          sectorCode: departmentDetail.sectorCode,
+          sectorName: departmentDetail.sectorName,
+          deptCode: '-',
+          deptName: '-'
+        } : null;
+      })
       this.dataSourceTable1.data = sectors || [];
 
     } else {
-      const departments = res?.departments.map((item: any) => ({
-        company: company?.companyName,
-        sectorCode: sector?.sectorCode,
-        sectorName: sector?.sectorName,
-        deptCode: item.deptCode,
-        deptName: item.deptFullName
-      }))
+      // TODO: เอา department.id ไปหา company & sector
+      const departments = res?.departments.map((item: any) => {
+        const departmentDetail = this.dataSectorsDeptsCompany.find(data => data.department.id === item.id);
+        return departmentDetail ? {
+          company: departmentDetail.company,
+          sectorCode: departmentDetail.sectorCode,
+          sectorName: departmentDetail.sectorName,
+          deptCode: departmentDetail.department.deptCode,
+          deptName: departmentDetail.department.deptFullName
+        } : null;
+      })
       this.dataSourceTable1.data = departments || [];
     }
 
