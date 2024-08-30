@@ -35,7 +35,7 @@ export class ApproverManagePageComponent implements OnInit {
 
     this.approverManageForm = this.fb.group({
       dataCompany: [''],
-      dataDept: [''],
+      dataDeptOrSector: [''],
     })
   }
 
@@ -49,44 +49,47 @@ export class ApproverManagePageComponent implements OnInit {
     });
   }
 
-  checkCompanyAndRole(value: string) {
+  async checkCompanyAndRole(value: string) {
+    // this.deptOrSectorList = [];
 
     if (this.isVicePresident) {
       console.log("role: president", value)
-      if (value === null) {
-        value = this.dataEmpSelect.company.companyName
-      }
-      this.getListSector(value);
+      this.getListSector(value)
     }
 
     else {
       console.log("role: order", value)
-      if (this.dataEmpSelect) {
-        const sectorId = this.dataEmpSelect.sector.id
-        this.getListDept(sectorId);
-      }
-      else {
-        this.swalService.showWarning("กรุณารายชื่อผู้มีอำนาจลงนามอนุมัติ")
-        this.approverManageForm.reset()
-      }
+      this.getListDept(value)
     }
   }
 
 
-  async getListDept(sectorId: number) {
-    console.log(sectorId)
-    const res = await this.commonService.getDeptListBySectorId(sectorId).toPromise();
-    console.log(res)
-    if (res) {
-      this.deptOrSectorList = res.map((item: any) => item.deptName)
+  async getListDept(value: string) {
+    const resSector = await this.commonService.getSectorCompanyByName(value).toPromise();
+
+    let deptList: any[] = [];
+    for (const sector of resSector || []) {
+      try {
+        const res = await this.commonService.getDeptListBySectorId(sector.sectorId).toPromise();
+        deptList = deptList.concat(res);
+      } catch (error) {
+        console.error(`Error fetching department list for sectorId ${sector.sectorId}`, error);
+      }
     }
+
+    this.deptOrSectorList = deptList.map((item: any) => ({
+      id: item.id,
+      name: item.deptName
+    }))
   }
 
   async getListSector(value: string) {
     const res = await this.commonService.getSectorCompanyByName(value).toPromise();
-    console.log(res)
     if (res) {
-      this.deptOrSectorList = res.map((item: any) => item.sectorName)
+      this.deptOrSectorList = res.map((item: any) => ({
+        id: item.sectorId,
+        name: item.sectorName
+      }))
     }
   }
 
@@ -97,12 +100,14 @@ export class ApproverManagePageComponent implements OnInit {
 
   isVicePresident: boolean = false;
 
-  deptOrSectorList!: string[];
+  deptOrSectorList!: { id: number; name: string; }[];
   personList!: Employee[];
 
   dataSourceTable1 = new MatTableDataSource<any>([]); // เริ่มต้นด้วยข้อมูลว่าง
   dataSourceTable2 = new MatTableDataSource<any>([]); // เริ่มต้นด้วยข้อมูลว่าง
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild('paginator1') paginator1!: MatPaginator;
+  @ViewChild('paginator2') paginator2!: MatPaginator;
+  
   originalDisplayedColumns1: string[] = [
     'company',
     'sectorCode',
@@ -129,6 +134,7 @@ export class ApproverManagePageComponent implements OnInit {
 
   addPrivilegeBtn() {
     console.log("grantBtn")
+    console.log(this.approverManageForm.value.dataDeptOrSector)
   }
 
 
@@ -137,7 +143,7 @@ export class ApproverManagePageComponent implements OnInit {
 
     this.dataEmpSelect = element;
 
-    // TODO: set "isVicePresident"
+    // TODO: set "isVicePresident" & show table
     this.isVicePresident = element.roles.some((role: any) => role.role === 'VicePresident');
     if (this.isVicePresident) {
       this.displayedColumns1 = this.displayedColumns1.filter(col => col !== 'deptCode' && col !== 'deptName');
@@ -145,9 +151,11 @@ export class ApproverManagePageComponent implements OnInit {
       this.displayedColumns1 = [...this.originalDisplayedColumns1];
     }
 
+    // this.dataSourceTable1.paginator = this.paginator;
+
     const company = element.company;
     const sector = element.sector;
-    // TODO: set "approverForm"
+    // TODO: set show "approverForm"
     this.approverForm.patchValue({
       fullName: element.firstname + ' ' + element.lastname,
       position: element.typeEmp,
@@ -183,6 +191,8 @@ export class ApproverManagePageComponent implements OnInit {
       }))
       this.dataSourceTable1.data = departments || [];
     }
+
+    this.dataSourceTable1.paginator = this.paginator1;
   }
 
   async getAllPrivilegeApprover() {
@@ -204,8 +214,8 @@ export class ApproverManagePageComponent implements OnInit {
       return order.indexOf(a.roleTH) - order.indexOf(b.roleTH);
     });
 
+    this.dataSourceTable2.paginator = this.paginator2;
 
-    this.dataSourceTable2.paginator = this.paginator;
   }
 
 

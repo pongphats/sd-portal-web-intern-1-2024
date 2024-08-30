@@ -103,10 +103,12 @@
 
         <!-- TODO: dept(แผนก) >> ทุก role | sector(ฝ่าย) >> role 'VicePresident'-->
         <mat-form-field appearance="fill">
-          <mat-label>{{ isVicePresident ? "เลือกฝ่าย" : "เลือกแผนก" }}</mat-label>
-          <mat-select formControlName="dataDept">
+          <mat-label>{{
+            isVicePresident ? "เลือกฝ่าย" : "เลือกแผนก"
+          }}</mat-label>
+          <mat-select formControlName="dataDeptOrSector">
             <mat-option *ngFor="let item of deptOrSectorList" [value]="item">{{
-              item
+              item.name
             }}</mat-option>
           </mat-select>
         </mat-form-field>
@@ -246,6 +248,7 @@
       </table>
     </div>
     <mat-paginator
+      #paginator1
       [pageSize]="5"
       [pageSizeOptions]="[5, 10]"
       class="rounded-b-lg bg-content dark:bg-content-dark shadow-card"
@@ -361,6 +364,7 @@
       </table>
     </div>
     <mat-paginator
+      #paginator2
       [pageSize]="5"
       [pageSizeOptions]="[5, 10]"
       class="rounded-b-lg bg-content dark:bg-content-dark shadow-card"
