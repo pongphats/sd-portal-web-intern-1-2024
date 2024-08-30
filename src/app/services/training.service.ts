@@ -4,12 +4,21 @@ import { SwalService } from './swal.service';
 import { CreateTrainingRequestForm } from '../interface/request';
 import { CommonService } from './common.service';
 import { AuthService } from './auth.service';
+import { TrainingTable } from '../interface/training';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TrainingService {
   private trainingList = new BehaviorSubject<any[]>([]);
+
+  private _trainingEditId!: number;
+
+  private _trainingEditData!: TrainingTable;
+
+  private _trainingRequest!: CreateTrainingRequestForm;
+
+  private trainingEditFormsInValid = new BehaviorSubject<boolean>(true);
 
   adminId: number = 0;
 
@@ -19,6 +28,48 @@ export class TrainingService {
     private authService: AuthService
   ) {
     this.adminId = this.authService.getUID();
+  }
+
+  // set trainingEditFormsInValid(value: boolean) {
+  //   this._trainingEditFormsInValid = value;
+  // }
+
+  // get trainingEditFormsInValid(): boolean {
+  //   return this._trainingEditFormsInValid;
+  // }
+
+  set trainingRequest(value: CreateTrainingRequestForm) {
+    this._trainingRequest = value;
+  }
+
+  get trainingRequest(): CreateTrainingRequestForm {
+    return this._trainingRequest;
+  }
+
+  set trainingEditData(value: TrainingTable) {
+    this._trainingEditData = value;
+  }
+
+  get trainingEditData(): TrainingTable {
+    return this._trainingEditData;
+  }
+
+  // Getter for trainingEditId
+  get trainingEditId(): number {
+    return this._trainingEditId;
+  }
+
+  // Setter for trainingEditId
+  set trainingEditId(id: number) {
+    this._trainingEditId = id;
+  }
+
+  setTrainingEditFormsInValid(value: boolean) {
+    this.trainingEditFormsInValid.next(value);
+  }
+
+  getTrainingEditFormsInValid(): Observable<boolean> {
+    return this.trainingEditFormsInValid.asObservable();
   }
 
   setTrainingList(value: any[]) {
@@ -108,22 +159,24 @@ export class TrainingService {
     };
 
     requestForm.userId = forms.empId;
-    requestForm.dateSave = this.commonService.formatDateToYYYYMMDDString(forms.addMissionDate)
+    requestForm.dateSave = this.commonService.formatDateToYYYYMMDDString(
+      forms.addMissionDate
+    );
     requestForm.action = forms.formsType;
     requestForm.actionDate = requestForm.dateSave;
-    requestForm.createBy = forms.adminId
-    requestForm.budgetType = forms.budgetType
-    requestForm.budget = Number(forms.coursePrice.replace(/,/g, ''))
-    requestForm.projectCourse = forms.courseProject
-    requestForm.etcDetails = forms.budgetDescription
-    requestForm.courseId = forms.courseId
-    requestForm.approverId = forms.approveId
-    requestForm.managerId = forms.managerId
-    requestForm.vicepresident1Id = forms.vicePresIdOne
-    requestForm.vicepresident2Id = forms.vicePresIdTwo
-    requestForm.presidentId = forms.presidentId
+    requestForm.createBy = forms.adminId;
+    requestForm.budgetType = forms.budgetType;
+    requestForm.budget = Number(forms.coursePrice.replace(/,/g, ''));
+    requestForm.projectCourse = forms.courseProject;
+    requestForm.etcDetails = forms.budgetDescription;
+    requestForm.courseId = forms.courseId;
+    requestForm.approverId = forms.approveId;
+    requestForm.managerId = forms.managerId;
+    requestForm.vicepresident1Id = forms.vicePresIdOne;
+    requestForm.vicepresident2Id = forms.vicePresIdTwo;
+    requestForm.presidentId = forms.presidentId;
     if (forms.fileID) {
-      requestForm.fileID = [...forms.fileID]
+      requestForm.fileID = [...forms.fileID];
     }
     return requestForm;
   }

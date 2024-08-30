@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>Install Angular</h2>
+<mat-dialog-content class="mat-typography">
+  <app-section-one-form></app-section-one-form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()" mat-dialog-close>Cancel</button>
+  <button
+    mat-button
+    class="bg-blue-700 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500"
+    [ngClass]="{
+      '!bg-slate-300 hover:!bg-slate-200 dark:!bg-slate-300 dark:hover:!bg-slate-200 hover:!cursor-not-allowed':
+        sectionOneInvalid
+    }"
+    [disabled]="sectionOneInvalid"
+    (click)="editSectionOneForms()"
+    cdkFocusInitial
+  >
+    <span class="text-white dark:text-white">แก้ไขฟอร์ม</span>
+  </button>
+</mat-dialog-actions>
