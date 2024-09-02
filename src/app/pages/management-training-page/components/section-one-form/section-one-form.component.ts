@@ -351,6 +351,7 @@ export class SectionOneFormComponent implements OnInit {
       this.trainingService.setTrainingEditFormsInValid(
         this.trainingForm.invalid
       );
+      this.trainingService.trainingRequest.courseId = filterCourseList.id
     } else {
       console.warn('No matching course found');
       this.trainingForm.patchValue({
@@ -487,6 +488,9 @@ export class SectionOneFormComponent implements OnInit {
     this.trainingService.trainingRequest.presidentId = 0;
     this.trainingService.trainingRequest.budget = 0;
     this.trainingService.trainingRequest.budgetType = '';
+    this.trainingService.setTrainingEditFormsInValid(
+      this.trainingForm.invalid
+    );
   }
   // async
   selectedFormsType(value: string) {
@@ -506,19 +510,19 @@ export class SectionOneFormComponent implements OnInit {
   selectedPriviledgeEmp(empCode: string, role: string) {
     if (role == 'Approver') {
       this.trainingService.trainingRequest.approverId =
-        this.approversList.find((item) => item.empCode == empCode)?.id || 0;
+        this.allPrivilegesApproversList.find((item) => item.empCode == empCode)?.id || 0;
     } else if (role == 'Manager') {
       this.trainingService.trainingRequest.managerId =
-        this.managersList.find((item) => item.empCode == empCode)?.id || 0;
+        this.allPrivilegesApproversList.find((item) => item.empCode == empCode)?.id || 0;
     } else if (role == 'Vice1') {
       this.trainingService.trainingRequest.vicepresident1Id =
-        this.vicePresList.find((item) => item.empCode == empCode)?.id || 0;
+        this.allPrivilegesApproversList.find((item) => item.empCode == empCode)?.id || 0;
     } else if (role == 'Vice2') {
       this.trainingService.trainingRequest.vicepresident2Id =
-        this.vicePresList.find((item) => item.empCode == empCode)?.id || 0;
+        this.allPrivilegesApproversList.find((item) => item.empCode == empCode)?.id || 0;
     } else if (role == 'President') {
       this.trainingService.trainingRequest.presidentId =
-        this.presidentsList.find((item) => item.empCode == empCode)?.id || 0;
+        this.allPrivilegesApproversList.find((item) => item.empCode == empCode)?.id || 0;
     }
     this.trainingService.setTrainingEditFormsInValid(this.trainingForm.invalid);
   }
@@ -530,5 +534,8 @@ export class SectionOneFormComponent implements OnInit {
     );
     this.trainingService.trainingRequest.dateSave = formatDate;
     this.trainingService.trainingRequest.actionDate = formatDate;
+    this.trainingService.setTrainingEditFormsInValid(
+      this.trainingForm.invalid
+    );
   }
 }

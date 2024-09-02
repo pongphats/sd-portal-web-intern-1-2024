@@ -3,11 +3,11 @@
 >
   <!-- forms field -->
   <div class="">
-    <form
+    <form 
       [formGroup]="trainingForm"
-      class="bg-content dark:bg-content-dark rounded-md drop-shadow-md p-4 space-y-4"
+      class="bg-content dark:bg-content-dark rounded-md p-4 space-y-4"
     >
-      <h1 class="text-xl">ส่วนที่ 1 : การส่งพนักงานเข้ารับการฝึกอบรม</h1>
+      <p class="text-xl">ส่วนที่ 1 : การส่งพนักงานเข้ารับการฝึกอบรม</p>
       <!-- Company select layout -->
       <div
         class="flex flex-col lg:flex-row justify-start items-start lg:items-center gap-4"
@@ -171,7 +171,7 @@
               <mat-form-field appearance="fill" class="w-full lg:w-3/4">
                 <mat-label>โครงการ</mat-label>
                 <input
-                  (change)="courseProjectChange($event)"
+                  (keyup)="courseProjectChange($event)"
                   formControlName="courseProject"
                   matInput
                 />

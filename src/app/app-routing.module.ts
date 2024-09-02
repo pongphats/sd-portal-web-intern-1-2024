@@ -43,6 +43,10 @@ const routes: Routes = new Array<Route>(
         component: HomePageComponent,
       },
       {
+        path : "test",
+        component : FtrOf1PageComponent
+      },
+      {
         path: 'news',
         component: NewsPageComponent,
       },

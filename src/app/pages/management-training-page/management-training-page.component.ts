@@ -135,7 +135,9 @@ export class ManagementTrainingPageComponent implements OnInit {
   }
 
   goToEditTrainingPage(data: TrainingTable) {
-    const dialogRef = this.dialog.open(CheckTrainingModalComponent);
+    const dialogRef = this.dialog.open(CheckTrainingModalComponent, {
+      width: '60%', // กำหนดความกว้างเป็น 80% ของหน้าจอ
+    });
     console.log(
       'data table',
       this.trainingTableList.find(
@@ -160,19 +162,19 @@ export class ManagementTrainingPageComponent implements OnInit {
       budget: data.training.budget,
       approverId:
         data.training.status.filter((item) => item.indexOfSignature == 1)[0]
-          ?.id || 0,
+          ?.approveId.id || 0,
       managerId:
         data.training.status.filter((item) => item.indexOfSignature == 2)[0]
-          ?.id || 0,
+          ?.approveId.id || 0,
       vicepresident1Id:
         data.training.status.filter((item) => item.indexOfSignature == 3)[0]
-          ?.id || 0,
+          ?.approveId.id || 0,
       vicepresident2Id:
         data.training.status.filter((item) => item.indexOfSignature == 4)[0]
-          ?.id || 0,
+          ?.approveId.id || 0,
       presidentId:
         data.training.status.filter((item) => item.indexOfSignature == 5)[0]
-          ?.id || 0,
+          ?.approveId.id || 0,
       fileID: fileIdList,
     };
     this.trainingService.trainingEditId = data.training.id;
@@ -183,8 +185,7 @@ export class ManagementTrainingPageComponent implements OnInit {
     });
   }
 
-  dateSaveChange(value : Date) {
+  dateSaveChange(value: Date) {
     console.log(value);
-    
   }
 }
