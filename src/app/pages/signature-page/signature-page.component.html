@@ -16,6 +16,7 @@
             <mat-select
               [formControl]="fullNameControl"
               (selectionChange)="onEmployeeSelect($event.value)"
+              class="px-1 py-1"
             >
               <mat-option
                 *ngFor="let employee of employees"
@@ -26,12 +27,20 @@
             </mat-select>
           </mat-form-field>
 
-          <div *ngIf="signatureImageUrl && !errorMessage">
-            <img [src]="signatureImageUrl" alt="Employee Signature" />
-          </div>
+          <div
+            class="border-2 border-dashed border-[#566a7f] p-2 mt-2 flex justify-center items-center w-full lg:w-[60%] h-[100px] bg-[#f9f9f9] text-[#566a7f] mt-5 mb-3 p-6 w-full bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#242526]"
+          >
+            <div *ngIf="signatureImageUrl && !errorMessage">
+              <img
+                [src]="signatureImageUrl"
+                alt="Employee Signature"
+                class="object-contain h-12 w-40"
+              />
+            </div>
 
-          <div *ngIf="errorMessage">
-            <p style="color: red">{{ errorMessage }}</p>
+            <div *ngIf="errorMessage">
+              <p style="color: red">{{ errorMessage }}</p>
+            </div>
           </div>
         </div>
 
@@ -39,29 +48,41 @@
           <mat-label class="w-full">เลือกรูปภาพลายเซ็น</mat-label>
           <div class="flex flex-col lg:flex-row">
             <mat-form-field appearance="fill" class="w-full lg:w-[60%] mr-1">
-              <input
-                matInput
-                id="level"
-                type="file"
-                (change)="getUploadFile($event)"
-              />
+              <div class="relative w-[40%]">
+                <input
+                  matInput
+                  id="level"
+                  type="file"
+                  class="hidden"
+                  (change)="getUploadFile($event)"
+                />
+                <label
+                  for="level"
+                  class="flex items-center justify-center px-1 py-1 text-white bg-green-500 border border-transparent rounded cursor-pointer hover:bg-green-600"
+                >
+                  <i class="bx bx-upload mr-2"></i> เลือกไฟล์
+                </label>
+              </div>
             </mat-form-field>
 
             <button
-              mat-stroked-button
+              mat-raised-button
+              color="primary"
               type="button"
-              class="mr-1 lg:w-[25%] h-[75%]"
+              class="mr-1 lg:w-[25%] h-[76%]"
               (click)="getUploadSignature()"
             >
-              <span>อัปโหลดรูปภาพ</span>
+              <span class="text-white">อัปโหลดรูปภาพ</span>
             </button>
           </div>
-          <div class="flex flex-col lg:flex-row">
+          <div
+            class="border-2 border-dashed border-[#566a7f] p-2 mt-2 flex justify-center items-center w-full lg:w-[60%] h-[100px] bg-[#f9f9f9] text-[#566a7f] mt-5 mb-3 p-6 w-full bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#242526]"
+          >
             <img
               *ngIf="uploadedImageUrl"
               [src]="uploadedImageUrl"
               alt="Uploaded Image"
-              class="object-fill w-36 h-6 mt-2"
+              class="object-contain h-12 w-40"
             />
           </div>
         </div>
