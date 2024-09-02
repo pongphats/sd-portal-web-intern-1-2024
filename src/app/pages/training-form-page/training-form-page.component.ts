@@ -189,7 +189,7 @@ export class TrainingFormPageComponent implements OnInit {
       const endDate = this.buddhistDatePipe.transform(
         new Date(filterCourseList.endDate)
       );
-      this.trainingService.trainingRequest.courseId = filterCourseList.id
+      // this.trainingService.trainingRequest.courseId = filterCourseList.id
       this.trainingForm.patchValue({
         courseObjective: filterCourseList.objective,
         courseDuration: `${startDate} - ${endDate} ${filterCourseList.time}`,
