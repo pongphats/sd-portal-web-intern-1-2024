@@ -243,13 +243,20 @@
               </ng-template>
               <ng-template #PRVelseBlock2>
                 <div
-                  class=""
                   *ngIf="
                     training.result_status == 'อนุมัติ' &&
                     training.training.result[0].result != null
                   "
+                  [ngClass]="{
+                    'text-red-600 dark:text-red-500':
+                      training.training.result[0].result == 'fail',
+                    'text-green-600 dark:text-green-500':
+                      training.training.result[0].result == 'pass',
+                    'text-yellow-600 dark:text-yellow-500':
+                      training.training.result[0].result == 'noResult'
+                  }"
                 >
-                  {{ (training.training.result[0].result == 'pass') }}
+                  {{ training.training.result[0].result | resultTranslate }}
                 </div>
               </ng-template>
             </td>
@@ -258,6 +265,7 @@
                 type="button"
                 mat-raised-button
                 class="!bg-orange-700 hover:!bg-orange-600"
+                (click)="goToEditTrainingPage(training)"
               >
                 <span class="!text-white"
                   >ตรวจสอบ <i class="bx bx-search-alt"></i

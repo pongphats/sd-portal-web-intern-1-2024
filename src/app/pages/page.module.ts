@@ -43,6 +43,10 @@ import { BudgetWellfareManagePageComponent } from './budget-wellfare-manage-page
 import { SignaturePageComponent } from './signature-page/signature-page.component';
 import { WelfareExpenseHistoryComponent } from './welfare-expense-history/welfare-expense-history.component';
 import { DialogContentComponent } from './welfare-expense-history/dialog-content/dialog-content.component';
+import { CheckTrainingModalComponent } from './management-training-page/components/check-training-modal/check-training-modal.component';
+import { SectionOneFormComponent } from './management-training-page/components/section-one-form/section-one-form.component';
+import { SectionTwoFormComponent } from './management-training-page/components/section-two-form/section-two-form.component';
+import { Generic9FormComponent } from './management-training-page/components/generic9-form/generic9-form.component';
 import { ApproverManagePageComponent } from './approver-manage-page/approver-manage-page.component';
 
 @NgModule({
@@ -86,6 +90,10 @@ import { ApproverManagePageComponent } from './approver-manage-page/approver-man
     SignaturePageComponent,
     WelfareExpenseHistoryComponent,
     DialogContentComponent,
+    CheckTrainingModalComponent,
+    SectionOneFormComponent,
+    SectionTwoFormComponent,
+    Generic9FormComponent,
     ApproverManagePageComponent,
   ],
   imports: [

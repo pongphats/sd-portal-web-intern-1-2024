@@ -99,6 +99,10 @@ const routes: Routes = new Array<Route>(
         component: TrainingFormPageComponent,
       },
       {
+        path: 'training-forms/edit/:id',
+        component: TrainingFormPageComponent,
+      },
+      {
         path: 'welfare-forms',
         component: WelfareFormsPageComponent,
       },

@@ -58,6 +58,11 @@ export interface fileTable {
   fileId: number;
 }
 
+export interface fileEdit {
+  id: number;
+  fileName: string;
+}
+
 export interface level {
   id: number;
   level: string;
@@ -80,4 +85,3 @@ export interface ExpenseWelfare {
   endDate: string; // ISO 8601 datetime format
   canWithdraw: number;
 }
-
