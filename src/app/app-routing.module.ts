@@ -26,6 +26,8 @@ import { ManagementUserPageComponent } from './pages/management-user-page/manage
 import { BudgetWellfareManagePageComponent } from './pages/budget-wellfare-manage-page/budget-wellfare-manage-page.component';
 import { SignaturePageComponent } from './pages/signature-page/signature-page.component';
 import { WelfareExpenseHistoryComponent } from './pages/welfare-expense-history/welfare-expense-history.component';
+import { ApproverManagePageComponent } from './pages/approver-manage-page/approver-manage-page.component';
+
 const routes: Routes = new Array<Route>(
   {
     path: 'sign-in',
@@ -39,6 +41,10 @@ const routes: Routes = new Array<Route>(
         path: '',
         pathMatch: 'full',
         component: HomePageComponent,
+      },
+      {
+        path : "test",
+        component : FtrOf1PageComponent
       },
       {
         path: 'news',
@@ -97,6 +103,10 @@ const routes: Routes = new Array<Route>(
         component: TrainingFormPageComponent,
       },
       {
+        path: 'training-forms/edit/:id',
+        component: TrainingFormPageComponent,
+      },
+      {
         path: 'welfare-forms',
         component: WelfareFormsPageComponent,
       },
@@ -115,7 +125,11 @@ const routes: Routes = new Array<Route>(
       {
         path: 'welfare-expense-history',
         component: WelfareExpenseHistoryComponent,
-      }
+      },
+      {
+        path: 'approver-manage',
+        component: ApproverManagePageComponent,
+      },
     ),
   },
   {

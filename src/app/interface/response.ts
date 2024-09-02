@@ -28,7 +28,7 @@ export interface MngDeptListRes {
   companyId: number;
   sectorCode: string;
   sectorId: number;
-  sectorName: number;
+  sectorName: string;
   deptCode: string;
   deptId: number;
   deptName: string;

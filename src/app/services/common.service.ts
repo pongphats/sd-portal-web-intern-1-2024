@@ -74,24 +74,12 @@ export class CommonService {
     return timeString;
   }
 
-  async getSectorAndDeptsListByCompanyName(
+  getSectorAndDeptsListByCompanyName(
     companyName = 'PCCTH'
-  ): Promise<sector[]> {
-    let sectors: sector[] = [];
-    try {
-      const res = await this.apiService
-        .getSectorsDeptsCompanysList()
-        .toPromise();
-      if (res === undefined) {
-        throw new Error('Sectors list is undefined');
-      } else {
-        sectors = res.filter((item: sector) => item.company == companyName);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-    // console.log(sectors);
-    return sectors;
+  ): Observable<sector[]> {
+    return this.http
+      .get<sector[]>(`${this.trainingUrl}/findAllJoinDepartmentsSector`)
+      .pipe(map((res) => res.filter((item) => item.company == companyName)));
   }
 
   convertNumberToStringFormatted(number: number): string {
