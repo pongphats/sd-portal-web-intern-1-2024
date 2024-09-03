@@ -122,7 +122,7 @@ export interface budgetCreate {
 export interface expenseReportRequest {
   page: number | 0;
   size: number | 10;
-  companyId: number;
+  companyName : string;
   sectorId: number;
   deptId: number;
   userId: number;

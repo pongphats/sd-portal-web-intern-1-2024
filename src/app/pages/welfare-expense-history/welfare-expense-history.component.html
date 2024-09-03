@@ -51,7 +51,7 @@
 
 
         <!-- Newform -->
-        <form [formGroup]="expenseForm">
+        <form [formGroup]="expenseForm" (ngSubmit)="onSearch()">
             <div
                 class="w-full flex flex-col text-[#566a7f] rounded-lg shadow p-6 bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#343434]">
 
@@ -117,12 +117,12 @@
                         <label class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]">
                             วันที่</label>
                         <mat-form-field appearance="fill">
-                            <mat-label>Enter a date range</mat-label>
+                            <mat-label>วันที่</mat-label>
                             <mat-date-range-input [rangePicker]="picker">
-                                <input matStartDate placeholder="Start date">
-                                <input matEndDate placeholder="End date">
+                                <input matStartDate placeholder="วันที่เริ่ม" formControlName="startDate">
+                                <input matEndDate placeholder="วันที่สิ้นสุด" formControlName="endDate">
                             </mat-date-range-input>
-                            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                            <mat-hint>วัน/เดือน/ปี – วัน/เดือน/ปี</mat-hint>
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-date-range-picker #picker></mat-date-range-picker>
                         </mat-form-field>
@@ -134,7 +134,7 @@
                 <div class="col-span-1 md:col-span-1 lg:col-span-1 flex justify-center items-center h-full">
                     <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-2 mt-4">
                         <button mat-raised-button class="flex items-center text-center bg-[#1134A6] dark:bg-[#696cf8]"
-                       >
+                        type="submit" >
                             <i class='bx bx-search pr-2 text-white dark:text-white'></i>
                             <span class="text-white dark:text-white">ค้นหา</span>
                         </button>
@@ -160,7 +160,7 @@
         <div
             class="w-full flex flex-col text-[#566a7f] rounded-lg shadow p-6 bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#343434]">
             <div class="flex items-center justify-start">
-                <button mat-stroked-button
+                <button mat-stroked-button (click)="clearForm()"
                     class="border-5 border-[#1134A6] text-[#1134A6] dark:border-[#ffffff] dark:text-[#ffffff] bg-transparent hover:bg-[#e0e0e0] dark:hover:bg-[#333]">
                     <i class='bx bx-filter-alt pr-2 text-[#1134A6] dark:text-[#ffffff]'></i>
                     <span class="text-[#1134A6] dark:text-[#ffffff]">Clear</span>
@@ -170,12 +170,12 @@
 
             <table mat-table [dataSource]="welfareExpense" class="mat-elevation-z8 w-full overflow-x-auto mt-4">
 
-                <ng-container matColumnDef="company">
+                <ng-container matColumnDef="companyName">
                     <th mat-header-cell *matHeaderCellDef
                         class="font-bold text-[#4d4d4f] bg-gray-100 text-[16px] dark:bg-content-dark !text-center">
                         บริษัท
                     </th>
-                    <td mat-cell *matCellDef="let element" class="justify-center !text-center">
+                    <td mat-cell *matCellDef="let element" class="justify-center !text-center"> {{element.companyName}}
                     </td>
                 </ng-container>
 
@@ -184,7 +184,7 @@
                         class="font-bold text-[#4d4d4f] bg-gray-100 text-[16px] dark:bg-content-dark !text-center">
                         ฝ่าย/แผนก
                     </th>
-                    <td mat-cell *matCellDef="let element" class="justify-center !text-center"> {{element.fullName}}
+                    <td mat-cell *matCellDef="let element" class="justify-center !text-center"> {{element.sectorDept}}
                     </td>
                 </ng-container>
 
@@ -193,34 +193,34 @@
                         class="font-bold text-[#4d4d4f] bg-gray-100 text-[16px] dark:bg-content-dark !text-center">
                         รหัสพนักงาน
                     </th>
-                    <td mat-cell *matCellDef="let element" class="justify-center !text-center"> {{element.level}}
+                    <td mat-cell *matCellDef="let element" class="justify-center !text-center"> {{element.empCode}}
                     </td>
                 </ng-container>
 
-                <ng-container matColumnDef="firstName">
+                <ng-container matColumnDef="firstname">
                     <th mat-header-cell *matHeaderCellDef
                         class="font-bold text-[#4d4d4f] bg-gray-100 text-[16px] dark:bg-content-dark !text-center">
                         ชื่อ
                     </th>
-                    <td mat-cell *matCellDef="let element" class="justify-center !text-center"> {{element.canWithdraw}}
+                    <td mat-cell *matCellDef="let element" class="justify-center !text-center"> {{element.firstname}}
                     </td>
                 </ng-container>
 
-                <ng-container matColumnDef="lastName">
+                <ng-container matColumnDef="lastname">
                     <th mat-header-cell *matHeaderCellDef
                         class="font-bold text-[#4d4d4f] bg-gray-100 text-[16px] dark:bg-content-dark !text-center">
                         นามสกุล
                     </th>
-                    <td mat-cell *matCellDef="let element" class="justify-center !text-center"> {{element.canWithdraw}}
+                    <td mat-cell *matCellDef="let element" class="justify-center !text-center"> {{element.lastname}}
                     </td>
                 </ng-container>
 
-                <ng-container matColumnDef="position">
+                <ng-container matColumnDef="position.positionName">
                     <th mat-header-cell *matHeaderCellDef
                         class="font-bold text-[#4d4d4f] bg-gray-100 text-[16px] dark:bg-content-dark !text-center">
                         ตำแหน่ง
                     </th>
-                    <td mat-cell *matCellDef="let element" class="justify-center !text-center"> {{element.canWithdraw}}
+                    <td mat-cell *matCellDef="let element" class="justify-center !text-center"> {{element.position.positionName}}
                     </td>
                 </ng-container>
 
@@ -229,7 +229,7 @@
                         class="font-bold text-[#4d4d4f] bg-gray-100 text-[16px] dark:bg-content-dark !text-center">
                         อีเมล
                     </th>
-                    <td mat-cell *matCellDef="let element" class="justify-center !text-center"> {{element.canWithdraw}}
+                    <td mat-cell *matCellDef="let element" class="justify-center !text-center"> {{element.email}}
                     </td>
                 </ng-container>
 
@@ -238,21 +238,20 @@
                         class="font-bold text-[#4d4d4f] bg-gray-100 text-[16px] dark:bg-content-dark !text-center">
                         สถานะ
                     </th>
-                    <td mat-cell *matCellDef="let element" class="justify-center !text-center"> {{element.canWithdraw}}
+                    <td mat-cell *matCellDef="let element" class="justify-center !text-center"> {{element.status}}
                     </td>
                 </ng-container>
 
                  <!-- Message Row -->
-                 <tr *ngIf="welfareExpense.data.length === 0" class="bg-gray-100">
+                 <!-- <tr *ngIf="welfareExpense.data.length === 0" class="bg-gray-100">
                     <td colspan="8" class="text-center text-gray-500 py-4 font-bold">
                         กรุณาเลือกฝ่ายและแผนก
                     </td>
-                </tr>
+                </tr> -->
 
-                
-            
-
-
+                <tr *ngIf="welfareExpense.data.length === 0" class="bg-gray-100">
+                    <td colspan="8" class="text-center text-gray-500 py-4 font-bold">กรุณาเลือกฝ่ายและแผนก</td>
+                  </tr>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"

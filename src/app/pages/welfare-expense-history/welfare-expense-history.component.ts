@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SwalService } from 'src/app/services/swal.service';
 import { CommonService } from 'src/app/services/common.service';
 import { ApiService } from 'src/app/services/api.service';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { debounceTime, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { MatTableDataSource } from '@angular/material/table';
 import { Employee } from 'src/app/interface/employee';
@@ -12,6 +12,8 @@ import { ExpenseForm, WelfareForm } from 'src/app/interface/form';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogContentComponent } from './dialog-content/dialog-content.component';
+import { expenseReportRequest } from 'src/app/interface/request';
+import { id } from 'date-fns/locale';
 
 @Component({
   selector: 'app-welfare-expense-history',
@@ -36,6 +38,7 @@ export class WelfareExpenseHistoryComponent implements OnInit {
   ) {
     this.welfareForm = this.fb.group({
       fullName: ['', Validators.required],
+
     });
 
     this.expenseForm = this.fb.group({
@@ -43,9 +46,10 @@ export class WelfareExpenseHistoryComponent implements OnInit {
       sectorName: ['', Validators.required],
       deptName: ['', Validators.required],
       empName: ['', Validators.required],
-      dateRange: [''],
+      // dateRange: [''],
+      startDate: [''],
+      endDate: ['']
     });
-
   }
 
   openDialog() {
@@ -136,11 +140,24 @@ export class WelfareExpenseHistoryComponent implements OnInit {
       } 
     });
 
+
     // ฟังการเปลี่ยนแปลงของ empName
     this.filteredOptions = this.expenseForm.get('empName')!.valueChanges.pipe(
       debounceTime(300),
       switchMap(value => this.empFormOption.pipe(
-        map(options => options.filter(emp => emp.fullName.toLowerCase().includes(value.toLowerCase())))
+        map(options => options.filter(emp => emp.fullName.toLowerCase().includes(value.toLowerCase()))),
+        tap(filteredOptions => {
+
+          // เช็คว่ามีข้อมูล emp ที่ตรงกับ empName หรือไม่
+          if (filteredOptions.length === 1) {
+            console.log('filteredOptions', filteredOptions)
+            // ถ้ามีข้อมูล emp เดียวที่ตรงกัน เก็บข้อมูลนั้นใน dataEmp
+            this.dataEmp = filteredOptions[0];
+          } else {
+            // ถ้าไม่มีข้อมูลตรงหรือมีมากกว่าหนึ่งรายการ, clear dataEmp
+            this.dataEmp = (null);
+          }
+        })
       ))
     );
 
@@ -155,7 +172,8 @@ export class WelfareExpenseHistoryComponent implements OnInit {
 
 
   }
-
+    // ตัวแปรสำหรับเก็บข้อมูล emp ที่ตรงกับ empName
+    dataEmp: any;
 
 
 
@@ -171,7 +189,7 @@ export class WelfareExpenseHistoryComponent implements OnInit {
   filteredOptions!: Observable<any[]>;
   //table
   welfareExpense = new MatTableDataSource<any>([]);
-  displayedColumns: string[] = ['company', 'sectorDept', 'empCode', 'firstName', 'lastName', 'position', 'email', 'status'];
+  displayedColumns: string[] = ['companyName', 'sectorDept', 'empCode', 'firstname', 'lastname', 'position.positionName', 'email', 'status'];
   dataListEmp: Employee[] = [];
   getEmp(term: string): Observable<any[]> {
     // กรณี ไม่กรอกอะไรเลย
@@ -382,6 +400,7 @@ export class WelfareExpenseHistoryComponent implements OnInit {
           emp.map((item: Employee) => ({
             ...item,
             fullName: `${item.firstname} ${item.lastname}`,
+          
           }))
         )
       );
@@ -393,32 +412,77 @@ export class WelfareExpenseHistoryComponent implements OnInit {
 
   // ==================================
  
+  onSearch(): void {
+    const formValues = this.expenseForm.value;
+  
+    // ตรวจสอบค่าที่ต้องเป็นตัวเลข
+    const companyName = formValues.companyName ? String(formValues.companyName) : '';
+    const sectorId = formValues.sectorName ? Number(formValues.sectorName) : NaN;
+    const deptId = formValues.deptName ? Number(formValues.deptName) : NaN;
+    // const id = formValues.id ? Number(formValues.id) : NaN;
+    console.log(this.dataEmp.id)
+
+    // ตรวจสอบว่าค่าทั้งหมดมีอยู่และไม่เป็น undefined ก่อนส่งไปยัง API
+    if (companyName  === undefined || sectorId === undefined || deptId === undefined) {
+      console.error('Company ID, Sector ID, and Dept ID are required.');
+      return; // หรือแสดงข้อความผิดพลาดใน UI
+    }
+  
+    const req: any = {
+      page: 0, // ตัวอย่างค่าหน้าแรก
+      size: 10, // ตัวอย่างขนาดหน้า
+      companyName : companyName ,
+      // sectorId: sectorId,
+      // deptId: deptId,
+      // userId: this.dataEmp.id, 
+      startDate: formValues.startDate ? this.formatDate(formValues.startDate) : '', // ใช้ค่าว่างหากไม่มีวันที่
+      endDate: formValues.endDate ? this.formatDate(formValues.endDate) : '' // ใช้ค่าว่างหากไม่มีวันที่
+    };
+    console.log("req", req)
+  
+    this.apiService.getExpenseReportWithPagination(req).subscribe(response => {
+      this.welfareExpense.data = response.content.map(
+        (itemTable) => ({
+          ...itemTable,
+          
+        })
+      );; // Assuming response.data contains the data
+   console.log("this.welfareExpense.data", this.welfareExpense.data)
+      
+     
+    },
+    
+    error => {
+      console.error('Error fetching expense report:', error);
+      // Handle error appropriately, possibly display an error message
+      console.log("this.welfareExpense.data ", this.welfareExpense.data )
+    }
+  );
+  }
+
+  
+  
+  
+  // ฟังก์ชันสำหรับการแปลงวันที่
+formatDate(date: Date | string): string {
+  if (typeof date === 'string') return date;
+  const year = date.getFullYear();
+  const month = ('0' + (date.getMonth() + 1)).slice(-2); // เดือนต้องมี 2 หลัก
+  const day = ('0' + date.getDate()).slice(-2); // วันต้องมี 2 หลัก
+  return `${year}-${month}-${day}`;
+}
+
+  
 
 
-  // async searchExpensesTable(): Promise<void> {
-  //   const fullName = this.welfareForm.get('fullName')?.value;
-  //   // ค้นหาผู้ใช้โดยใช้ firstname และ lastname
-  //   const user = this.dataListEmp.find(emp =>
-  //     `${emp.firstname} ${emp.lastname}` === fullName
-  //   );
+  clearForm(): void {
+    this.expenseForm.reset();
+    this.welfareExpense.data = []; // Clear the table data
+  }
 
-  //   console.log(user)
 
-  //   if (user) {
-  //     const res = await this.apiService.getExpenseReportWithPagination(expenseReportRequest).toPromise();
-  //     console.log(res.content)
 
-  //     this.welfareExpense.data = res.content.map((expense: any) => ({
-  //       ...expense,
-  //       fullName: `${user.firstname} ${user.lastname}`,
-  //       level: user.level,
-  //     }))
-
-  //   } else {
-  //     this.swalService.showError('User not found');
-  //   }
-
-  // }
+  
 
 
 
