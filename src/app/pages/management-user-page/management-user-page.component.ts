@@ -356,7 +356,7 @@ export class ManagementUserPageComponent implements OnInit, AfterViewInit {
       console.error(error);
       this.swalService.showError('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
     } finally {
-      this.fetchAfterAction();
+      await this.fetchAfterAction();
     }
   }
 

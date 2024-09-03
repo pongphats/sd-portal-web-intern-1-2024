@@ -116,3 +116,11 @@ export interface SearchEmpTableForms {
   searchType: FormControl<string | null>;
   searchValue: FormControl<string | null>;
 }
+
+export interface approverForms {
+  fullName: FormControl<string | null>;
+  position: FormControl<string | null>;
+  company: FormControl<string | null>;
+  sectorCode: FormControl<string | null>;
+  deptCode: FormControl<string | null>;
+}

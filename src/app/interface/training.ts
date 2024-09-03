@@ -22,7 +22,7 @@ interface Training {
   status: Status[];
   result: Result[];
   resultGeneric9: ResultGeneric9[];
-  trainingFiles: number[];
+  trainingFiles: any[];
 }
 
 interface User {

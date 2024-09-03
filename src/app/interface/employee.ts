@@ -25,7 +25,7 @@ export interface Role {
   role: string;
 }
 
-interface Sector {
+export interface Sector {
   id: number;
   sectorName: string;
   sectorCode: string;
@@ -33,7 +33,7 @@ interface Sector {
   sectorFullName: null | string;
 }
 
-interface Department {
+export interface Department {
   id: number;
   deptName: string;
   deptCode: string;

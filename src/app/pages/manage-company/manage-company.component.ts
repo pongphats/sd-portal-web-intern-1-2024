@@ -1,8 +1,18 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  FormBuilder,
+} from '@angular/forms';
 import { Observable } from 'rxjs';
 import { SectorManageForm } from 'src/app/interface/form';
-import { createAndUpdateBudgetRequest, CreateSectorRequest, createPosition, editPosition } from 'src/app/interface/request';
+import {
+  createAndUpdateBudgetRequest,
+  CreateSectorRequest,
+  createPosition,
+  editPosition,
+} from 'src/app/interface/request';
 import { map, startWith } from 'rxjs/operators';
 import { CommonService } from 'src/app/services/common.service';
 import { ApiService } from 'src/app/services/api.service';
@@ -14,7 +24,6 @@ import { Position } from 'src/app/interface/employee';
 import { id } from 'date-fns/locale';
 import Swal from 'sweetalert2';
 
-
 // Auto
 export interface User {
   deptManage: string;
@@ -23,12 +32,9 @@ export interface User {
 @Component({
   selector: 'app-manage-company',
   templateUrl: './manage-company.component.html',
-  styleUrls: ['./manage-company.component.scss']
+  styleUrls: ['./manage-company.component.scss'],
 })
 export class ManageCompanyComponent implements OnInit {
-
-
-
   sectorManageForm!: FormGroup<SectorManageForm>;
   showDeleteButton: boolean = false; //ลบ
 
@@ -49,26 +55,27 @@ export class ManageCompanyComponent implements OnInit {
       deptCode: ['', [Validators.required]], //รหัสแผนก
       deptManage: ['', [Validators.required]],
     });
-
   }
-
 
   ngOnInit(): void {
     //Auto
-    this.filteredOptions = this.sectorManageForm.get('deptManage')!.valueChanges.pipe(
-      startWith(''),
-      map(value => (typeof value === 'string' ? value : '')),
-      map(deptManage => (deptManage ? this._filter(deptManage) : this.adminEmps.slice())),
-    );
+    this.filteredOptions = this.sectorManageForm
+      .get('deptManage')!
+      .valueChanges.pipe(
+        startWith(''),
+        map((value) => (typeof value === 'string' ? value : '')),
+        map((deptManage) =>
+          deptManage ? this._filter(deptManage) : this.adminEmps.slice()
+        )
+      );
 
-    this.genAdmin();//1
+    this.genAdmin(); //1
 
-    this.loadSpecificCompanySectors();//2
+    this.loadSpecificCompanySectors(); //2
 
-    this.loadPositionManagement();//3 table2
+    this.loadPositionManagement(); //3 table2
 
     //this.dataManageCompany.paginator = this.paginator;
-
   }
 
   //
@@ -84,15 +91,12 @@ export class ManageCompanyComponent implements OnInit {
       const res = await this.commonService.generateAdminFullName().toPromise();
       if (res) {
         this.adminEmps = res;
-        console.log(res)
+        console.log(res);
         console.log('Admin Options:', this.adminEmps); // ดูว่ามีข้อมูลถูกต้องหรือไม่
       } else {
         this.adminEmps = []; // Or handle the case where `res` is `undefined`
       }
-
-    }
-
-    catch (error) {
+    } catch (error) {
       console.error('Error generating admin full names:', error);
     }
   }
@@ -107,39 +111,42 @@ export class ManageCompanyComponent implements OnInit {
       .filter((option: string) => option.toLowerCase().includes(filterValue))
       .sort();
   }
-//add
-async createSectorDept() {
-    console.log("Pass")
+  //add
+  async createSectorDept() {
+    console.log('Pass');
     const companyId = this.sectorManageForm.value.company || ''; // แปลงค่าจากฟอร์มเป็นหมายเลข
-    console.log(companyId)
-    const res = await this.commonService.getCompanyIdByName(companyId).toPromise();
-    console.log(res)
-    console.log(this.sectorManageForm)
+    console.log(companyId);
+    const res = await this.commonService
+      .getCompanyIdByName(companyId)
+      .toPromise();
+    console.log(res);
+    console.log(this.sectorManageForm);
 
     const deptManageValue = this.sectorManageForm.value.deptManage || ''; // ค่าจากฟอร์ม
     console.log('deptManage value:', this.sectorManageForm.value.deptManage);
 
-    const manageFullName = typeof deptManageValue === 'string' ? deptManageValue.split(' ') : [];
+    const manageFullName =
+      typeof deptManageValue === 'string' ? deptManageValue.split(' ') : [];
     const manageFirstName =
-      manageFullName.length === 3 ? manageFullName[1] : (manageFullName[0] || '');
+      manageFullName.length === 3 ? manageFullName[1] : manageFullName[0] || '';
     const manageLastName =
-      manageFullName.length === 3 ? manageFullName[2] : (manageFullName[1] || '');
+      manageFullName.length === 3 ? manageFullName[2] : manageFullName[1] || '';
 
     const req: CreateSectorRequest = {
       companyId: res || 0,
-      sectorTname: this.sectorManageForm.value.sectorTname || '',  //ฝ่ายไทย
-      sectorFullName: this.sectorManageForm.value.sectorEname || '',   //ฝ่ายอังกฤษ
-      sectorCode: this.sectorManageForm.value.sectorCode || '',      //รหัสฝ่าย
-      deptTname: this.sectorManageForm.value.deptTname || '',        //แผนกไทย
-      deptFullName: this.sectorManageForm.value.deptEname || '',    //แผนกอังกฤษ
+      sectorTname: this.sectorManageForm.value.sectorTname || '', //ฝ่ายไทย
+      sectorFullName: this.sectorManageForm.value.sectorEname || '', //ฝ่ายอังกฤษ
+      sectorCode: this.sectorManageForm.value.sectorCode || '', //รหัสฝ่าย
+      deptTname: this.sectorManageForm.value.deptTname || '', //แผนกไทย
+      deptFullName: this.sectorManageForm.value.deptEname || '', //แผนกอังกฤษ
       deptCode: this.sectorManageForm.value.deptId || '',
       firstName: manageFirstName,
       lastName: manageLastName,
       sectorName: this.sectorManageForm.value.sectorCode || '', //
-      deptName: this.sectorManageForm.value.deptCode || '',  //รหัสแผนก 
+      deptName: this.sectorManageForm.value.deptCode || '', //รหัสแผนก
     };
 
-    console.log(req)
+    console.log(req);
     try {
       // Call API (save)
       const apiRes = await this.apiService.createSectorAndDept(req).toPromise();
@@ -151,36 +158,40 @@ async createSectorDept() {
         title: 'สำเร็จ',
         text: 'เพิ่มข้อมูลสำเร็จ',
         confirmButtonText: 'ตกลง',
-         confirmButtonColor: '#22c55e'
+        confirmButtonColor: '#22c55e',
       });
 
       // Update the table data and reset form
       await this.loadSpecificCompanySectors(); // Re-fetch data to include new sector/department
       this.clearForm();
-
     } catch (error) {
       console.error('Error creating sector and department:', error);
       await Swal.fire({
         icon: 'error',
         title: 'เกิดข้อผิดพลาด',
         text: 'There was an error creating the sector and department.',
-        confirmButtonText: 'OK'
+        confirmButtonText: 'OK',
       });
     }
   }
 
-async editSectorDept() {
+  async editSectorDept() {
     const companyId = this.sectorManageForm.value.company || ''; // แปลงค่าจากฟอร์มเป็นหมายเลข
-    console.log(companyId)
-    const numberCompany = await this.commonService.getCompanyIdByName(companyId).toPromise();
-    console.log("numberCompany", numberCompany)
+    console.log(companyId);
+    const numberCompany = await this.commonService
+      .getCompanyIdByName(companyId)
+      .toPromise();
+    console.log('numberCompany', numberCompany);
 
     const deptManageValue = this.sectorManageForm.value.deptManage || '';
-    const manageFullName = typeof deptManageValue === 'string' ? deptManageValue.split(' ') : [];
-    const manageFirstName = manageFullName.length === 3 ? manageFullName[1] : (manageFullName[0] || '');
-    const manageLastName = manageFullName.length === 3 ? manageFullName[2] : (manageFullName[1] || '');
+    const manageFullName =
+      typeof deptManageValue === 'string' ? deptManageValue.split(' ') : [];
+    const manageFirstName =
+      manageFullName.length === 3 ? manageFullName[1] : manageFullName[0] || '';
+    const manageLastName =
+      manageFullName.length === 3 ? manageFullName[2] : manageFullName[1] || '';
 
-    console.log("selectedSector", this.selectedSector)
+    console.log('selectedSector', this.selectedSector);
 
     const req: CreateSectorRequest = {
       companyId: numberCompany || 0,
@@ -198,7 +209,13 @@ async editSectorDept() {
 
     try {
       // ส่ง `sectorId` และ `deptId` เข้าไปในฟังก์ชันแก้ไข
-      const apiRes = await this.apiService.editSectorAndDept(req, this.selectedSector.sectorId, this.selectedSector.department.id).toPromise();
+      const apiRes = await this.apiService
+        .editSectorAndDept(
+          req,
+          this.selectedSector.sectorId,
+          this.selectedSector.department.id
+        )
+        .toPromise();
       console.log('Sector and Department updated successfully:', apiRes);
 
       // แสดงข้อความป๊อปอัพว่าการแก้ไขสำเร็จ
@@ -207,12 +224,11 @@ async editSectorDept() {
         title: 'สำเร็จ',
         text: 'แก้ไขข้อมูลสำเร็จ',
         confirmButtonText: 'ตกลง',
-        confirmButtonColor: '#22c55e'
+        confirmButtonColor: '#22c55e',
       });
 
       await this.loadSpecificCompanySectors(); // โหลดข้อมูลใหม่เพื่อแสดงการอัปเดต
       this.clearForm(); // รีเซ็ตฟอร์มหลังจากการอัปเดต
-
     } catch (error) {
       console.error('Error updating sector and department:', error);
 
@@ -221,7 +237,7 @@ async editSectorDept() {
         icon: 'error',
         title: 'เกิดข้อผิดพลาด',
         text: 'There was an error updating the sector and department.',
-        confirmButtonText: 'OK'
+        confirmButtonText: 'OK',
       });
     }
   }
@@ -232,27 +248,34 @@ async editSectorDept() {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   //แสดงในตารางไม่ครบตรงนี้ จาก swagger
-  displayedColumns: string[] = ['sectorTname', 'sectorFullName', 'sectorCode', 'department.deptTname', 'department.deptFullName', 'department.deptName', 'department.deptCode'];
+  displayedColumns: string[] = [
+    'sectorTname',
+    'sectorFullName',
+    'sectorCode',
+    'department.deptTname',
+    'department.deptFullName',
+    'department.deptName',
+    'department.deptCode',
+  ];
 
   async loadSpecificCompanySectors() {
     // ดึงค่าของ companyId จากฟอร์ม
     const companyId = this.sectorManageForm.value.company || '';
-    console.log(`Loading sectors for company: ${companyId}`); // 
+    console.log(`Loading sectors for company: ${companyId}`); //
     try {
-      const companySectors = await this.commonService.getSectorAndDeptsListByCompanyName(companyId);
+      const companySectors =
+        (await this.commonService
+          .getSectorAndDeptsListByCompanyName(companyId)
+          .toPromise()) || [];
 
-      console.log('OtherCompany sector: ', companySectors)
+      console.log('OtherCompany sector: ', companySectors);
 
       this.dataManageCompany.data = companySectors;
 
       console.log('Data for table:', this.dataManageCompany.data);
-
-
-
     } catch (error) {
       console.error('Error loading manage company data:', error);
     }
-
   }
 
   async clearForm() {
@@ -261,12 +284,11 @@ async editSectorDept() {
 
     // Reset the form values except 'company'
     this.sectorManageForm.reset({
-      company: companyValue
+      company: companyValue,
     });
     //เปลี่ยนสถานะกลับไปที่โหมดการสร้าง
     this.isEditing = false;
     this.showDeleteButton = false; // ซ่อนปุ่มลบข้อมูล
-
   }
 
   isEditing: boolean = false;
@@ -276,7 +298,7 @@ async editSectorDept() {
   adminRes: any;
   async onRowClick(row: any) {
     this.selectedSector = row;
-    console.log(row)
+    console.log(row);
     this.deptId = row.department.id;
 
     // Fetch admin details
@@ -285,13 +307,15 @@ async editSectorDept() {
       const deptName = row.department.deptName;
       const companyName = row.company;
 
-      this.adminRes = await this.apiService.getAdminByDeptCodeDeptNameCompanyName(deptCode, deptName, companyName).toPromise();
-      console.log("adminRes", this.adminRes)
+      this.adminRes = await this.apiService
+        .getAdminByDeptCodeDeptNameCompanyName(deptCode, deptName, companyName)
+        .toPromise();
+      console.log('adminRes', this.adminRes);
 
       if (this.adminRes) {
         const admin = this.adminRes; // Assuming this is the response from your API
         const fullName = `${admin.title} ${admin.firstname} ${admin.lastname}`;
-        console.log("fullname", fullName)
+        console.log('fullname', fullName);
 
         this.sectorManageForm.patchValue({
           company: row.company,
@@ -302,7 +326,7 @@ async editSectorDept() {
           deptEname: row.department.deptFullName,
           deptCode: row.department.deptName,
           deptId: row.department.deptCode,
-          deptManage: fullName
+          deptManage: fullName,
         });
 
         this.isEditing = true; // Switch to edit mode
@@ -331,21 +355,22 @@ async editSectorDept() {
 
   // ลบข้อมูลจริง
   async deleteData() {
-    const confirmed = await this.swalService.showConfirm("ต้องการลบใช่มั้ย")
+    const confirmed = await this.swalService.showConfirm('ต้องการลบใช่มั้ย');
     if (confirmed) {
-      const res = await this.apiService.deleteDepartmantId(this.deptId).toPromise();
-      this.swalService.showSuccess("สำเร็จ")
-      this.clearForm()
+      const res = await this.apiService
+        .deleteDepartmantId(this.deptId)
+        .toPromise();
+      this.swalService.showSuccess('สำเร็จ');
+      this.clearForm();
       await this.loadSpecificCompanySectors(); //update table หลัง ลบ
     } else {
-      console.log("cancel")
+      console.log('cancel');
     }
   }
 
   //Taable 2
   positionManagement = new MatTableDataSource<any>([]);
   displayedColumns2: string[] = ['positionNo', 'positionName'];
-
 
   // async loadPositionManagement() {
   //   try {
@@ -361,30 +386,36 @@ async editSectorDept() {
   async loadPositionManagement() {
     try {
       // API
-      const responsePosition = await this.apiService.getAllPositionDept(this.deptId).toPromise();
+      const responsePosition = await this.apiService
+        .getAllPositionDept(this.deptId)
+        .toPromise();
 
       // Handle cases where response might be undefined ตรวจสอบว่า response ไม่เป็น undefined และเป็น array
       if (responsePosition && Array.isArray(responsePosition)) {
         console.log('Positions for selected department:', responsePosition);
 
         // Map the positions data to include a sequential position number
-        const mappedPositions = responsePosition.map((position: any, index: number) => ({
-          positionNo: index + 1, // Position number starts from 1
-          positionName: position.positionName, // Assuming the API returns an object with positionName
-          positionId: position.id //เก็บ id เพื่อเอาไปแก้
-        }));
+        const mappedPositions = responsePosition.map(
+          (position: any, index: number) => ({
+            positionNo: index + 1, // Position number starts from 1
+            positionName: position.positionName, // Assuming the API returns an object with positionName
+            positionId: position.id, //เก็บ id เพื่อเอาไปแก้
+          })
+        );
 
         // Set the data for the MatTableDataSource
         this.positionManagement.data = mappedPositions;
       } else {
-        console.error('Unexpected data format or no data for positions:', responsePosition);
+        console.error(
+          'Unexpected data format or no data for positions:',
+          responsePosition
+        );
         this.positionManagement.data = []; // Clear data if the format is unexpected or if data is undefined
       }
     } catch (error) {
       console.error('Error loading position management data:', error);
       this.positionManagement.data = []; // Ensure table is cleared if an error occurs
     }
-
   }
 
   positionManage: string = ''; //ตำแหน่ง
@@ -395,29 +426,30 @@ async editSectorDept() {
 
     console.log('Position Manage Updated:', this.positionManage); // ตรวจสอบการอัปเดต
     this.positionId = row.positionId; //positionId ที่เก็บ id จากตอนกดrow2
-    console.log('Id is:', this.positionId)
+    console.log('Id is:', this.positionId);
     this.selectedRowShowButton = row; //ปุ่มลบแสดง
     this.isEditingPositon = true; // เปลี่ยนสถานะเป็นการแก้ไข
     this.selectedRowShowButton = true; //ลบแสดง??
     this.isPositionNameEntered = true; //แสดงเพิ่มลบ
 
-     // เลื่อนหน้าจอไปฟอร์ม
-     this.scrollToForm();
+    // เลื่อนหน้าจอไปฟอร์ม
+    this.scrollToForm();
   }
-   // เลื่อนหน้าจอไปฟอร์ม
+  // เลื่อนหน้าจอไปฟอร์ม
   @ViewChild('formContainer') formContainer!: ElementRef;
-   // เลื่อนหน้าจอไปฟอร์ม
+  // เลื่อนหน้าจอไปฟอร์ม
   scrollToForm() {
     if (this.formContainer) {
-      this.formContainer.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      this.formContainer.nativeElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
     }
   }
-
 
   selectedRowShowButton: any = null; // ใช้เก็บแถวที่ถูกเลือก
 
   async clearForm2() {
-
     this.positionManage = '';
     this.positionId = 0;
     //เปลี่ยนสถานะกลับไปที่โหมดการสร้าง
@@ -435,20 +467,20 @@ async editSectorDept() {
       positionName: this.positionManage,
       departmentId: this.deptId,
     };
-    
+
     console.log('req', req);
-    
+
     try {
-      // API 
+      // API
       const apiRes = await this.apiService.createPosition(req).toPromise();
       console.log('create position response:', apiRes);
-  
+
       // โหลดข้อมูลตำแหน่งใหม่
       await this.loadPositionManagement(); // 3 table2
-  
+
       // รีเซ็ต
-      this.clearForm2(); 
-  
+      this.clearForm2();
+
       // แสดงป๊อปอัพแจ้งเตือนความสำเร็จ
       Swal.fire({
         title: 'สำเร็จ',
@@ -463,7 +495,6 @@ async editSectorDept() {
           // กด 'ตกลง' แล้ว
         }
       });
-  
     } catch (error) {
       console.error('Error:', error);
       Swal.fire({
@@ -474,21 +505,21 @@ async editSectorDept() {
       });
     }
   }
-  
+
   async editPositon() {
     if (!this.positionId) {
       console.error('Position ID is null or undefined.');
       return;
     }
-  
+
     // สร้างคำขอแก้ไขข้อมูลตำแหน่ง
     const req: editPosition = {
       posName: this.positionManage,
       posId: this.positionId,
     };
-  
+
     console.log('Editing position with request:', req);
-  
+
     try {
       // API
       const apiRes = await this.apiService.editPosition(req).toPromise();
@@ -508,14 +539,13 @@ async editSectorDept() {
         confirmButtonColor: '#22c55e',
       }).then((result) => {
         if (result.isConfirmed) {
-          // 'ตกลง' 
+          // 'ตกลง'
         }
       });
-  
     } catch (error) {
       // จัดการข้อผิดพลาดที่อาจเกิดขึ้น
       console.error('Error editing position:', error);
-  
+
       // แสดงป๊อปอัพแจ้งเตือนข้อผิดพลาด
       Swal.fire({
         title: 'เกิดข้อผิดพลาด',
@@ -525,10 +555,10 @@ async editSectorDept() {
       });
     }
   }
-  
+
   async deletePosition() {
     // ค่าที่ต้องการแสดงคือ positionManage = ระบุตำแหน่ง: รับมา
-    const positionName = this.positionManage; 
+    const positionName = this.positionManage;
 
     // ข้อความยืนยัน
     const confirmMessage = `ต้องการลบ ตำแหน่ง: ${positionName} ใช่มั้ย`;
@@ -537,26 +567,26 @@ async editSectorDept() {
     const confirmed = await this.swalService.showConfirm(confirmMessage);
 
     if (confirmed) {
-        try {
-            // เรียกใช้ API เพื่อลบ
-            const res = await this.apiService.deletePosition(this.positionId).toPromise();
-            this.swalService.showSuccess("สำเร็จ");
-            this.clearForm2();
-            await this.loadPositionManagement(); // update table หลังจากลบ
-        } catch (error) {
-            console.error("ลบไม่สำเร็จ", error);
-            this.swalService.showError("เกิดข้อผิดพลาดในการลบ");
-        }
+      try {
+        // เรียกใช้ API เพื่อลบ
+        const res = await this.apiService
+          .deletePosition(this.positionId)
+          .toPromise();
+        this.swalService.showSuccess('สำเร็จ');
+        this.clearForm2();
+        await this.loadPositionManagement(); // update table หลังจากลบ
+      } catch (error) {
+        console.error('ลบไม่สำเร็จ', error);
+        this.swalService.showError('เกิดข้อผิดพลาดในการลบ');
+      }
     } else {
-        console.log("cancel");
+      console.log('cancel');
     }
-}
-
-  isPositionNameEntered: boolean = false; //ถ้าเริ่มพิมพ์ตำแหน่ง
-   // ใส่ข้อมูลแล้วปุ่มแสดง
-   onPositionManageChange() {
-    this.isPositionNameEntered = !!this.positionManage;
   }
 
-
+  isPositionNameEntered: boolean = false; //ถ้าเริ่มพิมพ์ตำแหน่ง
+  // ใส่ข้อมูลแล้วปุ่มแสดง
+  onPositionManageChange() {
+    this.isPositionNameEntered = !!this.positionManage;
+  }
 }

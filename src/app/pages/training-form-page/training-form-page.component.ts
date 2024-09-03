@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
+import { ActivatedRoute } from '@angular/router';
 import { BuddhistDatePipe } from '@shared/pipes/budhist-date.pipe';
 import { map, Observable, startWith } from 'rxjs';
 import { Course, fileTable } from 'src/app/interface/common';
@@ -23,9 +24,9 @@ export class TrainingFormPageComponent implements OnInit {
   uId!: number;
 
   // for keep data in memory
-  mngDeptListRes!: MngDeptListRes[];
+  mngDeptListRes: MngDeptListRes[] = [];
   // for show in selector
-  mngDeptListShow!: MngDeptListRes[];
+  mngDeptListShow: MngDeptListRes[] = [];
 
   // for keep data in memory
   empList: Employee[] = [];
@@ -51,13 +52,15 @@ export class TrainingFormPageComponent implements OnInit {
 
   tableToggle: boolean = false;
 
+  public trainingId: string | null = null;
+
   constructor(
     private fb: FormBuilder,
     private apiService: ApiService,
     private authService: AuthService,
     private commonService: CommonService,
     private buddhistDatePipe: BuddhistDatePipe,
-    private trainingService: TrainingService
+    private trainingService: TrainingService,
   ) {
     this.trainingForm = this.fb.group({
       company: ['', Validators.required],
@@ -88,21 +91,47 @@ export class TrainingFormPageComponent implements OnInit {
 
   async ngOnInit() {
     this.uId = this.authService.getUID();
-    await this.generateDeptListByUser();
+    await this.initDeptSelectorByRole();
     await this.generateCoursesList();
     this.displayAutocomplete();
-    this.fileDataSource = new MatTableDataSource<fileTable>([
-      {
-        position: 1,
-        fileName: 'test.txt',
-        fileSize: '100 KB',
-        fileId: 1,
-      },
-    ]);
   }
 
   checkValue(value: any) {
     console.log(value, typeof value);
+  }
+
+  async initDeptSelectorByRole() {
+    const role = this.authService.checkRole();
+    if (role == 'ROLE_Admin') {
+      await this.generateDeptListByUser();
+    } else {
+      const res =
+        (await this.apiService.getSectorsDeptsCompanysList().toPromise()) || [];
+      res.forEach(async (item) => {
+        const companyId =
+          (await this.commonService
+            .getCompanyIdByName(item.company)
+            .toPromise()) || 0;
+        this.mngDeptListRes.push({
+          companyId: companyId,
+          companyName: item.company,
+          deptCode: item.department.deptCode,
+          deptFullName: item.department.deptFullName,
+          deptId: item.department.id,
+          deptName: item.department.deptName,
+          deptTname: item.department.deptTname,
+          sectorCode: item.sectorCode,
+          sectorId: item.sectorId,
+          sectorName: item.sectorName,
+        });
+        this.mngDeptListRes.sort((a, b) =>
+          a.deptName.localeCompare(b.deptName)
+        );
+      });
+    }
+
+    // console.log(this.mngDeptListRes);
+    
   }
 
   // init Generate methods
@@ -112,6 +141,7 @@ export class TrainingFormPageComponent implements OnInit {
         .getManageDeptsListByUserId(this.uId)
         .toPromise();
       this.mngDeptListRes = res ? res?.responseData.result : [];
+      this.mngDeptListRes.sort((a, b) => a.deptName.localeCompare(b.deptName));
     } catch (error) {
       console.error(error);
     }
@@ -159,6 +189,7 @@ export class TrainingFormPageComponent implements OnInit {
       const endDate = this.buddhistDatePipe.transform(
         new Date(filterCourseList.endDate)
       );
+      // this.trainingService.trainingRequest.courseId = filterCourseList.id
       this.trainingForm.patchValue({
         courseObjective: filterCourseList.objective,
         courseDuration: `${startDate} - ${endDate} ${filterCourseList.time}`,
@@ -170,6 +201,7 @@ export class TrainingFormPageComponent implements OnInit {
         courseTeacher: filterCourseList.institute,
         courseLocation: filterCourseList.place,
       });
+
     } else {
       console.warn('No matching course found');
       this.trainingForm.patchValue({
@@ -289,7 +321,6 @@ export class TrainingFormPageComponent implements OnInit {
       }
     } catch (error) {
       console.error(error);
-      
     }
   }
 
@@ -298,7 +329,7 @@ export class TrainingFormPageComponent implements OnInit {
       employeeId: '',
       employeeName: '',
       employeePosition: '',
-    })
+    });
   }
 
   clearApproverForms() {

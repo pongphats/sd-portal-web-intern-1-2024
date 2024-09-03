@@ -357,7 +357,7 @@ export class ApiService {
           params: {
             searchValue: userId,
             size: size,
-            page: page
+            page: page,
           },
         })
         .pipe(map((res) => res));
@@ -454,5 +454,23 @@ export class ApiService {
       })
       .pipe(map((res) => res));
   }
+
+  editSectionOne(
+    id: number,
+    data: CreateTrainingRequestForm
+  ): Observable<ApiResponse<any>> {
+    return this.http
+      .post<ApiResponse<any>>(
+        `${this.trainingUrl}/editTrainingSection1?trainingId=${id}`,
+        data
+      )
+      .pipe(map((res) => res));
+  }
+
+  // getSectionOneByID(id: number): Observable<any> {
+  //   return this.http.get<any>(
+  //     this.api + '/findTrainingByTrainingId?trainingId=' + id
+  //   );
+  // }
 }
  
