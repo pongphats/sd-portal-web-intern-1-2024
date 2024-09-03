@@ -386,9 +386,9 @@ export class ApiService {
       .pipe(map((res) => res));
   }
 
-  getEmpByDeptId(deptId: number): Observable<Employee> {
+  getEmpByDeptId(deptId: number): Observable<Employee[]> {
     return this.http
-      .get<ApiResponse<Employee>>(
+      .get<ApiResponse<Employee[]>>(
         `${this.trainingUrl}/findallUserListByDeptActual`,
         {
           params: {

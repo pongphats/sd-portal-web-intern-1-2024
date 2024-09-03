@@ -39,10 +39,10 @@ export class WelfareExpenseHistoryComponent implements OnInit {
     });
 
     this.expenseForm = this.fb.group({
-      companyName: [''],
-      sectorName: [''],
-      deptName: [''],
-      empName: [''],
+      companyName: ['', Validators.required],
+      sectorName: ['', Validators.required],
+      deptName: ['', Validators.required],
+      empName: ['', Validators.required],
       dateRange: [''],
     });
 
@@ -75,25 +75,88 @@ export class WelfareExpenseHistoryComponent implements OnInit {
     //dept
     this.expenseForm.get('sectorName')?.valueChanges.subscribe((sectorName) => {
       if (sectorName) {
+        this.expenseForm.patchValue({
+          deptName : ''
+        })
         this.getDepartments(sectorName);
       }
     });
 
     // ฟังการเปลี่ยนแปลงของแผนก (deptName) 
-    this.expenseForm.get('deptName')?.valueChanges.subscribe((deptId) => {
+
+    // -------------------------
+    // this.expenseForm.get('deptName')?.valueChanges.subscribe(async (deptId) => {
+    //   if (deptId) {
+    //     const res = await this.getEmpByDeptId(deptId).toPromise();
+    //     console.log(res)
+    //     // this.empFormOption = res
+    //   }
+    //   console.log("emp from (deptName)", this.empFormOption);
+    // });
+
+    // // this.empFormOption = this.welfareForm.get('empName')!.valueChanges.pipe(
+    // //   debounceTime(300),
+    // //   switchMap((value) => this.empFormOption.filter(emp => emp.fullName.includes(value)))
+    // // );
+
+    // // this.expenseForm.get('deptName')?.valueChanges.subscribe(async (deptId) => {
+    // //   if (deptId) {
+    // //     this.empFormOption = await this.getEmpByDeptId(deptId).toPromise();
+    // //   }
+    // //   console.log("emp from (deptName)", this.empFormOption);
+    // // });
+
+    // // ฟังการเปลี่ยนแปลงของ empName
+    // this.empFormOption = this.expenseForm.get('empName')!.valueChanges.pipe(
+    //   debounceTime(300),
+    //   switchMap(value => this.empFormOption.pipe(
+    //     map(options => options.filter(emp => emp.fullName.toLowerCase().includes(value.toLowerCase())))
+    //   ))
+    // );
+
+    //-------------แรก---------
+
+    // this.expenseForm.get('deptName')?.valueChanges.subscribe(async (deptId) => {
+    //   if (deptId) {
+    //     this.empFormOption =await this.getEmpByDeptId(deptId).toPromise();
+    //   }
+    //   console.log("emp from (deptName)", this.empFormOption);
+    // });
+
+    //--------สอง------
+    // ฟังการเปลี่ยนแปลงของแผนก (deptName) 
+    this.expenseForm.get('deptName')?.valueChanges.subscribe(async (deptId) => {
+      console.log("deptId", deptId)
       if (deptId) {
-        this.getEmpByDeptId(deptId);
-      }
-      console.log("emp from (deptName)", deptId)
+        this.expenseForm.patchValue({
+          empName:''
+        })
+        this.empFormOption = this.getEmpByDeptId(deptId);
+        // this.filteredOptions = this.empFormOption;
+      } 
     });
 
-    //-------------------------
+    // ฟังการเปลี่ยนแปลงของ empName
+    this.filteredOptions = this.expenseForm.get('empName')!.valueChanges.pipe(
+      debounceTime(300),
+      switchMap(value => this.empFormOption.pipe(
+        map(options => options.filter(emp => emp.fullName.toLowerCase().includes(value.toLowerCase())))
+      ))
+    );
 
 
- 
 
-   
+    
+
+
+
+
+
+
+
   }
+
+
 
 
 
@@ -108,7 +171,7 @@ export class WelfareExpenseHistoryComponent implements OnInit {
   filteredOptions!: Observable<any[]>;
   //table
   welfareExpense = new MatTableDataSource<any>([]);
-  displayedColumns: string[] = ['dateOfAdmission', 'fullName', 'level', 'canWithdraw'];
+  displayedColumns: string[] = ['company', 'sectorDept', 'empCode', 'firstName', 'lastName', 'position', 'email', 'status'];
   dataListEmp: Employee[] = [];
   getEmp(term: string): Observable<any[]> {
     // กรณี ไม่กรอกอะไรเลย
@@ -166,16 +229,7 @@ export class WelfareExpenseHistoryComponent implements OnInit {
 
   }
 
-  //แสดง 1 ถึง 5 ของ 6 ข้อมูล
-  getPaginatorLabel(): string {
-    if (this.paginator && this.welfareExpense) {
-      const startIndex = this.paginator.pageIndex * this.paginator.pageSize + 1;
-      const endIndex = Math.min(startIndex + this.paginator.pageSize - 1, this.welfareExpense.data.length);
-      const totalLength = this.welfareExpense.data.length;
-      return `แสดง ${startIndex} ถึง ${endIndex} ของ ${totalLength} ข้อมูล`;
-    }
-    return '';
-  }
+
 
 
   sectorName!: string;
@@ -216,11 +270,11 @@ export class WelfareExpenseHistoryComponent implements OnInit {
         console.log("Sectors fetched:", res);
         this.sectorOptions = res; // `res` คือค่าที่ได้รับจาก observable
 
-        // รีเซ็ต sectorName ให้ไม่มีค่าเพื่อให้แน่ใจว่าเมื่อเปลี่ยนบริษัท
-        // การเลือกใน mat-select จะถูกรีเซ็ต
-        this.expenseForm.get('sectorName')?.reset();
-        // การเลือกใน mat-select จะถูกรีเซ็ต ค่า deptName
-        this.expenseForm.get('deptName')?.reset();
+        // // รีเซ็ต sectorName ให้ไม่มีค่าเพื่อให้แน่ใจว่าเมื่อเปลี่ยนบริษัท
+        // // การเลือกใน mat-select จะถูกรีเซ็ต
+        // this.expenseForm.get('sectorName')?.reset();
+        // // การเลือกใน mat-select จะถูกรีเซ็ต ค่า deptName
+        // this.expenseForm.get('deptName')?.reset();
 
       },
       error: (error) => {
@@ -240,6 +294,7 @@ export class WelfareExpenseHistoryComponent implements OnInit {
         console.log("Departments fetched::", res);
         this.deptOptions = res;
         this.expenseForm.get('deptName')?.reset();
+        // this.expenseForm.get('empName')?.reset();
 
       },
       error: (error) => {
@@ -252,62 +307,129 @@ export class WelfareExpenseHistoryComponent implements OnInit {
 
 
 
-  //AutoForm
-  empFormOption!: Observable<any[]>;
-  getEmpByDeptId(deptId: number): Observable<any> {
-    console.log("deptId", deptId);
-    return this.apiService.getEmpByDeptId(deptId).pipe(
-      map(emp => ({
-        ...emp,
-        fullName: `${emp.firstname} ${emp.lastname}`
-      }))
-
-    );
-  }
-
-
-
-
-
-
-
-  
-  
- 
-  // idByEmp: Employee[] = [];
+  //AutoForm ดึงพนักงานตามแผนก
+  // empFormOption!: Observable<any[]>;
   // getEmpByDeptId(deptId: number): Observable<any[]> {
-  //   console.log("getEmpByDeptId",deptId)
-  //   // กรณี ไม่กรอกอะไรเลย
-  //   if (deptId == 0) {
-  //     this.idByEmp = [];
-  //     return of([]);
-  //   }
-  //   console.log(",,")
+  //   console.log("deptId", deptId);
   //   return this.apiService.getEmpByDeptId(deptId).pipe(
-  //     map((res: any) => {
-  //       if (res == null) {
-  //         this.idByEmp = [];
-  //         return [];
-  //       } else {
-  //         const result = res.result;
-  //         if (result.length == 0) {
-  //           this.idByEmp = [];
-  //           return [];
-  //         }
-  //         this.idByEmp = result.map((item: any) => ({
-  //           ...item,
-  //           fullName: `${item.firstname} ${item.lastname}`,
-  //         }));
-  //         console.log("xxx",this.idByEmp)
-  //         return this.idByEmp;
-  //       }
-  //     })
+  //     map(emp => {
+  //       emp.map((item: Employee) => ({
+  //         ...item,
+  //         fullName: `${item.firstname} ${item.lastname}`,
+  //       }))
+  //       console.log("emp",emp)
+  //       return emp
+
+  //     }
+  //     )
   //   );
   // }
 
 
-  
+  empFormOption!: Observable<any[]>;
+//   getEmpByDeptId(deptId: number): Observable<any> {
+//     console.log("deptId", deptId);
+//     return this.apiService.getEmpByDeptId(deptId).pipe(
+//       map(emp => {
+//         console.log("emp", emp)
+//         const test = emp.map((item: Employee) => ({
+//             ...item,
+//             fullName: `${item.firstname} ${item.lastname}`,
+//           })
+//       )
+//       return test
+//       })
+
+//     );
+// }
+
+// getEmpByDeptId(deptId: number): Observable<any[]> {
+//   return this.apiService.getEmpByDeptId(deptId).pipe(
+//     map(emp => 
+//       console.log(emp)
+//       emp.map((item: Employee) => ({
+//       ...item,
+//       fullName: `${item.firstname} ${item.lastname}`,
+//     })))
+// );
+// }
+
+
+
+
+  //แรก
+  // getEmpByDeptId(deptId: number): Observable<any> {
+  //   console.log("deptId", deptId);
+  //   return this.apiService.getEmpByDeptId(deptId).pipe(
+  //     map(emp => {
+  //       console.log(emp)
+  //       const test = emp.map((item: Employee) => ({
+  //           ...item,
+  //           fullName: `${item.firstname} ${item.lastname}`,
+  //         })
+  //     )
+  //     return test
+  //     })
+
+  //   );
+  // }
+
+  //สอง
+   getEmpByDeptId(deptId: number): Observable<any[]> {
+      return this.apiService.getEmpByDeptId(deptId).pipe(
+        tap(emp => console.log(emp)), // ใช้ tap เพื่อแสดงค่า emp ในคอนโซล
+        map(emp => 
+          emp.map((item: Employee) => ({
+            ...item,
+            fullName: `${item.firstname} ${item.lastname}`,
+          }))
+        )
+      );
+    }
+
+
+
+
+
+  // ==================================
  
+
+
+  // async searchExpensesTable(): Promise<void> {
+  //   const fullName = this.welfareForm.get('fullName')?.value;
+  //   // ค้นหาผู้ใช้โดยใช้ firstname และ lastname
+  //   const user = this.dataListEmp.find(emp =>
+  //     `${emp.firstname} ${emp.lastname}` === fullName
+  //   );
+
+  //   console.log(user)
+
+  //   if (user) {
+  //     const res = await this.apiService.getExpenseReportWithPagination(expenseReportRequest).toPromise();
+  //     console.log(res.content)
+
+  //     this.welfareExpense.data = res.content.map((expense: any) => ({
+  //       ...expense,
+  //       fullName: `${user.firstname} ${user.lastname}`,
+  //       level: user.level,
+  //     }))
+
+  //   } else {
+  //     this.swalService.showError('User not found');
+  //   }
+
+  // }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
