@@ -425,7 +425,7 @@
 
     <form [formGroup]="ressonForm">
       <div class="flex w-full">
-        <label class="text-start self-center w-[30%] lg:w-[20%]"
+        <label class="text-start self-center w-[30%] lg:w-[20%] pr-6"
           >ข้อคิดเห็นเพิ่มเติม :</label
         >
         <mat-form-field appearance="fill" class="w-[70%] lg:w-[80%]">
@@ -439,39 +439,61 @@
       </div>
 
       <div class="flex flex-col lg:flex-row mt-3 w-full">
-        <div class="pb-3 lg:w-[15%] ">ผลสรุปโดยรวม :</div>
+        <div class="pb-3 lg:w-[15%]">ผลสรุปโดยรวม :</div>
         <mat-radio-group
           aria-label="Select an option"
           class="flex flex-col w-[75%]"
           formControlName="conclusion"
         >
           <div class="flex flex-row w-full items-start">
-            <mat-radio-button value="pass">
-                ผ่าน (ต้องมีผลการประเมิน ประสิทธิผลการฝึกอบรม ในระดับ “ผ่าน”
-                มากกว่าครึ่งหนึ่งของหัวข้อที่ทำการประเมิน)
+            <mat-radio-button value="pass" [disabled]="isRadioPassDisabled">
+              ผ่าน (ต้องมีผลการประเมิน ประสิทธิผลการฝึกอบรม ในระดับ “ผ่าน”
+              มากกว่าครึ่งหนึ่งของหัวข้อที่ทำการประเมิน)
             </mat-radio-button>
           </div>
 
           <div class="flex flex-row w-full items-center">
-            <mat-radio-button value="fail" class="">
-              <span>ไม่ผ่าน เหตุผล</span>
+            <mat-radio-button
+              value="fail"
+              class=""
+              [disabled]="isRadioFailDisabled"
+            >
+              ไม่ผ่าน เหตุผล
               <mat-form-field appearance="fill" class="ml-2">
                 <mat-label class="dark:text-[#bebebe]">เหตุผล</mat-label>
-                <input matInput formControlName="cause1" />
+                <input
+                  matInput
+                  formControlName="cause1"
+                  [attr.disabled]="isInputFailDisable ? true : null"
+                />
               </mat-form-field>
             </mat-radio-button>
           </div>
 
           <div class="flex flex-row w-full items-center">
-            <mat-radio-button value="none" class="">
+            <mat-radio-button value="noResult" class="">
               <span>ไม่ประเมินผล เหตุผล</span>
               <mat-form-field appearance="fill" class="ml-2">
                 <mat-label class="dark:text-[#bebebe]">เหตุผล</mat-label>
-                <input matInput formControlName="cause2" />
+                <input
+                  matInput
+                  formControlName="cause2"
+                  [attr.disabled]="isInputNoneDisable ? true : null"
+                />
               </mat-form-field>
             </mat-radio-button>
           </div>
         </mat-radio-group>
+      </div>
+
+      <div class="flex w-full" *ngIf="isVisiblePlan">
+        <label class="text-start self-center w-[30%] lg:w-[20%] pr-6"
+          >แผนการพัฒนาพนักงาน (กรณีไม่ผ่าน) :</label
+        >
+        <mat-form-field appearance="fill" class="w-[70%] lg:w-[80%]">
+          <mat-label>แผนการพัฒนาพนักงาน</mat-label>
+          <textarea matInput formControlName="plan"></textarea>
+        </mat-form-field>
       </div>
     </form>
 
