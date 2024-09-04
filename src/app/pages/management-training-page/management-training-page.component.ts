@@ -9,6 +9,8 @@ import { TrainingService } from 'src/app/services/training.service';
 import { CreateTrainingRequestForm } from 'src/app/interface/request';
 import { MatPaginator } from '@angular/material/paginator';
 import { tap } from 'rxjs';
+import Swal from 'sweetalert2';
+import { SwalService } from 'src/app/services/swal.service';
 
 @Component({
   selector: 'app-management-training-page',
@@ -31,10 +33,12 @@ export class ManagementTrainingPageComponent implements OnInit {
     private apiService: ApiService,
     private router: Router,
     public dialog: MatDialog,
-    private trainingService: TrainingService
+    private trainingService: TrainingService,
+    private swalService: SwalService
   ) {}
 
   async ngOnInit() {
+    this.swalService.showLoading();
     this.userRole = this.authService.checkRole();
     const roles = this.authService.checkRole();
     const isCanEditRoles =
@@ -69,15 +73,20 @@ export class ManagementTrainingPageComponent implements OnInit {
 
   filterByStatus(status: string) {
     const filters: { [key: string]: (item: TrainingTable) => boolean } = {
-      'allApprove': (item: TrainingTable) => item.result_status === 'อนุมัติ',
-      'waitApprove': (item: TrainingTable) => item.result_status === 'รอประเมิน' || item.isDo === 'รอประเมิน',
-      'waitEval': (item: TrainingTable) => item.training.result[0].result == null,
-      'Eval': (item: TrainingTable) => item.training.result[0].result != null,
-      'waitG9Eval': (item: TrainingTable) => item.training.resultGeneric9[0].result5 != null,
-      'G9Eval': (item: TrainingTable) => item.training.resultGeneric9[0].result5 == null,
+      allApprove: (item: TrainingTable) => item.result_status === 'อนุมัติ',
+      waitApprove: (item: TrainingTable) =>
+        item.result_status === 'รอประเมิน' || item.isDo === 'รอประเมิน',
+      waitEval: (item: TrainingTable) => item.training.result[0].result == null,
+      Eval: (item: TrainingTable) => item.training.result[0].result != null,
+      waitG9Eval: (item: TrainingTable) =>
+        item.training.resultGeneric9[0].result5 != null,
+      G9Eval: (item: TrainingTable) =>
+        item.training.resultGeneric9[0].result5 == null,
     };
-  
-    this.centerTrainingsList = this.backupTrainingList.filter(filters[status] || (() => true));
+
+    this.centerTrainingsList = this.backupTrainingList.filter(
+      filters[status] || (() => true)
+    );
     this.loadingpage();
   }
   // async findAllTraining
@@ -140,6 +149,7 @@ export class ManagementTrainingPageComponent implements OnInit {
       console.error(error);
     } finally {
       this.loadingpage();
+      Swal.close();
     }
   }
 
@@ -153,8 +163,13 @@ export class ManagementTrainingPageComponent implements OnInit {
       this.backupTrainingList = approveTraining;
       this.centerTrainingsList = this.backupTrainingList;
       this.trainingTableList = this.centerTrainingsList;
-      this.loadingpage()
-    } catch (error) {}
+      // this.loadingpage();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      this.loadingpage();
+      Swal.close();
+    }
   }
 
   dateRange(startDate: string, endDate: string): string {
@@ -224,8 +239,20 @@ export class ManagementTrainingPageComponent implements OnInit {
     this.trainingService.trainingEditId = data.training.id;
     this.trainingService.trainingEditData = data;
     this.trainingService.trainingRequest = editDataReq;
+    this.trainingService.trainingStatus = data.result_status;
     dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog result: ${result}`);
+      this.swalService.showLoading();
+      const roles = this.authService.checkRole();
+      const isCanEditRoles =
+        roles == 'ROLE_Admin' ||
+        roles == 'ROLE_Personnel' ||
+        roles == 'ROLE_ManagerAndROLE_Personnel';
+      if (isCanEditRoles) {
+        this.findAllTrainingForAdminAndPersonal();
+      } else {
+        this.findAllTrainingForPriviledgedUser();
+      }
     });
   }
 

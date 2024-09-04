@@ -20,6 +20,8 @@ export class TrainingService {
 
   private trainingEditFormsInValid = new BehaviorSubject<boolean>(true);
 
+  private _trainingStatus!: string;
+
   adminId: number = 0;
 
   constructor(
@@ -37,6 +39,15 @@ export class TrainingService {
   // get trainingEditFormsInValid(): boolean {
   //   return this._trainingEditFormsInValid;
   // }
+  // Getter for trainingStatus
+  get trainingStatus(): string {
+    return this._trainingStatus;
+  }
+
+  // Setter for trainingStatus
+  set trainingStatus(status: string) {
+    this._trainingStatus = status;
+  }
 
   set trainingRequest(value: CreateTrainingRequestForm) {
     this._trainingRequest = value;

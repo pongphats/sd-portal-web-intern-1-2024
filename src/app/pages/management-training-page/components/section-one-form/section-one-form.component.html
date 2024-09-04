@@ -497,6 +497,7 @@
                 <td class="p-2">{{ file.fileName }}</td>
                 <td class="p-2">
                   <button
+                    (click)="downloadFile(file.id , file.fileName)"
                     type="button"
                     mat-button
                     class="bg-blue-800 hover:bg-blue-700 dark:hover:bg-blue-600 dark:bg-blue-700"
