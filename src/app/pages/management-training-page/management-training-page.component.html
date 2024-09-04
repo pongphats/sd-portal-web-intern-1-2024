@@ -66,7 +66,27 @@
         </div>
       </div>
     </div>
-    <div class=""></div>
+    <div
+      class="w-full flex flex-col md:flex-row gap-4 justify-center items-center mt-2"
+    >
+      <i class="bx bx-filter-alt dark:text-font-description-hover"></i>
+      <mat-form-field class="sm:w-full md:w-64" appearance="fill">
+        <mat-label>กรองสถานะ</mat-label>
+        <mat-select (selectionChange)="filterByStatus($event.value)">
+          <mat-option value="allApprove">อนุมัติแล้ว</mat-option>
+          <mat-option value="waitApprove">รอการอนุมัติ</mat-option>
+          <mat-option value="waitEval">รอประเมินผล</mat-option>
+          <mat-option value="Eval">ประเมินผลเรียบร้อย</mat-option>
+          <mat-option value="waitG9Eval"
+            >รอประเมินผลเพื่อส่งกรมพัฒนาฝีมือแรงงาน</mat-option
+          >
+          <mat-option value="G9Eval"
+            >ประเมินผลเพื่อส่งกรมพัฒนาฝีมือแรงงานเรียบร้อย</mat-option
+          >
+          <mat-option value="All">ทั้งหมด</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
     <div
       class="bg-content drop-shadow-md rounded-md p-4 dark:bg-content-dark overflow-x-auto"
     >
@@ -190,7 +210,6 @@
                 </div>
                 <ng-template #AorPelseBlock1>
                   <div
-                    *ngIf="training.isDo == undefined"
                     [ngClass]="{
                       'text-yellow-600 dark:text-yellow-500':
                         training.result_status == 'รอประเมิน' ||
@@ -297,6 +316,14 @@
           </tr>
         </tbody>
       </table>
+      <mat-paginator
+        class="dark:bg-content-dark dark:text-white"
+        [length]="pageLength"
+        [pageSize]="5"
+        [pageSizeOptions]="[5, 10]"
+        aria-label="Select page"
+      >
+      </mat-paginator>
     </div>
   </div>
 </div>

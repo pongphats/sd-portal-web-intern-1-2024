@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Status, TrainingTable } from 'src/app/interface/training';
 import { ApiService } from 'src/app/services/api.service';
@@ -7,6 +7,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { CheckTrainingModalComponent } from './components/check-training-modal/check-training-modal.component';
 import { TrainingService } from 'src/app/services/training.service';
 import { CreateTrainingRequestForm } from 'src/app/interface/request';
+import { MatPaginator } from '@angular/material/paginator';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-management-training-page',
@@ -19,6 +21,10 @@ export class ManagementTrainingPageComponent implements OnInit {
   backupTrainingList!: TrainingTable[];
   centerTrainingsList!: TrainingTable[];
   trainingTableList!: TrainingTable[];
+
+  pageLength!: number;
+  @ViewChild(MatPaginator)
+  paginator!: MatPaginator;
 
   constructor(
     private authService: AuthService,
@@ -45,6 +51,35 @@ export class ManagementTrainingPageComponent implements OnInit {
     }
   }
 
+  loadingpage() {
+    const pageIndex = this.paginator?.pageIndex ?? 0;
+    const pageSize = this.paginator?.pageSize ?? 0;
+    const startIndex = pageIndex * pageSize;
+    const endIndex = startIndex + pageSize;
+    this.pageLength = this.centerTrainingsList.length;
+    this.trainingTableList = this.centerTrainingsList.slice(
+      startIndex,
+      endIndex
+    );
+  }
+
+  ngAfterViewInit(): void {
+    this.paginator.page.pipe(tap(() => this.loadingpage())).subscribe();
+  }
+
+  filterByStatus(status: string) {
+    const filters: { [key: string]: (item: TrainingTable) => boolean } = {
+      'allApprove': (item: TrainingTable) => item.result_status === 'อนุมัติ',
+      'waitApprove': (item: TrainingTable) => item.result_status === 'รอประเมิน' || item.isDo === 'รอประเมิน',
+      'waitEval': (item: TrainingTable) => item.training.result[0].result == null,
+      'Eval': (item: TrainingTable) => item.training.result[0].result != null,
+      'waitG9Eval': (item: TrainingTable) => item.training.resultGeneric9[0].result5 != null,
+      'G9Eval': (item: TrainingTable) => item.training.resultGeneric9[0].result5 == null,
+    };
+  
+    this.centerTrainingsList = this.backupTrainingList.filter(filters[status] || (() => true));
+    this.loadingpage();
+  }
   // async findAllTraining
   async findAllTrainingForAdminAndPersonal() {
     try {
@@ -64,7 +99,7 @@ export class ManagementTrainingPageComponent implements OnInit {
           );
           this.backupTrainingList = filteredTraining;
           this.centerTrainingsList = this.backupTrainingList;
-          this.trainingTableList = this.centerTrainingsList;
+          // this.trainingTableList = this.centerTrainingsList;
 
           console.log('backupTrainingList', this.backupTrainingList);
           console.log('trainingTableList', this.trainingTableList);
@@ -94,14 +129,18 @@ export class ManagementTrainingPageComponent implements OnInit {
         });
         this.backupTrainingList = Array.from(trainingMap.values());
         this.centerTrainingsList = this.backupTrainingList;
-        this.trainingTableList = this.centerTrainingsList;
+        // this.trainingTableList = this.centerTrainingsList;
         console.log(this.trainingTableList);
 
         // const
       } else {
         throw new Error('Invalid user role');
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    } finally {
+      this.loadingpage();
+    }
   }
 
   async findAllTrainingForPriviledgedUser() {
