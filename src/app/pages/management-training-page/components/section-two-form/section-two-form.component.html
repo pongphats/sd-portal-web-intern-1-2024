@@ -3,326 +3,487 @@
 >
   <p class="text-xl">ส่วนที่ 2 : การติดตามประสิทธิผลการฝึกอบรม</p>
   <div class="flex w-full flex-col">
-    <div class="flex flex-col lg:flex-row">
-      <div class="flex justify-center w-full lg:w-[50%]">
-        <label
-          for=""
-          class="text-start lg:text-center self-center w-[20%] lg:w-[30%]"
-          >ชื่อผู้ประเมิน</label
-        >
-        <mat-form-field appearance="fill" class="w-[80%] lg:w-[70%]">
-          <mat-label class="dark:text-[#bebebe]">ชื่อผู้ประเมิน</mat-label>
-          <input matInput formControlName="evaluatorName" readonly />
-        </mat-form-field>
+    <form [formGroup]="approverForm">
+      <div class="flex flex-col lg:flex-row">
+        <div class="flex justify-center w-full lg:w-[50%]">
+          <label
+            for=""
+            class="text-start lg:text-center self-center w-[20%] lg:w-[30%]"
+            >ชื่อผู้ประเมิน</label
+          >
+          <mat-form-field appearance="fill" class="w-[80%] lg:w-[70%]">
+            <mat-label class="dark:text-[#bebebe]">ชื่อผู้ประเมิน</mat-label>
+            <input matInput formControlName="evaluatorName" readonly />
+          </mat-form-field>
+        </div>
+        <div class="flex justify-center w-full lg:w-[50%]">
+          <label
+            for=""
+            class="text-start lg:text-center self-center w-[20%] lg:w-[30%]"
+            >ตำแหน่ง</label
+          >
+          <mat-form-field appearance="fill" class="w-[80%] lg:w-[70%]">
+            <mat-label class="dark:text-[#bebebe]">ตำแหน่ง</mat-label>
+            <input matInput formControlName="evaluatorPosition" readonly />
+          </mat-form-field>
+        </div>
       </div>
-      <div class="flex justify-center w-full lg:w-[50%]">
-        <label
-          for=""
-          class="text-start lg:text-center self-center w-[20%] lg:w-[30%]"
-          >ตำแหน่ง</label
-        >
-        <mat-form-field appearance="fill" class="w-[80%] lg:w-[70%]">
-          <mat-label class="dark:text-[#bebebe]">ตำแหน่ง</mat-label>
-          <input matInput formControlName="evaluatorRole" readonly />
-        </mat-form-field>
-      </div>
-    </div>
 
-    <div class="flex flex-col lg:flex-row">
-      <div class="flex justify-center w-full lg:w-[50%]">
-        <label
-          for=""
-          class="text-start lg:text-center self-center w-[20%] lg:w-[30%]"
-          >แผนก</label
-        >
-        <mat-form-field appearance="fill" class="w-[80%] lg:w-[70%]">
-          <mat-label class="dark:text-[#bebebe]">แผนก</mat-label>
-          <input matInput formControlName="evaluatorDept" readonly />
-        </mat-form-field>
+      <div class="flex flex-col lg:flex-row">
+        <div class="flex justify-center w-full lg:w-[50%]">
+          <label
+            for=""
+            class="text-start lg:text-center self-center w-[20%] lg:w-[30%]"
+            >แผนก</label
+          >
+          <mat-form-field appearance="fill" class="w-[80%] lg:w-[70%]">
+            <mat-label class="dark:text-[#bebebe]">แผนก</mat-label>
+            <input matInput formControlName="evaluatorDept" readonly />
+          </mat-form-field>
+        </div>
+        <div class="flex justify-center w-full lg:w-[50%]">
+          <label
+            for=""
+            class="text-start lg:text-center self-center w-[20%] lg:w-[30%]"
+            >ฝ่าย</label
+          >
+          <mat-form-field appearance="fill" class="w-[80%] lg:w-[70%]">
+            <mat-label class="dark:text-[#bebebe]">ฝ่าย</mat-label>
+            <input matInput formControlName="evaluatorSector" readonly />
+          </mat-form-field>
+        </div>
       </div>
-      <div class="flex justify-center w-full lg:w-[50%]">
-        <label
-          for=""
-          class="text-start lg:text-center self-center w-[20%] lg:w-[30%]"
-          >ฝ่าย</label
-        >
-        <mat-form-field appearance="fill" class="w-[80%] lg:w-[70%]">
-          <mat-label class="dark:text-[#bebebe]">ฝ่าย</mat-label>
-          <input matInput formControlName="evaluatorSector" readonly />
-        </mat-form-field>
-      </div>
-    </div>
+    </form>
 
-    <div class="mt-5">
-      <div class="grid grid-cols-2 mb-3">
-        <p class="self-center">1. การนำความรู้/ทักษะไปใช้ในการปฏิบัติงาน</p>
-        <div
-          class="inline-flex justify-end rounded-md shadow-sm radio-toolbar"
-          role="group"
-        >
-          <input type="radio" name="one" id="pass1" class="hidden" checked />
-          <label
-            for="pass1"
-            class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-green-600 rounded-l-lg hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
+    <form [formGroup]="evaluatorForm">
+      <div class="mt-5">
+        <div class="grid grid-cols-2 mb-3">
+          <p class="self-center">1. การนำความรู้/ทักษะไปใช้ในการปฏิบัติงาน</p>
+          <div
+            class="inline-flex justify-end rounded-md shadow-sm radio-toolbar"
+            role="group"
           >
-            ผ่าน
-          </label>
-          <input type="radio" name="one" id="fail1" class="hidden" />
-          <label
-            for="fail1"
-            class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border-t border-b border-green-600 hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
-          >
-            ไม่ผ่าน
-          </label>
-          <input type="radio" name="one" id="none1" class="hidden" />
-          <label
-            for="none1"
-            class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-green-600 rounded-r-md hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
-          >
-            ไม่ประเมินผล
-          </label>
-        </div>
-      </div>
-      <div class="grid grid-cols-2 mb-3">
-        <p class="self-center">2. ความถูกต้องของการปฏิบัติงาน</p>
-        <div
-          class="inline-flex justify-end rounded-md shadow-sm radio-toolbar"
-          role="group"
-        >
-          <input type="radio" name="two" id="pass2" class="hidden" checked />
-          <label
-            for="pass2"
-            class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-green-600 rounded-l-lg hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
-          >
-            ผ่าน
-          </label>
-          <input type="radio" name="two" id="fail2" class="hidden" />
-          <label
-            for="fail2"
-            class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border-t border-b border-green-600 hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
-          >
-            ไม่ผ่าน
-          </label>
-          <input type="radio" name="two" id="none2" class="hidden" />
-          <label
-            for="none2"
-            class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-green-600 rounded-r-md hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
-          >
-            ไม่ประเมินผล
-          </label>
-        </div>
-      </div>
-      <div class="grid grid-cols-2 mb-3">
-        <p class="self-center">
-          3. การเปลี่ยนแปลงพฤติกรรมการปฏิบัติงานหลังจากผ่านการฝึกอบรม
-        </p>
-        <div
-          class="inline-flex justify-end rounded-md shadow-sm radio-toolbar"
-          role="group"
-        >
-          <input type="radio" name="three" id="pass3" class="hidden" checked />
-          <label
-            for="pass3"
-            class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-green-600 rounded-l-lg hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
-          >
-            ผ่าน
-          </label>
-          <input type="radio" name="three" id="fail3" class="hidden" />
-          <label
-            for="fail3"
-            class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border-t border-b border-green-600 hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
-          >
-            ไม่ผ่าน
-          </label>
-          <input type="radio" name="three" id="none3" class="hidden" />
-          <label
-            for="none3"
-            class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-green-600 rounded-r-md hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
-          >
-            ไม่ประเมินผล
-          </label>
-        </div>
-      </div>
-      <div class="grid grid-cols-2 mb-3">
-        <p class="self-center">4. การพัฒนาคุณภาพงาน/การปฏิบัติงาน</p>
-        <div
-          class="inline-flex justify-end rounded-md shadow-sm radio-toolbar"
-          role="group"
-        >
-          <input type="radio" name="four" id="pass4" class="hidden" checked />
-          <label
-            for="pass4"
-            class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-green-600 rounded-l-lg hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
-          >
-            ผ่าน
-          </label>
-          <input type="radio" name="four" id="fail4" class="hidden" />
-          <label
-            for="fail4"
-            class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border-t border-b border-green-600 hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
-          >
-            ไม่ผ่าน
-          </label>
-          <input type="radio" name="four" id="none4" class="hidden" />
-          <label
-            for="none4"
-            class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-green-600 rounded-r-md hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
-          >
-            ไม่ประเมินผล
-          </label>
-        </div>
-      </div>
-      <div class="grid grid-cols-2 mb-3">
-        <p class="self-center">5. พัฒนาการด้านการประสานงานกับหน่วยงานอื่นๆ</p>
-        <div
-          class="inline-flex justify-end rounded-md shadow-sm radio-toolbar"
-          role="group"
-        >
-          <input type="radio" name="five" id="pass5" class="hidden" checked />
-          <label
-            for="pass5"
-            class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-green-600 rounded-l-lg hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
-          >
-            ผ่าน
-          </label>
-          <input type="radio" name="five" id="fail5" class="hidden" />
-          <label
-            for="fail5"
-            class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border-t border-b border-green-600 hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
-          >
-            ไม่ผ่าน
-          </label>
-          <input type="radio" name="five" id="none5" class="hidden" />
-          <label
-            for="none5"
-            class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-green-600 rounded-r-md hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
-          >
-            ไม่ประเมินผล
-          </label>
-        </div>
-      </div>
-      <div class="grid grid-cols-2 mb-3">
-        <p class="self-center">
-          6.
-          การนำความรู้/ทักษะที่ได้รับไปถ่ายทอดให้เพื่อนร่วมงาน/ผู้ใต้บังคับบัญชา
-        </p>
-        <div
-          class="inline-flex justify-end rounded-md shadow-sm radio-toolbar"
-          role="group"
-        >
-          <input type="radio" name="six" id="pass6" class="hidden" checked />
-          <label
-            for="pass6"
-            class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-green-600 rounded-l-lg hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
-          >
-            ผ่าน
-          </label>
-          <input type="radio" name="six" id="fail6" class="hidden" />
-          <label
-            for="fail6"
-            class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border-t border-b border-green-600 hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
-          >
-            ไม่ผ่าน
-          </label>
-          <input type="radio" name="six" id="none6" class="hidden" />
-          <label
-            for="none6"
-            class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-green-600 rounded-r-md hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
-          >
-            ไม่ประเมินผล
-          </label>
-        </div>
-      </div>
-      <div class="grid grid-cols-2 mb-3">
-        <p class="self-center">
-          7. การพัฒนาความคิดสร้างสรรค์จากการนำความรู้/ทักษะที่ได้จากการฝึกอบรม
-        </p>
-        <div
-          class="inline-flex justify-end rounded-md shadow-sm radio-toolbar"
-          role="group"
-        >
-          <input type="radio" name="seven" id="pass7" class="hidden" checked />
-          <label
-            for="pass7"
-            class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-green-600 rounded-l-lg hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
-          >
-            ผ่าน
-          </label>
-          <input type="radio" name="seven" id="fail7" class="hidden" />
-          <label
-            for="fail7"
-            class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border-t border-b border-green-600 hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
-          >
-            ไม่ผ่าน
-          </label>
-          <input type="radio" name="seven" id="none7" class="hidden" />
-          <label
-            for="none7"
-            class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-green-600 rounded-r-md hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
-          >
-            ไม่ประเมินผล
-          </label>
-        </div>
-      </div>
-    </div>
-
-    <div class="flex w-full">
-      <label class="text-start lg:text-center self-center w-[30%] lg:w-[20%]"
-        >ข้อคิดเห็นเพิ่มเติม :</label
-      >
-      <mat-form-field appearance="fill" class="w-[70%] lg:w-[80%]">
-        <mat-label>ข้อคิดเห็นเพิ่มเติม</mat-label>
-        <textarea matInput formControlName="comment" placeholder=""></textarea>
-      </mat-form-field>
-    </div>
-
-    <div class="flex flex-col mt-3 w-full">
-      <div class="">ผลสรุปโดยรวม :</div>
-      <mat-radio-group
-        aria-label="Select an option"
-        class="flex flex-col w-full"
-      >
-        <div class="flex flex-row w-full items-center">
-          <mat-radio-button value="1" class=""></mat-radio-button>
-          <div class="dark:text-[#bebebe]">
-            ผ่าน (ต้องมีผลการประเมิน ประสิทธิผลการฝึกอบรม ในระดับ “ผ่าน”
-            มากกว่าครึ่งหนึ่งของหัวข้อที่ทำการประเมิน)
+            <input
+              type="radio"
+              formControlName="result1"
+              value="pass"
+              name="one"
+              id="pass1"
+              class="hidden"
+            />
+            <label
+              for="pass1"
+              class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-green-600 rounded-l-lg hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
+            >
+              ผ่าน
+            </label>
+            <input
+              type="radio"
+              formControlName="result1"
+              value="fail"
+              name="one"
+              id="fail1"
+              class="hidden"
+            />
+            <label
+              for="fail1"
+              class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border-t border-b border-green-600 hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
+            >
+              ไม่ผ่าน
+            </label>
+            <input
+              type="radio"
+              formControlName="result1"
+              value="none"
+              name="one"
+              id="none1"
+              class="hidden"
+            />
+            <label
+              for="none1"
+              class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-green-600 rounded-r-md hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
+            >
+              ไม่ประเมินผล
+            </label>
           </div>
         </div>
 
-        <div class="flex flex-row w-full items-center">
-          <mat-radio-button value="1" class=""></mat-radio-button>
+        <div class="grid grid-cols-2 mb-3">
+          <p class="self-center">2. ความถูกต้องของการปฏิบัติงาน</p>
+          <div
+            class="inline-flex justify-end rounded-md shadow-sm radio-toolbar"
+            role="group"
+          >
+            <input
+              type="radio"
+              formControlName="result2"
+              value="pass"
+              name="two"
+              id="pass2"
+              class="hidden"
+            />
+            <label
+              for="pass2"
+              class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-green-600 rounded-l-lg hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
+            >
+              ผ่าน
+            </label>
+            <input
+              type="radio"
+              formControlName="result2"
+              value="fail"
+              name="two"
+              id="fail2"
+              class="hidden"
+            />
+            <label
+              for="fail2"
+              class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border-t border-b border-green-600 hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
+            >
+              ไม่ผ่าน
+            </label>
+            <input
+              type="radio"
+              formControlName="result2"
+              value="none"
+              name="two"
+              id="none2"
+              class="hidden"
+            />
+            <label
+              for="none2"
+              class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-green-600 rounded-r-md hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
+            >
+              ไม่ประเมินผล
+            </label>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 mb-3">
+          <p class="self-center">
+            3. การเปลี่ยนแปลงพฤติกรรมการปฏิบัติงานหลังจากผ่านการฝึกอบรม
+          </p>
+          <div
+            class="inline-flex justify-end rounded-md shadow-sm radio-toolbar"
+            role="group"
+          >
+            <input
+              type="radio"
+              formControlName="result3"
+              value="pass"
+              name="three"
+              id="pass3"
+              class="hidden"
+            />
+            <label
+              for="pass3"
+              class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-green-600 rounded-l-lg hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
+            >
+              ผ่าน
+            </label>
+            <input
+              type="radio"
+              formControlName="result3"
+              value="fail"
+              name="three"
+              id="fail3"
+              class="hidden"
+            />
+            <label
+              for="fail3"
+              class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border-t border-b border-green-600 hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
+            >
+              ไม่ผ่าน
+            </label>
+            <input
+              type="radio"
+              formControlName="result3"
+              value="none"
+              name="three"
+              id="none3"
+              class="hidden"
+            />
+            <label
+              for="none3"
+              class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-green-600 rounded-r-md hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
+            >
+              ไม่ประเมินผล
+            </label>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 mb-3">
+          <p class="self-center">4. การพัฒนาคุณภาพงาน/การปฏิบัติงาน</p>
+          <div
+            class="inline-flex justify-end rounded-md shadow-sm radio-toolbar"
+            role="group"
+          >
+            <input
+              type="radio"
+              formControlName="result4"
+              value="pass"
+              name="four"
+              id="pass4"
+              class="hidden"
+            />
+            <label
+              for="pass4"
+              class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-green-600 rounded-l-lg hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
+            >
+              ผ่าน
+            </label>
+            <input
+              type="radio"
+              formControlName="result4"
+              value="fail"
+              name="four"
+              id="fail4"
+              class="hidden"
+            />
+            <label
+              for="fail4"
+              class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border-t border-b border-green-600 hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
+            >
+              ไม่ผ่าน
+            </label>
+            <input
+              type="radio"
+              formControlName="result4"
+              value="none"
+              name="four"
+              id="none4"
+              class="hidden"
+            />
+            <label
+              for="none4"
+              class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-green-600 rounded-r-md hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
+            >
+              ไม่ประเมินผล
+            </label>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 mb-3">
+          <p class="self-center">5. พัฒนาการด้านการประสานงานกับหน่วยงานอื่นๆ</p>
+          <div
+            class="inline-flex justify-end rounded-md shadow-sm radio-toolbar"
+            role="group"
+          >
+            <input
+              type="radio"
+              formControlName="result5"
+              value="pass"
+              name="five"
+              id="pass5"
+              class="hidden"
+            />
+            <label
+              for="pass5"
+              class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-green-600 rounded-l-lg hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
+            >
+              ผ่าน
+            </label>
+            <input
+              type="radio"
+              formControlName="result5"
+              value="fail"
+              name="five"
+              id="fail5"
+              class="hidden"
+            />
+            <label
+              for="fail5"
+              class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border-t border-b border-green-600 hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
+            >
+              ไม่ผ่าน
+            </label>
+            <input
+              type="radio"
+              formControlName="result5"
+              value="none"
+              name="five"
+              id="none5"
+              class="hidden"
+            />
+            <label
+              for="none5"
+              class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-green-600 rounded-r-md hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
+            >
+              ไม่ประเมินผล
+            </label>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 mb-3">
+          <p class="self-center">
+            6.
+            การนำความรู้/ทักษะที่ได้รับไปถ่ายทอดให้เพื่อนร่วมงาน/ผู้ใต้บังคับบัญชา
+          </p>
+          <div
+            class="inline-flex justify-end rounded-md shadow-sm radio-toolbar"
+            role="group"
+          >
+            <input
+              type="radio"
+              formControlName="result6"
+              value="pass"
+              name="six"
+              id="pass6"
+              class="hidden"
+            />
+            <label
+              for="pass6"
+              class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-green-600 rounded-l-lg hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
+            >
+              ผ่าน
+            </label>
+            <input
+              type="radio"
+              formControlName="result6"
+              value="fail"
+              name="six"
+              id="fail6"
+              class="hidden"
+            />
+            <label
+              for="fail6"
+              class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border-t border-b border-green-600 hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
+            >
+              ไม่ผ่าน
+            </label>
+            <input
+              type="radio"
+              formControlName="result6"
+              value="none"
+              name="six"
+              id="none6"
+              class="hidden"
+            />
+            <label
+              for="none6"
+              class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-green-600 rounded-r-md hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
+            >
+              ไม่ประเมินผล
+            </label>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 mb-3">
+          <p class="self-center">
+            7. การพัฒนาความคิดสร้างสรรค์จากการนำความรู้/ทักษะที่ได้จากการฝึกอบรม
+          </p>
+          <div
+            class="inline-flex justify-end rounded-md shadow-sm radio-toolbar"
+            role="group"
+          >
+            <input
+              type="radio"
+              formControlName="result7"
+              value="pass"
+              name="seven"
+              id="pass7"
+              class="hidden"
+            />
+            <label
+              for="pass7"
+              class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-green-600 rounded-l-lg hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
+            >
+              ผ่าน
+            </label>
+            <input
+              type="radio"
+              formControlName="result7"
+              value="fail"
+              name="seven"
+              id="fail7"
+              class="hidden"
+            />
+            <label
+              for="fail7"
+              class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border-t border-b border-green-600 hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
+            >
+              ไม่ผ่าน
+            </label>
+            <input
+              type="radio"
+              formControlName="result7"
+              value="none"
+              name="seven"
+              id="none7"
+              class="hidden"
+            />
+            <label
+              for="none7"
+              class="grow flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-green-600 rounded-r-md hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white cursor-pointer"
+            >
+              ไม่ประเมินผล
+            </label>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <form [formGroup]="ressonForm">
+      <div class="flex w-full">
+        <label class="text-start self-center w-[30%] lg:w-[20%]"
+          >ข้อคิดเห็นเพิ่มเติม :</label
+        >
+        <mat-form-field appearance="fill" class="w-[70%] lg:w-[80%]">
+          <mat-label>ข้อคิดเห็นเพิ่มเติม</mat-label>
+          <textarea
+            matInput
+            formControlName="comment"
+            placeholder=""
+          ></textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="flex flex-col lg:flex-row mt-3 w-full">
+        <div class="pb-3 lg:w-[15%] ">ผลสรุปโดยรวม :</div>
+        <mat-radio-group
+          aria-label="Select an option"
+          class="flex flex-col w-[75%]"
+          formControlName="conclusion"
+        >
+          <div class="flex flex-row w-full items-start">
+            <mat-radio-button value="pass">
+                ผ่าน (ต้องมีผลการประเมิน ประสิทธิผลการฝึกอบรม ในระดับ “ผ่าน”
+                มากกว่าครึ่งหนึ่งของหัวข้อที่ทำการประเมิน)
+            </mat-radio-button>
+          </div>
+
           <div class="flex flex-row w-full items-center">
-            <span>ไม่ผ่าน เหตุผล</span>
-            <mat-form-field appearance="fill" class="ml-2">
-              <mat-label class="dark:text-[#bebebe]">เหตุผล</mat-label>
-              <input matInput formControlName="cause1" />
-            </mat-form-field>
+            <mat-radio-button value="fail" class="">
+              <span>ไม่ผ่าน เหตุผล</span>
+              <mat-form-field appearance="fill" class="ml-2">
+                <mat-label class="dark:text-[#bebebe]">เหตุผล</mat-label>
+                <input matInput formControlName="cause1" />
+              </mat-form-field>
+            </mat-radio-button>
           </div>
-        </div>
 
-        <div class="flex flex-row w-full items-center">
-          <mat-radio-button value="1" class=""></mat-radio-button>
           <div class="flex flex-row w-full items-center">
-            <span>ไม่ประเมินผล เหตุผล</span>
-            <mat-form-field appearance="fill" class="ml-2">
-              <mat-label class="dark:text-[#bebebe]">เหตุผล</mat-label>
-              <input matInput formControlName="cause2" />
-            </mat-form-field>
+            <mat-radio-button value="none" class="">
+              <span>ไม่ประเมินผล เหตุผล</span>
+              <mat-form-field appearance="fill" class="ml-2">
+                <mat-label class="dark:text-[#bebebe]">เหตุผล</mat-label>
+                <input matInput formControlName="cause2" />
+              </mat-form-field>
+            </mat-radio-button>
           </div>
-        </div>
-      </mat-radio-group>
-    </div>
+        </mat-radio-group>
+      </div>
+    </form>
 
     <div class="flex mt-3 text-sm justify-items-start">
       <div class="flex flex-row">
-        <p class="mr-2 underline">หมายเหตุ</p>: 
+        <p class="mr-2 underline">หมายเหตุ</p>
+        :
       </div>
       <p class="">
-        1. จัดส่งผลการติดตามประสิทธิผลการฝึกอบรมให้แผนกบุคคล
-        ภายในสิ้นไตรมาส หลังจากที่ได้ประเมินผล <br />2.
-        จัดส่งสำเนาใบรับรอง หรือใบประกาศนียบัตร (ถ้ามี)
-        ส่งให้แผนกบุคคลด้วย
+        1. จัดส่งผลการติดตามประสิทธิผลการฝึกอบรมให้แผนกบุคคล ภายในสิ้นไตรมาส
+        หลังจากที่ได้ประเมินผล <br />2. จัดส่งสำเนาใบรับรอง หรือใบประกาศนียบัตร
+        (ถ้ามี) ส่งให้แผนกบุคคลด้วย
       </p>
     </div>
   </div>
