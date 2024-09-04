@@ -68,6 +68,7 @@ export class ApiService {
       .pipe(map((res) => res));
   }
 
+
   getManageDeptsListByUserId(
     uid: number
   ): Observable<ApiResponse<MngDeptListRes[]>> {
@@ -385,9 +386,9 @@ export class ApiService {
       .pipe(map((res) => res));
   }
 
-  getEmpByDeptId(deptId: number): Observable<Employee> {
+  getEmpByDeptId(deptId: number): Observable<Employee[]> {
     return this.http
-      .get<ApiResponse<Employee>>(
+      .get<ApiResponse<Employee[]>>(
         `${this.trainingUrl}/findallUserListByDeptActual`,
         {
           params: {
@@ -442,6 +443,7 @@ export class ApiService {
     const url = `${this.trainingUrl}/getSignatureImage?userId=${userId}`;
     return this.http.get(url, { responseType: 'blob' }).pipe(map((res) => res));
   }
+  
 
   getTrainingByApproveId(approve1Id: number): Observable<TrainingTable[]> {
     return this.http
@@ -471,3 +473,4 @@ export class ApiService {
   //   );
   // }
 }
+ 

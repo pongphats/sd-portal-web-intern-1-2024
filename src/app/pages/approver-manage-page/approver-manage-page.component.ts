@@ -143,7 +143,7 @@ export class ApproverManagePageComponent implements OnInit {
 
   async cancelPrivilegeBtn(element: any) {
     console.log("cancelPrivilegeBtn")
-    console.log(element)
+    // console.log(element)
 
     const confirmed = await this.swalService.showConfirm(
       'คุณต้องการยกเลิกสิทธิ์หรือไม่'
@@ -234,7 +234,6 @@ export class ApproverManagePageComponent implements OnInit {
       }
       const res = await this.apiService.editEmployee(req, uid).toPromise();
       console.log("res", res)
-      console.log("res", res.responseData.result)
 
       if (res.responseMessage == 'กรอกข้อมูลเรียบร้อย') {
         this.swalService.showSuccess("เพิ่มสิทธิ์เรียบร้อยแล้ว")
@@ -279,12 +278,10 @@ export class ApproverManagePageComponent implements OnInit {
       deptCode: element.department.deptCode,
     })
 
-    // TODO: get "deptOrSectorList"
     this.approverManageForm.reset()
 
     // TODO: get "dataSourceTable1"
     const res = await this.commonService.getUserDetailByEmpcode(element.empCode).toPromise();
-    console.log("dataSourceTable1",res)
     if (this.isVicePresident) {
       const sectors = res?.sectors.map((item: any) => {
         const departmentDetail = this.dataSectorsDeptsCompany.find(data => data.sectorId === item.id);
@@ -295,13 +292,19 @@ export class ApproverManagePageComponent implements OnInit {
           sectorName: departmentDetail.sectorName,
         } : null;
       })
-      this.dataSourceTable1.data = sectors || [];
+      const sectorId = element.sector.id
+      const sectorSort = sectors?.sort((a, b) => {
+        if (a?.sectorId === sectorId) return -1; 
+        if (b?.sectorId === sectorId) return 1;
+        return a?.sectorId - b?.sectorId;
+      });
+      this.dataSourceTable1.data = sectorSort || [];
+
 
     } else {
       // TODO: เอา department.id ไปหา company & sector
       const departments = res?.departments.map((item: any) => {
         const departmentDetail = this.dataSectorsDeptsCompany.find(data => data.department.id === item.id);
-        console.log("departmentDetail", departmentDetail)
         return departmentDetail ? {
           company: departmentDetail.company,
           sectorId: departmentDetail.sectorId,
@@ -313,7 +316,13 @@ export class ApproverManagePageComponent implements OnInit {
           // deptName: departmentDetail.department.deptFullName,
         } : null;
       })
-      this.dataSourceTable1.data = departments || [];
+      const departmentId = element.department.id
+      const departmentSort = departments?.sort((a, b) => {
+        if (a?.deptId === departmentId) return -1; 
+        if (b?.deptId === departmentId) return 1;
+        return a?.deptId - b?.deptId;
+      });
+      this.dataSourceTable1.data = departmentSort || [];
     }
     this.dataSourceTable1.paginator = this.paginator1;
   }
