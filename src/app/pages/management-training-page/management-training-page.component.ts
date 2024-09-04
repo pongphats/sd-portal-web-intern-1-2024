@@ -153,6 +153,7 @@ export class ManagementTrainingPageComponent implements OnInit {
       this.backupTrainingList = approveTraining;
       this.centerTrainingsList = this.backupTrainingList;
       this.trainingTableList = this.centerTrainingsList;
+      this.loadingpage()
     } catch (error) {}
   }
 
@@ -171,6 +172,10 @@ export class ManagementTrainingPageComponent implements OnInit {
     );
 
     return hasNullStatus && hasNoDisapproval;
+  }
+
+  isAllApprove(statusArray: Status[]): boolean {
+    return statusArray.every((status) => status.status === 'อนุมัติ');
   }
 
   goToEditTrainingPage(data: TrainingTable) {

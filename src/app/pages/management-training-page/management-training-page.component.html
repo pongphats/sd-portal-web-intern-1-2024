@@ -157,7 +157,11 @@
                 </div>
                 <ng-template #PMelseBlock1>
                   <div
-                    *ngIf="training.isDo == undefined; else PMelseBlock2"
+                    *ngIf="
+                      training.isDo == undefined &&
+                        !isAllApprove(training.training.status);
+                      else PMelseBlock2
+                    "
                     [ngClass]="{
                       'text-yellow-600 dark:text-yellow-500':
                         training.result_status == 'รอประเมิน' ||
@@ -177,19 +181,26 @@
                 </ng-template>
                 <ng-template #PMelseBlock2>
                   <div *ngIf="training.isDo != undefined">
-                    <div *ngFor="let state of training.training.status">
-                      <p
-                        [ngClass]="{
-                          'text-green-600 dark:text-green-500':
-                            state.status == 'อนุมัติ',
-                          'text-red-600 dark:text-red-500':
-                            state.status == 'ไม่อนุมัติ',
-                          'text-yellow-600 dark:text-yellow-500':
-                            state.status == null
-                        }"
-                      >
-                        {{ state.status ? state.status : "รอการอนุมัติ" }}
-                      </p>
+                    <div
+                      *ngIf="
+                        !isAllApprove(training.training.status);
+                        else allApproveStatusNotApproverUser
+                      "
+                    >
+                      <div *ngFor="let state of training.training.status">
+                        <p
+                          [ngClass]="{
+                            'text-green-600 dark:text-green-500':
+                              state.status == 'อนุมัติ',
+                            'text-red-600 dark:text-red-500':
+                              state.status == 'ไม่อนุมัติ',
+                            'text-yellow-600 dark:text-yellow-500':
+                              state.status == null
+                          }"
+                        >
+                          {{ state.status ? state.status : "รอการอนุมัติ" }}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </ng-template>
@@ -210,21 +221,29 @@
                 </div>
                 <ng-template #AorPelseBlock1>
                   <div
-                    [ngClass]="{
-                      'text-yellow-600 dark:text-yellow-500':
-                        training.result_status == 'รอประเมิน' ||
-                        (training.result_status == 'รอประเมิน' &&
-                          watingApproveCheck(training.training.status)),
-                      'text-green-600 dark:text-green-500':
-                        training.result_status != 'รอประเมิน'
-                    }"
+                    class=""
+                    *ngIf="
+                      !isAllApprove(training.training.status);
+                      else allApproveStatusNotApproverUser
+                    "
                   >
-                    {{
-                      training.result_status == "รอประเมิน" &&
-                      watingApproveCheck(training.training.status)
-                        ? "รออนุมัติ"
-                        : training.result_status
-                    }}
+                    <div
+                      [ngClass]="{
+                        'text-yellow-600 dark:text-yellow-500':
+                          training.result_status == 'รอประเมิน' ||
+                          (training.result_status == 'รอประเมิน' &&
+                            watingApproveCheck(training.training.status)),
+                        'text-green-600 dark:text-green-500':
+                          training.result_status != 'รอประเมิน'
+                      }"
+                    >
+                      {{
+                        training.result_status == "รอประเมิน" &&
+                        watingApproveCheck(training.training.status)
+                          ? "รออนุมัติ"
+                          : training.result_status
+                      }}
+                    </div>
                   </div>
                 </ng-template>
               </div>
@@ -251,32 +270,116 @@
               <ng-template #PRVelseBlock1>
                 <div
                   *ngIf="
-                    training.result_status == 'อนุมัติ' &&
-                      training.training.result[0].result == null;
+                    training.result_status == 'รอประเมิน';
                     else PRVelseBlock2
                   "
                   class="text-yellow-600 dark:text-yellow-500"
                 >
-                  รอประเมินผล
+                  <div *ngFor="let state of training.training.status">
+                    <p
+                      [ngClass]="{
+                        'text-green-600 dark:text-green-500':
+                          state.status == 'อนุมัติ',
+                        'text-red-600 dark:text-red-500':
+                          state.status == 'ไม่อนุมัติ',
+                        'text-yellow-600 dark:text-yellow-500':
+                          state.status == null
+                      }"
+                    >
+                      {{ state.status ? state.status : "รอการอนุมัติ" }}
+                    </p>
+                  </div>
                 </div>
               </ng-template>
               <ng-template #PRVelseBlock2>
                 <div
                   *ngIf="
-                    training.result_status == 'อนุมัติ' &&
-                    training.training.result[0].result != null
+                    training.training.result[0].result == null;
+                    else isEval
                   "
-                  [ngClass]="{
-                    'text-red-600 dark:text-red-500':
-                      training.training.result[0].result == 'fail',
-                    'text-green-600 dark:text-green-500':
-                      training.training.result[0].result == 'pass',
-                    'text-yellow-600 dark:text-yellow-500':
-                      training.training.result[0].result == 'noResult'
-                  }"
                 >
-                  {{ training.training.result[0].result | resultTranslate }}
+                  <p class="text-yellow-600 dark:text-yellow-500">
+                    รอประเมินผลการอบรม
+                  </p>
                 </div>
+
+                <ng-template #isEval>
+                  <div class="" *ngIf="userRole != 'ROLE_VicePresident'">
+                    <p class="text-green-600 dark:text-green-500">
+                      ประเมินผลการอบรมเรียบร้อย
+                    </p>
+                  </div>
+                  <div class="" *ngIf="userRole == 'ROLE_VicePresident'">
+                    <ng-template>
+                      <div
+                        class=""
+                        *ngIf="
+                          training.training.result[0].result != null;
+                          else ViceElse1
+                        "
+                      >
+                        <p class="text-yellow-600 dark:text-yellow-500">
+                          รอประเมินผลการอบรม
+                        </p>
+                      </div>
+                    </ng-template>
+                    <ng-template #ViceElse1>
+                      <div
+                        *ngIf="
+                          training.training.result[0].result == null;
+                          else ViceElse2
+                        "
+                      >
+                        <p class="text-yellow-600 dark:text-yellow-500">
+                          รอประเมินผลการอบรม
+                        </p>
+                      </div>
+                    </ng-template>
+                    <ng-template #ViceElse2>
+                      <div
+                        *ngIf="
+                          training.training.resultGeneric9[0].result5 == null
+                        "
+                      >
+                        <p class="text-yellow-600 dark:text-yellow-500">
+                          รอประเมินผล Generic9
+                        </p>
+                      </div>
+                    </ng-template>
+                  </div>
+                </ng-template>
+              </ng-template>
+
+              <ng-template #allApproveStatusNotApproverUser>
+                <p
+                  class="text-yellow-600 dark:text-yellow-500"
+                  *ngIf="
+                    isAllApprove(training.training.status) &&
+                    training.training.result[0].result == null
+                  "
+                >
+                  รอการประเมินผล
+                </p>
+                <p
+                  class="text-yellow-600 dark:text-yellow-500"
+                  *ngIf="
+                    isAllApprove(training.training.status) &&
+                    training.training.result[0].result != null &&
+                    training.training.resultGeneric9[0].result5 == null
+                  "
+                >
+                  รอประเมินผล Generic9
+                </p>
+                <p
+                  class="text-green-600 dark:text-green-500"
+                  *ngIf="
+                    isAllApprove(training.training.status) &&
+                    training.training.result[0].result != null &&
+                    training.training.resultGeneric9[0].result5 != null
+                  "
+                >
+                  ประเมินผลเรียบร้อย
+                </p>
               </ng-template>
             </td>
             <td class="p-4 text-center">
