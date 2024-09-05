@@ -139,12 +139,15 @@ export class ManagementTrainingPageComponent implements OnInit {
       allApprove: (item: TrainingTable) => item.result_status === 'อนุมัติ',
       waitApprove: (item: TrainingTable) =>
         item.result_status === 'รอประเมิน' || item.isDo === 'รอประเมิน',
-      waitEval: (item: TrainingTable) => item.training.result[0].result == null,
+      waitEval: (item: TrainingTable) =>
+        item.training.result[0].result == null &&
+        item.result_status == 'อนุมัติ',
       Eval: (item: TrainingTable) => item.training.result[0].result != null,
       waitG9Eval: (item: TrainingTable) =>
-        item.training.resultGeneric9[0].result5 != null,
+        item.training.resultGeneric9[0].result5 == null &&
+        item.result_status == 'อนุมัติ',
       G9Eval: (item: TrainingTable) =>
-        item.training.resultGeneric9[0].result5 == null,
+        item.training.resultGeneric9[0].result5 != null,
     };
 
     this.centerTrainingsList = this.backupTrainingList.filter(
