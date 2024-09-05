@@ -273,7 +273,6 @@
                     training.result_status == 'รอประเมิน';
                     else PRVelseBlock2
                   "
-                  class="text-yellow-600 dark:text-yellow-500"
                 >
                   <div *ngFor="let state of training.training.status">
                     <p
@@ -294,7 +293,8 @@
               <ng-template #PRVelseBlock2>
                 <div
                   *ngIf="
-                    training.training.result[0].result == null;
+                    training.training.result[0].result == null &&
+                      training.result_status == 'อนุมัติ';
                     else isEval
                   "
                 >
@@ -310,39 +310,39 @@
                     </p>
                   </div>
                   <div class="" *ngIf="userRole == 'ROLE_VicePresident'">
-                    <ng-template>
-                      <div
-                        class=""
-                        *ngIf="
-                          training.training.result[0].result != null;
-                          else ViceElse1
-                        "
-                      >
-                        <p class="text-yellow-600 dark:text-yellow-500">
-                          รอประเมินผลการอบรม
-                        </p>
-                      </div>
-                    </ng-template>
+                    <div
+                      class=""
+                      *ngIf="
+                        training.training.result[0].result == null;
+                        else ViceElse1
+                      "
+                    >
+                      <p class="text-yellow-600 dark:text-yellow-500">
+                        รอประเมินผลการอบรม
+                      </p>
+                    </div>
+
                     <ng-template #ViceElse1>
                       <div
                         *ngIf="
-                          training.training.result[0].result == null;
+                          training.training.resultGeneric9[0].result5 == null;
                           else ViceElse2
                         "
                       >
                         <p class="text-yellow-600 dark:text-yellow-500">
-                          รอประเมินผลการอบรม
+                          รอประเมินผล Generic9
                         </p>
                       </div>
                     </ng-template>
                     <ng-template #ViceElse2>
                       <div
                         *ngIf="
-                          training.training.resultGeneric9[0].result5 == null
+                          training.training.resultGeneric9[0].result5 != null &&
+                          training.training.result[0].result != null
                         "
                       >
-                        <p class="text-yellow-600 dark:text-yellow-500">
-                          รอประเมินผล Generic9
+                        <p class="text-green-600 dark:text-green-500">
+                          ประเมิลผลเรียบร้อย
                         </p>
                       </div>
                     </ng-template>

@@ -195,7 +195,7 @@ export class ManagementTrainingPageComponent implements OnInit {
 
   goToEditTrainingPage(data: TrainingTable) {
     const dialogRef = this.dialog.open(CheckTrainingModalComponent, {
-      width: '60%', // กำหนดความกว้างเป็น 80% ของหน้าจอ
+      width: '80%', // กำหนดความกว้างเป็น 80% ของหน้าจอ
     });
     console.log(
       'data table',

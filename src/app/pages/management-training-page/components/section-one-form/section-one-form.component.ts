@@ -36,6 +36,7 @@ export class SectionOneFormComponent implements OnInit {
   vicePresList!: Employee[];
   presidentsList!: Employee[];
   empNameListFiltered: any;
+  sectionCanEditRole !: boolean
 
   roleCheck!: string;
 
@@ -84,6 +85,10 @@ export class SectionOneFormComponent implements OnInit {
     console.log('id:', id);
 
     this.roleCheck = this.authService.checkRole();
+    this.sectionCanEditRole =
+      this.roleCheck == 'ROLE_Personnel' ||
+      this.roleCheck == 'ROLE_Admin' ||
+      this.roleCheck == 'ROLE_ManagerAndROLE_Personnel';
     await this.initDeptSelectorByRole();
     await this.generateCoursesList();
     await this.initSectionOne();

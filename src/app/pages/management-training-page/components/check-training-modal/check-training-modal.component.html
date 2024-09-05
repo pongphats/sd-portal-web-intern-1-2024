@@ -4,7 +4,8 @@
 <h2 mat-dialog-title>แบบฟอร์มการส่งอบรม</h2>
 <mat-dialog-content class="mat-typography !space-y-8">
   <app-section-one-form></app-section-one-form>
-  <app-section-two-form></app-section-two-form>
+  <!-- show when all approve -->
+  <app-section-two-form *ngIf="isAllApprove"></app-section-two-form>
   <!-- <app-ftr-of1-page></app-ftr-of1-page> -->
 </mat-dialog-content>
 
