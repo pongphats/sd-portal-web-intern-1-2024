@@ -28,7 +28,6 @@ export class SectionTwoFormComponent implements OnInit {
     private trainingService: TrainingService,
     private fb: FormBuilder,
     private authService: AuthService,
-    private commonService: CommonService
   ) {
     this.approverForm = this.fb.group({
       evaluatorName: [''],
@@ -229,7 +228,6 @@ export class SectionTwoFormComponent implements OnInit {
 
   updateRadioButtonState(): void {
     const values = Object.values(this.evaluatorForm.value);
-    // console.log("values", values)
 
     const passCount = values.filter(value => value === 'pass').length;
     const failCount = values.filter(value => value === 'fail').length;
