@@ -14,6 +14,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { tap } from 'rxjs';
 import Swal from 'sweetalert2';
 import { SwalService } from 'src/app/services/swal.service';
+import { ReportModalComponent } from './components/report-modal/report-modal.component';
 
 @Component({
   selector: 'app-management-training-page',
@@ -26,7 +27,7 @@ export class ManagementTrainingPageComponent implements OnInit {
   backupTrainingList!: TrainingTable[];
   centerTrainingsList!: TrainingTable[];
   trainingTableList!: TrainingTable[];
-
+  isCanEditSection!: boolean;
   pageLength!: number;
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
@@ -48,8 +49,7 @@ export class ManagementTrainingPageComponent implements OnInit {
       roles == 'ROLE_Admin' ||
       roles == 'ROLE_Personnel' ||
       roles == 'ROLE_ManagerAndROLE_Personnel';
-
-    console.log(roles);
+    this.isCanEditSection = isCanEditRoles;
 
     if (isCanEditRoles) {
       await this.findAllTrainingForAdminAndPersonal();
@@ -264,6 +264,7 @@ export class ManagementTrainingPageComponent implements OnInit {
   }
 
   async openModalReport(data: TrainingTable) {
+    this.swalService.showLoading();
     // mapping signature
     /*
     index,role
@@ -296,10 +297,23 @@ export class ManagementTrainingPageComponent implements OnInit {
         (await this.apiService
           .getTrainingReportByTrainIdBase64(signatureReq)
           .toPromise()) || '';
-      console.log('report :', res);
+      // console.log('report :', res);
+      this.openReportModal(res);
+
+      Swal.close();
     } catch (error) {
       console.error(error);
+      this.swalService.showError('ไม่พบรายเซ็นผู้ประเมินผล');
     }
     // data.training.status[0].
+  }
+
+  openReportModal(base64: string) {
+    const dialogRef = this.dialog.open(ReportModalComponent, {
+      width: '80%', // กำหนดความกว้างเป็น 80% ของหน้าจอ
+    });
+    this.trainingService.reportBase64 = base64;
+    dialogRef.afterClosed().subscribe((result) => {
+    });
   }
 }

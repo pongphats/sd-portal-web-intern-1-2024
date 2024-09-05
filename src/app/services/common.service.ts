@@ -6,6 +6,7 @@ import { ApiService } from './api.service';
 import { ApiResponse, Sector } from '../interface/response';
 import { Employee, Role } from '../interface/employee';
 import { department, sector } from '../interface/common';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,11 @@ export class CommonService {
   trainingUrl: string = environment.trainingService;
   welfareUrl: string = environment.welfareService;
 
-  constructor(private http: HttpClient, private apiService: ApiService) {}
+  constructor(
+    private http: HttpClient,
+    private apiService: ApiService,
+    private sanitizer: DomSanitizer
+  ) {}
 
   getCompanyIdByName(name: string): Observable<number> {
     return this.http
@@ -283,5 +288,17 @@ export class CommonService {
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
+  }
+
+  createSafePdfUrl(base64: string): SafeResourceUrl {
+    const byteCharacters = atob(base64);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: 'application/pdf' });
+    const unsafeUrl = URL.createObjectURL(blob);
+    return this.sanitizer.bypassSecurityTrustResourceUrl(unsafeUrl);
   }
 }

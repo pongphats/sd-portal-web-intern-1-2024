@@ -1,0 +1,20 @@
+<div class="flex justify-between items-center">
+   <h2 mat-dialog-title>แบบฟอร์มการส่งอบรม</h2>
+   <button mat-button mat-dialog-close>ปิด</button>
+ </div>
+ <mat-dialog-content class="mat-typography !space-y-8">
+   <div class="">
+     <iframe
+       [src]="pdfUrl"
+       type="application/pdf"
+       width="100%"
+       height="500"
+       frameborder="0"
+     ></iframe>
+   </div>
+ </mat-dialog-content>
+ <mat-dialog-actions align="end">
+   <button mat-button class="bg-green-700 dark:bg-green-500">
+     <span>ดาวน์โหลด PDF<i class="bx bxs-download"></i></span>
+   </button>
+ </mat-dialog-actions>

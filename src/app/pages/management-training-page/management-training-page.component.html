@@ -102,8 +102,10 @@
             <th class="text-center p-4">หมายเหตุ</th>
             <th class="text-center p-4">สถานะ</th>
             <th class="text-center p-4">ปุ่มตรวจสอบ</th>
-            <th class="text-center p-4">ปุ่มยกเลิก</th>
-            <th class="text-center p-4">ปุ่มพิมพ์รายงาน</th>
+            <th class="text-center p-4" *ngIf="isCanEditSection">ปุ่มยกเลิก</th>
+            <th class="text-center p-4" *ngIf="isCanEditSection">
+              ปุ่มพิมพ์รายงาน
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -394,7 +396,7 @@
                 ></span>
               </button>
             </td>
-            <td class="p-4 text-center">
+            <td class="p-4 text-center" *ngIf="isCanEditSection">
               <!-- TODO cancel status and cancel button -->
               <button
                 type="button"
@@ -404,7 +406,7 @@
                 <span class="!text-white">ยกเลิก</span>
               </button>
             </td>
-            <td class="p-4 text-center">
+            <td class="p-4 text-center" *ngIf="isCanEditSection">
               <!-- TODO cancel status and cancel button -->
               <button
                 (click)="openModalReport(training)"
