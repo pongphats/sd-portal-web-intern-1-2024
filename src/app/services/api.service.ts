@@ -13,6 +13,7 @@ import {
   budgetCreate,
   expenseReportRequest,
   approveTrainingReq,
+  EditSectionTwoRequest,
 } from '../interface/request';
 import { map, Observable } from 'rxjs';
 import {
@@ -467,6 +468,18 @@ export class ApiService {
       .pipe(map((res) => res));
   }
 
+  editSectionTwo(
+    id: number,
+    body: EditSectionTwoRequest
+  ): Observable<EditSectionTwoRequest> {
+    return this.http
+      .post<EditSectionTwoRequest>(
+        `${this.trainingUrl}editTrainingSection2?resultId=${id}`,
+        body
+      )
+      .pipe(map((res) => res));
+  }
+
   approveTraining(req: approveTrainingReq) {
     return this.http
       .put(
@@ -476,7 +489,7 @@ export class ApiService {
       .pipe(map((res) => res));
   }
 
-  downloadFileById(id: number) : Observable<fileDownloadRes> {
+  downloadFileById(id: number): Observable<fileDownloadRes> {
     return this.http
       .get<fileDownloadRes>(`${this.trainingUrl}/getFile`, {
         params: {

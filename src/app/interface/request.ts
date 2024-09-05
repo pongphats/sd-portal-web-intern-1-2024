@@ -135,3 +135,18 @@ export interface approveTrainingReq {
   approveId: number;
   statusApprove: string;
 }
+
+export interface EditSectionTwoRequest {
+  evaluationDate: string;
+  result1: string;
+  result2: string;
+  result3: string;
+  result4: string;
+  result5: string;
+  result6: string;
+  result7: string;
+  result: string;
+  comment: string;
+  cause: string;
+  plan: string;
+}
