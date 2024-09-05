@@ -474,7 +474,7 @@ export class ApiService {
   ): Observable<EditSectionTwoRequest> {
     return this.http
       .post<EditSectionTwoRequest>(
-        `${this.trainingUrl}editTrainingSection2?resultId=${id}`,
+        `${this.trainingUrl}/editTrainingSection2?resultId=${id}`,
         body
       )
       .pipe(map((res) => res));

@@ -3,6 +3,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { approveTrainingReq } from 'src/app/interface/request';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { CommonService } from 'src/app/services/common.service';
 import { SwalService } from 'src/app/services/swal.service';
 import { TrainingService } from 'src/app/services/training.service';
 
@@ -25,8 +26,9 @@ export class CheckTrainingModalComponent implements OnInit {
     private apiService: ApiService,
     private swalService: SwalService,
     private authService: AuthService,
+    private commonService: CommonService,
     private dialogRef: MatDialogRef<CheckTrainingModalComponent>
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // get Role and uId
@@ -119,5 +121,44 @@ export class CheckTrainingModalComponent implements OnInit {
         this.dialogRef.close();
       }
     }
+  }
+
+
+  async saveOrEditSectionTwo() {
+    const dateCurrent = this.commonService.formatDateToYYYYMMDDString(new Date)
+    this.trainingService.sectionTwoRequest.evaluationDate = dateCurrent
+
+    const data = this.trainingService.sectionTwoRequest
+    const id = this.trainingService.trainingEditData.training.result[0].id
+
+    console.log("saveOrEditSectionTwo", data.result)
+
+    let confirm;
+    if (data.result == 'pass') {
+      confirm = (data.plan == '') && (data.cause == '') ? await this.swalService.showConfirm("คุณยืนยันการประเมินการอบรมใช่หรือไม่") : false
+      console.log("pass", confirm)
+    } else if (data.result == 'fail') {
+      confirm = (data.plan == '') && (data.cause == '') ? this.swalService.showWarning("กรุณากรอกเหตุผลและแผนการพัฒนา") : (data.plan != '') && (data.cause == '') ? this.swalService.showWarning("กรุณากรอกเหตุผล") : (data.plan == '') && (data.cause != '') ? this.swalService.showWarning("กรุณากรอกแผนการพัฒนา") : await this.swalService.showConfirm("คุณยืนยันการประเมินการอบรมใช่หรือไม่")
+      console.log("fail", confirm)
+    } else if (data.result == 'noResult') {
+      const allResultsEmpty = [data.result1, data.result2, data.result3, data.result4, data.result5, data.result6, data.result7].every(result => result === '');
+      confirm = (data.cause != '') && allResultsEmpty ? await this.swalService.showConfirm("คุณยืนยันการประเมินการอบรมใช่หรือไม่") : (data.cause == '') ? this.swalService.showWarning("กรุณากรอกเหตุผล") : false
+      console.log("noResult", confirm)
+    }
+
+    // TODO: บันทึก
+    if (confirm) {
+      console.log(id, data)
+      try {
+        const res = await this.apiService.editSectionTwo(id, data).toPromise();
+        console.log("save", res);
+        if (res) {
+          await this.swalService.showSuccess('ทำการประเมินเรียบร้อยแล้ว') ? this.dialogRef.close() : false
+        }
+      } catch (error) {
+        console.error("Error saving data:", error);
+      }
+    }
+
   }
 }
