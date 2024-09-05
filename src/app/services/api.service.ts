@@ -12,6 +12,7 @@ import {
   createPosition,
   budgetCreate,
   expenseReportRequest,
+  approveTrainingReq,
 } from '../interface/request';
 import { map, Observable } from 'rxjs';
 import {
@@ -23,6 +24,7 @@ import {
   ExpenseRemainResponse,
   MngDeptListRes,
   saveBudgetResponse,
+  fileDownloadRes,
 } from '../interface/response';
 import { Course, ExpenseWelfare, level, sector } from '../interface/common';
 import { Employee } from '../interface/employee';
@@ -67,7 +69,6 @@ export class ApiService {
       .get<sector[]>(`${this.trainingUrl}/findAllJoinDepartmentsSector`)
       .pipe(map((res) => res));
   }
-
 
   getManageDeptsListByUserId(
     uid: number
@@ -443,7 +444,6 @@ export class ApiService {
     const url = `${this.trainingUrl}/getSignatureImage?userId=${userId}`;
     return this.http.get(url, { responseType: 'blob' }).pipe(map((res) => res));
   }
-  
 
   getTrainingByApproveId(approve1Id: number): Observable<TrainingTable[]> {
     return this.http
@@ -467,10 +467,27 @@ export class ApiService {
       .pipe(map((res) => res));
   }
 
+  approveTraining(req: approveTrainingReq) {
+    return this.http
+      .put(
+        `${this.trainingUrl}/setStatusToTraining?trainingId=${req.trainingId}&approveId=${req.approveId}&statusApprove=${req.statusApprove}`,
+        {}
+      )
+      .pipe(map((res) => res));
+  }
+
+  downloadFileById(id: number) : Observable<fileDownloadRes> {
+    return this.http
+      .get<fileDownloadRes>(`${this.trainingUrl}/getFile`, {
+        params: {
+          fileID: id,
+        },
+      })
+      .pipe(map((res) => res));
+  }
   // getSectionOneByID(id: number): Observable<any> {
   //   return this.http.get<any>(
   //     this.api + '/findTrainingByTrainingId?trainingId=' + id
   //   );
   // }
 }
- 

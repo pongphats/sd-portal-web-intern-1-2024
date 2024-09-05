@@ -14,7 +14,7 @@ export class CommonService {
   trainingUrl: string = environment.trainingService;
   welfareUrl: string = environment.welfareService;
 
-  constructor(private http: HttpClient, private apiService: ApiService) { }
+  constructor(private http: HttpClient, private apiService: ApiService) {}
 
   getCompanyIdByName(name: string): Observable<number> {
     return this.http
@@ -262,5 +262,26 @@ export class CommonService {
     return Object.entries(obj)
       .filter(([_, value]) => value !== null && value !== undefined)
       .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
+  }
+
+  downloadFileBase64(fileName: string, type: string, base64: string) {
+    const downloadLink = document.createElement('a');
+    const byteCharacters = atob(base64);
+    const byteArrays = [];
+    for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+      const slice = byteCharacters.slice(offset, offset + 512);
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+    const blob = new Blob(byteArrays, { type: type });
+    downloadLink.href = window.URL.createObjectURL(blob);
+    downloadLink.download = fileName;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
   }
 }
