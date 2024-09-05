@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Status, TrainingTable } from 'src/app/interface/training';
+import { Position, Status, TrainingTable } from 'src/app/interface/training';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -15,6 +15,10 @@ import { tap } from 'rxjs';
 import Swal from 'sweetalert2';
 import { SwalService } from 'src/app/services/swal.service';
 import { ReportModalComponent } from './components/report-modal/report-modal.component';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { TrainingSearchForms } from 'src/app/interface/form';
+import { CommonService } from 'src/app/services/common.service';
+import { Course, department, sector } from 'src/app/interface/common';
 
 @Component({
   selector: 'app-management-training-page',
@@ -31,15 +35,30 @@ export class ManagementTrainingPageComponent implements OnInit {
   pageLength!: number;
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
-
+  searchFormsGroup!: FormGroup<TrainingSearchForms>;
+  courses!: Course[];
+  sectors!: any[];
+  depts!: sector[];
+  positions!: Position[];
   constructor(
     private authService: AuthService,
     private apiService: ApiService,
     private router: Router,
     public dialog: MatDialog,
     private trainingService: TrainingService,
-    private swalService: SwalService
-  ) {}
+    private swalService: SwalService,
+    private fb: FormBuilder,
+    private commonService: CommonService
+  ) {
+    this.searchFormsGroup = this.fb.group({
+      companyName: ['PCCTH'],
+      courseName: [''],
+      deptAndSector: [''],
+      endDate: [null],
+      startDate: [null],
+      positionName: [''],
+    }) as FormGroup<TrainingSearchForms>;
+  }
 
   async ngOnInit() {
     this.swalService.showLoading();
@@ -50,13 +69,54 @@ export class ManagementTrainingPageComponent implements OnInit {
       roles == 'ROLE_Personnel' ||
       roles == 'ROLE_ManagerAndROLE_Personnel';
     this.isCanEditSection = isCanEditRoles;
-
     if (isCanEditRoles) {
       await this.findAllTrainingForAdminAndPersonal();
     } else if (roles != 'ROLE_User') {
       await this.findAllTrainingForPriviledgedUser();
     }
+    await this.initValueToAllSelector();
   }
+
+  async initValueToAllSelector() {
+    try {
+      const company =
+        this.searchFormsGroup.controls.companyName.value || 'PCCTH';
+      const sectors =
+        (await this.commonService
+          .getSectorCompanyByName(company)
+          .toPromise()) || [];
+      const allCourse =
+        (await this.apiService.getAllCoursesList().toPromise()) || [];
+      const companyData =
+        (await this.commonService
+          .getSectorAndDeptsListByCompanyName(company)
+          .toPromise()) || [];
+      this.courses = allCourse;
+      this.sectors = sectors.sort((a, b) =>
+        a.sectorName.localeCompare(b.sectorName)
+      );
+      this.depts = companyData.sort((a, b) =>
+        a.department.deptName.localeCompare(b.department.deptName)
+      );
+      const allPosition = this.backupTrainingList.map(
+        (item) => item.training.user.position
+      );
+      this.positions = allPosition.filter(
+        (position, index, self) =>
+          index ===
+          self.findIndex((p) => p.positionName === position.positionName)
+      );
+      console.log('sector check: ', this.sectors);
+      console.log('dept check:', this.depts);
+
+      // this.depts = sectorAnddept.map(item => item.department)
+      // console.log('check sector Anddept', sectorAnddept);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  // async change
 
   loadingpage() {
     const pageIndex = this.paginator?.pageIndex ?? 0;
@@ -313,7 +373,71 @@ export class ManagementTrainingPageComponent implements OnInit {
       width: '80%', // กำหนดความกว้างเป็น 80% ของหน้าจอ
     });
     this.trainingService.reportBase64 = base64;
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe((result) => {});
+  }
+
+  // searchTraining()
+
+  filterTrainingData() {
+    const formValues = this.searchFormsGroup.value;
+
+    const deptSecValue: any = formValues.deptAndSector;
+
+    const deptIdValue =
+      deptSecValue && deptSecValue.type === 'dept'
+        ? deptSecValue.id
+        : undefined;
+
+    const secIdValue =
+      deptSecValue && deptSecValue.type === 'sector'
+        ? deptSecValue.id
+        : undefined;
+
+    this.centerTrainingsList = this.backupTrainingList.filter((item) => {
+      const matchesCompany = formValues.companyName
+        ? item.training.user.company.companyName === formValues.companyName
+        : true;
+
+      const matchesDept = deptIdValue
+        ? item.training.user.department.id == deptIdValue
+        : true;
+
+      const matchesSector = secIdValue
+        ? item.training.user.sector.id == secIdValue
+        : true;
+
+      const matchesPosition = formValues.positionName
+        ? item.training.user.position.positionName === formValues.positionName
+        : true;
+
+      const matchesDateRange =
+        formValues.startDate && formValues.endDate
+          ? new Date(item.training.courses[0].startDate) >=
+              new Date(formValues.startDate) &&
+            new Date(item.training.courses[0].endDate) <=
+              new Date(formValues.endDate)
+          : true;
+
+      const matchesCourseName = formValues.courseName
+        ? item.training.courses[0].courseName === formValues.courseName
+        : true;
+
+      return (
+        matchesCompany &&
+        matchesDept &&
+        matchesSector &&
+        matchesPosition &&
+        matchesDateRange &&
+        matchesCourseName
+      );
     });
+
+    this.loadingpage();
+  }
+
+  clearSearch() {
+    this.searchFormsGroup.reset();
+    this.centerTrainingsList = this.backupTrainingList;
+    this.loadingpage();
   }
 }

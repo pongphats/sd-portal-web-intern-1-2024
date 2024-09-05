@@ -1,43 +1,80 @@
 <div class="bg-transparent">
   <div class="w-full space-y-2">
     <h1 class="text-2xl">รายละเอียดการส่งพนักงานเข้าอบรม</h1>
-    <div class="bg-content drop-shadow-md rounded-md p-4 dark:bg-content-dark">
+    <form
+      [formGroup]="searchFormsGroup"
+      class="bg-content drop-shadow-md rounded-md p-4 dark:bg-content-dark"
+    >
+      <!-- Form Fields -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <div class="flex flex-col">
           <label for="company" class="mb-2">บริษัท</label>
           <mat-form-field appearance="fill">
             <mat-label>บริษัท</mat-label>
-            <mat-select>
+            <mat-select formControlName="companyName">
               <mat-option value="PCCTH">PCCTH</mat-option>
               <mat-option value="WiseSoft">WiseSoft</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="flex flex-col">
-          <label class="mb-2">ตำแหน่งงาน</label>
-          <mat-form-field appearance="fill">
-            <mat-label>ตำแหน่งงาน</mat-label>
-            <input
-              class="dark:text-font-description-dark text-font-description"
-              matInput
-              placeholder="ตำแหน่งงาน"
-            />
-          </mat-form-field>
-        </div>
+
         <div class="flex flex-col">
           <label class="mb-2">ฝ่าย/แผนก</label>
           <mat-form-field appearance="fill">
             <mat-label>เลือกฝ่าย/แผนก</mat-label>
-            <mat-select> </mat-select>
+            <mat-select formControlName="deptAndSector">
+              <mat-optgroup label="แผนก">
+                <mat-option
+                  *ngFor="let dept of depts"
+                  [value]="{
+                    type: 'dept',
+                    value: dept.department.deptName,
+                    id: dept.department.id
+                  }"
+                >
+                  {{ dept.sectorName }} / {{ dept.department.deptName }}
+                </mat-option>
+              </mat-optgroup>
+              <mat-optgroup label="ฝ่าย">
+                <mat-option
+                  *ngFor="let sector of sectors"
+                  [value]="{
+                    type: 'sector',
+                    value: sector.sectorName,
+                    id: sector.sectorId
+                  }"
+                >
+                  {{ sector.sectorName }}
+                </mat-option>
+              </mat-optgroup>
+            </mat-select>
           </mat-form-field>
         </div>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+        <div class="flex flex-col">
+          <label class="mb-2">ตำแหน่ง</label>
+          <mat-form-field appearance="fill">
+            <mat-label>เลือกตำแหน่ง</mat-label>
+            <mat-select formControlName="positionName">
+              <mat-option
+                *ngFor="let position of positions"
+                [value]="position.positionName"
+              >
+                {{ position.positionName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
         <div class="flex flex-col">
           <label for="company" class="mb-2">วันที่เริ่ม</label>
           <mat-form-field appearance="fill">
             <mat-label>วันที่เริ่ม</mat-label>
-            <input matInput [matDatepicker]="startPicker" />
+            <input
+              formControlName="startDate"
+              matInput
+              [matDatepicker]="startPicker"
+            />
             <mat-datepicker-toggle
               matSuffix
               [for]="startPicker"
@@ -45,11 +82,16 @@
             <mat-datepicker #startPicker></mat-datepicker>
           </mat-form-field>
         </div>
+
         <div class="flex flex-col">
           <label class="mb-2">วันที่สิ้นสุด</label>
           <mat-form-field appearance="fill">
             <mat-label>วันที่สิ้นสุด</mat-label>
-            <input matInput [matDatepicker]="endPicker" />
+            <input
+              formControlName="endDate"
+              matInput
+              [matDatepicker]="endPicker"
+            />
             <mat-datepicker-toggle
               matSuffix
               [for]="endPicker"
@@ -57,15 +99,29 @@
             <mat-datepicker #endPicker></mat-datepicker>
           </mat-form-field>
         </div>
+
         <div class="flex flex-col">
           <label class="mb-2">หัวข้อในการอบรม/สัมมนา</label>
           <mat-form-field appearance="fill">
             <mat-label>หัวข้อในการอบรม/สัมมนา</mat-label>
-            <mat-select> </mat-select>
+            <mat-select formControlName="courseName">
+              <mat-option *ngFor="let course of courses" [value]="course.id">
+                {{ course.courseName }}
+              </mat-option>
+            </mat-select>
           </mat-form-field>
         </div>
       </div>
-    </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-col md:flex-row md:justify-end gap-4 mt-4">
+        <button mat-raised-button (click)="filterTrainingData()" color="primary">ค้นหา</button>
+        <button mat-raised-button (click)="clearSearch()" color="warn">เคลียร์</button>
+        <button mat-raised-button color="accent">พิมพ์1</button>
+        <button mat-raised-button color="accent">พิมพ์2</button>
+      </div>
+    </form>
+
     <div
       class="w-full flex flex-col md:flex-row gap-4 justify-center items-center mt-2"
     >

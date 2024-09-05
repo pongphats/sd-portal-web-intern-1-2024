@@ -27,4 +27,12 @@ export class ReportModalComponent implements OnInit {
       console.error('No base64 report data found.');
     }
   }
+
+  downloadReport() {
+    this.commonService.downloadFileBase64(
+      'รายงานส่งอบรม',
+      'application/pdf',
+      this.reportBase64
+    );
+  }
 }
