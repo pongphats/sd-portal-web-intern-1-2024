@@ -169,12 +169,17 @@ export class ManagementTrainingPageComponent implements OnInit {
           const filteredTraining = training.filter((item) =>
             mngDeptIdList.includes(item.training.user.department.id)
           );
-          this.backupTrainingList = filteredTraining;
+          this.backupTrainingList = filteredTraining.sort((a, b) => {
+            const dateA = new Date(a.training.dateSave).getTime();
+            const dateB = new Date(b.training.dateSave).getTime();
+
+            return dateB - dateA; // เรียงจากล่าสุดไปเก่าสุด
+          });
           this.centerTrainingsList = this.backupTrainingList;
           // this.trainingTableList = this.centerTrainingsList;
 
-          console.log('backupTrainingList', this.backupTrainingList);
-          console.log('trainingTableList', this.trainingTableList);
+          // console.log('backupTrainingList', this.backupTrainingList);
+          // console.log('trainingTableList', this.trainingTableList);
         } else {
           throw new Error('mngDeptList or training not found');
         }
@@ -199,7 +204,14 @@ export class ManagementTrainingPageComponent implements OnInit {
             trainingMap.set(training.training.id, training);
           }
         });
-        this.backupTrainingList = Array.from(trainingMap.values());
+        this.backupTrainingList = Array.from(trainingMap.values()).sort(
+          (a, b) => {
+            const dateA = new Date(a.training.dateSave).getTime();
+            const dateB = new Date(b.training.dateSave).getTime();
+
+            return dateB - dateA; // เรียงจากล่าสุดไปเก่าสุด
+          }
+        );
         this.centerTrainingsList = this.backupTrainingList;
         // this.trainingTableList = this.centerTrainingsList;
         console.log(this.trainingTableList);
@@ -223,7 +235,12 @@ export class ManagementTrainingPageComponent implements OnInit {
       const uid = this.authService.getUID();
       const approveTraining =
         (await this.apiService.getTrainingByApproveId(uid).toPromise()) || [];
-      this.backupTrainingList = approveTraining;
+      this.backupTrainingList = approveTraining.sort((a, b) => {
+        const dateA = new Date(a.training.dateSave).getTime();
+        const dateB = new Date(b.training.dateSave).getTime();
+
+        return dateB - dateA; // เรียงจากล่าสุดไปเก่าสุด
+      });
       this.centerTrainingsList = this.backupTrainingList;
       this.trainingTableList = this.centerTrainingsList;
       // this.loadingpage();
