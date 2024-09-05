@@ -14,6 +14,7 @@ import {
   expenseReportRequest,
   approveTrainingReq,
   EditSectionTwoRequest,
+  TrainingReportRequest,
 } from '../interface/request';
 import { map, Observable } from 'rxjs';
 import {
@@ -495,6 +496,17 @@ export class ApiService {
         params: {
           fileID: id,
         },
+      })
+      .pipe(map((res) => res));
+  }
+
+  getTrainingReportByTrainIdBase64(
+    params: TrainingReportRequest
+  ): Observable<string> {
+    const filteredParams = this.commonService.filterNullUndefinedValues(params);
+    return this.http
+      .get<string>(`${this.trainingUrl}/Report`, {
+        params: { ...filteredParams },
       })
       .pipe(map((res) => res));
   }

@@ -6,7 +6,10 @@ import { AuthService } from 'src/app/services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CheckTrainingModalComponent } from './components/check-training-modal/check-training-modal.component';
 import { TrainingService } from 'src/app/services/training.service';
-import { CreateTrainingRequestForm } from 'src/app/interface/request';
+import {
+  CreateTrainingRequestForm,
+  TrainingReportRequest,
+} from 'src/app/interface/request';
 import { MatPaginator } from '@angular/material/paginator';
 import { tap } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -258,5 +261,45 @@ export class ManagementTrainingPageComponent implements OnInit {
 
   dateSaveChange(value: Date) {
     console.log(value);
+  }
+
+  async openModalReport(data: TrainingTable) {
+    // mapping signature
+    /*
+    index,role
+    1,Approver
+    2,Manager
+    3,Vice1
+    4,Vice2
+    5,President 
+    */
+    let signatureReq: TrainingReportRequest = {
+      trainId: data.training.id,
+      approverId:
+        data.training.status.find((item) => item.indexOfSignature == 1)
+          ?.approveId.id ?? null,
+      managerId:
+        data.training.status.find((item) => item.indexOfSignature == 2)
+          ?.approveId.id ?? null,
+      presidentId:
+        data.training.status.find((item) => item.indexOfSignature == 5)
+          ?.approveId.id ?? null,
+      vice1:
+        data.training.status.find((item) => item.indexOfSignature == 3)
+          ?.approveId.id ?? null,
+      vice2:
+        data.training.status.find((item) => item.indexOfSignature == 4)
+          ?.approveId.id ?? null,
+    };
+    try {
+      const res =
+        (await this.apiService
+          .getTrainingReportByTrainIdBase64(signatureReq)
+          .toPromise()) || '';
+      console.log('report :', res);
+    } catch (error) {
+      console.error(error);
+    }
+    // data.training.status[0].
   }
 }
