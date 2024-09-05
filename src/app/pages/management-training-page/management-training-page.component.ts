@@ -19,6 +19,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { TrainingSearchForms } from 'src/app/interface/form';
 import { CommonService } from 'src/app/services/common.service';
 import { Course, department, sector } from 'src/app/interface/common';
+import { PrintTipsModalComponent } from './components/print-tips-modal/print-tips-modal.component';
 
 @Component({
   selector: 'app-management-training-page',
@@ -40,6 +41,8 @@ export class ManagementTrainingPageComponent implements OnInit {
   sectors!: any[];
   depts!: sector[];
   positions!: Position[];
+  isSearchMode: boolean = false;
+  isSearchBtnDisabled: boolean = false;
   constructor(
     private authService: AuthService,
     private apiService: ApiService,
@@ -75,6 +78,9 @@ export class ManagementTrainingPageComponent implements OnInit {
       await this.findAllTrainingForPriviledgedUser();
     }
     await this.initValueToAllSelector();
+    this.searchFormsGroup.valueChanges.subscribe(() => {
+      this.checkFormValidity();
+    });
   }
 
   async initValueToAllSelector() {
@@ -451,13 +457,27 @@ export class ManagementTrainingPageComponent implements OnInit {
         matchesCourseName
       );
     });
-
+    this.isSearchMode = true;
     this.loadingpage();
   }
 
   clearSearch() {
     this.searchFormsGroup.reset();
     this.centerTrainingsList = this.backupTrainingList;
+    this.isSearchMode = false;
+    this.isSearchBtnDisabled = true;
     this.loadingpage();
+  }
+
+  checkFormValidity() {
+    const formValues = this.searchFormsGroup.value;
+    const isFormFilled = Object.values(formValues).some(
+      (value) => value !== ''
+    );
+    this.isSearchBtnDisabled = !isFormFilled;
+  }
+
+  showPrintTip() {
+    const dialogRef = this.dialog.open(PrintTipsModalComponent);
   }
 }

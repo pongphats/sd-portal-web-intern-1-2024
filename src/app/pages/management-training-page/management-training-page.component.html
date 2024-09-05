@@ -114,11 +114,54 @@
       </div>
 
       <!-- Action Buttons -->
-      <div class="flex flex-col md:flex-row md:justify-end gap-4 mt-4">
-        <button mat-raised-button (click)="filterTrainingData()" color="primary">ค้นหา</button>
-        <button mat-raised-button (click)="clearSearch()" color="warn">เคลียร์</button>
-        <button mat-raised-button color="accent">พิมพ์1</button>
-        <button mat-raised-button color="accent">พิมพ์2</button>
+      <div
+        class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mt-4"
+      >
+        <!-- Recommendation paragraph -->
+        <div class="" *ngIf="!isCanEditSection"></div>
+        <p
+          class="text-center md:text-left text-gray-700 dark:text-gray-300"
+          *ngIf="isCanEditSection"
+        >
+          คำแนะนำ
+          <i
+            (click)="showPrintTip()"
+            class="bx bx-info-circle cursor-pointer"
+            aria-hidden="true"
+            matTooltipClass="tooltip"
+            matTooltip="กดเพื่อดูคำแนะนำ"
+          ></i>
+        </p>
+        <div class="flex flex-col md:gap-4">
+          <!-- Group of buttons -->
+          <div class="flex flex-col md:flex-row md:gap-4 mb-4">
+            <button
+              [disabled]="isSearchBtnDisabled"
+              mat-raised-button
+              (click)="filterTrainingData()"
+              color="primary"
+              class="disabled:bg-slate-200 disabled:hover:cursor-not-allowed disabled:text-slate-400 dark:disabled:bg-slate-300 dark:disabled:text-slate-400"
+            >
+              <span class="text-white dark:text-white">ค้นหา</span>
+            </button>
+            <button
+              *ngIf="isSearchMode"
+              mat-raised-button
+              (click)="clearSearch()"
+              color="warn"
+            >
+              <span class="text-white dark:text-white">เคลียร์</span>
+            </button>
+            <button *ngIf="isSearchMode" mat-raised-button color="accent">
+              <span class="text-white dark:text-white"
+                >พิมพ์ประวัติการฝึกอบรม</span
+              >
+            </button>
+            <button *ngIf="isSearchMode" mat-raised-button color="accent">
+              <span class="text-white dark:text-white">พิมพ์ใบ Generic9</span>
+            </button>
+          </div>
+        </div>
       </div>
     </form>
 
