@@ -47,13 +47,14 @@ export class SectionTwoFormComponent implements OnInit {
     this.ressonForm = this.fb.group({
       comment: [''],
       conclusion: [''],
-      cause1: [''],
-      cause2: [''],
+      causeFail: [''],
+      causeNone: [''],
       plan: [''],
     })
 
     this.ressonForm.get('conclusion')?.valueChanges.subscribe(value => {
       console.log("value", value)
+      // *CASE1 = noResult
       if (value === 'noResult') {
         this.evaluatorForm.reset({
           result1: '',
@@ -65,26 +66,34 @@ export class SectionTwoFormComponent implements OnInit {
           result7: ''
         });
         this.ressonForm.patchValue({
-          cause1: '',
+          causeFail: '',
+          plan: ''
         });
+        this.isVisiblePlan = false;
+        this.isRadioPassDisabled = true
+        this.isRadioFailDisabled = true
         this.isInputFailDisable = true
         this.isInputNoneDisable = false
-        this.isRadioFailDisabled = true
-        this.isRadioPassDisabled = true
 
-      } else if (value === 'fail') {
-        this.isRadioFailDisabled = false;
-        this.isInputFailDisable = false
+      }
+      // *CASE2 = fail
+      else if (value === 'fail') {
         this.isVisiblePlan = true;
         this.isRadioPassDisabled = true;
+        this.isRadioFailDisabled = false;
+        this.isInputFailDisable = false
         this.isInputNoneDisable = true
 
-      } else {
+      }
+      // *CASE3 = pass
+      else {
+        this.isVisiblePlan = false;
         this.isRadioPassDisabled = false;
         this.isRadioFailDisabled = true;
         this.isInputFailDisable = true
         this.isInputNoneDisable = true
       }
+
     });
   }
 
@@ -97,8 +106,8 @@ export class SectionTwoFormComponent implements OnInit {
     try {
       const data = this.trainingService.trainingEditData;
 
+      // TODO: Set Data Approver
       const approveData = data.training.approve1
-      // console.log("approver : ", approveData)
       this.approverForm.controls['evaluatorName'].setValue(
         approveData.firstname + ' ' + approveData.lastname
       );
@@ -112,6 +121,36 @@ export class SectionTwoFormComponent implements OnInit {
         approveData.department.deptName
       );
 
+      // TODO: Set Data 'evaluatorForm' & 'ressonForm'
+      const evaluateData = data.training.result[0]
+      console.log("evaluateData", evaluateData)
+      this.evaluatorForm.patchValue({
+        result1: evaluateData.result1,
+        result2: evaluateData.result2,
+        result3: evaluateData.result3,
+        result4: evaluateData.result4,
+        result5: evaluateData.result5,
+        result6: evaluateData.result6,
+        result7: evaluateData.result7,
+      })
+
+      if (evaluateData.result == 'fail') {
+        this.ressonForm.patchValue({
+          comment: evaluateData.comment,
+          conclusion: evaluateData.result,
+          causeFail: evaluateData.cause,
+          causeNone: '',
+          plan: evaluateData.plan,
+        })
+      } else if (evaluateData.result == 'noResult') {
+        this.ressonForm.patchValue({
+          comment: evaluateData.comment,
+          conclusion: evaluateData.result,
+          causeFail: '',
+          causeNone: evaluateData.cause,
+          plan: evaluateData.plan,
+        })
+      }
 
     } catch (error) {
       console.error(error);
@@ -120,29 +159,34 @@ export class SectionTwoFormComponent implements OnInit {
 
   updateRadioButtonState(): void {
     const values = Object.values(this.evaluatorForm.value);
-    console.log("values", values)
+    // console.log("values", values)
+
     const passCount = values.filter(value => value === 'pass').length;
     const failCount = values.filter(value => value === 'fail').length;
     const noneCount = values.filter(value => value === 'none').length;
 
+    // *CASE1 = none all
     if (noneCount == 7) {
       this.ressonForm.patchValue({
         conclusion: 'noResult',
-        cause1: '',
+        causeFail: '',
       })
     }
+    // *CASE2 = pass >= fail
     else if (passCount >= failCount && (passCount != 0 || failCount != 0)) {
       this.ressonForm.patchValue({
         conclusion: 'pass',
-        cause1: '',
-        cause2: ''
-      })
-      this.isVisiblePlan = false;
-    } else if (!(passCount >= failCount)) {
-      this.ressonForm.patchValue({
-        conclusion: 'fail',
-        cause2: ''
+        causeFail: '',
+        causeNone: ''
       })
     }
+    // *CASE3 = fail > pass
+    else if (!(passCount >= failCount)) {
+      this.ressonForm.patchValue({
+        conclusion: 'fail',
+        causeNone: ''
+      })
+    }
+
   }
 }
