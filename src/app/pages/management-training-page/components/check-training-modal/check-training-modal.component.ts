@@ -19,6 +19,7 @@ export class CheckTrainingModalComponent implements OnInit {
   trainingResultStatus!: string;
   isApproverWating!: boolean;
   isAllApprove!: boolean;
+  isSectionTwoEval!: boolean;
   constructor(
     private trainingService: TrainingService,
     private apiService: ApiService,
@@ -28,8 +29,9 @@ export class CheckTrainingModalComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // get Role
+    // get Role and uId
     this.userRole = this.authService.checkRole();
+    const UID = this.authService.getUID();
     // waiting approve check
     this.isWatingApprove =
       this.trainingService.trainingEditData.result_status == 'รอประเมิน';
@@ -46,6 +48,10 @@ export class CheckTrainingModalComponent implements OnInit {
       this.userRole == 'ROLE_Personnel' ||
       this.userRole == 'ROLE_Admin' ||
       this.userRole == 'ROLE_ManagerAndROLE_Personnel';
+
+    // section two Evaluator check
+    this.isSectionTwoEval =
+      this.trainingService.trainingEditData.training.approve1.id == UID;
 
     // receive section form validate
     this.getEditSectionOneFormsStatus();

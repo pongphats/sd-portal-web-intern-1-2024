@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { SwalService } from './swal.service';
-import { CreateTrainingRequestForm } from '../interface/request';
+import {
+  CreateTrainingRequestForm,
+  EditSectionTwoRequest,
+} from '../interface/request';
 import { CommonService } from './common.service';
 import { AuthService } from './auth.service';
 import { TrainingTable } from '../interface/training';
@@ -22,6 +25,8 @@ export class TrainingService {
 
   private _trainingStatus!: string;
 
+  private _sectionTwoRequest!: EditSectionTwoRequest;
+
   adminId: number = 0;
 
   constructor(
@@ -40,6 +45,17 @@ export class TrainingService {
   //   return this._trainingEditFormsInValid;
   // }
   // Getter for trainingStatus
+
+  // Getter _sectionTwoRequest
+
+  get sectionTwoRequest(): EditSectionTwoRequest {
+    return this._sectionTwoRequest;
+  }
+
+  set sectionTwoRequest(value: EditSectionTwoRequest) {
+    this._sectionTwoRequest = value;
+  }
+
   get trainingStatus(): string {
     return this._trainingStatus;
   }
