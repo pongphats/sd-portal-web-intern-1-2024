@@ -50,6 +50,7 @@ import { Generic9FormComponent } from './management-training-page/components/gen
 import { ApproverManagePageComponent } from './approver-manage-page/approver-manage-page.component';
 import { ReportModalComponent } from './management-training-page/components/report-modal/report-modal.component';
 import { PrintTipsModalComponent } from './management-training-page/components/print-tips-modal/print-tips-modal.component';
+import { LoginWelfarePageComponent } from './login-welfare-page/login-welfare-page.component';
 
 @NgModule({
   declarations: [
@@ -99,6 +100,7 @@ import { PrintTipsModalComponent } from './management-training-page/components/p
     ApproverManagePageComponent,
     ReportModalComponent,
     PrintTipsModalComponent,
+    LoginWelfarePageComponent,
   ],
   imports: [
     MatIconModule,
