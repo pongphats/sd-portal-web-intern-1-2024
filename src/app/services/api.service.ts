@@ -224,9 +224,11 @@ export class ApiService {
       .pipe(map((res) => res.responseData.result));
   }
 
-  getEmplistByName(term: string): Observable<any[]> {
+  getEmplistByName(term: string): Observable<Employee[]> {
     return this.http
-      .get<any[]>(`${this.trainingUrl}/seacrhUser/byNames?searchTerm=${term}`)
+      .get<ApiResponse<Employee[]>>(
+        `${this.trainingUrl}/seacrhUser/byNames?searchTerm=${term}`
+      )
       .pipe(map((response: any) => response.responseData));
   }
 
@@ -349,7 +351,7 @@ export class ApiService {
       .pipe(map((res) => res.responseData.result));
   }
 
-  getExpenseHisoryWithPagination(page: number, size: number, userId: number) {
+  getExpenseHisoryWithPaginationV1(page: number, size: number, userId: number) {
     const filterReq = {
       page,
       size,
@@ -403,7 +405,7 @@ export class ApiService {
       .pipe(map((res) => res.responseData.result));
   }
 
-  getExpenseReportWithPagination(
+  getExpenseReportWithPaginationV2(
     req: expenseReportRequest
   ): Observable<PaginatedResponse<ExpenseWelfare>> {
     const filteredParams = this.commonService.filterNullUndefinedValues(req);
@@ -520,6 +522,16 @@ export class ApiService {
         params: { ...filteredParams },
       })
       .pipe(map((res) => res));
+  }
+
+  findUserById(id: number): Observable<Employee> {
+    return this.http
+      .get<ApiResponse<Employee>>(`${this.trainingUrl}/findUserById`, {
+        params: {
+          userId: id,
+        },
+      })
+      .pipe(map((res) => res.responseData.result));
   }
   // getSectionOneByID(id: number): Observable<any> {
   //   return this.http.get<any>(

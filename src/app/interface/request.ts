@@ -123,9 +123,9 @@ export interface expenseReportRequest {
   page: number | 0;
   size: number | 10;
   companyName: string;
-  sectorId: number;
-  deptId: number;
-  userId: number;
+  sectorId: number | null;
+  deptId: number | null;
+  userId: number | null;
   startDate: string; // string format: YYYY-MM-DD (2024-12-01) , (2024-01-30)
   endDate: string; // string format: YYYY-MM-DD (2024-12-01) , (2024-01-30)
 }

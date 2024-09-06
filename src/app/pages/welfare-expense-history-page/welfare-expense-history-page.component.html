@@ -1,0 +1,197 @@
+<div class="bg-transparent">
+  <div
+    class="flex flex-col bg-content rounded-xl p-4 my-8 shadow-card dark:bg-content-dark dark:shadow-none"
+  >
+    <div class="py-2 inline-block min-w-full sm:px-0">
+      <div class="overflow-hidden">
+        <h1 class="text-xl text-slate-500 dark:text-white">
+          ตารางแสดงการเบิกค่ารักษาพยาบาล
+        </h1>
+      </div>
+    </div>
+
+    <form
+      [formGroup]="searchFormsGroup"
+      class="w-full flex flex-col text-[#566a7f] rounded-lg shadow p-6 bg-gray-100 dark:text-[#e4e6eb] dark:bg-[#343434]"
+    >
+      <div class="flex flex-wrap items-center gap-4">
+        <div
+          class="flex justify-center items-center mb-6 w-full gap-4 sm:w-auto"
+        >
+          <label class="flex-initial self-center dark:text-[#ffffff]"
+            >บริษัท :</label
+          >
+          <mat-radio-group
+            aria-label="Select an option"
+            formControlName="companyName"
+          >
+            <mat-radio-button class="mr-4" value="PCCTH"
+              >PCCTH</mat-radio-button
+            >
+            <mat-radio-button class="mr-4" value="WiseSoft"
+              >WiseSoft</mat-radio-button
+            >
+          </mat-radio-group>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="flex flex-col">
+          <label
+            class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]"
+            >ฝ่าย:</label
+          >
+          <mat-form-field appearance="fill" class="w-full">
+            <mat-label>เลือกชื่อฝ่าย</mat-label>
+            <mat-select formControlName="sectorName">
+              <!-- <mat-option>None</mat-option> -->
+              <mat-option></mat-option>
+              <!-- sectorId = console -->
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="flex flex-col">
+          <label
+            class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]"
+            >แผนก:</label
+          >
+          <mat-form-field appearance="fill" class="w-full">
+            <mat-label>เลือกชื่อแผนก</mat-label>
+            <mat-select formControlName="deptName">
+              <!-- <mat-option>None</mat-option> -->
+              <mat-option></mat-option>
+              <!-- id = console -->
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="flex flex-col">
+          <label
+            class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]"
+          >
+            ชื่อพนักงาน
+          </label>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label class="dark:text-[#bebebe]">ระบุชื่อพนักงาน</mat-label>
+            <input
+              matInput
+              formControlName="empName"
+              [matAutocomplete]="auto"
+            />
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option
+                *ngFor="let option of filteredOptions | async"
+                [value]="option.fullName"
+              >
+                {{ option.fullName }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+        <div class="flex flex-col">
+          <label
+            class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]"
+          >
+            วันที่</label
+          >
+          <mat-form-field appearance="fill">
+            <mat-label>วันที่</mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+              <input
+                matStartDate
+                placeholder="วันที่เริ่ม"
+                formControlName="startDate"
+              />
+              <input
+                matEndDate
+                placeholder="วันที่สิ้นสุด"
+                formControlName="endDate"
+              />
+            </mat-date-range-input>
+            <mat-hint>วัน/เดือน/ปี – วัน/เดือน/ปี</mat-hint>
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field>
+        </div>
+      </div>
+      <div
+        class="col-span-1 md:col-span-1 lg:col-span-1 flex justify-center items-center h-full"
+      >
+        <div
+          class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-2 mt-4"
+        >
+          <button
+            (click)="firstSearchData()"
+            mat-raised-button
+            class="flex items-center text-center dark:disabled:bg-slate-300 dark:disabled:text-slate-400 disabled:bg-slate-400 disabled:text-slate-500 disabled:hover:cursor-not-allowed bg-[#1134A6] dark:bg-[#696cf8]"
+            type="button"
+            [disabled]="searchFormsGroup.invalid"
+          >
+            <i class="bx bx-search pr-2 text-white dark:text-white"></i>
+            <span class="text-white dark:text-white">ค้นหา</span>
+          </button>
+
+          <button
+            mat-raised-button
+            class="flex items-center text-center bg-[#1134A6] dark:bg-[#696cf8]"
+          >
+            <i class="bx bx-printer pr-2 text-white dark:text-white"></i>
+            <span class="text-white dark:text-white">พิมพ์</span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="w-full p-4 bg-content dark:bg-content-dark rounded-md shadow-md">
+    <div class="overflow-x-auto">
+      <table class="table-auto w-full">
+        <thead class="text-center">
+          <tr class="dark:text-font-description-dark">
+            <th class="text-center p-4">บริษัท</th>
+            <th class="text-center p-4">วันที่เบิก</th>
+            <th class="text-center p-4">รหัสพนักงาน</th>
+            <th class="text-center p-4">ชื่อ - นามสกุล</th>
+            <th class="text-center p-4">ระดับ</th>
+            <th class="text-center p-4">OPD</th>
+            <th class="text-center p-4">IPD</th>
+            <th class="text-center p-4">เบิกได้</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="expenseHistoryDataTable.length === 0">
+            <td colspan="10" class="text-center py-20">
+              <span class="text-4xl">กรุณาเลือกบริษัท และ ช่วงเวลาที่เบิก</span>
+            </td>
+          </tr>
+          <tr
+            *ngFor="let data of expenseHistoryDataTable"
+            class="odd:bg-white dark:odd:bg-[#3a3b3c] dark:even:bg-content-dark even:bg-slate-100 text-center h-20 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 dark:text-font-description-dark"
+          >
+            <td>{{ data.companyName }}</td>
+            <td>{{ data.dateOfAdmission | buddhistDate }}</td>
+            <td>{{ data.empCode }}</td>
+            <td>{{ data.fullName }}</td>
+            <td>{{ data.level }}</td>
+            <td>{{ data.opd | numberFormat }}</td>
+            <td>{{ data.ipd | numberFormat }}</td>
+            <td>{{ data.canWithdraw | numberFormat }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <mat-paginator
+      class="dark:bg-content-dark dark:text-white"
+      [pageIndex]="currentPageIndex"
+      [length]="pageLength"
+      [pageSize]="currentPageSize"
+      [pageSizeOptions]="[5, 10]"
+      aria-label="Select page"
+      (page)="onPageChange($event)"
+    >
+    </mat-paginator>
+  </div>
+</div>

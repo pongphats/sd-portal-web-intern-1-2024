@@ -50,7 +50,7 @@ import { Generic9FormComponent } from './management-training-page/components/gen
 import { ApproverManagePageComponent } from './approver-manage-page/approver-manage-page.component';
 import { ReportModalComponent } from './management-training-page/components/report-modal/report-modal.component';
 import { PrintTipsModalComponent } from './management-training-page/components/print-tips-modal/print-tips-modal.component';
-
+import { WelfareExpenseHistoryPageComponent } from './welfare-expense-history-page/welfare-expense-history-page.component';
 @NgModule({
   declarations: [
     HomePageComponent,
@@ -58,18 +58,13 @@ import { PrintTipsModalComponent } from './management-training-page/components/p
     ListCardSystemComponent,
     ListDescriptionComponent,
     ListCardPeopleComponent,
-
     NewsPageComponent,
-
     CalenderPageComponent,
     CalendarTableComponent,
-
     DashboardPageComponent,
     InformationUserComponent,
     InformationProjectUserComponent,
-
     JobDayViewPageComponent,
-
     ManagementNewsPageComponent,
     ManagementDashboardPageComponent,
     ManagementRolePageComponent,
@@ -99,6 +94,7 @@ import { PrintTipsModalComponent } from './management-training-page/components/p
     ApproverManagePageComponent,
     ReportModalComponent,
     PrintTipsModalComponent,
+    WelfareExpenseHistoryPageComponent,
   ],
   imports: [
     MatIconModule,
