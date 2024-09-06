@@ -118,12 +118,12 @@
         class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mt-4"
       >
         <!-- Recommendation paragraph -->
-        <div class="" *ngIf="!isCanEditSection"></div>
+        <div class="sm:hidden md:block" *ngIf="!isCanEditSection"></div>
         <p
           class="text-center md:text-left text-gray-700 dark:text-gray-300"
           *ngIf="isCanEditSection"
         >
-          คำแนะนำ
+          คำแนะนำการพิพม์รายงาน
           <i
             (click)="showPrintTip()"
             class="bx bx-info-circle cursor-pointer"
@@ -152,12 +152,21 @@
             >
               <span class="text-white dark:text-white">เคลียร์</span>
             </button>
-            <button *ngIf="isSearchMode" mat-raised-button color="accent">
+            <button
+              (mwlClick)="printHistoryTraining()"
+              *ngIf="isSearchMode && isCanEditSection"
+              mat-raised-button
+              color="accent"
+            >
               <span class="text-white dark:text-white"
-                >พิมพ์ประวัติการฝึกอบรม</span
-              >
+                >พิมพ์ประวัติการฝึกอบรม <i class="bx bxs-file-pdf"></i
+              ></span>
             </button>
-            <button *ngIf="isSearchMode" mat-raised-button color="accent">
+            <button
+              *ngIf="isSearchMode && isCanEditSection"
+              mat-raised-button
+              color="accent"
+            >
               <span class="text-white dark:text-white">พิมพ์ใบ Generic9</span>
             </button>
           </div>

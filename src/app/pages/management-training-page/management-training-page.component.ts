@@ -8,6 +8,7 @@ import { CheckTrainingModalComponent } from './components/check-training-modal/c
 import { TrainingService } from 'src/app/services/training.service';
 import {
   CreateTrainingRequestForm,
+  PrintHistoryTrainingReportRequest,
   TrainingReportRequest,
 } from 'src/app/interface/request';
 import { MatPaginator } from '@angular/material/paginator';
@@ -403,6 +404,51 @@ export class ManagementTrainingPageComponent implements OnInit {
   }
 
   // searchTraining()
+
+  async printHistoryTraining() {
+    const formValues = this.searchFormsGroup.value;
+    const deptSecValue: any = formValues.deptAndSector;
+
+    const deptIdValue =
+      deptSecValue && deptSecValue.type === 'dept' ? deptSecValue.id : null;
+
+    const secIdValue =
+      deptSecValue && deptSecValue.type === 'sector' ? deptSecValue.id : null;
+
+    const courseId = formValues.companyName
+      ? this.courses.find((item) => item.courseName === formValues.companyName)
+          ?.id || null
+      : null;
+
+    const startDate = formValues.startDate
+      ? this.commonService.formatDateToYYYYMMDDString(
+          new Date(formValues.startDate)
+        )
+      : null;
+
+    const endDate = formValues.endDate
+      ? this.commonService.formatDateToYYYYMMDDString(
+          new Date(formValues.endDate)
+        )
+      : null;
+
+    const req: PrintHistoryTrainingReportRequest = {
+      courseID: courseId,
+      deptID: deptIdValue,
+      endDate: endDate,
+      sectorID: secIdValue,
+      startDate: startDate,
+    };
+
+    try {
+      const res = await this.apiService
+        .printHistoryTrainingReport(req)
+        .toPromise();
+      console.log(res);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   filterTrainingData() {
     const formValues = this.searchFormsGroup.value;

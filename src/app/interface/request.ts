@@ -159,3 +159,11 @@ export interface TrainingReportRequest {
   vice2: number | null;
   presidentId: number | null;
 }
+
+export interface PrintHistoryTrainingReportRequest {
+  startDate: string | null;
+  endDate: string | null;
+  deptID: number | null;
+  courseID: number | null;
+  sectorID: number | null;
+}

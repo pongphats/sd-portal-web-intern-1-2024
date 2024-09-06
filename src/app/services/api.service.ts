@@ -15,6 +15,7 @@ import {
   approveTrainingReq,
   EditSectionTwoRequest,
   TrainingReportRequest,
+  PrintHistoryTrainingReportRequest,
 } from '../interface/request';
 import { map, Observable } from 'rxjs';
 import {
@@ -506,6 +507,16 @@ export class ApiService {
     const filteredParams = this.commonService.filterNullUndefinedValues(params);
     return this.http
       .get<string>(`${this.trainingUrl}/Report`, {
+        params: { ...filteredParams },
+      })
+      .pipe(map((res) => res));
+  }
+
+  printHistoryTrainingReport(params: PrintHistoryTrainingReportRequest) {
+    const filteredParams = this.commonService.filterNullUndefinedValues(params);
+
+    return this.http
+      .get(`${this.trainingUrl}/ReportHistoryTraining`, {
         params: { ...filteredParams },
       })
       .pipe(map((res) => res));
