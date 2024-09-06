@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthForm } from 'src/app/interface/form';
 
 @Component({
   selector: 'app-login-welfare-page',
@@ -7,7 +9,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginWelfarePageComponent implements OnInit {
 
-  constructor() { }
+  hide = true;
+  authForm!: FormGroup<AuthForm>;
+
+  constructor(
+    private fb: FormBuilder,
+  ) {
+    this.authForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+    });
+  }
 
   ngOnInit(): void {
   }
