@@ -150,3 +150,20 @@ export interface EditSectionTwoRequest {
   cause: string;
   plan: string;
 }
+
+export interface TrainingReportRequest {
+  trainId: number;
+  approverId: number | null;
+  managerId: number | null;
+  vice1: number | null;
+  vice2: number | null;
+  presidentId: number | null;
+}
+
+export interface PrintHistoryTrainingReportRequest {
+  startDate: string | null;
+  endDate: string | null;
+  deptID: number | null;
+  courseID: number | null;
+  sectorID: number | null;
+}

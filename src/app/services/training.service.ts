@@ -27,6 +27,10 @@ export class TrainingService {
 
   private _sectionTwoRequest!: EditSectionTwoRequest;
 
+  private _reportBase64 !: string
+
+  private _pdfReportFileName !: string
+
   adminId: number = 0;
 
   constructor(
@@ -47,6 +51,22 @@ export class TrainingService {
   // Getter for trainingStatus
 
   // Getter _sectionTwoRequest
+
+  get pdfReportFileName(): string {
+    return this._pdfReportFileName;
+  }
+  
+  set pdfReportFileName(value: string) {
+    this._pdfReportFileName = value;
+  }
+  
+  get reportBase64(): string {
+    return this._reportBase64;
+  }
+  
+  set reportBase64(value: string) {
+    this._reportBase64 = value;
+  }
 
   get sectionTwoRequest(): EditSectionTwoRequest {
     return this._sectionTwoRequest;

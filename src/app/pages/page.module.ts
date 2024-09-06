@@ -48,6 +48,8 @@ import { SectionOneFormComponent } from './management-training-page/components/s
 import { SectionTwoFormComponent } from './management-training-page/components/section-two-form/section-two-form.component';
 import { Generic9FormComponent } from './management-training-page/components/generic9-form/generic9-form.component';
 import { ApproverManagePageComponent } from './approver-manage-page/approver-manage-page.component';
+import { ReportModalComponent } from './management-training-page/components/report-modal/report-modal.component';
+import { PrintTipsModalComponent } from './management-training-page/components/print-tips-modal/print-tips-modal.component';
 
 @NgModule({
   declarations: [
@@ -95,6 +97,8 @@ import { ApproverManagePageComponent } from './approver-manage-page/approver-man
     SectionTwoFormComponent,
     Generic9FormComponent,
     ApproverManagePageComponent,
+    ReportModalComponent,
+    PrintTipsModalComponent,
   ],
   imports: [
     MatIconModule,
