@@ -48,6 +48,7 @@ import { SectionOneFormComponent } from './management-training-page/components/s
 import { SectionTwoFormComponent } from './management-training-page/components/section-two-form/section-two-form.component';
 import { Generic9FormComponent } from './management-training-page/components/generic9-form/generic9-form.component';
 import { ApproverManagePageComponent } from './approver-manage-page/approver-manage-page.component';
+import { LoginTrainingFormsComponent } from './login-training-forms/login-training-forms.component';
 
 @NgModule({
   declarations: [
@@ -95,6 +96,7 @@ import { ApproverManagePageComponent } from './approver-manage-page/approver-man
     SectionTwoFormComponent,
     Generic9FormComponent,
     ApproverManagePageComponent,
+    LoginTrainingFormsComponent,
   ],
   imports: [
     MatIconModule,
