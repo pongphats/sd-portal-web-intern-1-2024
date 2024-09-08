@@ -58,15 +58,13 @@
           <p class="w-[42%]">ระดับพนักงาน (LEVEL): {{ dataLevel }}</p>
         </div>
         <div class="flex flex-row w-full">
-          <p class="w-[58%]">
-            วันที่เริ่มงาน : {{ dataStartDate | buddhistDate : "DD/MM/yyyy" }}
-          </p>
+          <p class="w-[58%]">วันที่เริ่มงาน : {{ dataStartDate }}</p>
           <p class="w-[42%]">ประเภท : {{ dataTypeEmp }}</p>
         </div>
         <div class="flex flex-row w-full">
           <p class="w-full">
             วันที่ผ่านการทดลองงาน :
-            {{ dataPassDate | buddhistDate : "DD/MM/yyyy" }}
+            {{ dataPassDate }}
           </p>
         </div>
       </div>

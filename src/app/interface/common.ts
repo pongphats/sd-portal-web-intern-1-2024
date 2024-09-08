@@ -101,6 +101,21 @@ export interface ExpenseDetail {
   canWithdraw: string;
   remark: string;
   description: string;
-  dateRange : string;
-  dateCount : string;
+  dateRange: string;
+  dateCount: string;
+}
+
+export interface DeptBudget {
+  year: string;
+  departmentCode: string;
+  budgetCer: number;
+  budgetTraining: number;
+  budgetTotal: number;
+}
+
+export interface BudgetCreated {
+  year: string;
+  departmentCode: string;
+  budgetCer: number;
+  budgetTraining: number;
 }

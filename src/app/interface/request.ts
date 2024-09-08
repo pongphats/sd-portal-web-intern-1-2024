@@ -178,6 +178,12 @@ export interface GetExpenseReportRequest {
 }
 
 export interface ExpenseReq {
-  expenseId : number,
-  empId : number
+  expenseId: number;
+  empId: number;
+}
+
+export interface PrintGeneric9ReportReq {
+  startDate: string;
+  endDate: string;
+  courseId: number;
 }

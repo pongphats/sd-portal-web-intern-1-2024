@@ -17,6 +17,7 @@ import {
   TrainingReportRequest,
   PrintHistoryTrainingReportRequest,
   GetExpenseReportRequest,
+  PrintGeneric9ReportReq,
 } from '../interface/request';
 import { map, Observable } from 'rxjs';
 import {
@@ -30,6 +31,7 @@ import {
   saveBudgetResponse,
   fileDownloadRes,
   ExpenseReportBase64,
+  XlsxGeneric9Base64,
 } from '../interface/response';
 import { Course, ExpenseWelfare, level, sector } from '../interface/common';
 import { Employee } from '../interface/employee';
@@ -531,11 +533,13 @@ export class ApiService {
       .pipe(map((res) => res));
   }
 
-  printHistoryTrainingReport(params: PrintHistoryTrainingReportRequest) {
+  printHistoryTrainingReport(
+    params: PrintHistoryTrainingReportRequest
+  ): Observable<string> {
     const filteredParams = this.commonService.filterNullUndefinedValues(params);
 
     return this.http
-      .get(`${this.trainingUrl}/ReportHistoryTraining`, {
+      .get<string>(`${this.trainingUrl}/ReportHistoryTraining`, {
         params: { ...filteredParams },
       })
       .pipe(map((res) => res));
@@ -557,6 +561,29 @@ export class ApiService {
         `${this.welfareUrl}/expenses/getExpense/${id}`
       )
       .pipe(map((res) => res.responseData.result));
+  }
+
+  getXlsxGeneric9Base64(
+    req: PrintGeneric9ReportReq
+  ): Observable<XlsxGeneric9Base64> {
+    return this.http
+      .get<XlsxGeneric9Base64>(`${this.trainingUrl}/ReportGeneric9`, {
+        params: {
+          ...req,
+        },
+      })
+      .pipe(map((res) => res));
+  }
+
+  findTotalRemain(year: string, deptCode: string): Observable<any> {
+    return this.http
+      .get(`${this.trainingUrl}/findTotalRemain`, {
+        params: {
+          year: year,
+          departmentCode: deptCode,
+        },
+      })
+      .pipe(map((res) => res));
   }
   // getSectionOneByID(id: number): Observable<any> {
   //   return this.http.get<any>(

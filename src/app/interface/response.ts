@@ -131,3 +131,8 @@ export interface ExpenseReportBase64 {
   pdfBase64: string;
   excelBase64: string;
 }
+
+export interface XlsxGeneric9Base64 {
+  Wisesoft_Jasper : string,
+  PCC_Jasper : string
+}

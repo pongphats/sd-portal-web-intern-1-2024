@@ -204,6 +204,8 @@
             </td>
           </tr>
           <tr
+            matTooltipClass="tooltip"
+            matTooltip="คลิ๊กเพื่อดูรายละเอียดการเบิกค่ารักษาพยาบาลนี้"
             (mwlClick)="openExpenseDetailModal(data)"
             *ngFor="let data of expenseHistoryDataTable"
             class="odd:bg-white dark:odd:bg-[#3a3b3c] dark:even:bg-content-dark even:bg-slate-100 text-center h-20 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 dark:text-font-description-dark"
