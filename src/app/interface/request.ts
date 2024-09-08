@@ -167,3 +167,17 @@ export interface PrintHistoryTrainingReportRequest {
   courseID: number | null;
   sectorID: number | null;
 }
+
+export interface GetExpenseReportRequest {
+  companyName: string;
+  sectorName: string | null;
+  deptName: string | null;
+  userId: number | null;
+  startDate: string;
+  endDate: string;
+}
+
+export interface ExpenseReq {
+  expenseId : number,
+  empId : number
+}

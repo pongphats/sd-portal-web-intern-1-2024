@@ -126,3 +126,8 @@ export interface fileDownloadRes {
   type: string;
   file: string;
 }
+
+export interface ExpenseReportBase64 {
+  pdfBase64: string;
+  excelBase64: string;
+}

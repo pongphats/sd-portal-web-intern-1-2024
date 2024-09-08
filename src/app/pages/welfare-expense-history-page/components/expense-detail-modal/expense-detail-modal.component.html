@@ -1,0 +1,202 @@
+<div class="flex justify-between items-center">
+  <h2 mat-dialog-title>รายละเอียดการเบิกค่ารักษาพยาบาล</h2>
+  <button mat-button mat-dialog-close>ปิด</button>
+</div>
+<mat-dialog-content class="mat-typography !space-y-8">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div class="flex flex-col">
+      <label
+        class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]"
+      >
+        บริษัท
+      </label>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label class="dark:text-[#bebebe]">บริษัท</mat-label>
+        <input matInput readonly [value]="expenseDetail.companyName" />
+      </mat-form-field>
+    </div>
+
+    <div class="flex flex-col">
+      <label
+        class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]"
+      >
+        ประเภทการเข้ารับการรักษา
+      </label>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label class="dark:text-[#bebebe]"
+          >ประเภทการเข้ารับการรักษา</mat-label
+        >
+        <input matInput readonly [value]="expenseDetail.expenseType" />
+      </mat-form-field>
+    </div>
+
+    <div class="flex flex-col">
+      <label
+        class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]"
+      >
+        วันที่เบิก
+      </label>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label class="dark:text-[#bebebe]">วันที่เบิก</mat-label>
+        <input matInput readonly [value]="expenseDetail.dateOfAdmission" />
+      </mat-form-field>
+    </div>
+
+    <div class="flex flex-col">
+      <label
+        class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]"
+      >
+        ชื่อ
+      </label>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label class="dark:text-[#bebebe]">ชื่อ</mat-label>
+        <input matInput readonly [value]="expenseDetail.firstName" />
+      </mat-form-field>
+    </div>
+
+    <div class="flex flex-col">
+      <label
+        class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]"
+      >
+        นามสกุล
+      </label>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label class="dark:text-[#bebebe]">นามสกุล</mat-label>
+        <input matInput readonly [value]="expenseDetail.lastName" />
+      </mat-form-field>
+    </div>
+    <div class="flex flex-col">
+      <label
+        class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]"
+      >
+        ตำแหน่ง
+      </label>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label class="dark:text-[#bebebe]">ตำแหน่ง</mat-label>
+        <input matInput readonly [value]="expenseDetail.positionName" />
+      </mat-form-field>
+    </div>
+
+    <div class="flex flex-col">
+      <label
+        class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]"
+      >
+        ฝ่าย
+      </label>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label class="dark:text-[#bebebe]">ฝ่าย</mat-label>
+        <input matInput readonly [value]="expenseDetail.sectorName" />
+      </mat-form-field>
+    </div>
+
+    <div class="flex flex-col">
+      <label
+        class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]"
+      >
+        แผนก
+      </label>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label class="dark:text-[#bebebe]">แผนก</mat-label>
+        <input matInput readonly [value]="expenseDetail.deptName" />
+      </mat-form-field>
+    </div>
+    <div class="flex flex-col">
+      <label
+        class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]"
+      >
+        ระดับ
+      </label>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label class="dark:text-[#bebebe]">ระดับ</mat-label>
+        <input matInput readonly [value]="expenseDetail.empLevel" />
+      </mat-form-field>
+    </div>
+
+    <div class="flex flex-col">
+      <label
+        class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]"
+      >
+        วันที่เข้ารับการรักษา
+      </label>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label class="dark:text-[#bebebe]">วันที่เข้ารับการรักษา</mat-label>
+        <input matInput readonly [value]="expenseDetail.dateRange" />
+      </mat-form-field>
+    </div>
+
+    <div class="flex flex-col">
+      <label
+        class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]"
+      >
+        จำนวนวันที่เข้ารับการรักษา
+      </label>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label class="dark:text-[#bebebe]"
+          >จำนวนวันที่เข้ารับการรักษา</mat-label
+        >
+        <input matInput readonly [value]="expenseDetail.dateCount" />
+      </mat-form-field>
+    </div>
+
+    <div class="flex flex-col">
+      <label
+        class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]"
+      >
+        ค่ารักษาพยาบาล
+      </label>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label class="dark:text-[#bebebe]">ค่ารักษาพยาบาล</mat-label>
+        <input matInput readonly [value]="expenseDetail.withdrawReq" />
+      </mat-form-field>
+    </div>
+
+    <div class="flex flex-col">
+      <label
+        class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]"
+      >
+        ค่าห้องและค่าอาหาร
+      </label>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label class="dark:text-[#bebebe]">ค่าห้องและค่าอาหาร</mat-label>
+        <input matInput readonly [value]="expenseDetail.roomService" />
+      </mat-form-field>
+    </div>
+
+    <div class="flex flex-col">
+      <label
+        class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]"
+      >
+        จำนวนเงินที่เบิกได้
+      </label>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label class="dark:text-[#bebebe]">จำนวนเงินที่เบิกได้</mat-label>
+        <input matInput readonly [value]="expenseDetail.canWithdraw" />
+      </mat-form-field>
+    </div>
+
+    <div class="flex flex-col sm:col-span-2 lg:col-span-3">
+      <label
+        class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]"
+      >
+        หมายเหตุ
+      </label>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label class="dark:text-[#bebebe]">หมายเหตุ</mat-label>
+        <input matInput readonly [value]="expenseDetail.remark" />
+      </mat-form-field>
+    </div>
+
+    <!-- รายละเอียด (แสดงเต็มแถว) -->
+    <div class="flex flex-col sm:col-span-2 lg:col-span-3">
+      <label
+        class="flex-initial self-center w-full sm:w-18 dark:text-[#ffffff]"
+      >
+        รายละเอียด
+      </label>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label class="dark:text-[#bebebe]">รายละเอียด</mat-label>
+        <input matInput readonly [value]="expenseDetail.description" />
+      </mat-form-field>
+    </div>
+  </div>
+</mat-dialog-content>

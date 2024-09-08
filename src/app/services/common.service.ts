@@ -7,6 +7,7 @@ import { ApiResponse, Sector } from '../interface/response';
 import { Employee, Role } from '../interface/employee';
 import { department, sector } from '../interface/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import * as XLSX from 'xlsx'
 
 @Injectable({
   providedIn: 'root',
@@ -283,6 +284,28 @@ export class CommonService {
       byteArrays.push(byteArray);
     }
     const blob = new Blob(byteArrays, { type: type });
+    downloadLink.href = window.URL.createObjectURL(blob);
+    downloadLink.download = fileName;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  }
+
+  downloadExcelFile(fileName: string, base64: string) {
+    // Decode base64 to binary string
+    const binaryString = atob(base64);
+  
+    // Create an array buffer
+    const binaryArray = new Uint8Array(binaryString.length);
+    for (let i = 0; i < binaryString.length; i++) {
+      binaryArray[i] = binaryString.charCodeAt(i);
+    }
+  
+    // Create a Blob from the binary data
+    const blob = new Blob([binaryArray], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  
+    // Create an object URL and download the file
+    const downloadLink = document.createElement('a');
     downloadLink.href = window.URL.createObjectURL(blob);
     downloadLink.download = fileName;
     document.body.appendChild(downloadLink);

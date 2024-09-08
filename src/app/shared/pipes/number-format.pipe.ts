@@ -1,7 +1,10 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Injectable, Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'numberFormat'
+})
+@Injectable({
+  providedIn: 'root',
 })
 export class NumberFormatPipe implements PipeTransform {
 

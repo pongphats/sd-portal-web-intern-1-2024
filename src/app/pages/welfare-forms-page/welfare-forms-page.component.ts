@@ -195,7 +195,7 @@ export class WelfareFormsPageComponent implements OnInit {
         this.dataRoom = this.convertNumberToStringFormat(res.room);
       }
     } catch (error) {
-      console.log('ไม่มีการระบุ Level');
+      // console.log('ไม่มีการระบุ Level');
       this.dataOPD = '';
       this.dataIPD = '';
       this.dataRoom = '';
@@ -220,7 +220,7 @@ export class WelfareFormsPageComponent implements OnInit {
       } else {
         const allowedOPD = Number(this.dataOPD.replace(',', ''))
         const allowedIPD = Number(this.dataIPD.replace(',', ''))
-        console.log(medicalCost, allowedIPD, allowedOPD)
+        // console.log(medicalCost, allowedIPD, allowedOPD)
 
         if (type === 'opd' && medicalCost > allowedOPD) {
           return { duplicate2: true };
@@ -308,13 +308,13 @@ export class WelfareFormsPageComponent implements OnInit {
 
       //TODO: update
       if (this.editMode) {
-        console.log('edit req:', req);
+        // console.log('edit req:', req);
         const confirmed = await this.swalService.showConfirm(
           'คุณต้องการแก้ไขรายการเบิกค่ารักษาพยาบาลนี้หรือไม่'
         );
         if (confirmed) {
           const res = await this.apiService.updateExpense(req, this.editId).toPromise();
-          console.log(res)
+          // console.log(res)
           if (res?.responseMessage == 'แก้ไขข้อมูลเรียบร้อย') {
             this.swalService.showSuccess(
               'แก้ไขรายการการเบิกค่ารักษาพยาบาลเรียบร้อยแล้ว'
@@ -322,12 +322,12 @@ export class WelfareFormsPageComponent implements OnInit {
             this.clearForm();
           }
         } else {
-          console.log('ไม่แก้ไข');
+          // console.log('ไม่แก้ไข');
         }
       }
       //TODO: create
       else {
-        console.log("create req: ", req)
+        // console.log("create req: ", req)
         const res = await this.apiService.createExpense(req).toPromise();
         if (res?.responseMessage == 'กรอกข้อมูลเรียบร้อย') {
           this.swalService.showSuccess(
@@ -394,7 +394,7 @@ export class WelfareFormsPageComponent implements OnInit {
    * part3
    */
   searchHistoryByYear() {
-    console.log(this.yearForm.value.yearSearch);
+    // console.log(this.yearForm.value.yearSearch);
   }
 
   /**
@@ -478,7 +478,7 @@ export class WelfareFormsPageComponent implements OnInit {
       'คุณต้องการลบรายการเบิกนี้หรือไม่'
     );
     if (confirmed) {
-      console.log('ลบแล้ว');
+      // console.log('ลบแล้ว');
       const res = await this.apiService.deleteExpense(element.id).toPromise();
       if (res?.responseMessage == 'ลบข้อมูลเรียบร้อย') {
         this.swalService.showSuccess(
@@ -487,7 +487,7 @@ export class WelfareFormsPageComponent implements OnInit {
         this.searchEmp();
       }
     } else {
-      console.log('ไม่ลบ');
+      // console.log('ไม่ลบ');
     }
   }
 

@@ -132,8 +132,8 @@ export class TrainingService {
   pushTraining(item: any) {
     const currentList = this.trainingList.getValue();
 
-    console.log('currentList', currentList);
-    console.log('push item', item);
+    // console.log('currentList', currentList);
+    // console.log('push item', item);
 
     // Check if the item already exists in the list
     const isDuplicate = currentList.some((existingItem) => {
@@ -149,7 +149,7 @@ export class TrainingService {
     } else {
       // If the item is not a duplicate, push it to the list
       currentList.push(item);
-      console.log('after psuh', currentList);
+      // console.log('after psuh', currentList);
 
       this.trainingList.next(currentList);
     }

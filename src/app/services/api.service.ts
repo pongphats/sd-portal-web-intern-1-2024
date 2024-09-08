@@ -16,6 +16,7 @@ import {
   EditSectionTwoRequest,
   TrainingReportRequest,
   PrintHistoryTrainingReportRequest,
+  GetExpenseReportRequest,
 } from '../interface/request';
 import { map, Observable } from 'rxjs';
 import {
@@ -28,6 +29,7 @@ import {
   MngDeptListRes,
   saveBudgetResponse,
   fileDownloadRes,
+  ExpenseReportBase64,
 } from '../interface/response';
 import { Course, ExpenseWelfare, level, sector } from '../interface/common';
 import { Employee } from '../interface/employee';
@@ -338,7 +340,7 @@ export class ApiService {
 
   editLevel(req: level): Observable<level> {
     const url = `${this.welfareUrl}/budget/editBudget/${req.id}`;
-    console.log(req.id);
+    // console.log(req.id);
     const payload = {
       ipd: req.ipd,
       opd: req.opd,
@@ -420,6 +422,21 @@ export class ApiService {
         }
       )
       .pipe(map((res) => res));
+  }
+
+  getExpenseHistoryReportPDFandELSXBase64(
+    req: GetExpenseReportRequest
+  ): Observable<ExpenseReportBase64> {
+    const filteredParams = this.commonService.filterNullUndefinedValues(req);
+
+    return this.http.get<ExpenseReportBase64>(
+      `${this.welfareUrl}/expenses/getExpensesReport`,
+      {
+        params: {
+          ...filteredParams,
+        },
+      }
+    );
   }
 
   getAllPrivilegeApprovers(): Observable<Employee[]> {
@@ -531,6 +548,14 @@ export class ApiService {
           userId: id,
         },
       })
+      .pipe(map((res) => res.responseData.result));
+  }
+
+  getExpenseById(id: number): Observable<ExpenseWelfare> {
+    return this.http
+      .get<ApiResponse<ExpenseWelfare>>(
+        `${this.welfareUrl}/expenses/getExpense/${id}`
+      )
       .pipe(map((res) => res.responseData.result));
   }
   // getSectionOneByID(id: number): Observable<any> {

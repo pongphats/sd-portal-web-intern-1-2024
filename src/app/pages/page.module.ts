@@ -51,6 +51,8 @@ import { ApproverManagePageComponent } from './approver-manage-page/approver-man
 import { ReportModalComponent } from './management-training-page/components/report-modal/report-modal.component';
 import { PrintTipsModalComponent } from './management-training-page/components/print-tips-modal/print-tips-modal.component';
 import { WelfareExpenseHistoryPageComponent } from './welfare-expense-history-page/welfare-expense-history-page.component';
+import { ExpenseHistoryReportPdfModalComponent } from './welfare-expense-history-page/components/expense-history-report-pdf-modal/expense-history-report-pdf-modal.component';
+import { ExpenseDetailModalComponent } from './welfare-expense-history-page/components/expense-detail-modal/expense-detail-modal.component';
 @NgModule({
   declarations: [
     HomePageComponent,
@@ -95,6 +97,8 @@ import { WelfareExpenseHistoryPageComponent } from './welfare-expense-history-pa
     ReportModalComponent,
     PrintTipsModalComponent,
     WelfareExpenseHistoryPageComponent,
+    ExpenseHistoryReportPdfModalComponent,
+    ExpenseDetailModalComponent,
   ],
   imports: [
     MatIconModule,
