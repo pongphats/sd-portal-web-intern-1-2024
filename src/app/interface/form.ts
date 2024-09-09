@@ -156,3 +156,11 @@ export interface SearchExpenseHistoryForms {
   startDate: FormControl<Date | null>;
   endDate: FormControl<Date | null>;
 }
+
+export interface Generic9EvalForms {
+  resultGOne: FormControl<string | null>;
+  resultGTwo: FormControl<string | null>;
+  resultGThree: FormControl<string | null>;
+  resultGFour: FormControl<string | null>;
+  resultGFive: FormControl<string | null>;
+}

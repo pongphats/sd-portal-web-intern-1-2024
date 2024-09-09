@@ -19,6 +19,7 @@ import {
   GetExpenseReportRequest,
   PrintGeneric9ReportReq,
   ChangePasswordReq,
+  EvalG9Req,
 } from '../interface/request';
 import { map, Observable } from 'rxjs';
 import {
@@ -594,6 +595,27 @@ export class ApiService {
       .put<ApiResponse<any>>(
         `${this.trainingUrl}/changePassword?userId=${uid}`,
         req
+      )
+      .pipe(map((res) => res));
+  }
+
+  editGeneric9(
+    generic9Id: number,
+    req: EvalG9Req
+  ): Observable<ApiResponse<any>> {
+    return this.http
+      .post<ApiResponse<any>>(
+        `${this.trainingUrl}/editGeneric9?Generic9id=${generic9Id}`,
+        req
+      )
+      .pipe(map((res) => res));
+  }
+
+  setCancelToTraining(id: number): Observable<ApiResponse<any>> {
+    return this.http
+      .put<ApiResponse<any>>(
+        `${this.trainingUrl}/setCancelToTraining?trainingId=${id}`,
+        {}
       )
       .pipe(map((res) => res));
   }

@@ -122,19 +122,49 @@
       >
         <!-- Recommendation paragraph -->
         <div class="sm:hidden md:block" *ngIf="!isCanEditSection"></div>
-        <p
-          class="text-center md:text-left text-gray-700 dark:text-gray-300"
-          *ngIf="isCanEditSection"
+        <div
+          class=""
+          *ngIf="
+            isCanEditSection ||
+            waitApproveCount != 0 ||
+            waitEvalCount != 0 ||
+            (waitG9Count != 0 && isCanEvalG9)
+          "
         >
-          คำแนะนำการพิพม์รายงาน
-          <i
-            (click)="showPrintTip()"
-            class="bx bx-info-circle cursor-pointer"
-            aria-hidden="true"
-            matTooltipClass="tooltip"
-            matTooltip="กดเพื่อดูคำแนะนำ"
-          ></i>
-        </p>
+          <p
+            class="text-center md:text-left text-gray-700 dark:text-gray-300"
+            *ngIf="isCanEditSection"
+          >
+            คำแนะนำการพิพม์รายงาน
+            <i
+              (click)="showPrintTip()"
+              class="bx bx-info-circle cursor-pointer"
+              aria-hidden="true"
+              matTooltipClass="tooltip"
+              matTooltip="กดเพื่อดูคำแนะนำ"
+            ></i>
+          </p>
+          <p
+            class="text-red-800 dark:text-red-600 md:text-left"
+            *ngIf="waitApproveCount != 0"
+          >
+            มีแบบฟอร์มรออนุมัติ {{ waitApproveCount }} ฟอร์ม
+          </p>
+          <p
+            class="text-red-800 dark:text-red-600 md:text-left"
+            *ngIf="waitEvalCount != 0"
+          >
+            มีแบบฟอร์มรอการประเมิลผล {{ waitEvalCount }} ฟอร์ม
+          </p>
+          <p
+            class="text-red-800 dark:text-red-600 md:text-left"
+            *ngIf="isCanEvalG9 && waitG9Count != 0"
+          >
+            มีแบบฟอร์มรอการประเมิลผลเพื่อส่งกรมพัฒนาฝืมือแรงงาน
+            {{ waitG9Count }} ฟอร์ม
+          </p>
+        </div>
+
         <div class="flex flex-col md:gap-4">
           <!-- Group of buttons -->
           <div class="flex flex-col md:flex-row gap-4 mb-4">
@@ -167,11 +197,13 @@
             </button>
             <button
               (mwlClick)="printGeneric9Report()"
-              *ngIf="isSearchMode && isPersonnel"  
+              *ngIf="isSearchMode && isPersonnel"
               mat-raised-button
               class="bg-green-800 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-600"
             >
-              <span class="text-white dark:text-white">พิมพ์ใบ Generic9 (Xlsx) <i class='bx bxs-report'></i></span>
+              <span class="text-white dark:text-white"
+                >พิมพ์ใบ Generic9 (Xlsx) <i class="bx bxs-report"></i
+              ></span>
             </button>
           </div>
         </div>
@@ -214,6 +246,7 @@
             <th class="text-center p-4">หมายเหตุ</th>
             <th class="text-center p-4">สถานะ</th>
             <th class="text-center p-4">ปุ่มตรวจสอบ</th>
+            <th class="text-center p-4" *ngIf="isCanEvalG9">ปุ่ม G9</th>
             <th class="text-center p-4" *ngIf="isCanEditSection">ปุ่มยกเลิก</th>
             <th class="text-center p-4" *ngIf="isCanEditSection">
               ปุ่มพิมพ์รายงาน
@@ -508,12 +541,29 @@
                 ></span>
               </button>
             </td>
+            <td class="p-4 text-center" *ngIf="isCanEvalG9">
+              <!-- TODO cancel status and cancel button -->
+              <button
+                [disabled]="training.result_status != 'อนุมัติ'"
+                (click)="openGeneric9Modal(training)"
+                type="button"
+                mat-raised-button
+                class="!bg-yellow-700 hover:!bg-yellow-600 disabled:!bg-slate-300 disabled:!text-slate-600 disabled:!cursor-not-allowed"
+              >
+                <span class="!text-white">ประเมินผล G9</span>
+              </button>
+            </td>
             <td class="p-4 text-center" *ngIf="isCanEditSection">
               <!-- TODO cancel status and cancel button -->
               <button
+                (click)="cancelForms(training)"
+                [disabled]="
+                  training.result_status == 'ยกเลิก' ||
+                  training.result_status == 'ไม่อนุมัติ'
+                "
                 type="button"
                 mat-raised-button
-                class="!bg-red-700 hover:!bg-red-600"
+                class="!bg-red-700 hover:!bg-red-600 disabled:!bg-slate-300 disabled:!text-slate-600 disabled:!cursor-not-allowed"
               >
                 <span class="!text-white">ยกเลิก</span>
               </button>
@@ -535,7 +585,7 @@
         </tbody>
       </table>
       <mat-paginator
-        class="dark:bg-content-dark dark:text-white"
+        class="dark:bg-content-dark dark:text-white !w-full"
         [length]="pageLength"
         [pageSize]="5"
         [pageSizeOptions]="[5, 10]"

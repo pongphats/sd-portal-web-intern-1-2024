@@ -28,7 +28,7 @@ export class CheckTrainingModalComponent implements OnInit {
     private authService: AuthService,
     private commonService: CommonService,
     private dialogRef: MatDialogRef<CheckTrainingModalComponent>
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     // get Role and uId
@@ -76,6 +76,7 @@ export class CheckTrainingModalComponent implements OnInit {
     const data = this.trainingService.trainingRequest;
     const confirm = await this.swalService.showConfirm('ยืนยันการแก้ไขฟอร์ม');
     if (confirm) {
+      this.swalService.showLoading;
       try {
         this.swalService.showLoading();
         const res = await this.apiService.editSectionOne(id, data).toPromise();
@@ -123,22 +124,52 @@ export class CheckTrainingModalComponent implements OnInit {
     }
   }
 
-
   async saveOrEditSectionTwo() {
-    const dateCurrent = this.commonService.formatDateToYYYYMMDDString(new Date)
-    this.trainingService.sectionTwoRequest.evaluationDate = dateCurrent
+    const dateCurrent = this.commonService.formatDateToYYYYMMDDString(
+      new Date()
+    );
+    this.trainingService.sectionTwoRequest.evaluationDate = dateCurrent;
 
-    const data = this.trainingService.sectionTwoRequest
-    const id = this.trainingService.trainingEditData.training.result[0].id
+    const data = this.trainingService.sectionTwoRequest;
+    const id = this.trainingService.trainingEditData.training.result[0].id;
 
     let confirm;
     if (data.result == 'pass') {
-      confirm = (data.plan == '') && (data.cause == '') ? await this.swalService.showConfirm("คุณยืนยันการประเมินการอบรมใช่หรือไม่") : false
+      confirm =
+        data.plan == '' && data.cause == ''
+          ? await this.swalService.showConfirm(
+              'คุณยืนยันการประเมินการอบรมใช่หรือไม่'
+            )
+          : false;
     } else if (data.result == 'fail') {
-      confirm = (data.plan == '') && (data.cause == '') ? this.swalService.showWarning("กรุณากรอกเหตุผลและแผนการพัฒนา") : (data.plan != '') && (data.cause == '') ? this.swalService.showWarning("กรุณากรอกเหตุผล") : (data.plan == '') && (data.cause != '') ? this.swalService.showWarning("กรุณากรอกแผนการพัฒนา") : await this.swalService.showConfirm("คุณยืนยันการประเมินการอบรมใช่หรือไม่")
+      confirm =
+        data.plan == '' && data.cause == ''
+          ? this.swalService.showWarning('กรุณากรอกเหตุผลและแผนการพัฒนา')
+          : data.plan != '' && data.cause == ''
+          ? this.swalService.showWarning('กรุณากรอกเหตุผล')
+          : data.plan == '' && data.cause != ''
+          ? this.swalService.showWarning('กรุณากรอกแผนการพัฒนา')
+          : await this.swalService.showConfirm(
+              'คุณยืนยันการประเมินการอบรมใช่หรือไม่'
+            );
     } else if (data.result == 'noResult') {
-      const allResultsEmpty = [data.result1, data.result2, data.result3, data.result4, data.result5, data.result6, data.result7].every(result => result === '');
-      confirm = (data.cause != '') && allResultsEmpty ? await this.swalService.showConfirm("คุณยืนยันการประเมินการอบรมใช่หรือไม่") : (data.cause == '') ? this.swalService.showWarning("กรุณากรอกเหตุผล") : false
+      const allResultsEmpty = [
+        data.result1,
+        data.result2,
+        data.result3,
+        data.result4,
+        data.result5,
+        data.result6,
+        data.result7,
+      ].every((result) => result === '');
+      confirm =
+        data.cause != '' && allResultsEmpty
+          ? await this.swalService.showConfirm(
+              'คุณยืนยันการประเมินการอบรมใช่หรือไม่'
+            )
+          : data.cause == ''
+          ? this.swalService.showWarning('กรุณากรอกเหตุผล')
+          : false;
     }
 
     // TODO: บันทึก
@@ -146,12 +177,13 @@ export class CheckTrainingModalComponent implements OnInit {
       try {
         const res = await this.apiService.editSectionTwo(id, data).toPromise();
         if (res) {
-          await this.swalService.showSuccess('ทำการประเมินเรียบร้อยแล้ว') ? this.dialogRef.close() : false
+          (await this.swalService.showSuccess('ทำการประเมินเรียบร้อยแล้ว'))
+            ? this.dialogRef.close()
+            : false;
         }
       } catch (error) {
-        console.error("Error saving data:", error);
+        console.error('Error saving data:', error);
       }
     }
-
   }
 }

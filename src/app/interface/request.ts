@@ -193,3 +193,11 @@ export interface ChangePasswordReq {
   newPassword: string;
   confirmPassword: string;
 }
+
+export interface EvalG9Req {
+  result1: string;
+  result2: string;
+  result3: string;
+  result4: string;
+  result5: string;
+}

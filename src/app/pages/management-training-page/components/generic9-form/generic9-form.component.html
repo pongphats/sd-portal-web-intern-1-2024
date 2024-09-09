@@ -1,1 +1,288 @@
-<p>generic9-form works!</p>
+<div class="flex justify-between items-center">
+  <h2 mat-dialog-title>แบบฟอร์มการเมิลผลเพื่อส่งกรมพัฒนาฝีมือแรงงาน</h2>
+  <button mat-button mat-dialog-close>ปิด</button>
+</div>
+<mat-dialog-content class="mat-typography !space-y-8">
+  <form [formGroup]="g9EvalForms">
+    <fieldset>
+      <div class="grid mt-6">
+        <div class="mt-5">
+          <div class="grid grid-cols-2 mb-3">
+            <p class="self-center">1. ความรู้จากการฝึกอบรม</p>
+            <div
+              class="inline-flex justify-end rounded-md shadow-sm radio-toolbar-g9"
+              role="group"
+            >
+              <input
+                type="radio"
+                name="one"
+                id="good1"
+                formControlName="resultGOne"
+                value="3"
+                class="hidden peer"
+                checked
+              />
+              <label
+                for="good1"
+                class="flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-gray-400 rounded-l-lg cursor-pointer grow hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white dark:Label-dark-mode"
+              >
+                3
+              </label>
+              <input
+                type="radio"
+                name="one"
+                id="fair1"
+                value="2"
+                formControlName="resultGOne"
+                class="hidden"
+              />
+              <label
+                for="fair1"
+                class="flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border-t border-b border-gray-400 cursor-pointer grow hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
+              >
+                2
+              </label>
+              <input
+                type="radio"
+                name="one"
+                id="poor1"
+                value="1"
+                formControlName="resultGOne"
+                class="hidden"
+              />
+              <label
+                for="poor1"
+                class="flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-gray-400 cursor-pointer grow rounded-r-md hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
+              >
+                1
+              </label>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 mb-3">
+            <p class="self-center">2. ทักษะในการปฏิบัติงาน</p>
+            <div
+              class="inline-flex justify-end rounded-md shadow-sm radio-toolbar-g9"
+              role="group"
+            >
+              <input
+                type="radio"
+                name="two"
+                id="good2"
+                value="3"
+                formControlName="resultGTwo"
+                class="hidden"
+                checked
+              />
+              <label
+                for="good2"
+                class="flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-gray-400 rounded-l-lg cursor-pointer grow hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
+              >
+                3
+              </label>
+              <input
+                type="radio"
+                name="two"
+                id="fair2"
+                value="2"
+                formControlName="resultGTwo"
+                class="hidden"
+              />
+              <label
+                for="fair2"
+                class="flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border-t border-b border-gray-400 cursor-pointer grow hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
+              >
+                2
+              </label>
+              <input
+                type="radio"
+                name="two"
+                id="poor2"
+                value="1"
+                formControlName="resultGTwo"
+                class="hidden"
+              />
+              <label
+                for="poor2"
+                class="flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-gray-400 cursor-pointer grow rounded-r-md hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
+              >
+                1
+              </label>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 mb-3">
+            <p class="self-center">3. ทัศนคติที่มีต่อการปฏิบัติงาน</p>
+            <div
+              class="inline-flex justify-end rounded-md shadow-sm radio-toolbar-g9"
+              role="group"
+            >
+              <input
+                type="radio"
+                name="three"
+                id="good3"
+                value="3"
+                formControlName="resultGThree"
+                class="hidden"
+                checked
+              />
+              <label
+                for="good3"
+                class="flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-gray-400 rounded-l-lg cursor-pointer grow hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
+              >
+                3
+              </label>
+              <input
+                type="radio"
+                name="three"
+                id="fair3"
+                value="2"
+                formControlName="resultGThree"
+                class="hidden"
+              />
+              <label
+                for="fair3"
+                class="flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border-t border-b border-gray-400 cursor-pointer grow hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
+              >
+                2
+              </label>
+              <input
+                type="radio"
+                name="three"
+                id="poor3"
+                value="1"
+                formControlName="resultGThree"
+                class="hidden"
+              />
+              <label
+                for="poor3"
+                class="flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-gray-400 cursor-pointer grow rounded-r-md hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
+              >
+                1
+              </label>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 mb-3">
+            <p class="self-center">4. การแก้ปัญหาในการทำงาน</p>
+            <div
+              class="inline-flex justify-end rounded-md shadow-sm radio-toolbar-g9"
+              role="group"
+            >
+              <input
+                type="radio"
+                name="four"
+                id="good4"
+                value="3"
+                formControlName="resultGFour"
+                class="hidden"
+                checked
+              />
+              <label
+                for="good4"
+                class="flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-gray-400 rounded-l-lg cursor-pointer grow hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
+              >
+                3
+              </label>
+              <input
+                type="radio"
+                name="four"
+                id="fair4"
+                value="2"
+                formControlName="resultGFour"
+                class="hidden"
+              />
+              <label
+                for="fair4"
+                class="flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border-t border-b border-gray-400 cursor-pointer grow hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
+              >
+                2
+              </label>
+              <input
+                type="radio"
+                name="four"
+                id="poor4"
+                value="1"
+                formControlName="resultGFour"
+                class="hidden"
+              />
+              <label
+                for="poor4"
+                class="flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-gray-400 cursor-pointer grow rounded-r-md hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
+              >
+                1
+              </label>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 mb-3">
+            <p class="self-center">5. ความตระหนักในด้านความปลอดภัย</p>
+            <div
+              class="inline-flex justify-end rounded-md shadow-sm radio-toolbar-g9"
+              role="group"
+            >
+              <input
+                type="radio"
+                name="five"
+                id="good5"
+                value="3"
+                formControlName="resultGFive"
+                class="hidden"
+                checked
+              />
+              <label
+                for="good5"
+                class="flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-gray-400 rounded-l-lg cursor-pointer grow hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
+              >
+                3
+              </label>
+              <input
+                type="radio"
+                name="five"
+                id="fair5"
+                value="2"
+                formControlName="resultGFive"
+                class="hidden"
+              />
+              <label
+                for="fair5"
+                class="flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border-t border-b border-gray-400 cursor-pointer grow hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
+              >
+                2
+              </label>
+              <input
+                type="radio"
+                name="five"
+                id="poor5"
+                value="1"
+                formControlName="resultGFive"
+                class="hidden"
+              />
+              <label
+                for="poor5"
+                class="flex items-center justify-center px-4 py-2 text-sm font-medium bg-white border border-gray-400 cursor-pointer grow rounded-r-md hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
+              >
+                1
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex mt-3 text-sm justify-items-start">
+        <div class="flex flex-row">
+          <p class="mr-2 underline">หมายเหตุ</p>
+          :
+        </div>
+        <p class="">
+          1 = ปรับปรุง<br />2 = พอใช้ <br />
+          3 = ดีมาก
+        </p>
+      </div>
+    </fieldset>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button
+    (click)="evalForms()"
+    mat-button
+    class="bg-green-700 dark:bg-green-600"
+  >
+    <span class="dark:text-white text-white">ประเมิลผล</span>
+  </button>
+</mat-dialog-actions>

@@ -21,6 +21,7 @@ import { TrainingSearchForms } from 'src/app/interface/form';
 import { CommonService } from 'src/app/services/common.service';
 import { Course, sector } from 'src/app/interface/common';
 import { PrintTipsModalComponent } from './components/print-tips-modal/print-tips-modal.component';
+import { Generic9FormComponent } from './components/generic9-form/generic9-form.component';
 
 @Component({
   selector: 'app-management-training-page',
@@ -45,7 +46,10 @@ export class ManagementTrainingPageComponent implements OnInit {
   positions!: Position[];
   isSearchMode: boolean = false;
   isSearchBtnDisabled: boolean = false;
-
+  isCanEvalG9: boolean = false;
+  waitApproveCount: number = 0;
+  waitEvalCount: number = 0;
+  waitG9Count: number = 0;
   get minEndDate() {
     return this.searchFormsGroup.controls.startDate?.value; // กำหนดค่า minDate ให้ endDate
   }
@@ -76,6 +80,10 @@ export class ManagementTrainingPageComponent implements OnInit {
       roles == 'ROLE_Admin' ||
       roles == 'ROLE_Personnel' ||
       roles == 'ROLE_ManagerAndROLE_Personnel';
+    this.isCanEvalG9 =
+      roles == 'ROLE_Personnel' ||
+      roles == 'ROLE_ManagerAndROLE_Personnel' ||
+      roles == 'ROLE_VicePresident';
     this.isCanEditSection = isCanEditRoles;
     this.isPersonnel =
       roles == 'ROLE_Personnel' || roles == 'ROLE_ManagerAndROLE_Personnel';
@@ -240,6 +248,23 @@ export class ManagementTrainingPageComponent implements OnInit {
           }
         );
         this.centerTrainingsList = this.backupTrainingList;
+        const waitApprove = this.backupTrainingList.filter(
+          (item) => item.isDo == 'รอประเมิน'
+        ).length;
+        const waitEval = this.backupTrainingList.filter(
+          (item) =>
+            item.isDoResult == 'ใช่' && item.training.result[0].result == null
+        ).length;
+
+        const waitG9 = this.backupTrainingList.filter(
+          (item) =>
+            item.result_status == 'อนุมัติ' &&
+            item.training.resultGeneric9[0].result5 == null
+        ).length;
+
+        this.waitApproveCount = waitApprove;
+        this.waitEvalCount = waitEval;
+        this.waitG9Count = waitG9
         // this.trainingTableList = this.centerTrainingsList;
         // console.log(this.trainingTableList);
 
@@ -268,6 +293,23 @@ export class ManagementTrainingPageComponent implements OnInit {
 
         return dateB - dateA; // เรียงจากล่าสุดไปเก่าสุด
       });
+      const waitApprove = this.backupTrainingList.filter(
+        (item) => item.isDo == 'รอประเมิน'
+      ).length;
+      const waitEval = this.backupTrainingList.filter(
+        (item) =>
+          item.isDoResult == 'ใช่' && item.training.result[0].result == null
+      ).length;
+
+      const waitG9 = this.backupTrainingList.filter(
+        (item) =>
+          item.result_status == 'อนุมัติ' &&
+          item.training.resultGeneric9[0].result5 == null
+      ).length;
+
+      this.waitApproveCount = waitApprove;
+      this.waitEvalCount = waitEval;
+      this.waitG9Count = waitG9
       this.centerTrainingsList = this.backupTrainingList;
       this.trainingTableList = this.centerTrainingsList;
       // this.loadingpage();
@@ -593,5 +635,63 @@ export class ManagementTrainingPageComponent implements OnInit {
 
   showPrintTip() {
     const dialogRef = this.dialog.open(PrintTipsModalComponent);
+  }
+
+  openGeneric9Modal(data: TrainingTable) {
+    const screenWidth = window.innerWidth;
+    const dialogWidth = screenWidth < 768 ? '100%' : '55%';
+    const dialogRef = this.dialog.open(Generic9FormComponent, {
+      width: dialogWidth,
+    });
+    this.trainingService.trainingEditData = data;
+    dialogRef.afterClosed().subscribe((result) => {
+      // console.log(`Dialog result: ${result}`);
+      this.swalService.showLoading();
+      const roles = this.authService.checkRole();
+      const isCanEditRoles =
+        roles == 'ROLE_Admin' ||
+        roles == 'ROLE_Personnel' ||
+        roles == 'ROLE_ManagerAndROLE_Personnel';
+      if (isCanEditRoles) {
+        this.findAllTrainingForAdminAndPersonal();
+      } else {
+        this.findAllTrainingForPriviledgedUser();
+      }
+    });
+  }
+
+  async cancelForms(data: TrainingTable) {
+    const confirmResult = await this.swalService.showConfirm(
+      'ยืนยันการ "ยกเลิก" การส่งอบรมนี้'
+    );
+    if (confirmResult) {
+      this.swalService.showLoading();
+      try {
+        const res = await this.apiService
+          .setCancelToTraining(data.training.id)
+          .toPromise();
+        Swal.close();
+        this.fetchAfterAction();
+      } catch (error) {
+        console.error(error);
+        this.swalService.showError('เกิดข้อผิดพลาดในการยกเลิกการส่งอบรม');
+      }
+    } else {
+      return;
+    }
+  }
+
+  fetchAfterAction() {
+    this.swalService.showLoading();
+    const roles = this.authService.checkRole();
+    const isCanEditRoles =
+      roles == 'ROLE_Admin' ||
+      roles == 'ROLE_Personnel' ||
+      roles == 'ROLE_ManagerAndROLE_Personnel';
+    if (isCanEditRoles) {
+      this.findAllTrainingForAdminAndPersonal();
+    } else {
+      this.findAllTrainingForPriviledgedUser();
+    }
   }
 }
