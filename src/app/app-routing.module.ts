@@ -35,6 +35,10 @@ const routes: Routes = new Array<Route>(
     component: LoginPageComponent,
   },
   {
+    path: 'login-training-forms',
+    component: LoginTrainingFormsComponent,
+  },
+  {
     path: 'pccth',
     component: SystemLayoutComponent,
     children: new Array<Route>(
@@ -130,10 +134,6 @@ const routes: Routes = new Array<Route>(
       {
         path: 'approver-manage',
         component: ApproverManagePageComponent,
-      },
-      {
-        path: 'login-training-forms',
-        component: LoginTrainingFormsComponent,
       }
     ),
   },
