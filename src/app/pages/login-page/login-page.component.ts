@@ -58,6 +58,8 @@ export class LoginPageComponent {
       const res = await this.autService.login(req).toPromise();
       if (res?.msg == 'Login successful') {
         localStorage.setItem('access_token', res.accessToken);
+        const userId = this.autService.getUID()
+        this.autService.setUserId(userId);
         this.router.navigate(['/pccth']);
       } else {
         throw new Error(res?.msg);
