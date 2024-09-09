@@ -1,51 +1,87 @@
-<div class="flex justify-center items-center min-h-screen bg-gray-100">
-  <div class="w-full lg:w-[50%] p-6 bg-white shadow-lg rounded-lg">
-    <h2 class="text-2xl font-bold mb-6 text-center">ระบบส่งอบรม</h2>
+<div class="flex min-h-screen">
+  <!-- Left Side (Login Form) -->
+  <div class="flex-1 flex justify-center items-center bg-white">
+    <div class="w-full lg:w-[60%] p-6 bg-white shadow-lg rounded-lg">
+      <h2 class="text-2xl font-bold mb-6 text-center">ระบบส่งอบรม</h2>
+      <img
+        src="../../../assets/images/man-with-laptop-light.png "
+        alt="Login Illustration"
+        class="max-w-xs mb-4 w-full"
+      />
+      <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+        <!-- Email Field -->
+        <div class="mb-4">
+          <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Email</mat-label>
+            <input
+              matInput
+              type="email"
+              id="email"
+              [(ngModel)]="email"
+              name="email"
+              required
+            />
+            <mat-error *ngIf="!email">กรุณากรอกอีเมลของคุณ</mat-error>
+          </mat-form-field>
+        </div>
 
-    <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
-      <!-- Email Field -->
-      <div class="mb-4">
-        <mat-form-field appearance="outline" class="w-full">
-          <mat-label>Email</mat-label>
-          <input
-            matInput
-            type="email"
-            id="email"
-            [(ngModel)]="email"
-            name="email"
-            required
-          />
-          <mat-error *ngIf="!email">Please enter a valid email</mat-error>
-        </mat-form-field>
-      </div>
+        <!-- Password Field -->
+        <div class="mb-6">
+          <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Password</mat-label>
+            <input
+              matInput
+              type="password"
+              id="password"
+              [(ngModel)]="password"
+              name="password"
+              [type]="hide ? 'password' : 'text'"
+              required
+            />
+            <button
+              type="button"
+              mat-icon-button
+              matSuffix
+              type="button"
+              (click)="hide = !hide"
+              [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="hide"
+            >
+              <i
+                class="bx scale-150"
+                [ngClass]="{
+                  'bxs-show': !hide,
+                  'bxs-hide': hide
+                }"
+              ></i>
+            </button>
 
-      <!-- Password Field -->
-      <div class="mb-6">
-        <mat-form-field appearance="outline" class="w-full">
-          <mat-label>Password</mat-label>
-          <input
-            matInput
-            type="password"
-            id="password"
-            [(ngModel)]="password"
-            name="password"
-            required
-          />
-          <mat-error *ngIf="!password">Password is required</mat-error>
-        </mat-form-field>
-      </div>
+            <mat-error *ngIf="!password">กรุณากรอกรหัสผ่านของคุณ</mat-error>
+          </mat-form-field>
+        </div>
 
-      <!-- Submit Button -->
-      <div class="flex justify-center">
-        <button
-          mat-raised-button
-          color="primary"
-          class="w-full lg:w-[30%] p-3 font-bold"
-          type="button"
-        >
-          <span class="text-white"> เข้าสู่ระบบ </span>
-        </button>
-      </div>
-    </form>
+        <!-- Submit Button -->
+        <div class="flex justify-center">
+          <button
+            mat-raised-button
+            color="primary"
+            class="w-full lg:w-[42%] p-3 font-bold"
+            type="submit"
+          >
+            <i class="bx bx-log-in text-white mr-1"></i>
+            <span class="text-white mr-1"> เข้าสู่ระบบ </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Right Side (Image) -->
+  <div class="hidden lg:flex flex-1 justify-center items-center bg-blue-50">
+    <img
+      src="../../../assets/images/loginbg.png"
+      alt="Login Illustration"
+      class="max-w-md"
+    />
   </div>
 </div>

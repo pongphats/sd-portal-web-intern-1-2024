@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class LoginTrainingFormsComponent implements OnInit {
   email: string = '';
   password: string = '';
+  hide = true;
 
   constructor() {}
 
