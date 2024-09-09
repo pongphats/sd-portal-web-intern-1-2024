@@ -12,6 +12,10 @@ import {
   createPosition,
   budgetCreate,
   expenseReportRequest,
+  approveTrainingReq,
+  EditSectionTwoRequest,
+  TrainingReportRequest,
+  PrintHistoryTrainingReportRequest,
 } from '../interface/request';
 import { map, Observable } from 'rxjs';
 import {
@@ -23,6 +27,7 @@ import {
   ExpenseRemainResponse,
   MngDeptListRes,
   saveBudgetResponse,
+  fileDownloadRes,
 } from '../interface/response';
 import { Course, ExpenseWelfare, level, sector } from '../interface/common';
 import { Employee } from '../interface/employee';
@@ -385,9 +390,9 @@ export class ApiService {
       .pipe(map((res) => res));
   }
 
-  getEmpByDeptId(deptId: number): Observable<Employee> {
+  getEmpByDeptId(deptId: number): Observable<Employee[]> {
     return this.http
-      .get<ApiResponse<Employee>>(
+      .get<ApiResponse<Employee[]>>(
         `${this.trainingUrl}/findallUserListByDeptActual`,
         {
           params: {
@@ -465,6 +470,57 @@ export class ApiService {
       .pipe(map((res) => res));
   }
 
+  editSectionTwo(
+    id: number,
+    body: EditSectionTwoRequest
+  ): Observable<EditSectionTwoRequest> {
+    return this.http
+      .post<EditSectionTwoRequest>(
+        `${this.trainingUrl}/editTrainingSection2?resultId=${id}`,
+        body
+      )
+      .pipe(map((res) => res));
+  }
+
+  approveTraining(req: approveTrainingReq) {
+    return this.http
+      .put(
+        `${this.trainingUrl}/setStatusToTraining?trainingId=${req.trainingId}&approveId=${req.approveId}&statusApprove=${req.statusApprove}`,
+        {}
+      )
+      .pipe(map((res) => res));
+  }
+
+  downloadFileById(id: number): Observable<fileDownloadRes> {
+    return this.http
+      .get<fileDownloadRes>(`${this.trainingUrl}/getFile`, {
+        params: {
+          fileID: id,
+        },
+      })
+      .pipe(map((res) => res));
+  }
+
+  getTrainingReportByTrainIdBase64(
+    params: TrainingReportRequest
+  ): Observable<string> {
+    const filteredParams = this.commonService.filterNullUndefinedValues(params);
+    return this.http
+      .get<string>(`${this.trainingUrl}/Report`, {
+        params: { ...filteredParams },
+      })
+      .pipe(map((res) => res));
+  }
+
+  printHistoryTrainingReport(params: PrintHistoryTrainingReportRequest) {
+    const filteredParams = this.commonService.filterNullUndefinedValues(params);
+
+    return this.http
+      .get(`${this.trainingUrl}/ReportHistoryTraining`, {
+        params: { ...filteredParams },
+      })
+      .pipe(map((res) => res));
+  }
   // getSectionOneByID(id: number): Observable<any> {
   //   return this.http.get<any>(
   //     this.api + '/findTrainingByTrainingId?trainingId=' + id

@@ -1,0 +1,10 @@
+input {
+  &:disabled,
+  &:read-only {
+    @apply text-font-description dark:text-font-description-dark;
+  }
+}
+
+mat-radio-button:disabled ~ label {
+  @apply text-font-description dark:text-font-description-dark;
+}

@@ -14,6 +14,7 @@ interface Pageable {
 }
 
 export interface PaginatedResponse<T> {
+  data: any[];
   totalPages: number;
   totalElements: number;
   size: number;

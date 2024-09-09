@@ -122,10 +122,48 @@ export interface budgetCreate {
 export interface expenseReportRequest {
   page: number | 0;
   size: number | 10;
-  companyId: number;
+  companyName: string;
   sectorId: number;
   deptId: number;
   userId: number;
   startDate: string; // string format: YYYY-MM-DD (2024-12-01) , (2024-01-30)
   endDate: string; // string format: YYYY-MM-DD (2024-12-01) , (2024-01-30)
+}
+
+export interface approveTrainingReq {
+  trainingId: number;
+  approveId: number;
+  statusApprove: string;
+}
+
+export interface EditSectionTwoRequest {
+  evaluationDate: string;
+  result1: string;
+  result2: string;
+  result3: string;
+  result4: string;
+  result5: string;
+  result6: string;
+  result7: string;
+  result: string;
+  comment: string;
+  cause: string;
+  plan: string;
+}
+
+export interface TrainingReportRequest {
+  trainId: number;
+  approverId: number | null;
+  managerId: number | null;
+  vice1: number | null;
+  vice2: number | null;
+  presidentId: number | null;
+}
+
+export interface PrintHistoryTrainingReportRequest {
+  startDate: string | null;
+  endDate: string | null;
+  deptID: number | null;
+  courseID: number | null;
+  sectorID: number | null;
 }

@@ -1,12 +1,18 @@
-<h2 mat-dialog-title>แบบฟอร์มการส่งอบรม</h2>
+<div class="flex justify-between items-center">
+  <h2 mat-dialog-title>แบบฟอร์มการส่งอบรม</h2>
+  <button mat-button mat-dialog-close>ปิด</button>
+</div>
 <mat-dialog-content class="mat-typography !space-y-8">
   <app-section-one-form></app-section-one-form>
-  <app-section-two-form></app-section-two-form>
-   <!-- <app-ftr-of1-page></app-ftr-of1-page> -->
+  <!-- show when all approve -->
+  <app-section-two-form *ngIf="isAllApprove"></app-section-two-form>
+  <!-- <app-ftr-of1-page></app-ftr-of1-page> -->
 </mat-dialog-content>
+
 <mat-dialog-actions align="end">
-  <button mat-button (click)="cancel()" mat-dialog-close>Cancel</button>
+  <!-- edit section btn -->
   <button
+    *ngIf="canEditSectionOne && isWatingApprove"
     mat-button
     class="bg-blue-700 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500"
     [ngClass]="{
@@ -18,5 +24,33 @@
     cdkFocusInitial
   >
     <span class="text-white dark:text-white">แก้ไขฟอร์ม</span>
+  </button>
+
+  <!-- approve btn -->
+  <button
+    mat-button
+    *ngIf="isApproverWating"
+    class="bg-red-700 dark:bg-red-600"
+    (mwlClick)="approveAction('ไม่อนุมัติ')"
+  >
+    <span>ไม่อนุมัติ</span>
+  </button>
+  <button
+    (mwlClick)="approveAction('อนุมัติ')"
+    mat-button
+    *ngIf="isApproverWating"
+    class="bg-green-700 dark:bg-green-500"
+  >
+    <span>อนุมัติ</span>
+  </button>
+
+  <!-- Section two eval btn -->
+  <button
+    mat-button
+    *ngIf="isSectionTwoEval && isAllApprove"
+    class="bg-blue-700 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500"
+    (click)="saveOrEditSectionTwo()"
+  >
+    <span>ประเมิลผลการอบรม</span>
   </button>
 </mat-dialog-actions>

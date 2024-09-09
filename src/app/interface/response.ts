@@ -121,3 +121,8 @@ export interface ExpenseRemainByYearResponse {
   remark: string;
 }
 
+export interface fileDownloadRes {
+  id: number;
+  type: string;
+  file: string;
+}

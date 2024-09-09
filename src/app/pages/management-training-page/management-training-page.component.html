@@ -1,43 +1,80 @@
 <div class="bg-transparent">
   <div class="w-full space-y-2">
     <h1 class="text-2xl">รายละเอียดการส่งพนักงานเข้าอบรม</h1>
-    <div class="bg-content drop-shadow-md rounded-md p-4 dark:bg-content-dark">
+    <form
+      [formGroup]="searchFormsGroup"
+      class="bg-content drop-shadow-md rounded-md p-4 dark:bg-content-dark"
+    >
+      <!-- Form Fields -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <div class="flex flex-col">
           <label for="company" class="mb-2">บริษัท</label>
           <mat-form-field appearance="fill">
             <mat-label>บริษัท</mat-label>
-            <mat-select>
+            <mat-select formControlName="companyName">
               <mat-option value="PCCTH">PCCTH</mat-option>
               <mat-option value="WiseSoft">WiseSoft</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="flex flex-col">
-          <label class="mb-2">ตำแหน่งงาน</label>
-          <mat-form-field appearance="fill">
-            <mat-label>ตำแหน่งงาน</mat-label>
-            <input
-              class="dark:text-font-description-dark text-font-description"
-              matInput
-              placeholder="ตำแหน่งงาน"
-            />
-          </mat-form-field>
-        </div>
+
         <div class="flex flex-col">
           <label class="mb-2">ฝ่าย/แผนก</label>
           <mat-form-field appearance="fill">
             <mat-label>เลือกฝ่าย/แผนก</mat-label>
-            <mat-select> </mat-select>
+            <mat-select formControlName="deptAndSector">
+              <mat-optgroup label="แผนก">
+                <mat-option
+                  *ngFor="let dept of depts"
+                  [value]="{
+                    type: 'dept',
+                    value: dept.department.deptName,
+                    id: dept.department.id
+                  }"
+                >
+                  {{ dept.sectorName }} / {{ dept.department.deptName }}
+                </mat-option>
+              </mat-optgroup>
+              <mat-optgroup label="ฝ่าย">
+                <mat-option
+                  *ngFor="let sector of sectors"
+                  [value]="{
+                    type: 'sector',
+                    value: sector.sectorName,
+                    id: sector.sectorId
+                  }"
+                >
+                  {{ sector.sectorName }}
+                </mat-option>
+              </mat-optgroup>
+            </mat-select>
           </mat-form-field>
         </div>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+        <div class="flex flex-col">
+          <label class="mb-2">ตำแหน่ง</label>
+          <mat-form-field appearance="fill">
+            <mat-label>เลือกตำแหน่ง</mat-label>
+            <mat-select formControlName="positionName">
+              <mat-option
+                *ngFor="let position of positions"
+                [value]="position.positionName"
+              >
+                {{ position.positionName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
         <div class="flex flex-col">
           <label for="company" class="mb-2">วันที่เริ่ม</label>
           <mat-form-field appearance="fill">
             <mat-label>วันที่เริ่ม</mat-label>
-            <input matInput [matDatepicker]="startPicker" />
+            <input
+              formControlName="startDate"
+              matInput
+              [matDatepicker]="startPicker"
+            />
             <mat-datepicker-toggle
               matSuffix
               [for]="startPicker"
@@ -45,11 +82,16 @@
             <mat-datepicker #startPicker></mat-datepicker>
           </mat-form-field>
         </div>
+
         <div class="flex flex-col">
           <label class="mb-2">วันที่สิ้นสุด</label>
           <mat-form-field appearance="fill">
             <mat-label>วันที่สิ้นสุด</mat-label>
-            <input matInput [matDatepicker]="endPicker" />
+            <input
+              formControlName="endDate"
+              matInput
+              [matDatepicker]="endPicker"
+            />
             <mat-datepicker-toggle
               matSuffix
               [for]="endPicker"
@@ -57,16 +99,102 @@
             <mat-datepicker #endPicker></mat-datepicker>
           </mat-form-field>
         </div>
+
         <div class="flex flex-col">
           <label class="mb-2">หัวข้อในการอบรม/สัมมนา</label>
           <mat-form-field appearance="fill">
             <mat-label>หัวข้อในการอบรม/สัมมนา</mat-label>
-            <mat-select> </mat-select>
+            <mat-select formControlName="courseName">
+              <mat-option *ngFor="let course of courses" [value]="course.id">
+                {{ course.courseName }}
+              </mat-option>
+            </mat-select>
           </mat-form-field>
         </div>
       </div>
+
+      <!-- Action Buttons -->
+      <div
+        class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mt-4"
+      >
+        <!-- Recommendation paragraph -->
+        <div class="sm:hidden md:block" *ngIf="!isCanEditSection"></div>
+        <p
+          class="text-center md:text-left text-gray-700 dark:text-gray-300"
+          *ngIf="isCanEditSection"
+        >
+          คำแนะนำการพิพม์รายงาน
+          <i
+            (click)="showPrintTip()"
+            class="bx bx-info-circle cursor-pointer"
+            aria-hidden="true"
+            matTooltipClass="tooltip"
+            matTooltip="กดเพื่อดูคำแนะนำ"
+          ></i>
+        </p>
+        <div class="flex flex-col md:gap-4">
+          <!-- Group of buttons -->
+          <div class="flex flex-col md:flex-row md:gap-4 mb-4">
+            <button
+              [disabled]="isSearchBtnDisabled"
+              mat-raised-button
+              (click)="filterTrainingData()"
+              color="primary"
+              class="disabled:bg-slate-200 disabled:hover:cursor-not-allowed disabled:text-slate-400 dark:disabled:bg-slate-300 dark:disabled:text-slate-400"
+            >
+              <span class="text-white dark:text-white">ค้นหา</span>
+            </button>
+            <button
+              *ngIf="isSearchMode"
+              mat-raised-button
+              (click)="clearSearch()"
+              color="warn"
+            >
+              <span class="text-white dark:text-white">เคลียร์</span>
+            </button>
+            <button
+              (mwlClick)="printHistoryTraining()"
+              *ngIf="isSearchMode && isCanEditSection"
+              mat-raised-button
+              color="accent"
+            >
+              <span class="text-white dark:text-white"
+                >พิมพ์ประวัติการฝึกอบรม <i class="bx bxs-file-pdf"></i
+              ></span>
+            </button>
+            <button
+              *ngIf="isSearchMode && isCanEditSection"
+              mat-raised-button
+              color="accent"
+            >
+              <span class="text-white dark:text-white">พิมพ์ใบ Generic9</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div
+      class="w-full flex flex-col md:flex-row gap-4 justify-center items-center mt-2"
+    >
+      <i class="bx bx-filter-alt dark:text-font-description-hover"></i>
+      <mat-form-field class="sm:w-full md:w-64" appearance="fill">
+        <mat-label>กรองสถานะ</mat-label>
+        <mat-select (selectionChange)="filterByStatus($event.value)">
+          <mat-option value="allApprove">อนุมัติแล้ว</mat-option>
+          <mat-option value="waitApprove">รอการอนุมัติ</mat-option>
+          <mat-option value="waitEval">รอประเมินผล</mat-option>
+          <mat-option value="Eval">ประเมินผลเรียบร้อย</mat-option>
+          <mat-option value="waitG9Eval"
+            >รอประเมินผลเพื่อส่งกรมพัฒนาฝีมือแรงงาน</mat-option
+          >
+          <mat-option value="G9Eval"
+            >ประเมินผลเพื่อส่งกรมพัฒนาฝีมือแรงงานเรียบร้อย</mat-option
+          >
+          <mat-option value="All">ทั้งหมด</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
-    <div class=""></div>
     <div
       class="bg-content drop-shadow-md rounded-md p-4 dark:bg-content-dark overflow-x-auto"
     >
@@ -82,8 +210,10 @@
             <th class="text-center p-4">หมายเหตุ</th>
             <th class="text-center p-4">สถานะ</th>
             <th class="text-center p-4">ปุ่มตรวจสอบ</th>
-            <th class="text-center p-4">ปุ่มยกเลิก</th>
-            <th class="text-center p-4">ปุ่มพิมพ์รายงาน</th>
+            <th class="text-center p-4" *ngIf="isCanEditSection">ปุ่มยกเลิก</th>
+            <th class="text-center p-4" *ngIf="isCanEditSection">
+              ปุ่มพิมพ์รายงาน
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -137,7 +267,11 @@
                 </div>
                 <ng-template #PMelseBlock1>
                   <div
-                    *ngIf="training.isDo == undefined; else PMelseBlock2"
+                    *ngIf="
+                      training.isDo == undefined &&
+                        !isAllApprove(training.training.status);
+                      else PMelseBlock2
+                    "
                     [ngClass]="{
                       'text-yellow-600 dark:text-yellow-500':
                         training.result_status == 'รอประเมิน' ||
@@ -157,19 +291,26 @@
                 </ng-template>
                 <ng-template #PMelseBlock2>
                   <div *ngIf="training.isDo != undefined">
-                    <div *ngFor="let state of training.training.status">
-                      <p
-                        [ngClass]="{
-                          'text-green-600 dark:text-green-500':
-                            state.status == 'อนุมัติ',
-                          'text-red-600 dark:text-red-500':
-                            state.status == 'ไม่อนุมัติ',
-                          'text-yellow-600 dark:text-yellow-500':
-                            state.status == null
-                        }"
-                      >
-                        {{ state.status ? state.status : "รอการอนุมัติ" }}
-                      </p>
+                    <div
+                      *ngIf="
+                        !isAllApprove(training.training.status);
+                        else allApproveStatusNotApproverUser
+                      "
+                    >
+                      <div *ngFor="let state of training.training.status">
+                        <p
+                          [ngClass]="{
+                            'text-green-600 dark:text-green-500':
+                              state.status == 'อนุมัติ',
+                            'text-red-600 dark:text-red-500':
+                              state.status == 'ไม่อนุมัติ',
+                            'text-yellow-600 dark:text-yellow-500':
+                              state.status == null
+                          }"
+                        >
+                          {{ state.status ? state.status : "รอการอนุมัติ" }}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </ng-template>
@@ -190,22 +331,29 @@
                 </div>
                 <ng-template #AorPelseBlock1>
                   <div
-                    *ngIf="training.isDo == undefined"
-                    [ngClass]="{
-                      'text-yellow-600 dark:text-yellow-500':
-                        training.result_status == 'รอประเมิน' ||
-                        (training.result_status == 'รอประเมิน' &&
-                          watingApproveCheck(training.training.status)),
-                      'text-green-600 dark:text-green-500':
-                        training.result_status != 'รอประเมิน'
-                    }"
+                    class=""
+                    *ngIf="
+                      !isAllApprove(training.training.status);
+                      else allApproveStatusNotApproverUser
+                    "
                   >
-                    {{
-                      training.result_status == "รอประเมิน" &&
-                      watingApproveCheck(training.training.status)
-                        ? "รออนุมัติ"
-                        : training.result_status
-                    }}
+                    <div
+                      [ngClass]="{
+                        'text-yellow-600 dark:text-yellow-500':
+                          training.result_status == 'รอประเมิน' ||
+                          (training.result_status == 'รอประเมิน' &&
+                            watingApproveCheck(training.training.status)),
+                        'text-green-600 dark:text-green-500':
+                          training.result_status != 'รอประเมิน'
+                      }"
+                    >
+                      {{
+                        training.result_status == "รอประเมิน" &&
+                        watingApproveCheck(training.training.status)
+                          ? "รออนุมัติ"
+                          : training.result_status
+                      }}
+                    </div>
                   </div>
                 </ng-template>
               </div>
@@ -232,32 +380,116 @@
               <ng-template #PRVelseBlock1>
                 <div
                   *ngIf="
-                    training.result_status == 'อนุมัติ' &&
-                      training.training.result[0].result == null;
+                    training.result_status == 'รอประเมิน';
                     else PRVelseBlock2
                   "
-                  class="text-yellow-600 dark:text-yellow-500"
                 >
-                  รอประเมินผล
+                  <div *ngFor="let state of training.training.status">
+                    <p
+                      [ngClass]="{
+                        'text-green-600 dark:text-green-500':
+                          state.status == 'อนุมัติ',
+                        'text-red-600 dark:text-red-500':
+                          state.status == 'ไม่อนุมัติ',
+                        'text-yellow-600 dark:text-yellow-500':
+                          state.status == null
+                      }"
+                    >
+                      {{ state.status ? state.status : "รอการอนุมัติ" }}
+                    </p>
+                  </div>
                 </div>
               </ng-template>
               <ng-template #PRVelseBlock2>
                 <div
                   *ngIf="
-                    training.result_status == 'อนุมัติ' &&
-                    training.training.result[0].result != null
+                    training.training.result[0].result == null &&
+                      training.result_status == 'อนุมัติ';
+                    else isEval
                   "
-                  [ngClass]="{
-                    'text-red-600 dark:text-red-500':
-                      training.training.result[0].result == 'fail',
-                    'text-green-600 dark:text-green-500':
-                      training.training.result[0].result == 'pass',
-                    'text-yellow-600 dark:text-yellow-500':
-                      training.training.result[0].result == 'noResult'
-                  }"
                 >
-                  {{ training.training.result[0].result | resultTranslate }}
+                  <p class="text-yellow-600 dark:text-yellow-500">
+                    รอประเมินผลการอบรม
+                  </p>
                 </div>
+
+                <ng-template #isEval>
+                  <div class="" *ngIf="userRole != 'ROLE_VicePresident'">
+                    <p class="text-green-600 dark:text-green-500">
+                      ประเมินผลการอบรมเรียบร้อย
+                    </p>
+                  </div>
+                  <div class="" *ngIf="userRole == 'ROLE_VicePresident'">
+                    <div
+                      class=""
+                      *ngIf="
+                        training.training.result[0].result == null;
+                        else ViceElse1
+                      "
+                    >
+                      <p class="text-yellow-600 dark:text-yellow-500">
+                        รอประเมินผลการอบรม
+                      </p>
+                    </div>
+
+                    <ng-template #ViceElse1>
+                      <div
+                        *ngIf="
+                          training.training.resultGeneric9[0].result5 == null;
+                          else ViceElse2
+                        "
+                      >
+                        <p class="text-yellow-600 dark:text-yellow-500">
+                          รอประเมินผล Generic9
+                        </p>
+                      </div>
+                    </ng-template>
+                    <ng-template #ViceElse2>
+                      <div
+                        *ngIf="
+                          training.training.resultGeneric9[0].result5 != null &&
+                          training.training.result[0].result != null
+                        "
+                      >
+                        <p class="text-green-600 dark:text-green-500">
+                          ประเมิลผลเรียบร้อย
+                        </p>
+                      </div>
+                    </ng-template>
+                  </div>
+                </ng-template>
+              </ng-template>
+
+              <ng-template #allApproveStatusNotApproverUser>
+                <p
+                  class="text-yellow-600 dark:text-yellow-500"
+                  *ngIf="
+                    isAllApprove(training.training.status) &&
+                    training.training.result[0].result == null
+                  "
+                >
+                  รอการประเมินผล
+                </p>
+                <p
+                  class="text-yellow-600 dark:text-yellow-500"
+                  *ngIf="
+                    isAllApprove(training.training.status) &&
+                    training.training.result[0].result != null &&
+                    training.training.resultGeneric9[0].result5 == null
+                  "
+                >
+                  รอประเมินผล Generic9
+                </p>
+                <p
+                  class="text-green-600 dark:text-green-500"
+                  *ngIf="
+                    isAllApprove(training.training.status) &&
+                    training.training.result[0].result != null &&
+                    training.training.resultGeneric9[0].result5 != null
+                  "
+                >
+                  ประเมินผลเรียบร้อย
+                </p>
               </ng-template>
             </td>
             <td class="p-4 text-center">
@@ -272,7 +504,7 @@
                 ></span>
               </button>
             </td>
-            <td class="p-4 text-center">
+            <td class="p-4 text-center" *ngIf="isCanEditSection">
               <!-- TODO cancel status and cancel button -->
               <button
                 type="button"
@@ -282,9 +514,10 @@
                 <span class="!text-white">ยกเลิก</span>
               </button>
             </td>
-            <td class="p-4 text-center">
+            <td class="p-4 text-center" *ngIf="isCanEditSection">
               <!-- TODO cancel status and cancel button -->
               <button
+                (click)="openModalReport(training)"
                 type="button"
                 mat-raised-button
                 class="!bg-blue-700 hover:!bg-blue-600"
@@ -297,6 +530,14 @@
           </tr>
         </tbody>
       </table>
+      <mat-paginator
+        class="dark:bg-content-dark dark:text-white"
+        [length]="pageLength"
+        [pageSize]="5"
+        [pageSizeOptions]="[5, 10]"
+        aria-label="Select page"
+      >
+      </mat-paginator>
     </div>
   </div>
 </div>

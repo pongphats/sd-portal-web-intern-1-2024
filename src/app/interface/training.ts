@@ -73,7 +73,7 @@ interface Company {
   companyName: string;
 }
 
-interface Position {
+export interface Position {
   id: number;
   positionName: string;
   department: Department;

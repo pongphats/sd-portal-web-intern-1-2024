@@ -10,6 +10,7 @@ import { MngDeptListRes } from 'src/app/interface/response';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { CommonService } from 'src/app/services/common.service';
+import { SwalService } from 'src/app/services/swal.service';
 import { TrainingService } from 'src/app/services/training.service';
 
 @Component({
@@ -35,6 +36,7 @@ export class SectionOneFormComponent implements OnInit {
   vicePresList!: Employee[];
   presidentsList!: Employee[];
   empNameListFiltered: any;
+  sectionCanEditRole !: boolean
 
   roleCheck!: string;
 
@@ -48,7 +50,8 @@ export class SectionOneFormComponent implements OnInit {
     private authService: AuthService,
     private commonService: CommonService,
     private buddhistDatePipe: BuddhistDatePipe,
-    private trainingService: TrainingService
+    private trainingService: TrainingService,
+    private swalService: SwalService
   ) {
     this.trainingForm = this.fb.group({
       company: ['', Validators.required],
@@ -82,6 +85,10 @@ export class SectionOneFormComponent implements OnInit {
     console.log('id:', id);
 
     this.roleCheck = this.authService.checkRole();
+    this.sectionCanEditRole =
+      this.roleCheck == 'ROLE_Personnel' ||
+      this.roleCheck == 'ROLE_Admin' ||
+      this.roleCheck == 'ROLE_ManagerAndROLE_Personnel';
     await this.initDeptSelectorByRole();
     await this.generateCoursesList();
     await this.initSectionOne();
@@ -351,7 +358,7 @@ export class SectionOneFormComponent implements OnInit {
       this.trainingService.setTrainingEditFormsInValid(
         this.trainingForm.invalid
       );
-      this.trainingService.trainingRequest.courseId = filterCourseList.id
+      this.trainingService.trainingRequest.courseId = filterCourseList.id;
     } else {
       console.warn('No matching course found');
       this.trainingForm.patchValue({
@@ -488,9 +495,7 @@ export class SectionOneFormComponent implements OnInit {
     this.trainingService.trainingRequest.presidentId = 0;
     this.trainingService.trainingRequest.budget = 0;
     this.trainingService.trainingRequest.budgetType = '';
-    this.trainingService.setTrainingEditFormsInValid(
-      this.trainingForm.invalid
-    );
+    this.trainingService.setTrainingEditFormsInValid(this.trainingForm.invalid);
   }
   // async
   selectedFormsType(value: string) {
@@ -510,19 +515,24 @@ export class SectionOneFormComponent implements OnInit {
   selectedPriviledgeEmp(empCode: string, role: string) {
     if (role == 'Approver') {
       this.trainingService.trainingRequest.approverId =
-        this.allPrivilegesApproversList.find((item) => item.empCode == empCode)?.id || 0;
+        this.allPrivilegesApproversList.find((item) => item.empCode == empCode)
+          ?.id || 0;
     } else if (role == 'Manager') {
       this.trainingService.trainingRequest.managerId =
-        this.allPrivilegesApproversList.find((item) => item.empCode == empCode)?.id || 0;
+        this.allPrivilegesApproversList.find((item) => item.empCode == empCode)
+          ?.id || 0;
     } else if (role == 'Vice1') {
       this.trainingService.trainingRequest.vicepresident1Id =
-        this.allPrivilegesApproversList.find((item) => item.empCode == empCode)?.id || 0;
+        this.allPrivilegesApproversList.find((item) => item.empCode == empCode)
+          ?.id || 0;
     } else if (role == 'Vice2') {
       this.trainingService.trainingRequest.vicepresident2Id =
-        this.allPrivilegesApproversList.find((item) => item.empCode == empCode)?.id || 0;
+        this.allPrivilegesApproversList.find((item) => item.empCode == empCode)
+          ?.id || 0;
     } else if (role == 'President') {
       this.trainingService.trainingRequest.presidentId =
-        this.allPrivilegesApproversList.find((item) => item.empCode == empCode)?.id || 0;
+        this.allPrivilegesApproversList.find((item) => item.empCode == empCode)
+          ?.id || 0;
     }
     this.trainingService.setTrainingEditFormsInValid(this.trainingForm.invalid);
   }
@@ -534,8 +544,22 @@ export class SectionOneFormComponent implements OnInit {
     );
     this.trainingService.trainingRequest.dateSave = formatDate;
     this.trainingService.trainingRequest.actionDate = formatDate;
-    this.trainingService.setTrainingEditFormsInValid(
-      this.trainingForm.invalid
-    );
+    this.trainingService.setTrainingEditFormsInValid(this.trainingForm.invalid);
+  }
+
+  async downloadFile(id: number, fileName: string) {
+    this.swalService.showLoading();
+    try {
+      const res = await this.apiService.downloadFileById(id).toPromise();
+      if (res) {
+        this.commonService.downloadFileBase64(fileName, res.type, res.file);
+        this.swalService.showSuccess('กำลังเริ่มดาวน์โหลดไฟล์');
+      } else {
+        throw new Error('somthing went wrong');
+      }
+    } catch (error) {
+      console.error(error);
+      this.swalService.showError('เกิดข้อผิดพลาดในการดาวน์โหลดไฟล์');
+    }
   }
 }

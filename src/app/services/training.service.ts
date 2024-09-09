@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { SwalService } from './swal.service';
-import { CreateTrainingRequestForm } from '../interface/request';
+import {
+  CreateTrainingRequestForm,
+  EditSectionTwoRequest,
+} from '../interface/request';
 import { CommonService } from './common.service';
 import { AuthService } from './auth.service';
 import { TrainingTable } from '../interface/training';
@@ -20,6 +23,14 @@ export class TrainingService {
 
   private trainingEditFormsInValid = new BehaviorSubject<boolean>(true);
 
+  private _trainingStatus!: string;
+
+  private _sectionTwoRequest!: EditSectionTwoRequest;
+
+  private _reportBase64 !: string
+
+  private _pdfReportFileName !: string
+
   adminId: number = 0;
 
   constructor(
@@ -37,6 +48,42 @@ export class TrainingService {
   // get trainingEditFormsInValid(): boolean {
   //   return this._trainingEditFormsInValid;
   // }
+  // Getter for trainingStatus
+
+  // Getter _sectionTwoRequest
+
+  get pdfReportFileName(): string {
+    return this._pdfReportFileName;
+  }
+  
+  set pdfReportFileName(value: string) {
+    this._pdfReportFileName = value;
+  }
+  
+  get reportBase64(): string {
+    return this._reportBase64;
+  }
+  
+  set reportBase64(value: string) {
+    this._reportBase64 = value;
+  }
+
+  get sectionTwoRequest(): EditSectionTwoRequest {
+    return this._sectionTwoRequest;
+  }
+
+  set sectionTwoRequest(value: EditSectionTwoRequest) {
+    this._sectionTwoRequest = value;
+  }
+
+  get trainingStatus(): string {
+    return this._trainingStatus;
+  }
+
+  // Setter for trainingStatus
+  set trainingStatus(status: string) {
+    this._trainingStatus = status;
+  }
 
   set trainingRequest(value: CreateTrainingRequestForm) {
     this._trainingRequest = value;

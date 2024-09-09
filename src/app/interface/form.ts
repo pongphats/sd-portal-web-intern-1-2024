@@ -1,4 +1,4 @@
-import { FormControl } from '@angular/forms';
+import { Form, FormControl } from '@angular/forms';
 
 export interface AuthForm {
   email: FormControl<string | null>;
@@ -123,4 +123,27 @@ export interface approverForms {
   company: FormControl<string | null>;
   sectorCode: FormControl<string | null>;
   deptCode: FormControl<string | null>;
+}
+
+export interface evaluationForms {
+  result1: FormControl<string | null>;
+  result2: FormControl<string | null>;
+  result3: FormControl<string | null>;
+  result4: FormControl<string | null>;
+  result5: FormControl<string | null>;
+  result6: FormControl<string | null>;
+  result7: FormControl<string | null>;
+  resutl: FormControl<string | null>;
+  cause: FormControl<string | null>;
+  comment: FormControl<string | null>;
+  plan: FormControl<string | null>;
+}
+
+export interface TrainingSearchForms {
+  companyName: FormControl<string | null>;
+  deptAndSector: FormControl<string | null>;
+  startDate: FormControl<Date | null>;
+  endDate: FormControl<Date | null>;
+  courseName: FormControl<string | null>;
+  positionName: FormControl<any>;
 }

@@ -3,9 +3,9 @@
 >
   <!-- forms field -->
   <div class="">
-    <form 
+    <form
       [formGroup]="trainingForm"
-      class="bg-content dark:bg-content-dark rounded-md p-4 space-y-4"
+      class="bg-gray-100 dark:bg-content-dark rounded-md p-4 space-y-4"
     >
       <p class="text-xl">ส่วนที่ 1 : การส่งพนักงานเข้ารับการฝึกอบรม</p>
       <!-- Company select layout -->
@@ -34,7 +34,7 @@
         <div
           class="flex flex-col lg:flex-row items-start lg:items-center gap-2 w-full lg:w-auto"
         >
-          <!-- <p class="whitespace-nowrap">ฝ่าย/แผนก</p> -->
+          <p class="whitespace-nowrap">ฝ่าย/แผนก</p>
           <mat-form-field class="w-full lg:w-auto" appearance="fill">
             <mat-label>เลือกแผนก</mat-label>
             <mat-select
@@ -56,10 +56,15 @@
         <div
           class="flex flex-col lg:flex-row items-start lg:items-center gap-2 w-full lg:w-auto"
         >
-          <!-- <p class="whitespace-nowrap">รหัสฝ่าย/แผนก</p> -->
+          <p class="whitespace-nowrap">รหัสฝ่าย/แผนก</p>
           <mat-form-field class="w-full lg:w-auto" appearance="fill">
             <mat-label>รหัสฝ่าย/แผนก</mat-label>
-            <input formControlName="deptId" matInput readonly />
+            <input
+              class="read-only:text-font-description dark:read-only:text-font-description-dark"
+              formControlName="deptId"
+              matInput
+              readonly
+            />
           </mat-form-field>
         </div>
 
@@ -67,7 +72,7 @@
         <div
           class="flex flex-col lg:flex-row items-start lg:items-center gap-2 w-full lg:w-auto"
         >
-          <!-- <p class="whitespace-nowrap">วัน/เดือน/ปี</p> -->
+          <p class="whitespace-nowrap">วัน/เดือน/ปี</p>
           <mat-form-field class="w-full lg:w-auto" appearance="fill">
             <mat-label>เลือกวันที่</mat-label>
             <input
@@ -82,7 +87,6 @@
             ></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
-          
         </div>
       </div>
 
@@ -148,7 +152,12 @@
               <!-- <p class="whitespace-nowrap md:w-1/3 lg:w-1/4">วันเวลาฝึกอบรม</p> -->
               <mat-form-field appearance="fill" class="w-full lg:w-3/4">
                 <mat-label>วันเวลาฝึกอบรม</mat-label>
-                <input formControlName="courseDuration" matInput readonly />
+                <input
+                  class="read-only:text-font-description dark:read-only:text-font-description-dark"
+                  formControlName="courseDuration"
+                  matInput
+                  readonly
+                />
               </mat-form-field>
             </div>
 
@@ -159,7 +168,12 @@
               <!-- <p class="whitespace-nowrap md:w-1/3 lg:w-1/4">เพิ่มเติม</p> -->
               <mat-form-field appearance="fill" class="w-full lg:w-3/4">
                 <mat-label>เพิ่มเติม</mat-label>
-                <input formControlName="courseDescription" matInput readonly />
+                <input
+                  class="read-only:text-font-description dark:read-only:text-font-description-dark"
+                  formControlName="courseDescription"
+                  matInput
+                  readonly
+                />
               </mat-form-field>
             </div>
 
@@ -171,6 +185,7 @@
               <mat-form-field appearance="fill" class="w-full lg:w-3/4">
                 <mat-label>โครงการ</mat-label>
                 <input
+                  class="read-only:text-font-description dark:read-only:text-font-description-dark"
                   (keyup)="courseProjectChange($event)"
                   formControlName="courseProject"
                   matInput
@@ -185,7 +200,12 @@
               <!-- <p class="whitespace-nowrap md:w-1/3 lg:w-1/4">ค่าใช้จ่าย/คน</p> -->
               <mat-form-field appearance="fill" class="w-full lg:w-3/4">
                 <mat-label>ค่าใช้จ่าย/คน (ก่อน Vat7%)</mat-label>
-                <input formControlName="coursePrice" matInput readonly />
+                <input
+                  class="read-only:text-font-description dark:read-only:text-font-description-dark"
+                  formControlName="coursePrice"
+                  matInput
+                  readonly
+                />
               </mat-form-field>
             </div>
 
@@ -196,7 +216,12 @@
               <!-- <p class="whitespace-nowrap md:w-1/3 lg:w-1/4">สถาบันที่จัดอบรม</p> -->
               <mat-form-field appearance="fill" class="w-full lg:w-3/4">
                 <mat-label>สถาบันที่จัดอบรม</mat-label>
-                <input formControlName="courseTeacher" matInput readonly />
+                <input
+                  class="read-only:text-font-description dark:read-only:text-font-description-dark"
+                  formControlName="courseTeacher"
+                  matInput
+                  readonly
+                />
               </mat-form-field>
             </div>
 
@@ -207,7 +232,12 @@
               <!-- <p class="whitespace-nowrap md:w-1/3 lg:w-1/4">สถานที่ฝึกอบรม</p> -->
               <mat-form-field appearance="fill" class="w-full lg:w-3/4">
                 <mat-label>สถานที่ฝึกอบรม</mat-label>
-                <input formControlName="courseLocation" matInput readonly />
+                <input
+                  class="read-only:text-font-description dark:read-only:text-font-description-dark"
+                  formControlName="courseLocation"
+                  matInput
+                  readonly
+                />
               </mat-form-field>
             </div>
 
@@ -230,6 +260,7 @@
                   <mat-form-field class="w-full lg:w-64" appearance="fill">
                     <mat-label>รายละเอียด</mat-label>
                     <textarea
+                      class="read-only:text-font-description dark:read-only:text-font-description-dark"
                       formControlName="budgetDescription"
                       matInput
                     ></textarea>
@@ -252,7 +283,12 @@
         >
           <mat-form-field class="w-full lg:w-auto" appearance="fill">
             <mat-label>รหัสพนักงาน</mat-label>
-            <input formControlName="employeeId" matInput readonly />
+            <input
+              class="read-only:text-font-description dark:read-only:text-font-description-dark"
+              formControlName="employeeId"
+              matInput
+              readonly
+            />
           </mat-form-field>
         </div>
 
@@ -265,6 +301,7 @@
           <mat-form-field class="w-full lg:w-auto" appearance="fill">
             <mat-label>ชื่อ-สกุลผู้เข้ารับการอบรม/สัมมนา</mat-label>
             <input
+              class="read-only:text-font-description dark:read-only:text-font-description-dark"
               type="text"
               formControlName="employeeName"
               matInput
@@ -291,7 +328,12 @@
         >
           <mat-form-field class="w-full lg:w-auto" appearance="fill">
             <mat-label>ตำแหน่งผู้เข้ารับการอบรม</mat-label>
-            <input formControlName="employeePosition" matInput readonly />
+            <input
+              class="read-only:text-font-description dark:read-only:text-font-description-dark"
+              formControlName="employeePosition"
+              matInput
+              readonly
+            />
           </mat-form-field>
         </div>
       </div>
@@ -449,6 +491,7 @@
 
         <div class="w-full space-y-4" [ngClass]="{ hidden: tableToggle }">
           <button
+            *ngIf="sectionCanEditRole"
             type="button"
             class="!text-white !bg-green-700 hover:!bg-green-600"
             mat-flat-button
@@ -475,13 +518,7 @@
                   <span class="font-semibold">ไฟล์</span>
                 </th>
                 <th></th>
-                <th
-                  *ngIf="
-                    roleCheck == 'ROLE_Admin' ||
-                    roleCheck == 'ROLE_Personnel' ||
-                    roleCheck == 'ROLE_ManagerAndROLE_Personnel'
-                  "
-                ></th>
+                <th *ngIf="sectionCanEditRole"></th>
               </tr>
             </thead>
             <tbody
@@ -497,6 +534,7 @@
                 <td class="p-2">{{ file.fileName }}</td>
                 <td class="p-2">
                   <button
+                    (click)="downloadFile(file.id, file.fileName)"
                     type="button"
                     mat-button
                     class="bg-blue-800 hover:bg-blue-700 dark:hover:bg-blue-600 dark:bg-blue-700"
@@ -506,13 +544,8 @@
                     </span>
                   </button>
                 </td>
-                <td class="p-4">
+                <td *ngIf="sectionCanEditRole" class="p-4">
                   <button
-                    *ngIf="
-                      roleCheck == 'ROLE_Admin' ||
-                      roleCheck == 'ROLE_Personnel' ||
-                      roleCheck == 'ROLE_ManagerAndROLE_Personnel'
-                    "
                     type="button"
                     mat-button
                     color="warn"
