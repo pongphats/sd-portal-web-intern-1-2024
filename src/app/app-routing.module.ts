@@ -27,6 +27,7 @@ import { BudgetWellfareManagePageComponent } from './pages/budget-wellfare-manag
 import { SignaturePageComponent } from './pages/signature-page/signature-page.component';
 import { WelfareExpenseHistoryComponent } from './pages/welfare-expense-history/welfare-expense-history.component';
 import { ApproverManagePageComponent } from './pages/approver-manage-page/approver-manage-page.component';
+import { WelfareExpenseHistoryPageComponent } from './pages/welfare-expense-history-page/welfare-expense-history-page.component';
 import { LoginWelfarePageComponent } from './pages/login-welfare-page/login-welfare-page.component';
 
 const routes: Routes = new Array<Route>(
@@ -129,7 +130,7 @@ const routes: Routes = new Array<Route>(
       },
       {
         path: 'welfare-expense-history',
-        component: WelfareExpenseHistoryComponent,
+        component: WelfareExpenseHistoryPageComponent,
       },
       {
         path: 'approver-manage',

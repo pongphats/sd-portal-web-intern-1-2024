@@ -50,6 +50,9 @@ import { Generic9FormComponent } from './management-training-page/components/gen
 import { ApproverManagePageComponent } from './approver-manage-page/approver-manage-page.component';
 import { ReportModalComponent } from './management-training-page/components/report-modal/report-modal.component';
 import { PrintTipsModalComponent } from './management-training-page/components/print-tips-modal/print-tips-modal.component';
+import { WelfareExpenseHistoryPageComponent } from './welfare-expense-history-page/welfare-expense-history-page.component';
+import { ExpenseHistoryReportPdfModalComponent } from './welfare-expense-history-page/components/expense-history-report-pdf-modal/expense-history-report-pdf-modal.component';
+import { ExpenseDetailModalComponent } from './welfare-expense-history-page/components/expense-detail-modal/expense-detail-modal.component';
 import { LoginWelfarePageComponent } from './login-welfare-page/login-welfare-page.component';
 
 @NgModule({
@@ -59,18 +62,13 @@ import { LoginWelfarePageComponent } from './login-welfare-page/login-welfare-pa
     ListCardSystemComponent,
     ListDescriptionComponent,
     ListCardPeopleComponent,
-
     NewsPageComponent,
-
     CalenderPageComponent,
     CalendarTableComponent,
-
     DashboardPageComponent,
     InformationUserComponent,
     InformationProjectUserComponent,
-
     JobDayViewPageComponent,
-
     ManagementNewsPageComponent,
     ManagementDashboardPageComponent,
     ManagementRolePageComponent,
@@ -100,6 +98,9 @@ import { LoginWelfarePageComponent } from './login-welfare-page/login-welfare-pa
     ApproverManagePageComponent,
     ReportModalComponent,
     PrintTipsModalComponent,
+    WelfareExpenseHistoryPageComponent,
+    ExpenseHistoryReportPdfModalComponent,
+    ExpenseDetailModalComponent,
     LoginWelfarePageComponent,
   ],
   imports: [

@@ -16,6 +16,8 @@ import {
   EditSectionTwoRequest,
   TrainingReportRequest,
   PrintHistoryTrainingReportRequest,
+  GetExpenseReportRequest,
+  PrintGeneric9ReportReq,
 } from '../interface/request';
 import { map, Observable } from 'rxjs';
 import {
@@ -28,6 +30,8 @@ import {
   MngDeptListRes,
   saveBudgetResponse,
   fileDownloadRes,
+  ExpenseReportBase64,
+  XlsxGeneric9Base64,
 } from '../interface/response';
 import { Course, ExpenseWelfare, level, sector } from '../interface/common';
 import { Employee } from '../interface/employee';
@@ -224,9 +228,11 @@ export class ApiService {
       .pipe(map((res) => res.responseData.result));
   }
 
-  getEmplistByName(term: string): Observable<any[]> {
+  getEmplistByName(term: string): Observable<Employee[]> {
     return this.http
-      .get<any[]>(`${this.trainingUrl}/seacrhUser/byNames?searchTerm=${term}`)
+      .get<ApiResponse<Employee[]>>(
+        `${this.trainingUrl}/seacrhUser/byNames?searchTerm=${term}`
+      )
       .pipe(map((response: any) => response.responseData));
   }
 
@@ -336,7 +342,7 @@ export class ApiService {
 
   editLevel(req: level): Observable<level> {
     const url = `${this.welfareUrl}/budget/editBudget/${req.id}`;
-    console.log(req.id);
+    // console.log(req.id);
     const payload = {
       ipd: req.ipd,
       opd: req.opd,
@@ -349,7 +355,7 @@ export class ApiService {
       .pipe(map((res) => res.responseData.result));
   }
 
-  getExpenseHisoryWithPagination(page: number, size: number, userId: number) {
+  getExpenseHisoryWithPaginationV1(page: number, size: number, userId: number) {
     const filterReq = {
       page,
       size,
@@ -403,7 +409,7 @@ export class ApiService {
       .pipe(map((res) => res.responseData.result));
   }
 
-  getExpenseReportWithPagination(
+  getExpenseReportWithPaginationV2(
     req: expenseReportRequest
   ): Observable<PaginatedResponse<ExpenseWelfare>> {
     const filteredParams = this.commonService.filterNullUndefinedValues(req);
@@ -418,6 +424,21 @@ export class ApiService {
         }
       )
       .pipe(map((res) => res));
+  }
+
+  getExpenseHistoryReportPDFandELSXBase64(
+    req: GetExpenseReportRequest
+  ): Observable<ExpenseReportBase64> {
+    const filteredParams = this.commonService.filterNullUndefinedValues(req);
+
+    return this.http.get<ExpenseReportBase64>(
+      `${this.welfareUrl}/expenses/getExpensesReport`,
+      {
+        params: {
+          ...filteredParams,
+        },
+      }
+    );
   }
 
   getAllPrivilegeApprovers(): Observable<Employee[]> {
@@ -512,12 +533,55 @@ export class ApiService {
       .pipe(map((res) => res));
   }
 
-  printHistoryTrainingReport(params: PrintHistoryTrainingReportRequest) {
+  printHistoryTrainingReport(
+    params: PrintHistoryTrainingReportRequest
+  ): Observable<string> {
     const filteredParams = this.commonService.filterNullUndefinedValues(params);
 
     return this.http
-      .get(`${this.trainingUrl}/ReportHistoryTraining`, {
+      .get<string>(`${this.trainingUrl}/ReportHistoryTraining`, {
         params: { ...filteredParams },
+      })
+      .pipe(map((res) => res));
+  }
+
+  findUserById(id: number): Observable<Employee> {
+    return this.http
+      .get<ApiResponse<Employee>>(`${this.trainingUrl}/findUserById`, {
+        params: {
+          userId: id,
+        },
+      })
+      .pipe(map((res) => res.responseData.result));
+  }
+
+  getExpenseById(id: number): Observable<ExpenseWelfare> {
+    return this.http
+      .get<ApiResponse<ExpenseWelfare>>(
+        `${this.welfareUrl}/expenses/getExpense/${id}`
+      )
+      .pipe(map((res) => res.responseData.result));
+  }
+
+  getXlsxGeneric9Base64(
+    req: PrintGeneric9ReportReq
+  ): Observable<XlsxGeneric9Base64> {
+    return this.http
+      .get<XlsxGeneric9Base64>(`${this.trainingUrl}/ReportGeneric9`, {
+        params: {
+          ...req,
+        },
+      })
+      .pipe(map((res) => res));
+  }
+
+  findTotalRemain(year: string, deptCode: string): Observable<any> {
+    return this.http
+      .get(`${this.trainingUrl}/findTotalRemain`, {
+        params: {
+          year: year,
+          departmentCode: deptCode,
+        },
       })
       .pipe(map((res) => res));
   }
