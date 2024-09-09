@@ -67,13 +67,13 @@ export class WelfareFormsPageComponent implements OnInit {
     );
 
     this.expenseForm.get('startDate')?.valueChanges.subscribe(() => {
-      if (this.expenseForm.value.treatmentType === 'opd') {
+      if (this.expenseForm.value.treatmentType === 'ipd') {
         this.calculateDaysCount();
       }
     });
 
     this.expenseForm.get('endDate')?.valueChanges.subscribe(() => {
-      if (this.expenseForm.value.treatmentType === 'opd') {
+      if (this.expenseForm.value.treatmentType === 'ipd') {
         this.calculateDaysCount();
       }
     });
@@ -416,7 +416,7 @@ export class WelfareFormsPageComponent implements OnInit {
     'editOrDelete',
   ];
 
-    // TODO: หาลิสต์ประวัติการเบิกค่ารักษาพยาบาลโดย uid และ year
+  // TODO: หาลิสต์ประวัติการเบิกค่ารักษาพยาบาลโดย uid และ year
   async getExpenseUidAndYear() {
     if (this.dataEmp) {
       const yearInput = this.yearForm.value.yearSearch;
