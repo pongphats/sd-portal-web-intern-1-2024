@@ -8,7 +8,7 @@
         alt="Login Illustration"
         class="max-w-xs mb-4 w-full"
       />
-      <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+      <form [formGroup]="authForm">
         <!-- Email Field -->
         <div class="mb-4">
           <mat-form-field appearance="fill" class="w-full">
@@ -17,11 +17,12 @@
               matInput
               type="email"
               id="email"
-              [(ngModel)]="email"
-              name="email"
+              formControlName="email"
               required
             />
-            <mat-error *ngIf="!email">กรุณากรอกอีเมลของคุณ</mat-error>
+            <mat-error *ngIf="this.authForm.controls.email.invalid"
+              >กรุณากรอกอีเมลของคุณ</mat-error
+            >
           </mat-form-field>
         </div>
 
@@ -33,8 +34,7 @@
               matInput
               type="password"
               id="password"
-              [(ngModel)]="password"
-              name="password"
+              formControlName="password"
               [type]="hide ? 'password' : 'text'"
               required
             />
@@ -56,7 +56,9 @@
               ></i>
             </button>
 
-            <mat-error *ngIf="!password">กรุณากรอกรหัสผ่านของคุณ</mat-error>
+            <mat-error *ngIf="this.authForm.controls.password.invalid"
+              >กรุณากรอกรหัสผ่านของคุณ</mat-error
+            >
           </mat-form-field>
         </div>
 
@@ -66,7 +68,12 @@
             mat-raised-button
             color="primary"
             class="w-full lg:w-[42%] p-3 font-bold"
-            type="submit"
+            type="button"
+            [ngClass]="{
+              '!cursor-not-allowed': authForm.invalid
+            }"
+            [disabled]="authForm.invalid"
+            (click)="loginTrainingForms()"
           >
             <i class="bx bx-log-in text-white mr-1"></i>
             <span class="text-white mr-1"> เข้าสู่ระบบ </span>

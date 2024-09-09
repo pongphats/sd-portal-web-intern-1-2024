@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthForm } from 'src/app/interface/form';
 
 @Component({
   selector: 'app-login-training-forms',
@@ -6,20 +8,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./login-training-forms.component.scss'],
 })
 export class LoginTrainingFormsComponent implements OnInit {
-  email: string = '';
-  password: string = '';
+  authForm!: FormGroup<AuthForm>;
   hide = true;
 
-  constructor() {}
-
-  onSubmit() {
-    if (this.email && this.password) {
-      console.log('Login successful');
-      // Perform login logic here (e.g., call an API)
-    } else {
-      console.log('Please enter both email and password');
-    }
+  constructor(private fb: FormBuilder) {
+    this.authForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+    });
   }
 
   ngOnInit(): void {}
+
+  loginTrainingForms() {
+    console.log(this.authForm.value);
+    this.authForm.reset();
+  }
 }
