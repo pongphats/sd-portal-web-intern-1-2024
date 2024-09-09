@@ -18,23 +18,26 @@ import { ManagementUserPageComponent } from './pages/management-user-page/manage
 import { BudgetWellfareManagePageComponent } from './pages/budget-wellfare-manage-page/budget-wellfare-manage-page.component';
 import { SignaturePageComponent } from './pages/signature-page/signature-page.component';
 import { ApproverManagePageComponent } from './pages/approver-manage-page/approver-manage-page.component';
+import { LoginTrainingFormsComponent } from './pages/login-training-forms/login-training-forms.component';
 import { WelfareExpenseHistoryPageComponent } from './pages/welfare-expense-history-page/welfare-expense-history-page.component';
 import { LoginWelfarePageComponent } from './pages/login-welfare-page/login-welfare-page.component';
 import { UserViewPageComponent } from './pages/user-view-page/user-view-page.component';
 
 const routes: Routes = new Array<Route>(
-  {
-    path: 'sign-in',
-    component: LoginPageComponent,
-  },
+  // {
+  //   path: 'sign-in',
+  //   component: LoginPageComponent,
+  // },
   {
     path: 'wellfare',
     component: LoginWelfarePageComponent,
   },
-  {
-    path: 'login-welfare',
-    component: LoginWelfarePageComponent,
-  },
+  { path: 'sign-in', 
+    component: LoginTrainingFormsComponent },
+  // {
+  //   path: 'login-welfare',
+  //   component: LoginWelfarePageComponent,
+  // },
   {
     path: 'pccth',
     component: SystemLayoutComponent,

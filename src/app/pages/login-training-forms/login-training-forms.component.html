@@ -1,0 +1,104 @@
+<div class="flex min-h-screen">
+  <!-- Left Side (Login Form) -->
+  <div
+    class="flex-1 flex justify-center items-center bg-white dark:bg-gray-800"
+  >
+    <div
+      class="w-full lg:w-[60%] p-6 bg-white dark:bg-gray-900 shadow-lg rounded-lg"
+    >
+      <h2 class="text-2xl font-bold mb-6 text-center dark:text-gray-100">
+        ระบบส่งอบรม
+      </h2>
+      <img
+        src="../../../assets/images/man-with-laptop-light.png "
+        alt="Login Illustration"
+        class="max-w-xs mb-4 w-full"
+      />
+      <form [formGroup]="authForm">
+        <!-- Email Field -->
+        <div class="mb-4">
+          <mat-form-field appearance="fill" class="w-full dark:text-gray-100">
+            <mat-label>Email</mat-label>
+            <input
+              matInput
+              type="email"
+              id="email"
+              formControlName="email"
+              required
+              class="dark:text-gray-100"
+            />
+            <mat-error *ngIf="this.authForm.controls.email.invalid"
+              >กรุณากรอกอีเมลของคุณ</mat-error
+            >
+          </mat-form-field>
+        </div>
+
+        <!-- Password Field -->
+        <div class="mb-6">
+          <mat-form-field appearance="fill" class="w-full dark:text-gray-100">
+            <mat-label>Password</mat-label>
+            <input
+              matInput
+              type="password"
+              id="password"
+              formControlName="password"
+              [type]="hide ? 'password' : 'text'"
+              required
+              class="dark:text-gray-100"
+            />
+            <button
+              type="button"
+              mat-icon-button
+              matSuffix
+              type="button"
+              (click)="hide = !hide"
+              [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="hide"
+            >
+              <i
+                class="bx scale-150 dark:text-gray-100"
+                [ngClass]="{
+                  'bxs-show': !hide,
+                  'bxs-hide': hide
+                }"
+              ></i>
+            </button>
+
+            <mat-error *ngIf="this.authForm.controls.password.invalid"
+              >กรุณากรอกรหัสผ่านของคุณ</mat-error
+            >
+          </mat-form-field>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="flex justify-center">
+          <button
+            mat-raised-button
+            color="primary"
+            class="w-full lg:w-[42%] p-3 font-bold dark:bg-gray-700"
+            type="button"
+            [ngClass]="{
+              '!cursor-not-allowed': authForm.invalid
+            }"
+            [disabled]="authForm.invalid"
+            (click)="loginTrainingForms()"
+          >
+            <i class="bx bx-log-in text-white mr-1"></i>
+            <span class="text-white mr-1 dark:text-white"> เข้าสู่ระบบ </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Right Side (Image) -->
+  <div
+    class="hidden lg:flex flex-1 justify-center items-center bg-blue-50 dark:bg-gray-800"
+  >
+    <img
+      src="../../../assets/images/loginbg.png"
+      alt="Login Illustration"
+      class="max-w-md"
+    />
+  </div>
+</div>

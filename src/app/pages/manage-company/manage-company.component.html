@@ -171,8 +171,8 @@
               (click)="clearForm()"
               type="button"
             >
-              <i class="bx bx-revision text-white mr-2 dark:text-[#235d3a]"></i>
-              <span class="text-white dark:text-[#235d3a]">เคลียร์ข้อมูล</span>
+              <i class="bx bx-revision text-white mr-2 dark:text-white"></i>
+              <span class="text-white dark:text-white">เคลียร์ข้อมูล</span>
             </button>
           </div>
           <div *ngIf="showDeleteButton">
@@ -423,12 +423,12 @@
 
             <button
               mat-raised-button
-              class="bg-[#dfa006] !text-white py-2 px-4 rounded dark:bg-[#fff200]"
+              class="bg-[#dfa006] !text-white py-2 px-4 rounded dark:bg-yellow-600"
               (click)="clearForm2()"
               type="button"
             >
-              <i class="bx bx-revision text-white mr-2 dark:text-[#235d3a]"></i>
-              <span class="text-white dark:text-[#235d3a]">เคลียร์ข้อมูล</span>
+              <i class="bx bx-revision text-white mr-2 dark:text-white"></i>
+              <span class="text-white dark:text-white">เคลียร์ข้อมูล</span>
             </button>
             <!-- </div> -->
           </ng-template>
@@ -497,7 +497,7 @@
       mat-row
       *matRowDef="let row; columns: displayedColumns2"
       (click)="onRowClick2(row)"
-      class="cursor-pointer hover:bg-gray-200"
+      class="cursor-pointer hover:bg-gray-200 dark:hover:bg-slate-700"
     ></tr>
   </table>
 </div>
