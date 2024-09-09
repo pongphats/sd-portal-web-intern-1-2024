@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { SwalService } from './swal.service';
 import {
   CreateTrainingRequestForm,
@@ -8,6 +8,7 @@ import {
 import { CommonService } from './common.service';
 import { AuthService } from './auth.service';
 import { TrainingTable } from '../interface/training';
+import { BudgetCreated, DeptBudget } from '../interface/common';
 
 @Injectable({
   providedIn: 'root',
@@ -27,9 +28,13 @@ export class TrainingService {
 
   private _sectionTwoRequest!: EditSectionTwoRequest;
 
-  private _reportBase64 !: string
+  private _reportBase64!: string;
 
-  private _pdfReportFileName !: string
+  private _pdfReportFileName!: string;
+
+  private _deptBudgetCreated: BudgetCreated[] = [];
+
+  // private _deptBudgetList
 
   adminId: number = 0;
 
@@ -52,18 +57,26 @@ export class TrainingService {
 
   // Getter _sectionTwoRequest
 
+  get deptBudgetCreated(): BudgetCreated[] {
+    return this._deptBudgetCreated;
+  }
+
+  set deptBudgetCreated(value: BudgetCreated[]) {
+    this._deptBudgetCreated = value;
+  }
+
   get pdfReportFileName(): string {
     return this._pdfReportFileName;
   }
-  
+
   set pdfReportFileName(value: string) {
     this._pdfReportFileName = value;
   }
-  
+
   get reportBase64(): string {
     return this._reportBase64;
   }
-  
+
   set reportBase64(value: string) {
     this._reportBase64 = value;
   }
@@ -110,6 +123,40 @@ export class TrainingService {
   set trainingEditId(id: number) {
     this._trainingEditId = id;
   }
+
+  findRemainingByDeptCode(deptCode: string) {
+    return this._deptBudgetCreated.find(
+      (item) => item.departmentCode == deptCode
+    );
+  }
+
+  pushSumBudget(data: BudgetCreated) {
+    const currentList = this._deptBudgetCreated;
+    const isAddedBudget = currentList.find(
+      (item) => item.departmentCode === data.departmentCode
+    );
+
+    if (isAddedBudget) {
+      const calculate: BudgetCreated = {
+        ...isAddedBudget,
+        budgetCer: isAddedBudget.budgetCer + data.budgetCer,
+        budgetTraining: isAddedBudget.budgetTraining + data.budgetTraining,
+      };
+
+      // แทนที่รายการใน currentList ที่ตรงกับ isAddedBudget ด้วย calculate
+      const updatedList = currentList.map((item) =>
+        item.departmentCode === isAddedBudget.departmentCode ? calculate : item
+      );
+
+      // อัพเดทค่าใน _deptBudgetCreated
+      this._deptBudgetCreated = updatedList;
+    } else {
+      // เพิ่มข้อมูลใหม่ถ้ายังไม่มีใน currentList
+      this._deptBudgetCreated = [...currentList, data];
+    }
+  }
+
+  calculateBudget() {}
 
   setTrainingEditFormsInValid(value: boolean) {
     this.trainingEditFormsInValid.next(value);
@@ -177,10 +224,54 @@ export class TrainingService {
   removeTraining(index: number) {
     const currentList = this.trainingList.getValue();
     if (index >= 0 && index < currentList.length) {
+      console.log(currentList[index], typeof currentList[index]);
+      const coursePrice = Number(
+        currentList[index].coursePrice.replace(/,/g, '')
+      );
+      const deptCode = currentList[index].deptCode;
+      const formsType = currentList[index].formsType;
+
+      this.reduceBudgetByCreated(coursePrice, deptCode, formsType);
+
+      // console.log();
+
       currentList.splice(index, 1);
       this.trainingList.next(currentList);
     } else {
       console.error('Index out of bounds');
+    }
+  }
+
+  reduceBudgetByCreated(
+    coursePrice: number,
+    deptCode: string,
+    formsType: string
+  ) {
+    const currentBudgetList = this._deptBudgetCreated;
+    const index = currentBudgetList.findIndex(
+      (item) => item.departmentCode === deptCode
+    );
+
+    if (index !== -1) {
+      const selectedBudget = currentBudgetList[index];
+      const calculate: BudgetCreated = {
+        ...selectedBudget,
+        budgetCer:
+          formsType === 'getCertificate'
+            ? selectedBudget.budgetCer - coursePrice
+            : selectedBudget.budgetCer,
+        budgetTraining:
+          formsType === 'training'
+            ? selectedBudget.budgetTraining - coursePrice
+            : selectedBudget.budgetTraining,
+      };
+
+      // แทนที่รายการเดิมใน this._deptBudgetCreated
+      this._deptBudgetCreated = [
+        ...currentBudgetList.slice(0, index),
+        calculate,
+        ...currentBudgetList.slice(index + 1),
+      ];      
     }
   }
 

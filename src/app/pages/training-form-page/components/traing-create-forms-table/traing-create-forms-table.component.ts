@@ -36,7 +36,6 @@ export class TraingCreateFormsTableComponent implements OnInit {
     this.trainingService.getTrainingList().subscribe((value: any[]) => {
       if (value) {
         this.trainingList = value;
-        console.log(this.trainingList);
       }
     });
   }

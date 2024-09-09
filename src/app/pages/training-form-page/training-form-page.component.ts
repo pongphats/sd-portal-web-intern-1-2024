@@ -4,13 +4,14 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { BuddhistDatePipe } from '@shared/pipes/budhist-date.pipe';
 import { map, Observable, startWith } from 'rxjs';
-import { Course, fileTable } from 'src/app/interface/common';
+import { BudgetCreated, Course, fileTable } from 'src/app/interface/common';
 import { Employee } from 'src/app/interface/employee';
 import { trainingForm } from 'src/app/interface/form';
 import { MngDeptListRes } from 'src/app/interface/response';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { CommonService } from 'src/app/services/common.service';
+import { SwalService } from 'src/app/services/swal.service';
 import { TrainingService } from 'src/app/services/training.service';
 
 @Component({
@@ -54,6 +55,8 @@ export class TrainingFormPageComponent implements OnInit {
 
   public trainingId: string | null = null;
 
+  currentBudget: BudgetCreated = {} as BudgetCreated;
+
   constructor(
     private fb: FormBuilder,
     private apiService: ApiService,
@@ -61,6 +64,7 @@ export class TrainingFormPageComponent implements OnInit {
     private commonService: CommonService,
     private buddhistDatePipe: BuddhistDatePipe,
     private trainingService: TrainingService,
+    private swalService: SwalService
   ) {
     this.trainingForm = this.fb.group({
       company: ['', Validators.required],
@@ -90,6 +94,7 @@ export class TrainingFormPageComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.trainingService.deptBudgetCreated = []
     this.uId = this.authService.getUID();
     await this.initDeptSelectorByRole();
     await this.generateCoursesList();
@@ -131,7 +136,6 @@ export class TrainingFormPageComponent implements OnInit {
     }
 
     // console.log(this.mngDeptListRes);
-    
   }
 
   // init Generate methods
@@ -176,9 +180,29 @@ export class TrainingFormPageComponent implements OnInit {
     // when change dept name then generate active emp by dey
     await this.generateEmployeeAutoCompleteByDept(deptName);
     await this.generateApproversListByDept(deptName);
+    await this.getRemainingBudget(filterMngDeptList?.deptCode || '');
   }
 
-  generateCourseForms(courseName: string) {
+  async getRemainingBudget(deptCode: string) {
+    try {
+      const currentYear = new Date().getFullYear();
+      const res = await this.apiService
+        .findTotalRemain(String(currentYear), deptCode)
+        .toPromise();
+      if (res.responseMessage == undefined) {
+        this.currentBudget = res;
+      } else {
+        throw new Error('ไม่มีงบประมาณ');
+      }
+    } catch (error) {
+      console.error(error);
+      this.swalService.showError(`แผนก ${deptCode} ยังไม่มีงบประมาณ`);
+      this.trainingForm.reset();
+    }
+  }
+
+  coursePrice: number = 0;
+  async generateCourseForms(courseName: string) {
     const filterCourseList = this.courseList.find(
       (item) => item.courseName == courseName
     );
@@ -202,6 +226,24 @@ export class TrainingFormPageComponent implements OnInit {
         courseLocation: filterCourseList.place,
       });
 
+      // keep current price
+      this.coursePrice = filterCourseList.price;
+
+      // prepare value for search creaeted training
+      const deptCode = this.trainingForm.controls.deptCode.value || '';
+      const hasPushTraining =
+        this.trainingService.findRemainingByDeptCode(deptCode);
+
+      if (hasPushTraining) {
+        // calculate after push same deptcode in table
+        this.calculateBudgetByCourseAnotherTime(
+          hasPushTraining,
+          filterCourseList.price
+        );
+      } // calculate first time of deptcode
+      else {
+        this.calculateBudgetByCourseFirstTime(filterCourseList.price);
+      }
     } else {
       console.warn('No matching course found');
       this.trainingForm.patchValue({
@@ -212,6 +254,36 @@ export class TrainingFormPageComponent implements OnInit {
         courseTeacher: '',
         courseLocation: '',
       });
+    }
+  }
+
+  calculateBudgetByCourseAnotherTime(
+    createdBudget: BudgetCreated,
+    price: number
+  ) {
+    const selectedBudgetType = this.trainingForm.controls.formsType.value || '';
+    const sumCreatedTrainingBudget =
+      selectedBudgetType == 'training'
+        ? createdBudget.budgetTraining
+        : createdBudget.budgetCer;
+    const currentRemainingBudget =
+      selectedBudgetType == 'training'
+        ? this.currentBudget.budgetTraining
+        : this.currentBudget.budgetCer;
+    const priceTotal = sumCreatedTrainingBudget + price;
+    if (currentRemainingBudget - priceTotal < 0) {
+      this.swalService.showWarning('เกินงบประมาณ');
+    }
+  }
+
+  calculateBudgetByCourseFirstTime(price: number) {
+    const selectedBudgetType = this.trainingForm.controls.formsType.value || '';
+    const currentRemainingBudget =
+      selectedBudgetType == 'training'
+        ? this.currentBudget.budgetTraining
+        : this.currentBudget.budgetCer;
+    if (currentRemainingBudget - price < 0) {
+      this.swalService.showWarning('เกินงบประมาณ');
     }
   }
 
@@ -292,6 +364,42 @@ export class TrainingFormPageComponent implements OnInit {
       );
   }
 
+  async checkBeforePushToTable() {
+    const deptCode = this.trainingForm.controls.deptCode.value || '';
+    const hasPushTraining =
+      this.trainingService.findRemainingByDeptCode(deptCode);
+
+    if (hasPushTraining) {
+      await this.checkAndConfirmRemainingBudget(hasPushTraining);
+    } else {
+      await this.pushToTable();
+    }
+  }
+
+  async checkAndConfirmRemainingBudget(budgetCreated: BudgetCreated) {
+    const formsType = this.trainingForm.controls.formsType.value || '';
+    const usedBudget =
+      formsType == 'training'
+        ? budgetCreated.budgetTraining + this.coursePrice
+        : budgetCreated.budgetCer + this.coursePrice;
+    const currentBudgetRemaining =
+      formsType == 'training'
+        ? this.currentBudget.budgetTraining
+        : this.currentBudget.budgetCer;
+    if (currentBudgetRemaining - usedBudget < 0) {
+      const confirmedResult = await this.swalService.showConfirm(
+        'การอบรมนี้เกินเกินงบประมาณยืนยันที่จะเพิ่มหรือไม่'
+      );
+      if (confirmedResult) {
+        await this.pushToTable();
+      } else {
+        return;
+      }
+    } else {
+      await this.pushToTable();
+    }
+  }
+
   async pushToTable() {
     try {
       const empCode = this.trainingForm.controls.employeeId.value;
@@ -308,6 +416,7 @@ export class TrainingFormPageComponent implements OnInit {
       // call mapped approve id function
       const mappedApproveIds = this.mappedPriviledgeApproveId();
       if (employeeId) {
+        // prepare object for push to table
         const currentForms = {
           ...this.trainingForm.value,
           fileID: [...this.filesId],
@@ -316,6 +425,18 @@ export class TrainingFormPageComponent implements OnInit {
           ...mappedApproveIds,
           courseId,
         };
+
+        // prepare request for push to budget created
+        const deptCode = this.trainingForm.controls.deptCode.value || '';
+        const formsType = this.trainingForm.controls.formsType.value || '';
+
+        const budget: BudgetCreated = {
+          budgetCer: formsType == 'getCertificate' ? this.coursePrice : 0,
+          budgetTraining: formsType == 'training' ? this.coursePrice : 0,
+          departmentCode: deptCode,
+          year: new Date().getFullYear().toString(),
+        };
+        this.trainingService.pushSumBudget(budget);
         this.trainingService.pushTraining(currentForms);
         this.clearFormAfterPush();
       }
@@ -397,5 +518,18 @@ export class TrainingFormPageComponent implements OnInit {
         ?.id || 0;
 
     return { approveId, managerId, vicePresIdOne, vicePresIdTwo, presidentId };
+  }
+
+  formsTypeChange() {
+    this.trainingForm.patchValue({
+      courseDescription: '',
+      courseDuration: '',
+      courseLocation: '',
+      courseName: '',
+      courseObjective: '',
+      coursePrice: '',
+      courseProject: '',
+      courseTeacher: '',
+    });
   }
 }
