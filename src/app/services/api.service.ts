@@ -18,6 +18,7 @@ import {
   PrintHistoryTrainingReportRequest,
   GetExpenseReportRequest,
   PrintGeneric9ReportReq,
+  ChangePasswordReq,
 } from '../interface/request';
 import { map, Observable } from 'rxjs';
 import {
@@ -583,6 +584,18 @@ export class ApiService {
           departmentCode: deptCode,
         },
       })
+      .pipe(map((res) => res));
+  }
+
+  changePassword(
+    req: ChangePasswordReq,
+    uid: number
+  ): Observable<ApiResponse<any>> {
+    return this.http
+      .put<ApiResponse<any>>(
+        `${this.trainingUrl}/changePassword?userId=${uid}`,
+        req
+      )
       .pipe(map((res) => res));
   }
   // getSectionOneByID(id: number): Observable<any> {

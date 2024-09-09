@@ -187,3 +187,9 @@ export interface PrintGeneric9ReportReq {
   endDate: string;
   courseId: number;
 }
+
+export interface ChangePasswordReq {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}

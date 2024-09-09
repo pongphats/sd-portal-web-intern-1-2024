@@ -54,6 +54,7 @@ import { WelfareExpenseHistoryPageComponent } from './welfare-expense-history-pa
 import { ExpenseHistoryReportPdfModalComponent } from './welfare-expense-history-page/components/expense-history-report-pdf-modal/expense-history-report-pdf-modal.component';
 import { ExpenseDetailModalComponent } from './welfare-expense-history-page/components/expense-detail-modal/expense-detail-modal.component';
 import { LoginWelfarePageComponent } from './login-welfare-page/login-welfare-page.component';
+import { UserViewPageComponent } from './user-view-page/user-view-page.component';
 
 @NgModule({
   declarations: [
@@ -102,6 +103,7 @@ import { LoginWelfarePageComponent } from './login-welfare-page/login-welfare-pa
     ExpenseHistoryReportPdfModalComponent,
     ExpenseDetailModalComponent,
     LoginWelfarePageComponent,
+    UserViewPageComponent,
   ],
   imports: [
     MatIconModule,

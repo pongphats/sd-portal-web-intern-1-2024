@@ -29,6 +29,7 @@ import { WelfareExpenseHistoryComponent } from './pages/welfare-expense-history/
 import { ApproverManagePageComponent } from './pages/approver-manage-page/approver-manage-page.component';
 import { WelfareExpenseHistoryPageComponent } from './pages/welfare-expense-history-page/welfare-expense-history-page.component';
 import { LoginWelfarePageComponent } from './pages/login-welfare-page/login-welfare-page.component';
+import { UserViewPageComponent } from './pages/user-view-page/user-view-page.component';
 
 const routes: Routes = new Array<Route>(
   {
@@ -136,6 +137,10 @@ const routes: Routes = new Array<Route>(
         path: 'approver-manage',
         component: ApproverManagePageComponent,
       },
+      {
+        path : 'view-user',
+        component : UserViewPageComponent
+      }
     ),
   },
   {

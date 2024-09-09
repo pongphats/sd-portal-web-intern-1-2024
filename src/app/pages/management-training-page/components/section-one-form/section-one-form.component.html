@@ -460,6 +460,7 @@
             class="col-span-1 lg:col-span-2 flex justify-center lg:justify-end items-center mt-4 lg:mt-0"
           >
             <button
+              (mwlClick)="clearPriviledgesUser()"
               *ngIf="
                 roleCheck == 'ROLE_Admin' ||
                 roleCheck == 'ROLE_Personnel' ||
