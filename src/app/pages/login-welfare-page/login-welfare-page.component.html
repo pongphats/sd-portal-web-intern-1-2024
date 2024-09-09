@@ -1,0 +1,71 @@
+<app-header-system class="fixed w-full z-50"></app-header-system>
+<div class="flex flex-row w-full h-screen">
+  <div class="content-center w-[0%] lg:w-[50%]">
+    <!-- <img src="https://cdn.dribbble.com/users/3050354/screenshots/14646894/media/1f31948afd5401c44d4bae934f07641a.gif" alt="GIF" class="w-full h-full object-cover dark:filter dark:brightness-75 dark:contrast-75" /> -->
+    <!-- <img src="https://cdn.dribbble.com/users/1714010/screenshots/10822383/media/ea98dfbdc8c2a056427061871bb42edc.gif" alt="GIF" class="w-full h-full object-cover dark:filter dark:brightness-75 dark:contrast-75" /> -->
+    <!-- <img src="https://cdn.dribbble.com/users/3050354/screenshots/14647061/media/d1f9aa244d6346f444be525690fdc7e2.gif" alt="GIF" class="w-full h-full object-cover dark:filter dark:brightness-75 dark:contrast-75" /> -->
+    <!-- <img src="https://i.pinimg.com/originals/6d/e1/0f/6de10fff994dd378635dafbbaaee9b07.gif" alt="GIF" class="w-full h-full object-cover dark:filter dark:brightness-75 dark:contrast-75" /> -->
+    <!-- <img src="https://i.pinimg.com/originals/15/bc/1a/15bc1a87577971e7b031a7d7c7140af6.gif" alt="GIF" class="w-full h-full object-cover dark:filter dark:brightness-75 dark:contrast-75" /> -->
+    <img
+      src="https://i.pinimg.com/originals/a6/b9/77/a6b9772f51429b30df7603f93d3c8a3d.gif"
+      alt="GIF"
+      class="w-full h-full object-cover dark:filter dark:brightness-75 dark:contrast-75"
+    />
+  </div>
+  <div class="content-center w-full lg:w-[50%] ">
+    <div
+      class="shadow-md dark:shadow-lg mx-[15%] py-[10%] content-center rounded-t-[50%]  bg-content dark:bg-content-dark  "
+    >
+      <form
+        [formGroup]="authForm"
+        class="flex flex-col w-full items-center space-y-4"
+      >
+        <p class="w-full text-3xl text-center my-[10%]">เข้าสู่ระบบ (สวัสดิการ)</p>
+        <mat-form-field appearance="fill" class="w-[80%] dark:text-white">
+          <mat-label>อีเมล</mat-label>
+          <input matInput formControlName="email" required />
+          <mat-error *ngIf="this.authForm.controls.email.invalid"
+            >Email is <strong>required</strong></mat-error
+          >
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="w-[80%] dark:text-white">
+          <mat-label>รหัสผ่าน</mat-label>
+          <input
+            formControlName="password"
+            matInput
+            [type]="hide ? 'password' : 'text'"
+          />
+          <button
+            type="button"
+            mat-icon-button
+            matSuffix
+            (click)="hide = !hide"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide"
+          >
+            <i
+              class="bx scale-150"
+              [ngClass]="{
+                'bxs-show': !hide,
+                'bxs-hide': hide
+              }"
+            ></i>
+          </button>
+        </mat-form-field>
+        <button
+          class="w-[80%]"
+          [ngClass]="{
+            '!cursor-not-allowed': authForm.invalid
+          }"
+          [disabled]="authForm.invalid"
+          (click)="loginWelfare()"
+          type="button"
+          mat-raised-button
+          color="primary"
+        >
+          <span class="!text-slate-100">เข้าสู่ระบบ</span>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
