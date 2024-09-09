@@ -36,7 +36,7 @@ export class SectionOneFormComponent implements OnInit {
   vicePresList!: Employee[];
   presidentsList!: Employee[];
   empNameListFiltered: any;
-  sectionCanEditRole !: boolean
+  sectionCanEditRole!: boolean;
 
   roleCheck!: string;
 
@@ -561,5 +561,15 @@ export class SectionOneFormComponent implements OnInit {
       console.error(error);
       this.swalService.showError('เกิดข้อผิดพลาดในการดาวน์โหลดไฟล์');
     }
+  }
+
+  clearPriviledgesUser() {
+    this.trainingForm.patchValue({
+      approverName: '',
+      managerName: '',
+      vicePresName: '',
+      vicePresName2: '',
+      presidentName: '',
+    });
   }
 }

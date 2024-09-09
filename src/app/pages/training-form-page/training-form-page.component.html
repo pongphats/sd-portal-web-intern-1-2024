@@ -89,6 +89,7 @@
           formControlName="formsType"
           class="!text-font-description dark:!text-font-description-dark"
           aria-label="Select an option"
+          (change)="formsTypeChange()"
         >
           <mat-radio-button class="mr-4" value="training"
             >ฝึกอบรม/สัมมนา</mat-radio-button
@@ -449,7 +450,7 @@
       <div class="w-full flex justify-end">
         <button
           [disabled]="trainingForm.invalid"
-          (click)="pushToTable()"
+          (click)="checkBeforePushToTable()"
           [ngClass]="{
             '!bg-green-500 dark:!bg-green-600': trainingForm.valid,
             '!bg-green-300 !cursor-not-allowed': trainingForm.invalid

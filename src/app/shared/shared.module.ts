@@ -14,6 +14,7 @@ import { BuddhistDatePipe } from './pipes/budhist-date.pipe';
 import { MaterialModule } from './material/material.module';
 import { FormsTypeTranslatePipe } from './pipes/forms-type-translate.pipe';
 import { ResultTranslatePipe } from './pipes/result-translate.pipe';
+import { NumberFormatPipe } from './pipes/number-format.pipe';
 
 @NgModule({
   imports: [
@@ -40,8 +41,9 @@ import { ResultTranslatePipe } from './pipes/result-translate.pipe';
     ScrollToModule,
     FormsTypeTranslatePipe,
     BuddhistDatePipe,
-    ResultTranslatePipe
+    ResultTranslatePipe,
+    NumberFormatPipe
   ],
-  declarations: [SelectorComponent, BuddhistDatePipe, FormsTypeTranslatePipe, ResultTranslatePipe],
+  declarations: [SelectorComponent, BuddhistDatePipe, FormsTypeTranslatePipe, ResultTranslatePipe, NumberFormatPipe],
 })
 export class SharedModule {}

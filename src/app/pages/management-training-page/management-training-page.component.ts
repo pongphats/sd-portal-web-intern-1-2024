@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
 import { Position, Status, TrainingTable } from 'src/app/interface/training';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -8,6 +7,7 @@ import { CheckTrainingModalComponent } from './components/check-training-modal/c
 import { TrainingService } from 'src/app/services/training.service';
 import {
   CreateTrainingRequestForm,
+  PrintGeneric9ReportReq,
   PrintHistoryTrainingReportRequest,
   TrainingReportRequest,
 } from 'src/app/interface/request';
@@ -19,7 +19,7 @@ import { ReportModalComponent } from './components/report-modal/report-modal.com
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { TrainingSearchForms } from 'src/app/interface/form';
 import { CommonService } from 'src/app/services/common.service';
-import { Course, department, sector } from 'src/app/interface/common';
+import { Course, sector } from 'src/app/interface/common';
 import { PrintTipsModalComponent } from './components/print-tips-modal/print-tips-modal.component';
 
 @Component({
@@ -34,6 +34,7 @@ export class ManagementTrainingPageComponent implements OnInit {
   centerTrainingsList!: TrainingTable[];
   trainingTableList!: TrainingTable[];
   isCanEditSection!: boolean;
+  isPersonnel!: boolean;
   pageLength!: number;
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
@@ -44,10 +45,13 @@ export class ManagementTrainingPageComponent implements OnInit {
   positions!: Position[];
   isSearchMode: boolean = false;
   isSearchBtnDisabled: boolean = false;
+
+  get minEndDate() {
+    return this.searchFormsGroup.controls.startDate?.value; // กำหนดค่า minDate ให้ endDate
+  }
   constructor(
     private authService: AuthService,
     private apiService: ApiService,
-    private router: Router,
     public dialog: MatDialog,
     private trainingService: TrainingService,
     private swalService: SwalService,
@@ -58,7 +62,7 @@ export class ManagementTrainingPageComponent implements OnInit {
       companyName: ['PCCTH'],
       courseName: [''],
       deptAndSector: [''],
-      endDate: [null],
+      endDate: [{ value: null, disabled: true }],
       startDate: [null],
       positionName: [''],
     }) as FormGroup<TrainingSearchForms>;
@@ -73,6 +77,8 @@ export class ManagementTrainingPageComponent implements OnInit {
       roles == 'ROLE_Personnel' ||
       roles == 'ROLE_ManagerAndROLE_Personnel';
     this.isCanEditSection = isCanEditRoles;
+    this.isPersonnel =
+      roles == 'ROLE_Personnel' || roles == 'ROLE_ManagerAndROLE_Personnel';
     if (isCanEditRoles) {
       await this.findAllTrainingForAdminAndPersonal();
     } else if (roles != 'ROLE_User') {
@@ -82,6 +88,17 @@ export class ManagementTrainingPageComponent implements OnInit {
     this.searchFormsGroup.valueChanges.subscribe(() => {
       this.checkFormValidity();
     });
+
+    this.searchFormsGroup.controls.startDate?.valueChanges.subscribe(
+      (startDate) => {
+        if (startDate) {
+          this.searchFormsGroup.controls.endDate?.enable(); // เปิดการใช้งาน endDate เมื่อเลือก startDate
+          this.searchFormsGroup.controls.endDate?.setValue(null); // ล้างค่า endDate เพื่อบังคับให้ผู้ใช้เลือกใหม่
+        } else {
+          this.searchFormsGroup.controls.endDate?.disable(); // ปิดการใช้งาน endDate หากไม่มีค่าใน startDate
+        }
+      }
+    );
   }
 
   async initValueToAllSelector() {
@@ -384,6 +401,7 @@ export class ManagementTrainingPageComponent implements OnInit {
         (await this.apiService
           .getTrainingReportByTrainIdBase64(signatureReq)
           .toPromise()) || '';
+      this.trainingService.pdfReportFileName = `รายงานส่งอบรม_${data.training.user.firstname}_${data.training.courses[0].courseName}`;
       // console.log('report :', res);
       this.openReportModal(res);
 
@@ -405,7 +423,50 @@ export class ManagementTrainingPageComponent implements OnInit {
 
   // searchTraining()
 
+  async printGeneric9Report() {
+    const formValues = this.searchFormsGroup.value;
+    const courseName =
+      this.courses.find((item) => item.id == Number(formValues.courseName))
+        ?.courseName || '';
+    const req: PrintGeneric9ReportReq = {
+      courseId: Number(formValues.courseName),
+      endDate: this.commonService.formatDateToYYYYMMDDString(
+        new Date(formValues.endDate || '')
+      ),
+      startDate: this.commonService.formatDateToYYYYMMDDString(
+        new Date(formValues.startDate || '')
+      ),
+    };
+    const confirmed = await this.swalService.showConfirm(
+      'รายงานจะออกตามบริษัทที่เลือกในฟอร์มค้นหา'
+    );
+    const company = formValues.companyName || '';
+    if (confirmed) {
+      this.swalService.showLoading();
+      try {
+        const res = await this.apiService
+          .getXlsxGeneric9Base64(req)
+          .toPromise();
+        if (res) {
+          const xlsxBase64 =
+            company == 'PCCTH' ? res.PCC_Jasper : res.Wisesoft_Jasper;
+          const fileName = `รายงานส่งกรมพัฒนาฝีมือแรงงาน_${courseName}_${formValues.companyName}`;
+          this.commonService.downloadExcelFile(fileName, xlsxBase64);
+          this.swalService.showSuccess('กำลังเริ่มดาวน์โหลดไฟล์');
+        } else {
+          throw new Error('some thing went wrong!!!!!');
+        }
+      } catch (error) {
+        console.error(error);
+        this.swalService.showError('เกิดข้อผิดพลาดในการพิมพ์รายงาน');
+      }
+    } else {
+      return;
+    }
+  }
+
   async printHistoryTraining() {
+    this.swalService.showLoading();
     const formValues = this.searchFormsGroup.value;
     const deptSecValue: any = formValues.deptAndSector;
 
@@ -444,9 +505,16 @@ export class ManagementTrainingPageComponent implements OnInit {
       const res = await this.apiService
         .printHistoryTrainingReport(req)
         .toPromise();
-      console.log(res);
+      if (res == 'ไม่มีข้อมูล') {
+        this.swalService.showWarning('ไม่พบประวัติการฝึกอบรม');
+      } else {
+        this.trainingService.pdfReportFileName = 'ประวัติการส่งฝึกอบรม';
+        this.openReportModal(res || '');
+        Swal.close();
+      }
     } catch (error) {
       console.error(error);
+      this.swalService.showError('เกิดข้อผิดพลาดในพิพม์รายงาน');
     }
   }
 
@@ -491,7 +559,7 @@ export class ManagementTrainingPageComponent implements OnInit {
           : true;
 
       const matchesCourseName = formValues.courseName
-        ? item.training.courses[0].courseName === formValues.courseName
+        ? item.training.courses[0].id == Number(formValues.courseName)
         : true;
 
       return (

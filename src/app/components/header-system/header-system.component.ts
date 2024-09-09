@@ -13,6 +13,8 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ApiService } from 'src/app/services/api.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
+import { Employee } from 'src/app/interface/employee';
+import { CommonService } from 'src/app/services/common.service';
 // import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -28,12 +30,15 @@ export class HeaderSystemComponent implements OnInit {
 
   private routerSubscription!: Subscription;
 
+  userDetail: Employee = {} as Employee;
+  role: string = '';
   constructor(
     private readonly asideNavigationService: AsideNavigationService,
     private readonly themeModeService: ThemeModeService,
     private readonly elementRef: ElementRef,
     private readonly apiService: ApiService,
     private readonly authService: AuthService,
+    private readonly commonService: CommonService,
     private router: Router
   ) {
     this.themeMode = this.themeModeService.$themeMode.value;
@@ -42,6 +47,29 @@ export class HeaderSystemComponent implements OnInit {
   ngOnInit() {
     this.updateProfileIconVisibility();
     this.subscribeToRouteChanges();
+    this.getUserDetail();
+  }
+
+  getUserDetail() {
+    this.authService.getUserId().subscribe(async (value) => {
+      if (value) {
+        // console.log(value);
+        const user =
+          (await this.apiService.findUserById(value).toPromise()) ||
+          ({} as Employee);
+        // this.commonService.
+        this.role = this.commonService.translateRole(user.roles);
+        this.userDetail = user;
+      } else {
+        const uid = this.authService.getUID();
+        const user =
+          (await this.apiService.findUserById(uid).toPromise()) ||
+          ({} as Employee);
+        // this.commonService.
+        this.role = this.commonService.translateRole(user.roles);
+        this.userDetail = user;
+      }
+    });
   }
 
   private updateProfileIconVisibility() {

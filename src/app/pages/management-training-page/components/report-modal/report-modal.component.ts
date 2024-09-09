@@ -29,8 +29,9 @@ export class ReportModalComponent implements OnInit {
   }
 
   downloadReport() {
+    const fileName = this.trainingService.pdfReportFileName;
     this.commonService.downloadFileBase64(
-      'รายงานส่งอบรม',
+      fileName,
       'application/pdf',
       this.reportBase64
     );

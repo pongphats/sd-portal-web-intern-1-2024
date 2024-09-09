@@ -71,13 +71,19 @@
                       <h4
                         class="text-lg font-bold text-font-header dark:text-font-header-dark"
                       >
-                        Kangwan Tanuyudthakul
+                        {{ userDetail.firstname }} {{ userDetail.lastname }}
                       </h4>
                       <div
                         class="font-medium text-font-description dark:text-font-description-dark"
                       >
-                        <p>Kangwan</p>
-                        <p>Sr. System Analyst I</p>
+                        <p>{{ role }}</p>
+                        <p>
+                          {{
+                            userDetail.position
+                              ? userDetail.position.positionName
+                              : "-"
+                          }}
+                        </p>
                       </div>
                     </div>
                     <div
@@ -87,13 +93,7 @@
                         <div class="mt-2">
                           <em class="bx bx-envelope text-[1.3rem]"></em>
                         </div>
-                        <span>kangwant@pccth.com</span>
-                      </div>
-                      <div class="flex items-center gap-x-2">
-                        <div class="mt-2">
-                          <em class="bx bx-phone text-[1.3rem]"></em>
-                        </div>
-                        <span>{{ changePhoneFormatThai("0926645553") }}</span>
+                        <span>{{ userDetail.email }}</span>
                       </div>
                     </div>
                   </div>

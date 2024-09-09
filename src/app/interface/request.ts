@@ -123,9 +123,9 @@ export interface expenseReportRequest {
   page: number | 0;
   size: number | 10;
   companyName: string;
-  sectorId: number;
-  deptId: number;
-  userId: number;
+  sectorId: number | null;
+  deptId: number | null;
+  userId: number | null;
   startDate: string; // string format: YYYY-MM-DD (2024-12-01) , (2024-01-30)
   endDate: string; // string format: YYYY-MM-DD (2024-12-01) , (2024-01-30)
 }
@@ -166,4 +166,30 @@ export interface PrintHistoryTrainingReportRequest {
   deptID: number | null;
   courseID: number | null;
   sectorID: number | null;
+}
+
+export interface GetExpenseReportRequest {
+  companyName: string;
+  sectorName: string | null;
+  deptName: string | null;
+  userId: number | null;
+  startDate: string;
+  endDate: string;
+}
+
+export interface ExpenseReq {
+  expenseId: number;
+  empId: number;
+}
+
+export interface PrintGeneric9ReportReq {
+  startDate: string;
+  endDate: string;
+  courseId: number;
+}
+
+export interface ChangePasswordReq {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
 }

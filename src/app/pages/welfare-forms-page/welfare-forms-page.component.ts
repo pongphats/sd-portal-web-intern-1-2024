@@ -1,5 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ExpenseForm, WelfareForm } from 'src/app/interface/form';
 import { ApiService } from 'src/app/services/api.service';
 import { CommonService } from 'src/app/services/common.service';
@@ -12,6 +17,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ExpenseRemainByYearResponse } from 'src/app/interface/response';
 import { CreateExpenseRequest } from 'src/app/interface/request';
+import { BuddhistDatePipe } from '@shared/pipes/budhist-date.pipe';
 
 @Component({
   selector: 'app-welfare-forms-page',
@@ -28,7 +34,8 @@ export class WelfareFormsPageComponent implements OnInit {
     private swalService: SwalService,
     private commonService: CommonService,
     private apiService: ApiService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private buddhistDatePipe: BuddhistDatePipe
   ) {
     this.welfareForm = this.fb.group({
       fullName: ['', Validators.required],
@@ -39,7 +46,10 @@ export class WelfareFormsPageComponent implements OnInit {
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       daysCount: ['', Validators.required],
-      medicalCost: ['', [Validators.required, this.duplicateValidator.bind(this)]],
+      medicalCost: [
+        '',
+        [Validators.required, this.duplicateValidator.bind(this)],
+      ],
       roomAndBoardCost: ['', Validators.required],
       details: [''],
       notes: [''],
@@ -55,7 +65,6 @@ export class WelfareFormsPageComponent implements OnInit {
   filteredOptions!: Observable<any[]>;
 
   ngOnInit(): void {
-
     this.checkTreatmentType('opd');
 
     /**
@@ -67,22 +76,21 @@ export class WelfareFormsPageComponent implements OnInit {
     );
 
     this.expenseForm.get('startDate')?.valueChanges.subscribe(() => {
-      if (this.expenseForm.value.treatmentType === 'opd') {
+      if (this.expenseForm.value.treatmentType === 'ipd') {
         this.calculateDaysCount();
       }
     });
 
     this.expenseForm.get('endDate')?.valueChanges.subscribe(() => {
-      if (this.expenseForm.value.treatmentType === 'opd') {
+      if (this.expenseForm.value.treatmentType === 'ipd') {
         this.calculateDaysCount();
       }
     });
 
-    this.expenseForm.get('treatmentType')?.valueChanges.subscribe(value => {
+    this.expenseForm.get('treatmentType')?.valueChanges.subscribe((value) => {
       this.checkTreatmentType(value);
       this.validateAgain();
     });
-
   }
 
   /**
@@ -124,8 +132,8 @@ export class WelfareFormsPageComponent implements OnInit {
   dataPositionName: string = '';
   dataEmail: string = '';
   dataLevel: string = '';
-  dataStartDate: string = '';
-  dataPassDate: string = '';
+  dataStartDate!: string;
+  dataPassDate!: string;
   dataTypeEmp: string = '';
   // TODO: หารายละเอียดข้อมูลพนักงาน
   searchEmp() {
@@ -144,8 +152,12 @@ export class WelfareFormsPageComponent implements OnInit {
       this.dataPositionName = data.position.positionName;
       this.dataEmail = data.email;
       this.dataLevel = data.level;
-      this.dataStartDate = data.startDate || '-';
-      this.dataPassDate = data.passDate || '-';
+      this.dataStartDate = data.startDate
+        ? this.buddhistDatePipe.transform(new Date(data.startDate))
+        : 'ไม่มีข้อมูล';
+      this.dataPassDate = data.passDate
+        ? this.buddhistDatePipe.transform(new Date(data.passDate))
+        : 'ไม่มีข้อมูล';
       this.dataTypeEmp = data.typeEmp || '-';
 
       this.getExpenseRemainByUserIdAndLevel(data);
@@ -195,14 +207,14 @@ export class WelfareFormsPageComponent implements OnInit {
         this.dataRoom = this.convertNumberToStringFormat(res.room);
       }
     } catch (error) {
-      console.log('ไม่มีการระบุ Level');
+      // console.log('ไม่มีการระบุ Level');
       this.dataOPD = '';
       this.dataIPD = '';
       this.dataRoom = '';
     }
     // TODO: เก็บค่าคงเหลือตั้งต้นไว้
-    this.cloneDataOPD = this.dataOPD
-    this.cloneDataIPD = this.dataIPD
+    this.cloneDataOPD = this.dataOPD;
+    this.cloneDataIPD = this.dataIPD;
     this.validateAgain();
   }
 
@@ -218,9 +230,9 @@ export class WelfareFormsPageComponent implements OnInit {
       if (isNaN(medicalCost)) {
         return { duplicate1: true };
       } else {
-        const allowedOPD = Number(this.dataOPD.replace(',', ''))
-        const allowedIPD = Number(this.dataIPD.replace(',', ''))
-        console.log(medicalCost, allowedIPD, allowedOPD)
+        const allowedOPD = Number(this.dataOPD.replace(',', ''));
+        const allowedIPD = Number(this.dataIPD.replace(',', ''));
+        // console.log(medicalCost, allowedIPD, allowedOPD)
 
         if (type === 'opd' && medicalCost > allowedOPD) {
           return { duplicate2: true };
@@ -230,7 +242,6 @@ export class WelfareFormsPageComponent implements OnInit {
       }
     }
     return null;
-
   }
 
   /**
@@ -245,18 +256,17 @@ export class WelfareFormsPageComponent implements OnInit {
       controlRoomAndBoard?.disable();
       controlDay?.disable();
       controlDay?.setValue('0');
-      controlRoomAndBoard?.setValue('0')
+      controlRoomAndBoard?.setValue('0');
     } else {
       controlRoomAndBoard?.enable();
       controlDay?.enable();
-      this.calculateDaysCount()
+      this.calculateDaysCount();
     }
   }
 
   //TODO: save/update รายการการเบิกค่ารักษาพยาาบาล
   async onSave() {
     if (this.expenseForm.valid && this.welfareForm.valid) {
-
       let startDate = '';
       let endDate = '';
       const startDateValue = this.expenseForm.value.startDate;
@@ -308,13 +318,15 @@ export class WelfareFormsPageComponent implements OnInit {
 
       //TODO: update
       if (this.editMode) {
-        console.log('edit req:', req);
+        // console.log('edit req:', req);
         const confirmed = await this.swalService.showConfirm(
           'คุณต้องการแก้ไขรายการเบิกค่ารักษาพยาบาลนี้หรือไม่'
         );
         if (confirmed) {
-          const res = await this.apiService.updateExpense(req, this.editId).toPromise();
-          console.log(res)
+          const res = await this.apiService
+            .updateExpense(req, this.editId)
+            .toPromise();
+          // console.log(res)
           if (res?.responseMessage == 'แก้ไขข้อมูลเรียบร้อย') {
             this.swalService.showSuccess(
               'แก้ไขรายการการเบิกค่ารักษาพยาบาลเรียบร้อยแล้ว'
@@ -322,12 +334,12 @@ export class WelfareFormsPageComponent implements OnInit {
             this.clearForm();
           }
         } else {
-          console.log('ไม่แก้ไข');
+          // console.log('ไม่แก้ไข');
         }
       }
       //TODO: create
       else {
-        console.log("create req: ", req)
+        // console.log("create req: ", req)
         const res = await this.apiService.createExpense(req).toPromise();
         if (res?.responseMessage == 'กรอกข้อมูลเรียบร้อย') {
           this.swalService.showSuccess(
@@ -352,8 +364,8 @@ export class WelfareFormsPageComponent implements OnInit {
     });
     this.editMode = false;
     this.editId = -1;
-    this.dataOPD = this.cloneDataOPD
-    this.dataIPD = this.cloneDataIPD
+    this.dataOPD = this.cloneDataOPD;
+    this.dataIPD = this.cloneDataIPD;
   }
 
   calculateDaysCount(): void {
@@ -394,7 +406,7 @@ export class WelfareFormsPageComponent implements OnInit {
    * part3
    */
   searchHistoryByYear() {
-    console.log(this.yearForm.value.yearSearch);
+    // console.log(this.yearForm.value.yearSearch);
   }
 
   /**
@@ -416,7 +428,7 @@ export class WelfareFormsPageComponent implements OnInit {
     'editOrDelete',
   ];
 
-    // TODO: หาลิสต์ประวัติการเบิกค่ารักษาพยาบาลโดย uid และ year
+  // TODO: หาลิสต์ประวัติการเบิกค่ารักษาพยาบาลโดย uid และ year
   async getExpenseUidAndYear() {
     if (this.dataEmp) {
       const yearInput = this.yearForm.value.yearSearch;
@@ -449,16 +461,20 @@ export class WelfareFormsPageComponent implements OnInit {
   editId!: number;
   editBtn(element: ExpenseRemainByYearResponse) {
     this.editMode = true;
-    this.editId = element.id
+    this.editId = element.id;
     const type = element.opd !== 0 ? 'opd' : 'ipd';
     const medicalCost = element.opd !== 0 ? element.opd : element.ipd;
 
     if (type == 'opd') {
-      this.dataOPD = this.convertNumberToStringFormat(Number(this.cloneDataOPD.replace(',', '')) + element.canWithdraw)
-      this.dataIPD = this.cloneDataIPD
+      this.dataOPD = this.convertNumberToStringFormat(
+        Number(this.cloneDataOPD.replace(',', '')) + element.canWithdraw
+      );
+      this.dataIPD = this.cloneDataIPD;
     } else {
-      this.dataIPD = this.convertNumberToStringFormat(Number(this.cloneDataIPD.replace(',', '')) + element.canWithdraw)
-      this.dataOPD = this.cloneDataOPD
+      this.dataIPD = this.convertNumberToStringFormat(
+        Number(this.cloneDataIPD.replace(',', '')) + element.canWithdraw
+      );
+      this.dataOPD = this.cloneDataOPD;
     }
 
     this.expenseForm.setValue({
@@ -478,7 +494,7 @@ export class WelfareFormsPageComponent implements OnInit {
       'คุณต้องการลบรายการเบิกนี้หรือไม่'
     );
     if (confirmed) {
-      console.log('ลบแล้ว');
+      // console.log('ลบแล้ว');
       const res = await this.apiService.deleteExpense(element.id).toPromise();
       if (res?.responseMessage == 'ลบข้อมูลเรียบร้อย') {
         this.swalService.showSuccess(
@@ -487,7 +503,7 @@ export class WelfareFormsPageComponent implements OnInit {
         this.searchEmp();
       }
     } else {
-      console.log('ไม่ลบ');
+      // console.log('ไม่ลบ');
     }
   }
 

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { LoginRequest } from '../interface/request';
 import { LoginResponse } from '../interface/response';
@@ -12,7 +12,19 @@ import { LoginResponse } from '../interface/response';
 export class AuthService {
   authUrl: string = environment.trainingService;
 
+  // loginUser = new BehaviorSubject
+
+  private userId = new BehaviorSubject<number>(0);
+
   constructor(private http: HttpClient, private jwtService: JwtHelperService) {}
+
+  setUserId(value: number) {
+    this.userId.next(value);
+  }
+
+  getUserId(): Observable<number> {
+    return this.userId.asObservable();
+  }
 
   checkRole(): string {
     const accessToken = localStorage.getItem('access_token');

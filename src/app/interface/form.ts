@@ -147,3 +147,12 @@ export interface TrainingSearchForms {
   courseName: FormControl<string | null>;
   positionName: FormControl<any>;
 }
+
+export interface SearchExpenseHistoryForms {
+  companyName: FormControl<string | null>;
+  sectorName: FormControl<string | null>;
+  deptName: FormControl<string | null>;
+  empName: FormControl<string | null>;
+  startDate: FormControl<Date | null>;
+  endDate: FormControl<Date | null>;
+}

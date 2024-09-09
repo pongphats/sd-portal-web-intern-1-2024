@@ -85,3 +85,37 @@ export interface ExpenseWelfare {
   endDate: string; // ISO 8601 datetime format
   canWithdraw: number;
 }
+
+export interface ExpenseDetail {
+  companyName: string;
+  expenseType: string;
+  dateOfAdmission: string;
+  firstName: string;
+  lastName: string;
+  positionName: string;
+  sectorName: string;
+  deptName: string;
+  empLevel: string;
+  withdrawReq: string;
+  roomService: string;
+  canWithdraw: string;
+  remark: string;
+  description: string;
+  dateRange: string;
+  dateCount: string;
+}
+
+export interface DeptBudget {
+  year: string;
+  departmentCode: string;
+  budgetCer: number;
+  budgetTraining: number;
+  budgetTotal: number;
+}
+
+export interface BudgetCreated {
+  year: string;
+  departmentCode: string;
+  budgetCer: number;
+  budgetTraining: number;
+}
