@@ -47,7 +47,7 @@ export class WelfareExpenseHistoryComponent implements OnInit {
     const dialogRef = this.dialog.open(DialogContentComponent);
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
+      // console.log(`Dialog result: ${result}`);
     });
   }
 
@@ -117,7 +117,7 @@ export class WelfareExpenseHistoryComponent implements OnInit {
     //--------สอง------
     // ฟังการเปลี่ยนแปลงของแผนก (deptName)
     this.expenseForm.get('deptName')?.valueChanges.subscribe(async (deptId) => {
-      console.log('deptId', deptId);
+      // console.log('deptId', deptId);
       if (deptId) {
         this.expenseForm.patchValue({
           empName: '',
@@ -141,7 +141,7 @@ export class WelfareExpenseHistoryComponent implements OnInit {
           tap((filteredOptions) => {
             // เช็คว่ามีข้อมูล emp ที่ตรงกับ empName หรือไม่
             if (filteredOptions.length === 1) {
-              console.log('filteredOptions', filteredOptions);
+              // console.log('filteredOptions', filteredOptions);
               // ถ้ามีข้อมูล emp เดียวที่ตรงกัน เก็บข้อมูลนั้นใน dataEmp
               this.dataEmp = filteredOptions[0];
             } else {
@@ -196,7 +196,7 @@ export class WelfareExpenseHistoryComponent implements OnInit {
             ...item,
             fullName: `${item.firstname} ${item.lastname}`,
           }));
-          console.log(this.dataListEmp);
+          // console.log(this.dataListEmp);
           return this.dataListEmp;
         }
       })
@@ -234,10 +234,10 @@ export class WelfareExpenseHistoryComponent implements OnInit {
   // }
 
   getSectors(companyName: string) {
-    console.log('Fetching sectors for company:', companyName);
+    // console.log('Fetching sectors for company:', companyName);
     this.commonService.getSectorCompanyByName(companyName).subscribe({
       next: (res) => {
-        console.log('Sectors fetched:', res);
+        // console.log('Sectors fetched:', res);
         this.sectorOptions = res; // `res` คือค่าที่ได้รับจาก observable
 
         // // รีเซ็ต sectorName ให้ไม่มีค่าเพื่อให้แน่ใจว่าเมื่อเปลี่ยนบริษัท
@@ -250,7 +250,7 @@ export class WelfareExpenseHistoryComponent implements OnInit {
         console.error('เกิดข้อผิดพลาดในการดึงข้อมูล:', error);
       },
     });
-    console.log('api');
+    // console.log('api');
   }
 
   // ----------------------------------
@@ -260,7 +260,7 @@ export class WelfareExpenseHistoryComponent implements OnInit {
   getDepartments(sectorId: number) {
     this.commonService.getDeptListBySectorId(sectorId).subscribe({
       next: (res) => {
-        console.log('Departments fetched::', res);
+        // console.log('Departments fetched::', res);
         this.deptOptions = res;
         this.expenseForm.get('deptName')?.reset();
         // this.expenseForm.get('empName')?.reset();
@@ -339,7 +339,7 @@ export class WelfareExpenseHistoryComponent implements OnInit {
   //สอง
   getEmpByDeptId(deptId: number): Observable<any[]> {
     return this.apiService.getEmpByDeptId(deptId).pipe(
-      tap((emp) => console.log(emp)), // ใช้ tap เพื่อแสดงค่า emp ในคอนโซล
+      tap((emp) => emp), // ใช้ tap เพื่อแสดงค่า emp ในคอนโซล
       map((emp) =>
         emp.map((item: Employee) => ({
           ...item,

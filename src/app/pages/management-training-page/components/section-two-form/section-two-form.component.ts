@@ -61,7 +61,7 @@ export class SectionTwoFormComponent implements OnInit {
   }
 
   async initSectionTwo() {
-    console.log('pure : initSectionTwo')
+    // console.log('pure : initSectionTwo')
     try {
       const data = this.trainingService.trainingEditData;
 
@@ -163,7 +163,7 @@ export class SectionTwoFormComponent implements OnInit {
 
     this.ressonForm.get('conclusion')?.valueChanges.subscribe(value => {
 
-      console.log("value", value)
+      // console.log("value", value)
       // *CASE1 = noResult
       if (value === 'noResult') {
         this.evaluatorForm.reset({

@@ -7,8 +7,10 @@ import {
 } from '@angular/forms';
 import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
 import { Employee } from 'src/app/interface/employee';
+import { ApiResponse, MngDeptListRes } from 'src/app/interface/response';
 
 import { ApiService } from 'src/app/services/api.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { SwalService } from 'src/app/services/swal.service';
 
 @Component({
@@ -29,7 +31,8 @@ export class SignaturePageComponent implements OnInit {
     private fb: FormBuilder,
     private swalService: SwalService,
     private apiService: ApiService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private authService: AuthService
   ) {
     this.signaturePage = this.fb.group({
       id: [''],
@@ -47,11 +50,29 @@ export class SignaturePageComponent implements OnInit {
   protected getEmployee() {
     this.apiService
       .getAllPrivilegeApprovers()
-      .subscribe((employees: Employee[]) => {
-        this.employees = employees.map((employee) => ({
-          id: employee.id,
-          fullName: `${employee.firstname} ${employee.lastname}`,
-        }));
+      .subscribe(async (employees: Employee[]) => {
+        const loginId = this.authService.getUID();
+        const mngDeptListRes =
+          (await this.apiService
+            .getManageDeptsListByUserId(loginId)
+            .toPromise()) || ({} as ApiResponse<MngDeptListRes[]>);
+        const mngDeptList = mngDeptListRes.responseData.result;
+        const filteredEmployees = employees.filter((emp) =>
+          mngDeptList.some((dept) => dept.deptId === emp.department.id)
+        );
+
+        const role = this.authService.checkRole();
+        if (role == 'ROLE_Admin') {
+          this.employees = filteredEmployees.map((employee) => ({
+            id: employee.id,
+            fullName: `${employee.firstname} ${employee.lastname}`,
+          }));
+        } else {
+          this.employees = employees.map((employee) => ({
+            id: employee.id,
+            fullName: `${employee.firstname} ${employee.lastname}`,
+          }));
+        }
       });
   }
 

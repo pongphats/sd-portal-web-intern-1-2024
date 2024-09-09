@@ -53,7 +53,7 @@
         <h1
           class="text-2xl font-bold text-font-header dark:text-font-header-dark"
         >
-          PCC-SD Portal
+          {{ isWelfarePortal ? "PCC-Welfare" : "PCC-Training" }}
         </h1>
       </div>
       <!-- <div class="absolute cursor-pointer top-6 -right-4 xl:hidden" (click)="onToggleAsideNavigation()">
@@ -65,212 +65,163 @@
       </div> -->
     </div>
     <hr />
-    <nav class="flex flex-col items-start w-full p-3 gap-y-1 overflow-y-auto">
+    <nav
+      *ngIf="!isWelfarePortal"
+      class="flex flex-col items-start w-full p-3 gap-y-1 overflow-y-auto"
+    >
       <div class="w-full">
         <a
-          [routerLink]="['/pccth']"
+          [routerLink]="['/pccth/management-users']"
           [routerLinkActiveOptions]="{ exact: true }"
           [routerLinkActive]="['active-link']"
           class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
           (click)="onCloseAsideNavigationToLink()"
         >
           <div class="mt-[0.1rem]">
-            <em class="text-xl bx bx-home"></em>
+            <em class="text-xl bx bx-sitemap"></em>
           </div>
           <div>
-            <span class="text-base">หน้าหลัก</span>
+            <span class="text-base">จัดการข้อมูลพนักงาน</span>
           </div>
         </a>
       </div>
       <div class="w-full">
         <a
-          [routerLink]="['/pccth/news']"
+          [routerLink]="['/pccth/manage-course-page']"
           [routerLinkActive]="['active-link']"
           class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
           (click)="onCloseAsideNavigationToLink()"
         >
           <div class="mt-[0.1rem]">
-            <em class="text-xl bx bx-news"></em>
+            <em class="text-xl bx bxs-chalkboard"></em>
           </div>
           <div>
-            <span class="text-base">ข่าวสาร</span>
+            <span class="text-base">จัดการข้อมูลหัวข้อการอบรม</span>
           </div>
         </a>
       </div>
 
-      <!-- ฝึกอบรม -->
-      <div class="w-full">
-        <input
-          type="checkbox"
-          id="toggle-submenu-training"
-          class="hidden toggle-submenu-training"
-        />
-        <label
-          for="toggle-submenu-training"
-          class="flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-        >
-          <div class="flex items-center gap-x-4">
-            <div class="mt-[0.1rem]">
-              <em class="bx bx-folder-open"></em>
-            </div>
-            <div>
-              <span class="text-base">ฝึกอบรม</span>
-            </div>
-          </div>
-          <div>
-            <em class="bx bx-chevron-right"></em>
-          </div>
-        </label>
-        <div
-          class="flex flex-col items-start w-full overflow-hidden bg-transparent gap-y-1 submenu-training"
-        >
-          <div class="w-full">
-            <a
-              [routerLink]="['/pccth/signature-page']"
-              [routerLinkActive]="['active-link']"
-              class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-              (click)="onCloseAsideNavigationToLink()"
-            >
-              <div class="mt-[0.2rem]">
-                <em class="bx bx-chevron-right"></em>
-              </div>
-              <div>
-                <span class="text-sm">อัปโหลดลายเซ็น</span>
-              </div>
-            </a>
-          </div>
-          <!-- <div class="w-full">
-            <a [routerLink]="['/pccth/ftr-of1']" [routerLinkActive]="['active-link']"
-        <div
-          class="flex flex-col items-start w-full overflow-hidden bg-transparent gap-y-1 submenu-training"
-        >
-          <div class="w-full">
-            <a
-              [routerLink]="['/pccth/ftr-of1']"
-              [routerLinkActive]="['active-link']"
-              class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-              (click)="onCloseAsideNavigationToLink()"
-            >
-              <div class="mt-[0.2rem]">
-                <em class="bx bx-chevron-right"></em>
-              </div>
-              <div>
-                <span class="text-sm">FTR-OF1</span>
-              </div>
-            </a>
-          </div> -->
-          <div class="w-full">
-            <a
-              [routerLink]="['/pccth/training-forms']"
-              [routerLinkActive]="['active-link']"
-              class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-              (click)="onCloseAsideNavigationToLink()"
-            >
-              <div class="mt-[0.2rem]">
-                <em class="bx bx-chevron-right"></em>
-              </div>
-              <div>
-                <span class="text-sm">ฟอร์มส่งฝึกอบรม</span>
-              </div>
-            </a>
-          </div>
-          <div class="w-full">
-            <a
-              [routerLink]="['/pccth/management-training']"
-              [routerLinkActive]="['active-link']"
-              class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-              (click)="onCloseAsideNavigationToLink()"
-            >
-              <div class="mt-[0.2rem]">
-                <em class="bx bx-chevron-right"></em>
-              </div>
-              <div>
-                <span class="text-sm">รายละเอียดการส่งพนักงานเข้าอบรม</span>
-              </div>
-            </a>
-          </div>
-          <div class="w-full">
-            <a
-              [routerLink]="['/pccth/ftr-sv1']"
-              [routerLinkActive]="['active-link']"
-              class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-              (click)="onCloseAsideNavigationToLink()"
-            >
-              <div class="mt-[0.2rem]">
-                <em class="bx bx-chevron-right"></em>
-              </div>
-              <div>
-                <span class="text-sm">งบประมาณประจำปี</span>
-              </div>
-            </a>
-          </div>
-          <div class="w-full">
-            <a
-              [routerLink]="['/pccth/manage-course-page']"
-              [routerLinkActive]="['active-link']"
-              class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-              (click)="onCloseAsideNavigationToLink()"
-            >
-              <div class="mt-[0.2rem]">
-                <em class="bx bx-chevron-right"></em>
-              </div>
-              <div>
-                <span class="text-sm">หัวข้อในการฝึกอบรม</span>
-              </div>
-            </a>
-          </div>
-          <div class="w-full">
-            <a
-              [routerLink]="['/pccth/management-users']"
-              [routerLinkActive]="['active-link']"
-              class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-              (click)="onCloseAsideNavigationToLink()"
-            >
-              <div class="mt-[0.2rem]">
-                <em class="bx bx-chevron-right"></em>
-              </div>
-              <div>
-                <span class="text-sm">จัดการพนักงาน</span>
-              </div>
-            </a>
-          </div>
-          <div class="w-full">
-            <a
-              [routerLink]="['/pccth/management-company']"
-              [routerLinkActive]="['active-link']"
-              class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-              (click)="onCloseAsideNavigationToLink()"
-            >
-              <div class="mt-[0.2rem]">
-                <em class="bx bx-chevron-right"></em>
-              </div>
-              <div>
-                <span class="text-sm">จัดการ ฝ่าย/แผนก</span>
-              </div>
-            </a>
-          </div>
-          <div class="w-full">
-            <a
-              [routerLink]="['/pccth/approver-manage']"
-              [routerLinkActive]="['active-link']"
-              class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-              (click)="onCloseAsideNavigationToLink()"
-            >
-              <div class="mt-[0.2rem]">
-                <em class="bx bx-chevron-right"></em>
-              </div>
-              <div>
-                <span class="text-sm">จัดการผู้ลงนามอนุมัติ</span>
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <!-- สวัสดิการ -->
       <div class="w-full">
         <a
-          [routerLink]="['/login-welfare']"
+          [routerLink]="['/pccth/signature-page']"
+          [routerLinkActive]="['active-link']"
+          class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
+          (click)="onCloseAsideNavigationToLink()"
+        >
+          <div class="mt-[0.1rem]">
+            <em class="text-xl bx bxs-pen"></em>
+          </div>
+          <div>
+            <span class="text-base">อัปโหลดลายเซ็น</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="w-full">
+        <a
+          [routerLink]="['/pccth/training-forms']"
+          [routerLinkActive]="['active-link']"
+          class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
+          (click)="onCloseAsideNavigationToLink()"
+        >
+          <div class="mt-[0.1rem]">
+            <em class="text-xl bx bxs-edit"></em>
+          </div>
+          <div>
+            <span class="text-base">ฟอร์มที่ส่งฝึกอบรม</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="w-full">
+        <a
+          [routerLink]="['/pccth/management-budget']"
+          [routerLinkActive]="['active-link']"
+          class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
+          (click)="onCloseAsideNavigationToLink()"
+        >
+          <div class="mt-[0.1rem]">
+            <em class="text-xl bx bxs-dollar-circle"></em>
+          </div>
+          <div>
+            <span class="text-base">งบประมาณการฝึกอบรมประจำปี</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="w-full">
+        <a
+          [routerLink]="['/pccth/management-training']"
+          [routerLinkActive]="['active-link']"
+          class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
+          (click)="onCloseAsideNavigationToLink()"
+        >
+          <div class="mt-[0.1rem]">
+            <em class="text-xl bx bx-spreadsheet"></em>
+          </div>
+          <div>
+            <span class="text-base">รายละเอียดการส่งพนักงานเข้าอบรม</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="w-full">
+        <a
+          [routerLink]="['/pccth/management-company']"
+          [routerLinkActive]="['active-link']"
+          class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
+          (click)="onCloseAsideNavigationToLink()"
+        >
+          <div class="mt-[0.1rem]">
+            <em class="text-xl bx bxs-buildings"></em>
+          </div>
+          <div>
+            <span class="text-base">จัดการ ฝ่าย/แผนก</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="w-full">
+        <a
+          [routerLink]="['/pccth/approver-manage']"
+          [routerLinkActive]="['active-link']"
+          class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
+          (click)="onCloseAsideNavigationToLink()"
+        >
+          <div class="mt-[0.1rem]">
+            <em class="text-xl bx bxs-crown"></em>
+          </div>
+          <div>
+            <span class="text-base">จัดการ ผู้ลงนามอนุมัติ</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="w-full">
+        <a
+          [routerLink]="['/pccth/view-user']"
+          [routerLinkActive]="['active-link']"
+          class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
+          (click)="onCloseAsideNavigationToLink()"
+        >
+          <div class="mt-[0.1rem]">
+            <em class="text-xl bx bx-user"></em>
+          </div>
+          <div>
+            <span class="text-base">ผู้ใช้</span>
+          </div>
+        </a>
+      </div>
+    </nav>
+    <!-- training portal end navbar -->
+    <!-- welfare portail start navbar -->
+    <nav
+      *ngIf="isWelfarePortal"
+      class="flex flex-col items-start w-full p-3 gap-y-1 overflow-y-auto"
+    >
+      <div class="w-full">
+        <a
+          [routerLink]="['/pccth/wellfare-portal/welfare-forms']"
           [routerLinkActive]="['active-link']"
           class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
           (click)="onCloseAsideNavigationToLink()"
@@ -279,28 +230,30 @@
             <em class="text-lg bx bxs-shield-plus"></em>
           </div>
           <div>
-            <span class="text-base">เข้าสู่ระบบสวัสดิการ</span>
+            <span class="text-base">เบิกค่ารักษาพยาบาล</span>
           </div>
         </a>
       </div>
+
       <div class="w-full">
         <a
-          [routerLink]="['/pccth/welfare-forms']"
+          [routerLink]="['/pccth/wellfare-portal/welfare-expense-history']"
           [routerLinkActive]="['active-link']"
           class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
           (click)="onCloseAsideNavigationToLink()"
         >
           <div class="mt-[0.1rem]">
-            <em class="text-lg bx bxs-shield-plus"></em>
+            <em class="text-lg bx bx-table"></em>
           </div>
           <div>
-            <span class="text-base">ฟอร์มเบิกค่ารักษาพยาบาล</span>
+            <span class="text-base">ประวัติการเบิกค่ารักษาพยาบาล</span>
           </div>
         </a>
       </div>
+
       <div class="w-full">
         <a
-          [routerLink]="['/pccth/budget-wellfare-manage']"
+          [routerLink]="['/pccth/wellfare-portal/budget-wellfare-manage']"
           [routerLinkActive]="['active-link']"
           class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
           (click)="onCloseAsideNavigationToLink()"
@@ -314,50 +267,34 @@
         </a>
       </div>
 
-      <!-- อื่นๆ -->
       <div class="w-full">
         <a
-          [routerLink]="['/pccth/welfare-expense-history']"
+          [routerLink]="['/pccth/wellfare-portal/management-users']"
+          [routerLinkActiveOptions]="{ exact: true }"
           [routerLinkActive]="['active-link']"
           class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
           (click)="onCloseAsideNavigationToLink()"
         >
           <div class="mt-[0.1rem]">
-            <!-- <i class="bx bx-plus-medical bx-rotate-90"></i> -->
-
-            <i class="bx bx-table"></i>
+            <em class="text-xl bx bx-sitemap"></em>
           </div>
           <div>
-            <span class="text-base">ตารางเบิกค่ารักษาพยาบาล</span>
+            <span class="text-base">จัดการข้อมูลพนักงาน</span>
           </div>
         </a>
       </div>
       <div class="w-full">
         <a
-          [routerLink]="['/pccth/sign-in']"
-          [routerLinkActive]="['active-link']"
-          class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-        >
-          <div class="mt-[0.1rem]">
-            <em class="text-xl bx bx-key"></em>
-          </div>
-          <div>
-            <span class="text-base">เข้าสู่ระบบ</span>
-          </div>
-        </a>
-      </div>
-      <div class="w-full">
-        <a
-          [routerLink]="['/pccth/calender']"
+          [routerLink]="['/pccth/wellfare-portal/management-company']"
           [routerLinkActive]="['active-link']"
           class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
           (click)="onCloseAsideNavigationToLink()"
         >
           <div class="mt-[0.1rem]">
-            <em class="bx bx-calendar"></em>
+            <em class="text-xl bx bxs-buildings"></em>
           </div>
           <div>
-            <span class="text-base">ปฏิทินงาน</span>
+            <span class="text-base">จัดการ ฝ่าย/แผนก</span>
           </div>
         </a>
       </div>
@@ -369,156 +306,12 @@
           (click)="onCloseAsideNavigationToLink()"
         >
           <div class="mt-[0.1rem]">
-            <em class="bx bxs-user"></em>
+            <em class="text-xl bx bx-user"></em>
           </div>
           <div>
             <span class="text-base">ผู้ใช้</span>
           </div>
         </a>
-      </div>
-
-      <!-- งานประจำวัน -->
-      <div class="w-full">
-        <input
-          type="checkbox"
-          id="toggle-submenu-job"
-          class="hidden toggle-submenu-job"
-        />
-        <label
-          for="toggle-submenu-job"
-          class="flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-        >
-          <div class="flex items-center gap-x-4">
-            <div class="mt-[0.1rem]">
-              <em class="bx bx-box"></em>
-            </div>
-            <div>
-              <span class="text-base">งานประจำวัน</span>
-            </div>
-          </div>
-          <div>
-            <em class="bx bx-chevron-right"></em>
-          </div>
-        </label>
-        <div
-          class="flex flex-col items-start w-full overflow-hidden bg-transparent gap-y-1 submenu-job"
-        >
-          <div class="w-full">
-            <a
-              [routerLink]="['/pccth/view-user']"
-              [routerLinkActive]="['active-link']"
-              class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-              (click)="onCloseAsideNavigationToLink()"
-            >
-              <div class="mt-[0.2rem]">
-                <em class="bx bxs-user"></em>
-              </div>
-              <div>
-                <span class="text-base">ผู้ใช้</span>
-              </div>
-            </a>
-          </div>
-          <div class="w-full">
-            <a
-              [routerLink]="['/pccth/job-day-view']"
-              class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-              (click)="onCloseAsideNavigationToLink()"
-            >
-              <div class="mt-[0.2rem]">
-                <em class="bx bx-chevron-right"></em>
-              </div>
-              <div>
-                <span class="text-base">งานประจำวัน</span>
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <!-- ผู้ดูแลระบบ -->
-      <div class="w-full">
-        <input
-          type="checkbox"
-          id="toggle-submenu-admin"
-          class="hidden toggle-submenu-admin"
-        />
-        <label
-          for="toggle-submenu-admin"
-          class="flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-        >
-          <div class="flex items-center gap-x-4">
-            <div class="mt-[0.1rem]">
-              <em class="bx bx-desktop"></em>
-            </div>
-            <div>
-              <span class="text-base">ผู้ดูแลระบบ</span>
-            </div>
-          </div>
-          <div class="mt-[0.1rem]">
-            <em class="bx bx-chevron-right"></em>
-          </div>
-        </label>
-        <div
-          class="flex flex-col items-start w-full overflow-hidden bg-transparent gap-y-1 submenu-admin"
-        >
-          <div class="w-full">
-            <a
-              [routerLink]="['/pccth/']"
-              class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-              (click)="onCloseAsideNavigationToLink()"
-            >
-              <div class="mt-[0.2rem]">
-                <em class="bx bx-chevron-right"></em>
-              </div>
-              <div>
-                <span class="text-base">จัดการข้อมูลข่าวสาร</span>
-              </div>
-            </a>
-          </div>
-          <div class="w-full">
-            <a
-              [routerLink]="['/pccth/']"
-              class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-              (click)="onCloseAsideNavigationToLink()"
-            >
-              <div class="mt-[0.2rem]">
-                <em class="bx bx-chevron-right"></em>
-              </div>
-              <div>
-                <span class="text-base">Dashboard Management</span>
-              </div>
-            </a>
-          </div>
-          <div class="w-full">
-            <a
-              [routerLink]="['/pccth/management-role']"
-              class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-              (click)="onCloseAsideNavigationToLink()"
-            >
-              <div class="mt-[0.2rem]">
-                <em class="bx bx-chevron-right"></em>
-              </div>
-              <div>
-                <span class="text-base">Role Management</span>
-              </div>
-            </a>
-          </div>
-
-          <div class="w-full">
-            <a
-              [routerLink]="['/pccth/management-company']"
-              class="flex items-center justify-start px-3 py-2 rounded-lg gap-x-4 text-font-description hover:bg-font-description-hover dark:text-font-header-dark dark:hover:bg-gray-100/5"
-              (click)="onCloseAsideNavigationToLink()"
-            >
-              <div class="mt-[0.2rem]">
-                <em class="bx bx-chevron-right"></em>
-              </div>
-              <div>
-                <span class="text-base">จัดการแผนก</span>
-              </div>
-            </a>
-          </div>
-        </div>
       </div>
     </nav>
   </div>

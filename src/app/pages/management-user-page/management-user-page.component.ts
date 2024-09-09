@@ -130,7 +130,7 @@ export class ManagementUserPageComponent implements OnInit, AfterViewInit {
       .map((company) => company.sectors)
       .flat();
 
-    console.log(this.allSectorDepts);
+    // console.log(this.allSectorDepts);
   }
 
   filterDeptBySectors(sectorName: string) {
@@ -298,7 +298,7 @@ export class ManagementUserPageComponent implements OnInit, AfterViewInit {
   mngDeptIdList: number[] = [];
   mngSectorIdList: number[] = [];
   initialUserToForms(data: Employee) {
-    console.log(data, typeof data);
+    // console.log(data, typeof data);
     this.isEditMode = true;
     this.mngDeptIdList = data.departments.map((dept) => dept.id);
     this.mngSectorIdList = data.sectors.map((sector) => sector.id);

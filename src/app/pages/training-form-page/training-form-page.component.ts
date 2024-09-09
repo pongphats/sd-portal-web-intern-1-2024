@@ -102,7 +102,7 @@ export class TrainingFormPageComponent implements OnInit {
   }
 
   checkValue(value: any) {
-    console.log(value, typeof value);
+    // console.log(value, typeof value);
   }
 
   async initDeptSelectorByRole() {

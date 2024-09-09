@@ -58,20 +58,19 @@ export class LoginPageComponent {
       const res = await this.autService.login(req).toPromise();
       if (res?.msg == 'Login successful') {
         localStorage.setItem('access_token', res.accessToken);
-        const userId = this.autService.getUID()
+        const userId = this.autService.getUID();
         this.autService.setUserId(userId);
-        this.router.navigate(['/pccth']);
+        this.router.navigate(['/pccth/management-training']);
       } else {
         throw new Error(res?.msg);
       }
 
       // hide loading
       Swal.close();
-
     } catch (error) {
       // show error
       console.error(error);
-      this.swalService.showError('ลองใหม่อีกครั้ง');
+      this.swalService.showError('โปรดตรวจสอบ Email และ รหัสผ่านใหม่อีกครั้ง');
     }
   }
 }

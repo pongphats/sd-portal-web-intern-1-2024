@@ -268,11 +268,11 @@ export class ManageCompanyComponent implements OnInit {
           .getSectorAndDeptsListByCompanyName(companyId)
           .toPromise()) || [];
 
-      console.log('OtherCompany sector: ', companySectors);
+      // console.log('OtherCompany sector: ', companySectors);
 
       this.dataManageCompany.data = companySectors;
 
-      console.log('Data for table:', this.dataManageCompany.data);
+      // console.log('Data for table:', this.dataManageCompany.data);
     } catch (error) {
       console.error('Error loading manage company data:', error);
     }
@@ -298,7 +298,7 @@ export class ManageCompanyComponent implements OnInit {
   adminRes: any;
   async onRowClick(row: any) {
     this.selectedSector = row;
-    console.log(row);
+    // console.log(row);
     this.deptId = row.department.id;
 
     // Fetch admin details
@@ -310,12 +310,12 @@ export class ManageCompanyComponent implements OnInit {
       this.adminRes = await this.apiService
         .getAdminByDeptCodeDeptNameCompanyName(deptCode, deptName, companyName)
         .toPromise();
-      console.log('adminRes', this.adminRes);
+      // console.log('adminRes', this.adminRes);
 
       if (this.adminRes) {
         const admin = this.adminRes; // Assuming this is the response from your API
         const fullName = `${admin.title} ${admin.firstname} ${admin.lastname}`;
-        console.log('fullname', fullName);
+        // console.log('fullname', fullName);
 
         this.sectorManageForm.patchValue({
           company: row.company,
@@ -364,7 +364,7 @@ export class ManageCompanyComponent implements OnInit {
       this.clearForm();
       await this.loadSpecificCompanySectors(); //update table หลัง ลบ
     } else {
-      console.log('cancel');
+      // console.log('cancel');
     }
   }
 
@@ -392,7 +392,7 @@ export class ManageCompanyComponent implements OnInit {
 
       // Handle cases where response might be undefined ตรวจสอบว่า response ไม่เป็น undefined และเป็น array
       if (responsePosition && Array.isArray(responsePosition)) {
-        console.log('Positions for selected department:', responsePosition);
+        // console.log('Positions for selected department:', responsePosition);
 
         // Map the positions data to include a sequential position number
         const mappedPositions = responsePosition.map(
@@ -421,12 +421,12 @@ export class ManageCompanyComponent implements OnInit {
   positionManage: string = ''; //ตำแหน่ง
 
   onRowClick2(row: any) {
-    console.log('Row clicked:', row); // เพิ่มบรรทัดนี้
+    // console.log('Row clicked:', row); // เพิ่มบรรทัดนี้
     this.positionManage = row.positionName;
 
-    console.log('Position Manage Updated:', this.positionManage); // ตรวจสอบการอัปเดต
+    // console.log('Position Manage Updated:', this.positionManage); // ตรวจสอบการอัปเดต
     this.positionId = row.positionId; //positionId ที่เก็บ id จากตอนกดrow2
-    console.log('Id is:', this.positionId);
+    // console.log('Id is:', this.positionId);
     this.selectedRowShowButton = row; //ปุ่มลบแสดง
     this.isEditingPositon = true; // เปลี่ยนสถานะเป็นการแก้ไข
     this.selectedRowShowButton = true; //ลบแสดง??
@@ -468,12 +468,12 @@ export class ManageCompanyComponent implements OnInit {
       departmentId: this.deptId,
     };
 
-    console.log('req', req);
+    // console.log('req', req);
 
     try {
       // API
       const apiRes = await this.apiService.createPosition(req).toPromise();
-      console.log('create position response:', apiRes);
+      // console.log('create position response:', apiRes);
 
       // โหลดข้อมูลตำแหน่งใหม่
       await this.loadPositionManagement(); // 3 table2
@@ -518,12 +518,12 @@ export class ManageCompanyComponent implements OnInit {
       posId: this.positionId,
     };
 
-    console.log('Editing position with request:', req);
+    // console.log('Editing position with request:', req);
 
     try {
       // API
       const apiRes = await this.apiService.editPosition(req).toPromise();
-      console.log('Edit position response:', apiRes);
+      // console.log('Edit position response:', apiRes);
 
       await this.loadPositionManagement(); // 3 table2
 
@@ -580,7 +580,7 @@ export class ManageCompanyComponent implements OnInit {
         this.swalService.showError('เกิดข้อผิดพลาดในการลบ');
       }
     } else {
-      console.log('cancel');
+      // console.log('cancel');
     }
   }
 

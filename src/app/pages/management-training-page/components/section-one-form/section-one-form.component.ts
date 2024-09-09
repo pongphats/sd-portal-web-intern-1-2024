@@ -82,7 +82,7 @@ export class SectionOneFormComponent implements OnInit {
 
   async ngOnInit() {
     const id = this.trainingService.trainingEditData;
-    console.log('id:', id);
+    // console.log('id:', id);
 
     this.roleCheck = this.authService.checkRole();
     this.sectionCanEditRole =
@@ -99,7 +99,7 @@ export class SectionOneFormComponent implements OnInit {
     try {
       const data = this.trainingService.trainingEditData;
       const req = this.trainingService.trainingRequest;
-      console.log('req:', req);
+      // console.log('req:', req);
 
       // company select
       this.trainingForm.controls.company.setValue(
@@ -182,7 +182,7 @@ export class SectionOneFormComponent implements OnInit {
 
   sectionDisableCheck() {
     const role = this.authService.checkRole();
-    console.log(role);
+    // console.log(role);
 
     if (
       role == 'ROLE_Admin' ||
@@ -538,7 +538,7 @@ export class SectionOneFormComponent implements OnInit {
   }
 
   dateSaveChange(event: MatDatepickerInputEvent<Date>) {
-    console.log('Selected Date:', event.value);
+    // console.log('Selected Date:', event.value);
     const formatDate = this.commonService.formatDateToYYYYMMDDString(
       event.value || new Date()
     );

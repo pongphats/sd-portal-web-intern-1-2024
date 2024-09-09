@@ -224,7 +224,7 @@ export class TrainingService {
   removeTraining(index: number) {
     const currentList = this.trainingList.getValue();
     if (index >= 0 && index < currentList.length) {
-      console.log(currentList[index], typeof currentList[index]);
+      // console.log(currentList[index], typeof currentList[index]);
       const coursePrice = Number(
         currentList[index].coursePrice.replace(/,/g, '')
       );

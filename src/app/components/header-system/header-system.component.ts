@@ -30,6 +30,7 @@ export class HeaderSystemComponent implements OnInit {
 
   private routerSubscription!: Subscription;
 
+  isWelfarePortal !: boolean
   userDetail: Employee = {} as Employee;
   role: string = '';
   constructor(
@@ -48,6 +49,9 @@ export class HeaderSystemComponent implements OnInit {
     this.updateProfileIconVisibility();
     this.subscribeToRouteChanges();
     this.getUserDetail();
+
+    this.isWelfarePortal = this.router.url.includes('pccth/wellfare-portal');
+
   }
 
   getUserDetail() {
@@ -113,6 +117,10 @@ export class HeaderSystemComponent implements OnInit {
   }
   protected onLogout(): void {
     this.authService.logout();
-    this.router.navigate(['/sign-in']);
+    if (this.isWelfarePortal) {
+      this.router.navigate(['/wellfare']);
+    } else {
+      this.router.navigate(['/sign-in']);
+    }
   }
 }

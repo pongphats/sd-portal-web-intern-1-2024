@@ -343,7 +343,6 @@ export class ApiService {
 
   editLevel(req: level): Observable<level> {
     const url = `${this.welfareUrl}/budget/editBudget/${req.id}`;
-    // console.log(req.id);
     const payload = {
       ipd: req.ipd,
       opd: req.opd,

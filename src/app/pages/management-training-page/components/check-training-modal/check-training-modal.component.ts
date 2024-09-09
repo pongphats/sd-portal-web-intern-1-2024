@@ -65,7 +65,7 @@ export class CheckTrainingModalComponent implements OnInit {
       .subscribe((value: boolean) => {
         if (value != undefined) {
           this.sectionOneInvalid = value;
-          console.log(this.sectionOneInvalid);
+          // console.log(this.sectionOneInvalid);
         }
       });
   }
@@ -87,15 +87,15 @@ export class CheckTrainingModalComponent implements OnInit {
         this.swalService.showError('เกิดข้อผิดพลาดในการแก้ไขข้อมูล');
       }
     } else {
-      console.log('cancel');
+      // console.log('cancel');
     }
   }
 
   cancel() {
-    console.log(
-      'after cancel check val:',
-      this.trainingService.trainingRequest
-    );
+    // console.log(
+    //   'after cancel check val:',
+    //   this.trainingService.trainingRequest
+    // );
   }
 
   async approveAction(result: string) {

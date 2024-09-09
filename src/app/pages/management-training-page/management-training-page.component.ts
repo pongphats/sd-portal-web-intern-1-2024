@@ -130,8 +130,8 @@ export class ManagementTrainingPageComponent implements OnInit {
           index ===
           self.findIndex((p) => p.positionName === position.positionName)
       );
-      console.log('sector check: ', this.sectors);
-      console.log('dept check:', this.depts);
+      // console.log('sector check: ', this.sectors);
+      // console.log('dept check:', this.depts);
 
       // this.depts = sectorAnddept.map(item => item.department)
       // console.log('check sector Anddept', sectorAnddept);
@@ -241,7 +241,7 @@ export class ManagementTrainingPageComponent implements OnInit {
         );
         this.centerTrainingsList = this.backupTrainingList;
         // this.trainingTableList = this.centerTrainingsList;
-        console.log(this.trainingTableList);
+        // console.log(this.trainingTableList);
 
         // const
       } else {
@@ -304,15 +304,15 @@ export class ManagementTrainingPageComponent implements OnInit {
     const dialogRef = this.dialog.open(CheckTrainingModalComponent, {
       width: '80%', // กำหนดความกว้างเป็น 80% ของหน้าจอ
     });
-    console.log(
-      'data table',
-      this.trainingTableList.find(
-        (item) => item.training.id == data.training.id
-      )
-    );
+    // console.log(
+    //   'data table',
+    //   this.trainingTableList.find(
+    //     (item) => item.training.id == data.training.id
+    //   )
+    // );
 
     const fileIdList = data.training.trainingFiles.map((item) => item.id);
-    console.log(fileIdList);
+    // console.log(fileIdList);
 
     const editDataReq: CreateTrainingRequestForm = {
       userId: data.training.user.id,
@@ -348,7 +348,7 @@ export class ManagementTrainingPageComponent implements OnInit {
     this.trainingService.trainingRequest = editDataReq;
     this.trainingService.trainingStatus = data.result_status;
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
+      // console.log(`Dialog result: ${result}`);
       this.swalService.showLoading();
       const roles = this.authService.checkRole();
       const isCanEditRoles =
@@ -364,7 +364,7 @@ export class ManagementTrainingPageComponent implements OnInit {
   }
 
   dateSaveChange(value: Date) {
-    console.log(value);
+    // console.log(value);
   }
 
   async openModalReport(data: TrainingTable) {

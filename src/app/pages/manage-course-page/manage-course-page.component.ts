@@ -109,7 +109,7 @@ export class ManageCoursePageComponent implements OnInit {
               throw new Error(res?.msg);
             }
           } else {
-            console.log('ยกเลิก');
+            // console.log('ยกเลิก');
           }
         } else {
           // call createTraining API
@@ -145,7 +145,7 @@ export class ManageCoursePageComponent implements OnInit {
   ];
   async getAllCourses() {
     const res = await this.apiService.getAllCoursesList().toPromise();
-    console.log(res);
+    // console.log(res);
     if (res) {
       this.allCourses = res.sort((a: any, b: any) => a.id - b.id);
       this.allCourses = res.map((course) => ({
@@ -281,7 +281,7 @@ export class ManageCoursePageComponent implements OnInit {
         this.swalService.showSuccess('สำเร็จ');
         this.clearForm();
       } else {
-        console.log('ยกเลิก');
+        // console.log('ยกเลิก');
       }
       this.deleteId = -1; // clear
     } catch (error) {
@@ -299,13 +299,13 @@ export class ManageCoursePageComponent implements OnInit {
 
   // test ตัวแปร
   testVariable() {
-    console.log('editMode : ', this.editMode);
-    console.log('editId : ', this.editId);
-    console.log('deleteBtn : ', this.deleteBtn);
-    console.log('deleteId : ', this.deleteId);
-    console.log('courseForm : ', this.courseForm);
-    console.log('allCourses : ', this.allCourses);
-    console.log('invalidhoursInput : ', this.invalidhoursInput);
-    console.log('invalidhoursInput : ', this.invalidhoursInput);
+    // console.log('editMode : ', this.editMode);
+    // console.log('editId : ', this.editId);
+    // console.log('deleteBtn : ', this.deleteBtn);
+    // console.log('deleteId : ', this.deleteId);
+    // console.log('courseForm : ', this.courseForm);
+    // console.log('allCourses : ', this.allCourses);
+    // console.log('invalidhoursInput : ', this.invalidhoursInput);
+    // console.log('invalidhoursInput : ', this.invalidhoursInput);
   }
 }

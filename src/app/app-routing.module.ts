@@ -3,18 +3,10 @@ import { Route, RouterModule, Routes } from '@angular/router';
 
 import { SystemLayoutComponent } from './layouts/system-layout/system-layout.component';
 
-import { CalenderPageComponent } from './pages/calender-page/calender-page.component';
-import { DashboardPageComponent } from './pages/dashboard-page/dashboard-page.component';
-import { FtrOf1PageComponent } from './pages/ftr-of1-page/ftr-of1-page.component';
-import { FtrOj1PageComponent } from './pages/ftr-oj1-page/ftr-oj1-page.component';
 import { FtrSv1PageComponent } from './pages/ftr-sv1-page/ftr-sv1-page.component';
-import { HomePageComponent } from './pages/home-page/home-page.component';
-import { JobDayViewPageComponent } from './pages/job-day-view-page/job-day-view-page.component';
-import { ManagementDashboardPageComponent } from './pages/management-dashboard-page/management-dashboard-page.component';
-import { ManagementNewsPageComponent } from './pages/management-news-page/management-news-page.component';
+
 import { ManagementRolePageComponent } from './pages/management-role-page/management-role-page.component';
-import { NewsDetailPageComponent } from './pages/news-detail-page/news-detail-page.component';
-import { NewsPageComponent } from './pages/news-page/news-page.component';
+
 import { AuthGuard } from './auth/guard/auth.guard';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { ManageCompanyComponent } from './pages/manage-company/manage-company.component';
@@ -25,7 +17,6 @@ import { ManagementTrainingPageComponent } from './pages/management-training-pag
 import { ManagementUserPageComponent } from './pages/management-user-page/management-user-page.component';
 import { BudgetWellfareManagePageComponent } from './pages/budget-wellfare-manage-page/budget-wellfare-manage-page.component';
 import { SignaturePageComponent } from './pages/signature-page/signature-page.component';
-import { WelfareExpenseHistoryComponent } from './pages/welfare-expense-history/welfare-expense-history.component';
 import { ApproverManagePageComponent } from './pages/approver-manage-page/approver-manage-page.component';
 import { WelfareExpenseHistoryPageComponent } from './pages/welfare-expense-history-page/welfare-expense-history-page.component';
 import { LoginWelfarePageComponent } from './pages/login-welfare-page/login-welfare-page.component';
@@ -37,6 +28,10 @@ const routes: Routes = new Array<Route>(
     component: LoginPageComponent,
   },
   {
+    path: 'wellfare',
+    component: LoginWelfarePageComponent,
+  },
+  {
     path: 'login-welfare',
     component: LoginWelfarePageComponent,
   },
@@ -45,53 +40,16 @@ const routes: Routes = new Array<Route>(
     component: SystemLayoutComponent,
     children: new Array<Route>(
       {
-        path: '',
-        pathMatch: 'full',
-        component: HomePageComponent,
-      },
-      {
-        path : "test",
-        component : FtrOf1PageComponent
-      },
-      {
-        path: 'news',
-        component: NewsPageComponent,
-      },
-      {
-        path: 'calender',
-        component: CalenderPageComponent,
-      },
-      {
-        path: 'dashboard',
-        component: DashboardPageComponent,
-      },
-      {
-        path: 'ftr-of1',
-        component: FtrOf1PageComponent,
-      },
-      {
         path: 'management-training',
         component: ManagementTrainingPageComponent,
       },
       {
-        path: 'ftr-sv1',
+        path: 'management-budget',
         component: FtrSv1PageComponent,
       },
       {
         path: 'manage-course-page',
         component: ManageCoursePageComponent,
-      },
-      {
-        path: 'job-day-view',
-        component: JobDayViewPageComponent,
-      },
-      {
-        path: 'management-news',
-        component: ManagementNewsPageComponent,
-      },
-      {
-        path: 'management-dashboard',
-        component: ManagementDashboardPageComponent,
       },
       {
         path: 'management-role',
@@ -102,49 +60,66 @@ const routes: Routes = new Array<Route>(
         component: ManageCompanyComponent,
       },
       {
-        path: 'news-detail',
-        component: NewsDetailPageComponent,
-      },
-      {
         path: 'training-forms',
         component: TrainingFormPageComponent,
       },
-      {
-        path: 'training-forms/edit/:id',
-        component: TrainingFormPageComponent,
-      },
-      {
-        path: 'welfare-forms',
-        component: WelfareFormsPageComponent,
-      },
+
       {
         path: 'management-users',
         component: ManagementUserPageComponent,
       },
-      {
-        path: 'budget-wellfare-manage',
-        component: BudgetWellfareManagePageComponent,
-      },
+
       {
         path: 'signature-page',
         component: SignaturePageComponent,
       },
-      {
-        path: 'welfare-expense-history',
-        component: WelfareExpenseHistoryPageComponent,
-      },
+
       {
         path: 'approver-manage',
         component: ApproverManagePageComponent,
       },
       {
-        path : 'view-user',
-        component : UserViewPageComponent
+        path: 'view-user',
+        component: UserViewPageComponent,
+      },
+      {
+        path: '',
+        redirectTo: 'management-training',
+      },
+      {
+        path: 'wellfare-portal',
+        children: new Array<Route>(
+          {
+            path: 'welfare-expense-history',
+            component: WelfareExpenseHistoryPageComponent,
+          },
+          {
+            path: 'budget-wellfare-manage',
+            component: BudgetWellfareManagePageComponent,
+          },
+          {
+            path: 'welfare-forms',
+            component: WelfareFormsPageComponent,
+          },
+          {
+            path: 'management-users',
+            component: ManagementUserPageComponent,
+          },
+          {
+            path: 'management-company',
+            component: ManageCompanyComponent,
+          },
+          { path: 'management-users', component: ManagementUserPageComponent },
+          {
+            path: '**',
+            pathMatch: 'full',
+            redirectTo: 'welfare-forms',
+          }
+        ),
       }
     ),
   },
   {
-    // Redirects all paths that are not matching to the 'sign-in' route/path
     path: '**',
     redirectTo: 'sign-in',
     pathMatch: 'full',
