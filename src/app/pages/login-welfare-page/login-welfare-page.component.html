@@ -14,7 +14,7 @@
   </div>
   <div class="content-center w-full lg:w-[50%] ">
     <div
-      class="shadow-md dark:shadow-lg mx-[15%] py-[10%] content-center rounded-t-[50%] lg:border-0  lg:rounded-none bg-content dark:bg-content-dark  "
+      class="shadow-md dark:shadow-lg mx-[15%] py-[10%] content-center rounded-t-[50%]  bg-content dark:bg-content-dark  "
     >
       <form
         [formGroup]="authForm"
@@ -58,6 +58,7 @@
             '!cursor-not-allowed': authForm.invalid
           }"
           [disabled]="authForm.invalid"
+          (click)="loginWelfare()"
           type="button"
           mat-raised-button
           color="primary"

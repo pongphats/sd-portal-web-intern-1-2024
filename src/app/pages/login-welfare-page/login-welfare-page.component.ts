@@ -24,4 +24,9 @@ export class LoginWelfarePageComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  loginWelfare(){
+    console.log(this.authForm.value)
+    this.authForm.reset()
+  }
+
 }
