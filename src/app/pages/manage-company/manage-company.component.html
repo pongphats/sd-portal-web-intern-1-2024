@@ -196,7 +196,7 @@
   <table
     mat-table
     [dataSource]="dataManageCompany"
-    class="mat-elevation-z8 w-full overflow-x-auto"
+    class="w-full overflow-x-auto shadow-card"
   >
     <!--  -->
     <ng-container matColumnDef="sectorTname">
@@ -350,7 +350,7 @@
   </table>
 
   <mat-paginator
-    class="mat-elevation-z8"
+    class="bg-content dark:bg-content-dark shadow-card"
     [length]="dataManageCompany.data.length"
     [pageSize]="10"
     [pageSizeOptions]="[5, 10, 25, 100]"
