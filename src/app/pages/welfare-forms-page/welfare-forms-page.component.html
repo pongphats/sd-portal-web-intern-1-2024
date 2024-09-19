@@ -47,23 +47,25 @@
         <p class="font-bold">ข้อมูลพนักงาน</p>
         <div class="flex flex-row w-full">
           <p class="w-[58%]">{{ datafullName }}</p>
-          <p class="w-[42%]">รหัสพนักงาน: {{ dataEmpCode }}</p>
+          <p class="w-[42%]">รหัสพนักงาน: {{ dataEmp?.empCode }}</p>
         </div>
         <div class="flex flex-row w-full">
-          <p class="w-[58%]">แผนก: {{ dataSectorName }}</p>
-          <p class="w-[42%]">{{ dataPositionName }}</p>
+          <p class="w-[58%]">แผนก: {{ dataEmp?.sector?.sectorName }}</p>
+          <p class="w-[42%]">{{ dataEmp?.position?.positionName }}</p>
         </div>
         <div class="flex flex-row w-full">
-          <p class="w-[58%]">Email : {{ dataEmail }}</p>
-          <p class="w-[42%]">ระดับพนักงาน (LEVEL): {{ dataLevel }}</p>
+          <p class="w-[58%]">อีเมล: {{ dataEmp?.email }}</p>
+          <p class="w-[42%]">ระดับพนักงาน (LEVEL): {{ dataEmp?.level }}</p>
         </div>
         <div class="flex flex-row w-full">
-          <p class="w-[58%]">วันที่เริ่มงาน : {{ dataStartDate }}</p>
-          <p class="w-[42%]">ประเภท : {{ dataTypeEmp }}</p>
+          <p class="w-[58%]">วันที่เริ่มงาน: {{ dataStartDate }}</p>
+          <p class="w-[42%]">
+            ประเภท: {{ dataEmp?.typeEmp == "" ? "-" : dataEmp?.typeEmp }}
+          </p>
         </div>
         <div class="flex flex-row w-full">
           <p class="w-full">
-            วันที่ผ่านการทดลองงาน :
+            วันที่ผ่านการทดลองงาน:
             {{ dataPassDate }}
           </p>
         </div>

@@ -127,14 +127,8 @@ export class WelfareFormsPageComponent implements OnInit {
 
   dataEmp: Employee | undefined = undefined;
   datafullName: string = '';
-  dataEmpCode: string = '';
-  dataSectorName: string = '';
-  dataPositionName: string = '';
-  dataEmail: string = '';
-  dataLevel: string = '';
   dataStartDate!: string;
   dataPassDate!: string;
-  dataTypeEmp: string = '';
   // TODO: หารายละเอียดข้อมูลพนักงาน
   searchEmp() {
     // TODO: เช็คว่าพิมพ์ชื่อครบถ้วน
@@ -147,18 +141,12 @@ export class WelfareFormsPageComponent implements OnInit {
       this.dataEmp = this.dataListEmp[0];
       const data = this.dataEmp;
       this.datafullName = `${data.title} ${data.firstname} ${data.lastname}`;
-      this.dataEmpCode = data.empCode;
-      this.dataSectorName = data.sector.sectorName;
-      this.dataPositionName = data.position.positionName;
-      this.dataEmail = data.email;
-      this.dataLevel = data.level;
       this.dataStartDate = data.startDate
         ? this.buddhistDatePipe.transform(new Date(data.startDate))
         : 'ไม่มีข้อมูล';
       this.dataPassDate = data.passDate
         ? this.buddhistDatePipe.transform(new Date(data.passDate))
         : 'ไม่มีข้อมูล';
-      this.dataTypeEmp = data.typeEmp || '-';
 
       this.getExpenseRemainByUserIdAndLevel(data);
       this.getExpenseUidAndYear();
@@ -166,14 +154,8 @@ export class WelfareFormsPageComponent implements OnInit {
     // *กรณีพิมพ์ไม่ครบ
     else {
       this.datafullName = '';
-      this.dataEmpCode = '';
-      this.dataSectorName = '';
-      this.dataPositionName = '';
-      this.dataEmail = '';
-      this.dataLevel = '';
       this.dataStartDate = '';
       this.dataPassDate = '';
-      this.dataTypeEmp = '';
       this.dataOPD = '';
       this.dataIPD = '';
       this.dataRoom = '';
